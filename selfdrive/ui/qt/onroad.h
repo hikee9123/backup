@@ -135,6 +135,9 @@ private:
   QWidget *map = nullptr;
   QHBoxLayout* split;
 
+  // custrom
+  OnPaint *m_pPaint = nullptr;
+
 private slots:
   void offroadTransition(bool offroad);
   void primeChanged(bool prime);
