@@ -36,7 +36,7 @@ private:
   {
 
     
-    cereal::naviCustom::Reader naviData;
+    cereal::NaviCustom::Reader naviData;
  
 
   } m_param, m_old;
