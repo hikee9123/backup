@@ -9,6 +9,7 @@
 #include "common/util.h"
 #include "selfdrive/ui/ui.h"
 #include "selfdrive/ui/qt/widgets/cameraview.h"
+#include "selfdrive/ui/qt/custom/paint.h"
 
 
 const int btn_size = 192;
