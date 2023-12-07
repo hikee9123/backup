@@ -148,7 +148,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   int  nYPos = bb_y;
   int  nGap = 80; 
 
-  p.setFont(InterFont(40, QFont::DemiBold));
+  p.setFont(InterFont(40, QFont::Normal));
 
   int activeNDA = m_param.naviData.getActive();
   int roadLimitSpeed = m_param.naviData.getRoadLimitSpeed();
