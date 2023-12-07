@@ -42,7 +42,7 @@ qt_src = ["main.cc", "qt/sidebar.cc", "qt/onroad.cc", "qt/body.cc",
           "qt/offroad/software_settings.cc", "qt/offroad/onboarding.cc",
           "qt/offroad/driverview.cc", "qt/offroad/experimental_mode.cc"]
 
-# custom UI
+# #custom UI
 qt_src += ["qt/custom/paint.cc"]
 
 # build translation files

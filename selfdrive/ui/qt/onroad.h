@@ -135,7 +135,7 @@ private:
   QWidget *map = nullptr;
   QHBoxLayout* split;
 
-  // custrom
+  // #custom
   OnPaint *m_pPaint = nullptr;
 
 private slots:

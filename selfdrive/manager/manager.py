@@ -31,6 +31,7 @@ def manager_init() -> None:
   set_time(cloudlog)
 
   # save boot log
+  #custom
   #subprocess.call("./bootlog", cwd=os.path.join(BASEDIR, "system/loggerd"))
 
   params = Params()

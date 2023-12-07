@@ -2286,6 +2286,7 @@ struct Event {
     customReservedRawData2 @126 :Data;
 
     # *********** Custom: reserved for forks ***********
+    #custom
     carStateCustom @107 :Custom.CarStateCustom;
     carControlCustom @108 :Custom.CarControlCustom;
     naviCustom @109 :Custom.NaviCustom;

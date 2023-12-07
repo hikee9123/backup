@@ -43,7 +43,7 @@ class NaviServer:
     broadcast.daemon = True
     broadcast.start()
 
-    self.pm = messaging.PubMaster(['naviCustom'])
+
     self.gps_sm = messaging.SubMaster(['gpsLocationExternal'], poll=['gpsLocationExternal'])
     self.gps_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
@@ -241,10 +241,11 @@ class NaviServer:
 
 
 def main():
-  server = NaviServer()
+
+  pm = messaging.PubMaster(['naviCustom']) 
   dat = messaging.new_message('naviCustom')
   naviData = dat.naviData
-  
+  server = NaviServer() 
   with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
     try:
       sock.bind(('0.0.0.0', Port.RECEIVE_PORT))
@@ -269,7 +270,7 @@ def main():
         naviData.currentRoadName = server.get_limit_val("current_road_name", "")
         naviData.isNda2 = server.get_limit_val("is_nda2", False)
 
-        self.pm.send('naviCustom', dat )
+        pm.send('naviCustom', dat )
 
         server.send_sdp(sock)
         server.check()
