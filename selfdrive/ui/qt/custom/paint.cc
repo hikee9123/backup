@@ -13,7 +13,12 @@
 
 
 
-
+void configFont(QPainter &p, const QString &family, int size, const QString &style) {
+  QFont f(family);
+  f.setPixelSize(size);
+  f.setStyleName(style);
+  p.setFont(f);
+}
 
 // OnroadHud
 OnPaint::OnPaint(QWidget *parent) : QWidget(parent) 
