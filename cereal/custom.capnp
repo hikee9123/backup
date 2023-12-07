@@ -12,7 +12,7 @@ using Car = import "car.capnp";
 # you can rename the struct, but don't change the identifier
 struct CarStateCustom @0x81c2f05a394cf4af {
 
-  tpms @1 :Tpms;
+  tpms @0 :Tpms;
 
   struct Tpms {
     enabled @0 :Bool;
@@ -30,7 +30,7 @@ struct CarControlCustom @0xaedffd8f31e7b55d {
 
 struct NaviCustom @0xf35cc4560bbf6ec2 {
     # neokii
-    naviData @1 :NaviData;
+    naviData @0 :NaviData;
 
     struct NaviData {
         active @0 :Int16;
