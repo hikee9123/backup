@@ -243,8 +243,8 @@ class NaviServer:
 def main():
 
   pm = messaging.PubMaster(['naviCustom']) 
-  dat = messaging.new_message('naviCustom')
-  naviData = dat.naviData
+  msg = messaging.new_message('naviCustom')
+  naviData = msg.naviCustom.naviData
   server = NaviServer() 
   with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
     try:
@@ -254,7 +254,6 @@ def main():
       while True:
         server.udp_recv(sock)
 
-        #dat = messaging.new_message('naviData')
         naviData.active = server.active
         naviData.roadLimitSpeed = server.get_limit_val("road_limit_speed", 0)
         naviData.isHighway = server.get_limit_val("is_highway", False)
@@ -270,7 +269,7 @@ def main():
         naviData.currentRoadName = server.get_limit_val("current_road_name", "")
         naviData.isNda2 = server.get_limit_val("is_nda2", False)
 
-        pm.send('naviCustom', dat )
+        pm.send('naviCustom', msg )
 
         server.send_sdp(sock)
         server.check()
