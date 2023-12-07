@@ -8,7 +8,7 @@
 #include <QConicalGradient>
 #include <QPen>
 
-#include "selfdrive/common/timing.h"
+
 #include "selfdrive/ui/qt/util.h"
 
 
