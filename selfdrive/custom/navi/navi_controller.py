@@ -270,7 +270,7 @@ def main():
         naviData.currentRoadName = server.get_limit_val("current_road_name", "")
         naviData.isNda2 = server.get_limit_val("is_nda2", False)
 
-        print("navData={naviData.currentRoadName}")
+        print(f"navData={naviData}")
         
         pm.send('naviCustom', msg )
 
