@@ -13,12 +13,7 @@
 
 
 
-void configFont(QPainter &p, const QString &family, int size, const QString &style) {
-  QFont f(family);
-  f.setPixelSize(size);
-  f.setStyleName(style);
-  p.setFont(f);
-}
+
 
 // OnroadHud
 OnPaint::OnPaint(QWidget *parent) : QWidget(parent) 
@@ -152,7 +147,8 @@ void OnPaint::ui_main_navi( QPainter &p )
 
   int  nYPos = bb_y;
   int  nGap = 80; 
-  configFont( p, "Open Sans",  80, "Regular");
+
+  p.setFont(InterFont(40, QFont::DemiBold));
 
   int activeNDA = m_param.naviData.getActive();
   int roadLimitSpeed = m_param.naviData.getRoadLimitSpeed();
