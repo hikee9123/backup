@@ -2101,6 +2101,9 @@ struct NavInstruction {
 
   allManeuvers @12 :List(Maneuver);
 
+  imageUrl @13 :Text;
+
+  
   struct Lane {
     directions @0 :List(Direction);
     active @1 :Bool;

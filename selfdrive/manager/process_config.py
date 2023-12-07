@@ -42,6 +42,10 @@ def only_offroad(started, params, CP: car.CarParams) -> bool:
   return not started
 
 
+def UseExternalNaviRoutes()  -> bool:
+  return True
+  #return Params().get_bool('UseExternalNaviRoutes')
+
 procs = [
   DaemonProcess("manage_athenad", "selfdrive.athena.manage_athenad", "AthenadPid"),
 
@@ -70,7 +74,7 @@ procs = [
   PythonProcess("deleter", "system.loggerd.deleter", always_run),
   PythonProcess("dmonitoringd", "selfdrive.monitoring.dmonitoringd", driverview, enabled=(not PC or WEBCAM)),
   PythonProcess("qcomgpsd", "system.qcomgpsd.qcomgpsd", qcomgps, enabled=TICI),
-  PythonProcess("navd", "selfdrive.navd.navd", only_onroad, enabled=not Params().get_bool('UseExternalNaviRoutes')),
+  PythonProcess("navd", "selfdrive.navd.navd", only_onroad, enabled=not UseExternalNaviRoutes() ),
   PythonProcess("pandad", "selfdrive.boardd.pandad", always_run),
   PythonProcess("paramsd", "selfdrive.locationd.paramsd", only_onroad),
   NativeProcess("ubloxd", "system/ubloxd", ["./ubloxd"], ublox, enabled=TICI),
@@ -85,7 +89,7 @@ procs = [
 
   #custom
   PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", always_run),
-  PythonProcess("navi_route", "selfdrive.custom.navi.navi_route", only_onroad, enabled=Params().get_bool('UseExternalNaviRoutes')),
+  PythonProcess("navi_route", "selfdrive.custom.navi.navi_route", only_onroad, enabled=UseExternalNaviRoutes() ),
 
 
   # debug procs

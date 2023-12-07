@@ -148,7 +148,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   int  nYPos = bb_y;
   int  nGap = 80; 
 
-  p.setFont(InterFont(40, QFont::Normal));
+  // p.setFont(InterFont(40, QFont::Normal));
 
   int activeNDA = m_param.naviData.getActive();
   int roadLimitSpeed = m_param.naviData.getRoadLimitSpeed();
@@ -166,4 +166,6 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("sectionLimitSpeed = %d", sectionLimitSpeed );    p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("sectionLeftDist = %d", sectionLeftDist );    p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("sectionLeftDist = %d", isNda2 );    p.drawText( bb_x, nYPos+=nGap, text4 );
+
+  
 }
