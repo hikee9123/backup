@@ -43,6 +43,16 @@ private:
   } m_param, m_old;
   
 
+  struct _NDA
+  {
+     int roadLimitSpeed;
+     int camLimitSpeed;
+     int camLimitSpeedLeftDist;
+     int sectionLimitSpeed;
+     int sectionLeftDist;
+  } m_nda[2];
+  
+
 private:
    NetworkImageWidget *icon_01;
 

@@ -156,7 +156,7 @@ void OnPaint::ui_main_navi( QPainter &p )
 {
   QString text4;
 
-  int bb_x = 250;
+  int bb_x = 100;
   int bb_y = 300;
 
   int  nYPos = bb_y;
@@ -172,14 +172,29 @@ void OnPaint::ui_main_navi( QPainter &p )
   int sectionLeftDist = m_param.naviData.getSectionLeftDist();
   int isNda2 = m_param.naviData.getIsNda2();
 
+  if( activeNDA  )
+  {
+    m_nda[0].roadLimitSpeed = roadLimitSpeed;
+    m_nda[0].camLimitSpeed = camLimitSpeed;
+    m_nda[0].camLimitSpeedLeftDist = camLimitSpeedLeftDist;
+    m_nda[0].sectionLimitSpeed = sectionLimitSpeed;
+    m_nda[0].sectionLeftDist = sectionLeftDist;
+  }
+  if( isNda2  )
+  {
+    m_nda[1].roadLimitSpeed = roadLimitSpeed;
+    m_nda[1].camLimitSpeed = camLimitSpeed;
+    m_nda[1].camLimitSpeedLeftDist = camLimitSpeedLeftDist;
+    m_nda[1].sectionLimitSpeed = sectionLimitSpeed;
+    m_nda[1].sectionLeftDist = sectionLeftDist;
+  }
 
-  text4.sprintf("activeNDA = %d", activeNDA );                            p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("roadLimitSpeed = %d", roadLimitSpeed );                  p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("camLimitSpeed = %d", camLimitSpeed );                    p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("camLimitSpeedLeftDist = %d", camLimitSpeedLeftDist );    p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("sectionLimitSpeed = %d", sectionLimitSpeed );            p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("sectionLeftDist = %d", sectionLeftDist );                p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("isNda2 = %d", isNda2 );                         p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("NDA = %d, %d", activeNDA, isNda2 );                                                p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("rLS = %d, %d", m_nda[0].roadLimitSpeed, m_nda[1].roadLimitSpeed );                  p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("cLS = %d, %d", m_nda[0].camLimitSpeed, m_nda[1].camLimitSpeed );                    p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("cLSD = %d, %d", m_nda[0].camLimitSpeedLeftDist, m_nda[1].camLimitSpeedLeftDist );    p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("sLS = %d, %d", m_nda[0].sectionLimitSpeed , m_nda[1].sectionLimitSpeed );            p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("sLD = %d, %d", m_nda[0].sectionLeftDist, m_nda[1].sectionLeftDist );                p.drawText( bb_x, nYPos+=nGap, text4 );
 
   
 }
