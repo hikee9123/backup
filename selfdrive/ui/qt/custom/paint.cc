@@ -165,7 +165,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   // p.setFont(InterFont(40, QFont::Normal));
 
   int activeNDA = m_param.naviData.getActive();
-  int camType  = m_param.navData.getCamType();
+  int camType  = m_param.naviData.getCamType();
   int roadLimitSpeed = m_param.naviData.getRoadLimitSpeed();
   int camLimitSpeed = m_param.naviData.getCamLimitSpeed();
   int camLimitSpeedLeftDist = m_param.naviData.getCamLimitSpeedLeftDist();
