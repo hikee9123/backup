@@ -173,7 +173,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   int sectionLeftDist = m_param.naviData.getSectionLeftDist();
   int isNda2 = m_param.naviData.getIsNda2();
 
- QString roadName = QString::fromStdString( m_param.naviData.getCurrentRoadName() );
+ QString roadName = QString::fromStdString( m_param.naviData.getCurrentRoadName().cStr() );
   
   // getCurrentRoadName();
 
