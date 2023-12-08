@@ -200,7 +200,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("cLSD = %d, %d", m_nda[0].camLimitSpeedLeftDist, m_nda[1].camLimitSpeedLeftDist );    p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("sLS = %d, %d", m_nda[0].sectionLimitSpeed , m_nda[1].sectionLimitSpeed );            p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("sLD = %d, %d", m_nda[0].sectionLeftDist, m_nda[1].sectionLeftDist );                p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("roadName = %s", roadName);                p.drawText( bb_x, nYPos+=nGap, text4 );
+     p.drawText( bb_x, nYPos+=nGap, roadName );
   
 
   
