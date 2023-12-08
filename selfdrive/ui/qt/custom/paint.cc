@@ -194,7 +194,7 @@ void OnPaint::ui_main_navi( QPainter &p )
     m_nda[1].sectionLeftDist = sectionLeftDist;
   }
 
-  text4.sprintf("NDA = %d, %d", activeNDA, isNda2 );                                                p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("NDA = %d, %d,   camType=%d", activeNDA, isNda2,  camType );                                                p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("rLS = %d, %d", m_nda[0].roadLimitSpeed, m_nda[1].roadLimitSpeed );                  p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLS = %d, %d", m_nda[0].camLimitSpeed, m_nda[1].camLimitSpeed );                    p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLSD = %d, %d", m_nda[0].camLimitSpeedLeftDist, m_nda[1].camLimitSpeedLeftDist );    p.drawText( bb_x, nYPos+=nGap, text4 );
