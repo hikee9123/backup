@@ -21,8 +21,13 @@ OnPaint::OnPaint(QWidget *parent) : QWidget(parent)
   state = uiState();
   scene = &(state->scene);
 
+  QVBoxLayout *main_layout = new QVBoxLayout(this);
+  main_layout->setContentsMargins(11, UI_BORDER_SIZE, 11, 20);
 
+  QHBoxLayout *top_layout = new QHBoxLayout;
+  top_layout->addWidget(icon_01 = new NetworkImageWidget, 0, Qt::AlignTop);
 
+  main_layout->addLayout(top_layout);
   //connect(this, &OnPaint::valueChanged, [=] { update(); });
 }
 
@@ -129,7 +134,14 @@ void OnPaint::updateState(const UIState &s)
   auto navi_custom = sm["naviCustom"].getNaviCustom();  
   m_param.naviData = navi_custom.getNaviData();
 
-  //update(); 
+  if (sm.updated("navInstruction")) {
+    if (sm.valid("navInstruction")) {
+        auto i = sm["navInstruction"].getNavInstruction();
+        QString imageUrl = QString::fromStdString(i.getImageUrl());
+        icon_01->requestImage(imageUrl);
+        icon_01->setVisible(true);        
+    }
+  }
 }
 
 

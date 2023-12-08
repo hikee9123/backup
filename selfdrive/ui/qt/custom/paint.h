@@ -5,7 +5,7 @@
 
 
 #include "selfdrive/ui/ui.h"
-
+#include "selfdrive/ui/qt/custom/widgetNetImg.h"
 
 
 class OnPaint : public QWidget 
@@ -44,7 +44,7 @@ private:
   
 
 private:
-
+   NetworkImageWidget *icon_01;
 
 
   

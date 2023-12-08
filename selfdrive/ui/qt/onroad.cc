@@ -58,7 +58,6 @@ OnroadWindow::OnroadWindow(QWidget *parent) : QWidget(parent) {
   alerts->setAttribute(Qt::WA_TransparentForMouseEvents, true);
   stacked_layout->addWidget(alerts);
 
-
   // setup stacking order
   alerts->raise();
 
@@ -84,7 +83,6 @@ void OnroadWindow::updateState(const UIState &s) {
   }
 
   nvg->updateState(s);
-
 
   if (bg != bgColor) {
     // repaint border
