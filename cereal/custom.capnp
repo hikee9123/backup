@@ -32,6 +32,7 @@ struct NaviCustom @0xf35cc4560bbf6ec2 {
     # neokii
     naviData @0 :NaviData;
 
+
     struct NaviData {
         active @0 :Int16;
         roadLimitSpeed @1 :Int16;

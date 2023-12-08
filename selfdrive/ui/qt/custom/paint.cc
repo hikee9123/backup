@@ -134,14 +134,14 @@ void OnPaint::updateState(const UIState &s)
   auto navi_custom = sm["naviCustom"].getNaviCustom();  
   m_param.naviData = navi_custom.getNaviData();
 
-  if (sm.updated("navInstruction")) {
-    if (sm.valid("navInstruction")) {
-        auto i = sm["navInstruction"].getNavInstruction();
-        QString imageUrl = QString::fromStdString(i.getImageUrl());
-        icon_01->requestImage(imageUrl);
-        icon_01->setVisible(true);        
-    }
+  //if (sm.updated("navInstruction")) {
+  if (sm.valid("navInstruction")) {
+      auto i = sm["navInstruction"].getNavInstruction();
+      QString imageUrl = QString::fromStdString(i.getImageUrl());
+      icon_01->requestImage(imageUrl);
+      icon_01->setVisible(true);        
   }
+  //}
 }
 
 
