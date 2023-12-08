@@ -4,6 +4,8 @@
 #include <QStyleOption>
 
 
+#include "selfdrive/ui/qt/custom/widgetNetImg.h"
+
 NetworkImageWidget::NetworkImageWidget(QWidget *parent)
     : QWidget(parent)
 {

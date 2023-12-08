@@ -98,6 +98,10 @@ private:
   int skip_frame_count = 0;
   bool wide_cam_requested = false;
 
+
+  // #custom
+  OnPaint *m_pPaint = nullptr;
+
 protected:
   void paintGL() override;
   void initializeGL() override;
@@ -136,8 +140,7 @@ private:
   QWidget *map = nullptr;
   QHBoxLayout* split;
 
-  // #custom
-  OnPaint *m_pPaint = nullptr;
+
 
 private slots:
   void offroadTransition(bool offroad);
