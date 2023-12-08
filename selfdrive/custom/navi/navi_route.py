@@ -3,6 +3,8 @@ import json
 import socketserver
 import struct
 import threading
+
+from cereal import log
 from threading import Thread
 
 from cereal import messaging
@@ -55,7 +57,8 @@ class NaviRoute():
     instruction = msg.navInstruction
 
     if json is not None:
-      print( f"dispatch_instruction {json} " )      
+      print( f"dispatch_instruction {json} " )
+      instruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna      
       if 'maneuverDistance' in json:
         instruction.maneuverDistance = float(json['maneuverDistance'])
       if 'distanceRemaining' in json:
