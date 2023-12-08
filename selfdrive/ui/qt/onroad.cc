@@ -58,9 +58,6 @@ OnroadWindow::OnroadWindow(QWidget *parent) : QWidget(parent) {
   alerts->setAttribute(Qt::WA_TransparentForMouseEvents, true);
   stacked_layout->addWidget(alerts);
 
-  // #custom
-  m_pPaint = new OnPaint(this);
-  stacked_layout->addWidget(m_pPaint);
 
   // setup stacking order
   alerts->raise();
@@ -88,9 +85,6 @@ void OnroadWindow::updateState(const UIState &s) {
 
   nvg->updateState(s);
 
-  // #custom
-  if( m_pPaint )
-    m_pPaint->updateState(s);
 
   if (bg != bgColor) {
     // repaint border
@@ -283,6 +277,11 @@ AnnotatedCameraWidget::AnnotatedCameraWidget(VisionStreamType type, QWidget* par
   main_layout->addWidget(map_settings_btn, 0, Qt::AlignBottom | Qt::AlignRight);
 
   dm_img = loadPixmap("../assets/img_driver_face.png", {img_size + 5, img_size + 5});
+
+
+  // #custom
+  m_pPaint = new OnPaint(this);
+  //main_layout->addWidget(m_pPaint);  
 }
 
 void AnnotatedCameraWidget::updateState(const UIState &s) {
@@ -335,6 +334,10 @@ void AnnotatedCameraWidget::updateState(const UIState &s) {
     map_settings_btn->setVisible(!hideBottomIcons);
     main_layout->setAlignment(map_settings_btn, (rightHandDM ? Qt::AlignLeft : Qt::AlignRight) | Qt::AlignBottom);
   }
+
+  // #custom
+  if( m_pPaint )
+     m_pPaint->updateState(s);  
 }
 
 void AnnotatedCameraWidget::drawHud(QPainter &p) {
@@ -432,6 +435,11 @@ void AnnotatedCameraWidget::drawHud(QPainter &p) {
   p.setFont(InterFont(66));
   drawText(p, rect().center().x(), 290, speedUnit, 200);
 
+
+  // #custom
+  if( m_pPaint )
+     m_pPaint->drawHud(p);
+  
   p.restore();
 }
 

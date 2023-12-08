@@ -58,9 +58,15 @@ void OnPaint::updateState(const UIState &s)
   auto navi_custom = sm["naviCustom"].getNaviCustom();  
   m_param.naviData = navi_custom.getNaviData();
 
-  update(); 
+  //update(); 
 }
 
+
+void OnPaint::drawHud(QPainter &p)
+{
+  ui_main_navi( p );
+
+}
 
 float OnPaint::interp( float xv, float xp[], float fp[], int N)
 {
@@ -102,9 +108,7 @@ float OnPaint::interp( float xv, float xp[], float fp[], int N)
 void OnPaint::paintEvent(QPaintEvent *event) 
 {
   QPainter p(this);
-  p.save(); 
-  ui_main_navi( p );
-  p.restore();   
+
 }
 
 

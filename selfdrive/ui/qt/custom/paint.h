@@ -18,6 +18,7 @@ class OnPaint : public QWidget
 public:
   explicit OnPaint(QWidget *parent);
   void updateState(const UIState &s);
+  void drawHud(QPainter &p);
 
 private:
   void    paintEvent(QPaintEvent *event) override;
