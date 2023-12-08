@@ -165,6 +165,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   // p.setFont(InterFont(40, QFont::Normal));
 
   int activeNDA = m_param.naviData.getActive();
+  int camType  = m_param.navData.getCamType();
   int roadLimitSpeed = m_param.naviData.getRoadLimitSpeed();
   int camLimitSpeed = m_param.naviData.getCamLimitSpeed();
   int camLimitSpeedLeftDist = m_param.naviData.getCamLimitSpeedLeftDist();
@@ -172,7 +173,11 @@ void OnPaint::ui_main_navi( QPainter &p )
   int sectionLeftDist = m_param.naviData.getSectionLeftDist();
   int isNda2 = m_param.naviData.getIsNda2();
 
-  if( activeNDA  )
+ QString roadName = QString::fromStdString( m_param.naviData.getCurrentRoadName() );
+  
+  // getCurrentRoadName();
+
+  if( activeNDA == 1 )
   {
     m_nda[0].roadLimitSpeed = roadLimitSpeed;
     m_nda[0].camLimitSpeed = camLimitSpeed;
@@ -180,7 +185,7 @@ void OnPaint::ui_main_navi( QPainter &p )
     m_nda[0].sectionLimitSpeed = sectionLimitSpeed;
     m_nda[0].sectionLeftDist = sectionLeftDist;
   }
-  if( isNda2  )
+  if( isNda2 == 1 )
   {
     m_nda[1].roadLimitSpeed = roadLimitSpeed;
     m_nda[1].camLimitSpeed = camLimitSpeed;
@@ -195,6 +200,8 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("cLSD = %d, %d", m_nda[0].camLimitSpeedLeftDist, m_nda[1].camLimitSpeedLeftDist );    p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("sLS = %d, %d", m_nda[0].sectionLimitSpeed , m_nda[1].sectionLimitSpeed );            p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("sLD = %d, %d", m_nda[0].sectionLeftDist, m_nda[1].sectionLeftDist );                p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("roadName = %s", roadName);                p.drawText( bb_x, nYPos+=nGap, text4 );
+  
 
   
 }
