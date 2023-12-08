@@ -51,10 +51,11 @@ class NaviRoute():
     self.send_route()
 
   def dispatch_instruction(self, json):
-    msg = messaging.new_message('navInstruction')
+    msg = messaging.new_message('navInstruction', valid=True)
     instruction = msg.navInstruction
 
     if json is not None:
+      print( f"dispatch_instruction {json} " )      
       if 'maneuverDistance' in json:
         instruction.maneuverDistance = float(json['maneuverDistance'])
       if 'distanceRemaining' in json:
