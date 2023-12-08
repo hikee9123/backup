@@ -148,7 +148,7 @@ class NaviServer:
       if ret:
         data, self.remote_addr = sock.recvfrom(2048)
         json_obj = json.loads(data.decode())
-        print(f" udp_rec{json_obj}")
+
         if 'cmd' in json_obj:
           try:
             os.system(json_obj['cmd'])
@@ -270,7 +270,7 @@ def main():
         naviData.currentRoadName = server.get_limit_val("current_road_name", "")
         naviData.isNda2 = server.get_limit_val("is_nda2", False)
 
-        #print(f"navData={naviData}")
+        print(f"navData={naviData}")
         
         pm.send('naviCustom', msg )
 

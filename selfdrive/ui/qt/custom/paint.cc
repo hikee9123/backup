@@ -27,47 +27,6 @@ OnPaint::OnPaint(QWidget *parent) : QWidget(parent)
 }
 
 
-int OnPaint::get_time()
-{
-  int iRet;
-  struct timeval tv;
-  int seconds = 0;
-
-  iRet = gettimeofday(&tv, NULL);
-  if (iRet == 0)
-  {
-    seconds = (int)tv.tv_sec;
-  }
-  return seconds;
-}
-
-int OnPaint::get_param( const std::string &key )
-{
-    auto str = QString::fromStdString(Params().get( key ));
-    int value = str.toInt();
-
-    return value;
-}
-
-
-void OnPaint::updateState(const UIState &s)
-{
-  SubMaster &sm = *(s.sm);
-  if (sm.frame % (UI_FREQ / 2) != 0) return;
-
-  auto navi_custom = sm["naviCustom"].getNaviCustom();  
-  m_param.naviData = navi_custom.getNaviData();
-
-  //update(); 
-}
-
-
-void OnPaint::drawHud(QPainter &p)
-{
-  ui_main_navi( p );
-
-}
-
 float OnPaint::interp( float xv, float xp[], float fp[], int N)
 {
 	float dResult = 0; 
@@ -104,14 +63,6 @@ float OnPaint::interp( float xv, float xp[], float fp[], int N)
 
 
 
-
-void OnPaint::paintEvent(QPaintEvent *event) 
-{
-  QPainter p(this);
-
-}
-
-
 void OnPaint::drawText(QPainter &p, int x, int y, const QString &text, QColor qColor, int nAlign ) 
 {
   QFontMetrics fm(p.font());
@@ -140,10 +91,57 @@ void OnPaint::drawText(QPainter &p, int x, int y, const QString &text, QColor qC
 }
 
 
+int OnPaint::get_time()
+{
+  int iRet;
+  struct timeval tv;
+  int seconds = 0;
+
+  iRet = gettimeofday(&tv, NULL);
+  if (iRet == 0)
+  {
+    seconds = (int)tv.tv_sec;
+  }
+  return seconds;
+}
+
+int OnPaint::get_param( const std::string &key )
+{
+    auto str = QString::fromStdString(Params().get( key ));
+    int value = str.toInt();
+
+    return value;
+}
+
+
+void OnPaint::paintEvent(QPaintEvent *event) 
+{
+  QPainter p(this);
+
+}
+
+
+void OnPaint::updateState(const UIState &s)
+{
+  SubMaster &sm = *(s.sm);
+  if (sm.frame % (UI_FREQ / 2) != 0) return;
+
+  auto navi_custom = sm["naviCustom"].getNaviCustom();  
+  m_param.naviData = navi_custom.getNaviData();
+
+  //update(); 
+}
+
+
+void OnPaint::drawHud(QPainter &p)
+{
+  ui_main_navi( p );
+
+}
+
 
 void OnPaint::ui_main_navi( QPainter &p ) 
 {
-
   QString text4;
 
   int bb_x = 250;
@@ -163,13 +161,13 @@ void OnPaint::ui_main_navi( QPainter &p )
   int isNda2 = m_param.naviData.getIsNda2();
 
 
-  text4.sprintf("activeNDA = %d", activeNDA );    p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("roadLimitSpeed = %d", roadLimitSpeed );    p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("camLimitSpeed = %d", camLimitSpeed );    p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("activeNDA = %d", activeNDA );                            p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("roadLimitSpeed = %d", roadLimitSpeed );                  p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("camLimitSpeed = %d", camLimitSpeed );                    p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("camLimitSpeedLeftDist = %d", camLimitSpeedLeftDist );    p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("sectionLimitSpeed = %d", sectionLimitSpeed );    p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("sectionLeftDist = %d", sectionLeftDist );    p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("sectionLeftDist = %d", isNda2 );    p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("sectionLimitSpeed = %d", sectionLimitSpeed );            p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("sectionLeftDist = %d", sectionLeftDist );                p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("sectionLeftDist = %d", isNda2 );                         p.drawText( bb_x, nYPos+=nGap, text4 );
 
   
 }
