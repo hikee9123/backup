@@ -179,7 +179,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("camLimitSpeedLeftDist = %d", camLimitSpeedLeftDist );    p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("sectionLimitSpeed = %d", sectionLimitSpeed );            p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("sectionLeftDist = %d", sectionLeftDist );                p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("sectionLeftDist = %d", isNda2 );                         p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("isNda2 = %d", isNda2 );                         p.drawText( bb_x, nYPos+=nGap, text4 );
 
   
 }
