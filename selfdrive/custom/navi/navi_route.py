@@ -31,6 +31,7 @@ class NaviRoute():
     if self.sm.updated["managerState"]:
       ui_pid = [p.pid for p in self.sm["managerState"].processes if p.name == "ui" and p.running]
       if ui_pid:
+        print(f"ui_pid={ui_pid}")
         if self.ui_pid and self.ui_pid != ui_pid[0]:
           threading.Timer(5.0, self.send_route).start()
         self.ui_pid = ui_pid[0]
