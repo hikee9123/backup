@@ -174,7 +174,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   int isNda2 = m_param.naviData.getIsNda2();
 
 
-  if( activeNDA == 1 )
+  if( activeNDA > 0  )
   {
     m_nda[0].roadLimitSpeed = roadLimitSpeed;
     m_nda[0].camLimitSpeed = camLimitSpeed;
