@@ -1,29 +1,67 @@
 #!/usr/bin/env python3
 import json
-import socketserver
-import struct
+import math
+import os
 import threading
 
+import requests
+
+import cereal.messaging as messaging
 from cereal import log
-from threading import Thread
-
-from cereal import messaging
+from openpilot.common.api import Api
+from openpilot.common.params import Params
 from openpilot.common.realtime import Ratekeeper
-from openpilot.selfdrive.navd.helpers import Coordinate
+from openpilot.selfdrive.navd.helpers import (Coordinate, coordinate_from_param,
+                                    distance_along_geometry, maxspeed_to_ms,
+                                    minimum_distance,
+                                    parse_banner_instructions)
+from openpilot.system.swaglog import cloudlog
 
-ROUTE_RECEIVE_PORT = 2845
+REROUTE_DISTANCE = 25
+MANEUVER_TRANSITION_THRESHOLD = 10
+REROUTE_COUNTER_MIN = 3
 
-class NaviRoute():
-  def __init__(self):
-    self.sm = messaging.SubMaster(['managerState'])
-    self.pm = messaging.PubMaster(['navInstruction', 'navRoute'])
-    self.last_routes = None
+
+class RouteEngine:
+  def __init__(self, sm, pm):
+    self.sm = sm
+    self.pm = pm
+
+    self.params = Params()
+
+    # Get last gps position from params
+    self.last_position = coordinate_from_param("LastGPSPosition", self.params)
+    self.last_bearing = None
+
+    self.gps_ok = False
+    self.localizer_valid = False
+
+    self.nav_destination = None
+    self.step_idx = None
+    self.route = None
+    self.route_geometry = None
+
+    self.recompute_backoff = 0
+    self.recompute_countdown = 0
+
     self.ui_pid = None
-    self.last_client_address = None
 
-    route_thread = Thread(target=self.route_thread, args=[])
-    route_thread.daemon = True
-    route_thread.start()
+    self.reroute_counter = 0
+
+    if "MAPBOX_TOKEN" in os.environ:
+      self.mapbox_token = os.environ["MAPBOX_TOKEN"]
+      self.mapbox_host = "https://api.mapbox.com"
+    else:
+      try:
+        self.mapbox_token = Api(self.params.get("DongleId", encoding='utf8')).get_token(expiry_hours=4 * 7 * 24)
+      except FileNotFoundError:
+        cloudlog.exception("Failed to generate mapbox token due to missing private key. Ensure device is registered.")
+        self.mapbox_token = ""
+      self.mapbox_host = "https://maps.comma.ai"
+
+
+    print('mapbox_token=', self.mapbox_token)
+    print('mapbox_host=', self.mapbox_host)          
 
   def update(self):
     self.sm.update(0)
@@ -32,134 +70,302 @@ class NaviRoute():
       ui_pid = [p.pid for p in self.sm["managerState"].processes if p.name == "ui" and p.running]
       if ui_pid:
         if self.ui_pid and self.ui_pid != ui_pid[0]:
+          cloudlog.warning("UI restarting, sending route")
           threading.Timer(5.0, self.send_route).start()
         self.ui_pid = ui_pid[0]
 
-  def route_thread(self):
-    route_server = self.RouteTCPServer(('0.0.0.0', ROUTE_RECEIVE_PORT), self.RouteTCPHandler, self)
-    route_server.serve_forever()
+    self.update_location()
+    self.recompute_route()
+    self.send_instruction()
 
-  def send_route(self):
-    msg = messaging.new_message('navRoute')
-    if self.last_routes is not None:
-      msg.navRoute.coordinates = self.last_routes
+  def update_location(self):
+    location = self.sm['liveLocationKalman']
+    self.gps_ok = location.gpsOK
+
+    self.localizer_valid = (location.status == log.LiveLocationKalman.Status.valid) and location.positionGeodetic.valid
+
+    if self.localizer_valid:
+      self.last_bearing = math.degrees(location.calibratedOrientationNED.value[2])
+      self.last_position = Coordinate(location.positionGeodetic.value[0], location.positionGeodetic.value[1])
+
+  def recompute_route(self):
+    if self.last_position is None:
+      return
+
+    new_destination = coordinate_from_param("NavDestination", self.params)
+    if new_destination is None:
+      self.clear_route()
+      self.reset_recompute_limits()
+      return
+
+    should_recompute = self.should_recompute()
+    if new_destination != self.nav_destination:
+      cloudlog.warning(f"Got new destination from NavDestination param {new_destination}")
+      should_recompute = True
+
+    # Don't recompute when GPS drifts in tunnels
+    if not self.gps_ok and self.step_idx is not None:
+      return
+
+    if self.recompute_countdown == 0 and should_recompute:
+      self.recompute_countdown = 2**self.recompute_backoff
+      self.recompute_backoff = min(6, self.recompute_backoff + 1)
+      self.calculate_route(new_destination)
+      self.reroute_counter = 0
     else:
-      self.dispatch_instruction(None)
-    print(f"navRoute={msg}")
-    self.pm.send('navRoute', msg)
+      self.recompute_countdown = max(0, self.recompute_countdown - 1)
 
-  def dispatch_route(self, routes):
-    self.last_routes = routes
+  def calculate_route(self, destination):
+    cloudlog.warning(f"Calculating route {self.last_position} -> {destination}")
+    self.nav_destination = destination
+
+    lang = self.params.get('LanguageSetting', encoding='utf8')
+    if lang is not None:
+      lang = lang.replace('main_', '')
+
+    params = {
+      'access_token': self.mapbox_token,
+      'annotations': 'maxspeed',
+      'geometries': 'geojson',
+      'overview': 'full',
+      'steps': 'true',
+      'banner_instructions': 'true',
+      'alternatives': 'false',
+      'language': lang,
+    }
+
+    # TODO: move waypoints into NavDestination param?
+    waypoints = self.params.get('NavDestinationWaypoints', encoding='utf8')
+    waypoint_coords = []
+    if waypoints is not None and len(waypoints) > 0:
+      waypoint_coords = json.loads(waypoints)
+
+    coords = [
+      (self.last_position.longitude, self.last_position.latitude),
+      *waypoint_coords,
+      (destination.longitude, destination.latitude)
+    ]
+    params['waypoints'] = f'0;{len(coords)-1}'
+    if self.last_bearing is not None:
+      params['bearings'] = f"{(self.last_bearing + 360) % 360:.0f},90" + (';'*(len(coords)-1))
+
+    coords_str = ';'.join([f'{lon},{lat}' for lon, lat in coords])
+    url = self.mapbox_host + '/directions/v5/mapbox/driving-traffic/' + coords_str
+    try:
+      resp = requests.get(url, params=params, timeout=10)
+      if resp.status_code != 200:
+        cloudlog.event("API request failed", status_code=resp.status_code, text=resp.text, error=True)
+      resp.raise_for_status()
+
+      r = resp.json()
+      if len(r['routes']):
+        self.route = r['routes'][0]['legs'][0]['steps']
+        self.route_geometry = []
+
+        maxspeed_idx = 0
+        maxspeeds = r['routes'][0]['legs'][0]['annotation']['maxspeed']
+
+        # Convert coordinates
+        for step in self.route:
+          coords = []
+
+          for c in step['geometry']['coordinates']:
+            coord = Coordinate.from_mapbox_tuple(c)
+
+            # Last step does not have maxspeed
+            if (maxspeed_idx < len(maxspeeds)):
+              maxspeed = maxspeeds[maxspeed_idx]
+              if ('unknown' not in maxspeed) and ('none' not in maxspeed):
+                coord.annotations['maxspeed'] = maxspeed_to_ms(maxspeed)
+
+            coords.append(coord)
+            maxspeed_idx += 1
+
+          self.route_geometry.append(coords)
+          maxspeed_idx -= 1  # Every segment ends with the same coordinate as the start of the next
+
+        self.step_idx = 0
+      else:
+        cloudlog.warning("Got empty route response")
+        self.clear_route()
+
+      # clear waypoints to avoid a re-route including past waypoints
+      # TODO: only clear once we're past a waypoint
+      self.params.remove('NavDestinationWaypoints')
+
+    except requests.exceptions.RequestException:
+      cloudlog.exception("failed to get route")
+      self.clear_route()
+
     self.send_route()
 
-  def dispatch_instruction(self, json):
+  def send_instruction(self):
     msg = messaging.new_message('navInstruction', valid=True)
-    instruction = msg.navInstruction
 
+    if self.step_idx is None:
+      msg.valid = False
+      self.pm.send('navInstruction', msg)
+      return
 
-    if json is not None:
-      instruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna      
-      if 'maneuverDistance' in json:
-        instruction.maneuverDistance = float(json['maneuverDistance'])
-      if 'distanceRemaining' in json:
-        instruction.distanceRemaining = float(json['distanceRemaining'])
-      if 'timeRemaining' in json:
-        instruction.timeRemaining = float(json['timeRemaining'])
-      if 'timeRemainingTypical' in json:
-        instruction.timeRemainingTypical = float(json['timeRemainingTypical'])
-      if 'speedLimit' in json:
-        instruction.speedLimit = float(json['speedLimit'])
+    step = self.route[self.step_idx]
+    geometry = self.route_geometry[self.step_idx]
+    along_geometry = distance_along_geometry(geometry, self.last_position)
+    distance_to_maneuver_along_geometry = step['distance'] - along_geometry
 
-      if 'maneuverPrimaryText' in json:
-        instruction.maneuverPrimaryText = str(json['maneuverPrimaryText'])
-      if 'maneuverSecondaryText' in json:
-        instruction.maneuverSecondaryText = str(json['maneuverSecondaryText'])
-      if 'type' in json:
-        if self.last_client_address is not None:
-          instruction.imageUrl = 'http://' + self.last_client_address + ':2859/image?no=' + str(json['type'])
+    # Banner instructions are for the following maneuver step, don't use empty last step
+    banner_step = step
+    if not len(banner_step['bannerInstructions']) and self.step_idx == len(self.route) - 1:
+      banner_step = self.route[max(self.step_idx - 1, 0)]
 
-      maneuvers = []
-      if 'maneuvers' in json:
-        for m in json['maneuvers']:
-          maneuver = {}
-          if 'distance' in m:
-            maneuver['distance'] = float(m['distance'])
-          if 'type' in m:
-            maneuver['type'] = m['type']
-          if 'modifier' in m:
-            maneuver['modifier'] = m['modifier']
+    # Current instruction
+    msg.navInstruction.maneuverDistance = distance_to_maneuver_along_geometry
+    instruction = parse_banner_instructions(banner_step['bannerInstructions'], distance_to_maneuver_along_geometry)
+    if instruction is not None:
+      for k,v in instruction.items():
+        setattr(msg.navInstruction, k, v)
 
-          maneuvers.append(maneuver)
+    # All instructions
+    maneuvers = []
+    for i, step_i in enumerate(self.route):
+      if i < self.step_idx:
+        distance_to_maneuver = -sum(self.route[j]['distance'] for j in range(i+1, self.step_idx)) - along_geometry
+      elif i == self.step_idx:
+        distance_to_maneuver = distance_to_maneuver_along_geometry
+      else:
+        distance_to_maneuver = distance_to_maneuver_along_geometry + sum(self.route[j]['distance'] for j in range(self.step_idx+1, i+1))
 
-      # TODO
-      # speedLimit, speedLimitSign
-      instruction.allManeuvers = maneuvers
-    print(f"navInstruction={msg}")
+      instruction = parse_banner_instructions(step_i['bannerInstructions'], distance_to_maneuver)
+      if instruction is None:
+        continue
+      maneuver = {'distance': distance_to_maneuver}
+      if 'maneuverType' in instruction:
+        maneuver['type'] = instruction['maneuverType']
+      if 'maneuverModifier' in instruction:
+        maneuver['modifier'] = instruction['maneuverModifier']
+      maneuvers.append(maneuver)
+
+    msg.navInstruction.allManeuvers = maneuvers
+
+    # Compute total remaining time and distance
+    remaining = 1.0 - along_geometry / max(step['distance'], 1)
+    total_distance = step['distance'] * remaining
+    total_time = step['duration'] * remaining
+
+    if step['duration_typical'] is None:
+      total_time_typical = total_time
+    else:
+      total_time_typical = step['duration_typical'] * remaining
+
+    # Add up totals for future steps
+    for i in range(self.step_idx + 1, len(self.route)):
+      total_distance += self.route[i]['distance']
+      total_time += self.route[i]['duration']
+      total_time_typical += self.route[i]['duration_typical']
+
+    msg.navInstruction.distanceRemaining = total_distance
+    msg.navInstruction.timeRemaining = total_time
+    msg.navInstruction.timeRemainingTypical = total_time_typical
+
+    # Speed limit
+    closest_idx, closest = min(enumerate(geometry), key=lambda p: p[1].distance_to(self.last_position))
+    if closest_idx > 0:
+      # If we are not past the closest point, show previous
+      if along_geometry < distance_along_geometry(geometry, geometry[closest_idx]):
+        closest = geometry[closest_idx - 1]
+
+    if self.sm.updated["managerState"]:
+      navi_custom = self.sm["naviCustom"].naviCustom  
+      naviData = navi_custom.naviData
+      if navi_custom.camLimitSpeed:
+        msg.navInstruction.speedLimit = naviData.camLimitSpeed
+        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
+      else:
+        msg.navInstruction.speedLimit = naviData.roadLimitSpeed
+        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna
+  
+    #if ('maxspeed' in closest.annotations) and self.localizer_valid:
+    #  msg.navInstruction.speedLimit = closest.annotations['maxspeed']
+
+    # Speed limit sign type
+    #if 'speedLimitSign' in step:
+    #  if step['speedLimitSign'] == 'mutcd':
+    #    msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
+    #  elif step['speedLimitSign'] == 'vienna':
+    #    msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna
+
     self.pm.send('navInstruction', msg)
 
+    # Transition to next route segment
+    if distance_to_maneuver_along_geometry < -MANEUVER_TRANSITION_THRESHOLD:
+      if self.step_idx + 1 < len(self.route):
+        self.step_idx += 1
+        self.reset_recompute_limits()
+      else:
+        cloudlog.warning("Destination reached")
 
+        # Clear route if driving away from destination
+        dist = self.nav_destination.distance_to(self.last_position)
+        if dist > REROUTE_DISTANCE:
+          self.params.remove("NavDestination")
+          self.clear_route()
 
-  class RouteTCPServer(socketserver.TCPServer):
-    def __init__(self, server_address, RequestHandlerClass, navi_route):
-      self.navi_route = navi_route
-      socketserver.TCPServer.allow_reuse_address = True
-      super().__init__(server_address, RequestHandlerClass)
+  def send_route(self):
+    coords = []
 
-  class RouteTCPHandler(socketserver.BaseRequestHandler):
-    def recv(self, length):
-      data = b''
-      while len(data) < length:
-        chunk = self.request.recv(length - len(data))
-        if not chunk:
-          break
-        data += chunk
-      return data
+    if self.route is not None:
+      for path in self.route_geometry:
+        coords += [c.as_dict() for c in path]
 
-    def handle(self):
-      try:
-        length_bytes = self.recv(4)
-        if len(length_bytes) == 4:
-          length = struct.unpack(">I", length_bytes)[0]
-          if length >= 4:
-            if length > 1024 * 1024 * 10:
-              raise Exception
+    msg = messaging.new_message('navRoute', valid=True)
+    msg.navRoute.coordinates = coords
+    self.pm.send('navRoute', msg)
 
-            self.server.navi_route.last_client_address = self.client_address[0]
+  def clear_route(self):
+    self.route = None
+    self.route_geometry = None
+    self.step_idx = None
+    self.nav_destination = None
 
-            type_bytes = self.recv(4)
-            type = struct.unpack(">I", type_bytes)[0]
-            data = self.recv(length - 4)
+  def reset_recompute_limits(self):
+    self.recompute_backoff = 0
+    self.recompute_countdown = 0
 
-            if type == 0:  # route
-              routes = []
-              count = int(len(data) / 8)
+  def should_recompute(self):
+    if self.step_idx is None or self.route is None:
+      return True
 
-              if count > 0:
-                for i in range(count):
-                  offset = i * 8
-                  lat = struct.unpack(">f", data[offset:offset + 4])[0]
-                  lon = struct.unpack(">f", data[offset + 4:offset + 8])[0]
+    # Don't recompute in last segment, assume destination is reached
+    if self.step_idx == len(self.route) - 1:
+      return False
 
-                  coord = Coordinate.from_mapbox_tuple((lon, lat))
-                  routes.append(coord)
+    # Compute closest distance to all line segments in the current path
+    min_d = REROUTE_DISTANCE + 1
+    path = self.route_geometry[self.step_idx]
+    for i in range(len(path) - 1):
+      a = path[i]
+      b = path[i + 1]
 
-                coords = [c.as_dict() for c in routes]
-                self.server.navi_route.dispatch_route(coords)
-              else:
-                self.server.navi_route.dispatch_route(None)
+      if a.distance_to(b) < 1.0:
+        continue
 
-            elif type == 1:  # instruction
-              self.server.navi_route.dispatch_instruction(json.loads(data.decode('utf-8')))
-      except:
-        pass
+      min_d = min(min_d, minimum_distance(a, b, self.last_position))
 
-      self.request.close()
+    if min_d > REROUTE_DISTANCE:
+      self.reroute_counter += 1
+    else:
+      self.reroute_counter = 0
+    return self.reroute_counter > REROUTE_COUNTER_MIN
+    # TODO: Check for going wrong way in segment
+
 
 def main():
+  pm = messaging.PubMaster(['navInstruction', 'navRoute'])
+  sm = messaging.SubMaster(['liveLocationKalman', 'managerState','naviCustom'])
+
   rk = Ratekeeper(1.0)
-  navi_route = NaviRoute()
+  route_engine = RouteEngine(sm, pm)
   while True:
-    navi_route.update()
+    route_engine.update()
     rk.keep_time()
 
 
