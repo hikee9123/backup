@@ -56,6 +56,7 @@ class NaviRoute():
     msg = messaging.new_message('navInstruction', valid=True)
     instruction = msg.navInstruction
 
+
     if json is not None:
       print( f"dispatch_instruction {json} " )
       instruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna      
