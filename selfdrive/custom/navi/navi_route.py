@@ -31,7 +31,6 @@ class NaviRoute():
     if self.sm.updated["managerState"]:
       ui_pid = [p.pid for p in self.sm["managerState"].processes if p.name == "ui" and p.running]
       if ui_pid:
-        print(f"ui_pid={ui_pid}")
         if self.ui_pid and self.ui_pid != ui_pid[0]:
           threading.Timer(5.0, self.send_route).start()
         self.ui_pid = ui_pid[0]
@@ -46,7 +45,7 @@ class NaviRoute():
       msg.navRoute.coordinates = self.last_routes
     else:
       self.dispatch_instruction(None)
-
+    print(f"navRoute={msg}")
     self.pm.send('navRoute', msg)
 
   def dispatch_route(self, routes):
@@ -95,7 +94,7 @@ class NaviRoute():
       # TODO
       # speedLimit, speedLimitSign
       instruction.allManeuvers = maneuvers
-
+    print(f"navInstruction={msg}")
     self.pm.send('navInstruction', msg)
 
 
@@ -120,8 +119,6 @@ class NaviRoute():
       try:
         length_bytes = self.recv(4)
         json_obj = json.loads(length_bytes.decode('utf-8'))
-        print(f"navi_route1={json_obj}")            
-
         if len(length_bytes) == 4:
           length = struct.unpack(">I", length_bytes)[0]
           if length >= 4:
@@ -135,9 +132,7 @@ class NaviRoute():
             data = self.recv(length - 4)
 
             json_obj = json.loads(data.decode('utf-8'))
-            print(f"navi_route2={json_obj}")            
             if type == 0:  # route
-              print(f"navi_route3=0")  
               routes = []
               count = int(len(data) / 8)
 
@@ -157,7 +152,6 @@ class NaviRoute():
 
             elif type == 1:  # instruction
               self.server.navi_route.dispatch_instruction(json.loads(data.decode('utf-8')))
-              print(f"navi_route3=1")
       except:
         pass
 
