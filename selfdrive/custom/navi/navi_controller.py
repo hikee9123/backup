@@ -117,6 +117,9 @@ class NaviServer:
               broadcast_address = self.get_broadcast_address()
 
             if broadcast_address is not None and self.remote_addr is None:
+              if "MAPBOX_TOKEN" in os.environ:
+                  self.mapbox_token = os.environ["MAPBOX_TOKEN"]
+                  print('MAPBOX_TOKEN', self.mapbox_token)
               print('broadcast', broadcast_address)
 
               msg = 'EON:ROAD_LIMIT_SERVICE:v1'.encode()
