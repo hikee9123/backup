@@ -203,8 +203,7 @@ class RouteEngine:
     msg = messaging.new_message('navInstruction', valid=True)
     msg.valid = False
     if self.sm.updated["naviCustom"]:
-      navi_custom = self.sm["naviCustom"].naviCustom  
-      naviData = navi_custom.naviData
+      naviData = self.sm["naviCustom"].naviData
       msg.valid = True
       if navi_custom.camLimitSpeed:
         msg.navInstruction.speedLimit = naviData.camLimitSpeed
