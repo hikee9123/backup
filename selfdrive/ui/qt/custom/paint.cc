@@ -198,6 +198,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   //text4.sprintf("sLS = %d", m_nda[0].sectionLimitSpeed );             p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("sLD = %d", m_nda[0].sectionLeftDist );                p.drawText( bb_x, nYPos+=nGap, text4 );
 
+/*
   std::string  szRoadName = m_param.naviData.getCurrentRoadName();
   if( szRoadName )
   {
@@ -205,7 +206,7 @@ void OnPaint::ui_main_navi( QPainter &p )
       p.drawText( bb_x, nYPos+=nGap, road_name );
 
   }
-  
+  */
 
   
 }
