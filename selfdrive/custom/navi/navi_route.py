@@ -202,7 +202,7 @@ class RouteEngine:
   def send_instruction(self):
     msg = messaging.new_message('navInstruction', valid=True)
     msg.valid = False
-    if self.sm.updated["managerState"]:
+    if self.sm.updated["naviCustom"]:
       navi_custom = self.sm["naviCustom"].naviCustom  
       naviData = navi_custom.naviData
       msg.valid = True
@@ -212,6 +212,8 @@ class RouteEngine:
       else:
         msg.navInstruction.speedLimit = naviData.roadLimitSpeed
         msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
+    else:
+      naviData = None
 
     if self.step_idx is None:
       self.pm.send('navInstruction', msg)
@@ -283,25 +285,18 @@ class RouteEngine:
       if along_geometry < distance_along_geometry(geometry, geometry[closest_idx]):
         closest = geometry[closest_idx - 1]
 
-    if self.sm.updated["managerState"]:
-      navi_custom = self.sm["naviCustom"].naviCustom  
-      naviData = navi_custom.naviData
-      if navi_custom.camLimitSpeed:
-        msg.navInstruction.speedLimit = naviData.camLimitSpeed
-        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
-      else:
-        msg.navInstruction.speedLimit = naviData.roadLimitSpeed
-        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna
-  
-    #if ('maxspeed' in closest.annotations) and self.localizer_valid:
-    #  msg.navInstruction.speedLimit = closest.annotations['maxspeed']
+    if naviData is not None:
+      pass
+    else:
+      if ('maxspeed' in closest.annotations) and self.localizer_valid:
+        msg.navInstruction.speedLimit = closest.annotations['maxspeed']
 
-    # Speed limit sign type
-    #if 'speedLimitSign' in step:
-    #  if step['speedLimitSign'] == 'mutcd':
-    #    msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
-    #  elif step['speedLimitSign'] == 'vienna':
-    #    msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna
+      # Speed limit sign type
+      if 'speedLimitSign' in step:
+        if step['speedLimitSign'] == 'mutcd':
+          msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
+        elif step['speedLimitSign'] == 'vienna':
+          msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna
 
     self.pm.send('navInstruction', msg)
 
