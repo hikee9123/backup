@@ -118,6 +118,9 @@ class NaviRoute():
     def handle(self):
       try:
         length_bytes = self.recv(4)
+        json_obj = json.loads(length_bytes.decode('utf-8'))
+        print(f"navi_route1={json_obj}")            
+
         if len(length_bytes) == 4:
           length = struct.unpack(">I", length_bytes)[0]
           if length >= 4:
@@ -131,9 +134,9 @@ class NaviRoute():
             data = self.recv(length - 4)
 
             json_obj = json.loads(data.decode('utf-8'))
-            print(f"navi_route={json_obj}")            
+            print(f"navi_route2={json_obj}")            
             if type == 0:  # route
-              print(f"navi_route=0")  
+              print(f"navi_route3=0")  
               routes = []
               count = int(len(data) / 8)
 
@@ -153,7 +156,7 @@ class NaviRoute():
 
             elif type == 1:  # instruction
               self.server.navi_route.dispatch_instruction(json.loads(data.decode('utf-8')))
-              print(f"navi_route=1")
+              print(f"navi_route3=1")
       except:
         pass
 
