@@ -201,9 +201,19 @@ class RouteEngine:
 
   def send_instruction(self):
     msg = messaging.new_message('navInstruction', valid=True)
+    msg.valid = False
+    if self.sm.updated["managerState"]:
+      navi_custom = self.sm["naviCustom"].naviCustom  
+      naviData = navi_custom.naviData
+      msg.valid = True
+      if navi_custom.camLimitSpeed:
+        msg.navInstruction.speedLimit = naviData.camLimitSpeed
+        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna        
+      else:
+        msg.navInstruction.speedLimit = naviData.roadLimitSpeed
+        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
 
     if self.step_idx is None:
-      msg.valid = False
       self.pm.send('navInstruction', msg)
       return
 
