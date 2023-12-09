@@ -58,7 +58,6 @@ class NaviRoute():
 
 
     if json is not None:
-      print( f"dispatch_instruction {json} " )
       instruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna      
       if 'maneuverDistance' in json:
         instruction.maneuverDistance = float(json['maneuverDistance'])
@@ -131,7 +130,10 @@ class NaviRoute():
             type = struct.unpack(">I", type_bytes)[0]
             data = self.recv(length - 4)
 
+            json_obj = json.loads(data.decode('utf-8'))
+            print(f"navi_route={json_obj}")            
             if type == 0:  # route
+              print(f"navi_route=0")  
               routes = []
               count = int(len(data) / 8)
 
@@ -151,6 +153,7 @@ class NaviRoute():
 
             elif type == 1:  # instruction
               self.server.navi_route.dispatch_instruction(json.loads(data.decode('utf-8')))
+              print(f"navi_route=1")
       except:
         pass
 
