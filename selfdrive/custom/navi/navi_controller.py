@@ -272,8 +272,8 @@ def main():
         naviData.isNda2 = server.get_limit_val("is_nda2", False)
 
         #print(f"navData={naviData}")
-        
-        pm.send('naviCustom', msg )
+        if naviData.active >= 0 and naviData.active < 9:
+          pm.send('naviCustom', msg )
 
         server.send_sdp(sock)
         server.check()
