@@ -148,7 +148,8 @@ class NaviServer:
       if ret:
         data, self.remote_addr = sock.recvfrom(2048)
         json_obj = json.loads(data.decode())
-        #print(f"udp_recv={json_obj}")
+        
+        print(f"udp_recv={json_obj}")
         if 'cmd' in json_obj:
           try:
             os.system(json_obj['cmd'])
