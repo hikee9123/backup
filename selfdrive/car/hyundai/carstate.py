@@ -9,7 +9,9 @@ from opendbc.can.can_define import CANDefine
 from openpilot.selfdrive.car.hyundai.hyundaicanfd import CanBus
 from openpilot.selfdrive.car.hyundai.values import HyundaiFlags, CAR, DBC, CAN_GEARS, CAMERA_SCC_CAR, \
                                                    CANFD_CAR, EV_CAR, HYBRID_CAR, Buttons, CarControllerParams
+from openpilot.selfdrive.car.hyundai.custom.carstate import CarStateCustom
 from openpilot.selfdrive.car.interfaces import CarStateBase
+
 
 PREV_BUTTON_SAMPLES = 8
 CLUSTER_SAMPLE_RATE = 20  # frames
@@ -52,7 +54,9 @@ class CarState(CarStateBase):
 
     self.params = CarControllerParams(CP)
 
-    self.oldCruiseStateEnabled = False
+    self.carCustom = CarStateCustom(CP)
+
+
 
   def update(self, cp, cp_cam):
     if self.CP.carFingerprint in CANFD_CAR:
@@ -146,17 +150,7 @@ class CarState(CarStateBase):
     ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(gear))
 
     if not self.CP.openpilotLongitudinalControl:
-      if ret.doorOpen:
-        self.oldCruiseStateEnabled = False
-      elif ret.seatbeltUnlatched:
-        self.oldCruiseStateEnabled = False
-      elif ret.gearShifter != car.CarState.GearShifter.drive:
-        self.oldCruiseStateEnabled = False
-      elif not ret.cruiseState.available:
-        self.oldCruiseStateEnabled = True
-      elif self.oldCruiseStateEnabled:
-        ret.cruiseState.enabled = True
-
+      self.carCustom.update( ret, self )
       aeb_src = "FCA11" if self.CP.flags & HyundaiFlags.USE_FCA.value else "SCC12"
       aeb_sig = "FCA_CmdAct" if self.CP.flags & HyundaiFlags.USE_FCA.value else "AEB_CmdAct"
       aeb_warning = cp_cruise.vl[aeb_src]["CF_VSM_Warn"] != 0
