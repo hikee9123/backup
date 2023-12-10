@@ -140,8 +140,6 @@ private:
   QWidget *map = nullptr;
   QHBoxLayout* split;
 
-
-
 private slots:
   void offroadTransition(bool offroad);
   void primeChanged(bool prime);

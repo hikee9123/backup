@@ -13,9 +13,6 @@
 #include <QtWidgets>
 #include <QtNetwork>
 
-//#include "common/params.h"
-//#include "selfdrive/ui/qt/widgets/input.h"
-//#include "selfdrive/ui/qt/widgets/toggle.h"
 
 class NetworkImageWidget : public QWidget
 {
