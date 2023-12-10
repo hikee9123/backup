@@ -52,6 +52,8 @@ class CarState(CarStateBase):
 
     self.params = CarControllerParams(CP)
 
+    self.oldCruiseStateEnabled = False
+
   def update(self, cp, cp_cam):
     if self.CP.carFingerprint in CANFD_CAR:
       return self.update_canfd(cp, cp_cam)
@@ -144,8 +146,17 @@ class CarState(CarStateBase):
     ret.gearShifter = self.parse_gear_shifter(self.shifter_values.get(gear))
 
     if not self.CP.openpilotLongitudinalControl:
-      if ret.cruiseState.available and (ret.gearShifter == car.CarState.GearShifter.drive):
-        ret.cruiseState.enabled = ret.cruiseState.available
+      if ret.doorOpen:
+        self.oldCruiseStateEnabled = False
+      elif ret.seatbeltUnlatched:
+        self.oldCruiseStateEnabled = False
+      elif ret.gearShifter != car.CarState.GearShifter.drive:
+        self.oldCruiseStateEnabled = False
+      elif not ret.cruiseState.available:
+        self.oldCruiseStateEnabled = True
+      elif self.oldCruiseStateEnabled:
+        ret.cruiseState.enabled = True
+
       aeb_src = "FCA11" if self.CP.flags & HyundaiFlags.USE_FCA.value else "SCC12"
       aeb_sig = "FCA_CmdAct" if self.CP.flags & HyundaiFlags.USE_FCA.value else "AEB_CmdAct"
       aeb_warning = cp_cruise.vl[aeb_src]["CF_VSM_Warn"] != 0
