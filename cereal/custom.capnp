@@ -15,7 +15,7 @@ struct CarStateCustom @0x81c2f05a394cf4af {
   tpms @0 :Tpms;
 
   struct Tpms {
-    enabled @0 :Bool;
+    unit @0 :Int16;
     fl @1 :Float32;
     fr @2 :Float32;
     rl @3 :Float32;

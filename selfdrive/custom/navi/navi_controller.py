@@ -272,11 +272,13 @@ def main():
         naviData.isNda2 = server.get_limit_val("is_nda2", False)
 
         #print(f"navData={naviData}")
-        if naviData.active < 0: 
-          pass
-        elif naviData.active > 9:
+        if naviData.active < 0 or naviData.active > 9: 
           pass
         elif naviData.camLimitSpeed < 0 or naviData.camLimitSpeedLeftDist < 0:
+          pass
+        elif naviData.camLimitSpeed > 250 :
+          pass        
+        elif naviData.camType < 0:
           pass
         else:
           pm.send('naviCustom', msg )
