@@ -28,7 +28,7 @@ class CarStateCustom():
     ret.rl = rl * factor
     ret.rr = rr * factor
 
-  def update(self, ret, CS, cp, cp_cruise ):
+  def update(self, ret, CS,  cp, cp_cruise ):
     carStatus = self.msg.carStateCustom
     self.get_tpms( carStatus.tpms,
       cp.vl["TPMS11"]["UNIT"],
