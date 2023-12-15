@@ -13,7 +13,7 @@ class CarStateCustom():
     self.oldCruiseStateEnabled = False
     self.pm = messaging.PubMaster(['carStateCustom'])     
     self.msg = messaging.new_message('carStateCustom')
-
+    self.frame = 0
 
   def get_can_parser( self, messages, CP ):
       messages += [
@@ -37,20 +37,22 @@ class CarStateCustom():
       cp.vl["TPMS11"]["PRESSURE_RL"],
       cp.vl["TPMS11"]["PRESSURE_RR"],
     )
-    self.pm.send('carStateCustom', self.msg )   
+    if self.frame % 10 == 0:
+      self.pm.send('carStateCustom', self.msg )   
 
-    if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
-      pass
-    elif ret.doorOpen:
-      self.oldCruiseStateEnabled = False
-    elif ret.seatbeltUnlatched:
-      self.oldCruiseStateEnabled = False
-    elif ret.gearShifter != car.CarState.GearShifter.drive:
-      self.oldCruiseStateEnabled = False
-    elif not ret.cruiseState.available:
-      self.oldCruiseStateEnabled = True
-    elif self.oldCruiseStateEnabled:
-      ret.cruiseState.enabled = True
+    if not self.CP.openpilotLongitudinalControl:
+      if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
+        pass
+      elif ret.doorOpen:
+        self.oldCruiseStateEnabled = False
+      elif ret.seatbeltUnlatched:
+        self.oldCruiseStateEnabled = False
+      elif ret.gearShifter != car.CarState.GearShifter.drive:
+        self.oldCruiseStateEnabled = False
+      elif not ret.cruiseState.available:
+        self.oldCruiseStateEnabled = True
+      elif self.oldCruiseStateEnabled:
+        ret.cruiseState.enabled = True
 
-
+    self.frame += 1
        

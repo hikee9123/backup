@@ -245,8 +245,7 @@ def main():
 
   pm = messaging.PubMaster(['naviCustom']) 
   msg = messaging.new_message('naviCustom')
-  naviData = msg.naviCustom.naviData
-
+  curNaviData = msg.naviCustom.naviData
   server = NaviServer() 
   with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
     try:
@@ -256,29 +255,29 @@ def main():
       while True:
         server.udp_recv(sock)
 
-        naviData.active = server.active
-        naviData.roadLimitSpeed = server.get_limit_val("road_limit_speed", 0)
-        naviData.isHighway = server.get_limit_val("is_highway", False)
-        naviData.camType = server.get_limit_val("cam_type", 0)
-        naviData.camLimitSpeedLeftDist = server.get_limit_val("cam_limit_speed_left_dist", 0)
-        naviData.camLimitSpeed = server.get_limit_val("cam_limit_speed", 0)
-        naviData.sectionLimitSpeed = server.get_limit_val("section_limit_speed", 0)
-        naviData.sectionLeftDist = server.get_limit_val("section_left_dist", 0)
-        naviData.sectionAvgSpeed = server.get_limit_val("section_avg_speed", 0)
-        naviData.sectionLeftTime = server.get_limit_val("section_left_time", 0)
-        naviData.sectionAdjustSpeed = server.get_limit_val("section_adjust_speed", False)
-        naviData.camSpeedFactor = server.get_limit_val("cam_speed_factor", CAMERA_SPEED_FACTOR)
-        naviData.currentRoadName = server.get_limit_val("current_road_name", "")
-        naviData.isNda2 = server.get_limit_val("is_nda2", False)
+        curNaviData.active = server.active
+        curNaviData.roadLimitSpeed = server.get_limit_val("road_limit_speed", 0)
+        curNaviData.isHighway = server.get_limit_val("is_highway", False)
+        curNaviData.camType = server.get_limit_val("cam_type", 0)
+        curNaviData.camLimitSpeedLeftDist = server.get_limit_val("cam_limit_speed_left_dist", 0)
+        curNaviData.camLimitSpeed = server.get_limit_val("cam_limit_speed", 0)
+        curNaviData.sectionLimitSpeed = server.get_limit_val("section_limit_speed", 0)
+        curNaviData.sectionLeftDist = server.get_limit_val("section_left_dist", 0)
+        curNaviData.sectionAvgSpeed = server.get_limit_val("section_avg_speed", 0)
+        curNaviData.sectionLeftTime = server.get_limit_val("section_left_time", 0)
+        curNaviData.sectionAdjustSpeed = server.get_limit_val("section_adjust_speed", False)
+        curNaviData.camSpeedFactor = server.get_limit_val("cam_speed_factor", CAMERA_SPEED_FACTOR)
+        curNaviData.currentRoadName = server.get_limit_val("current_road_name", "")
+        curNaviData.isNda2 = server.get_limit_val("is_nda2", False)
 
         #print(f"navData={naviData}")
-        if naviData.active < 0 or naviData.active > 9: 
+        if curNaviData.active < 0 or curNaviData.active > 10: 
           pass
-        elif naviData.camLimitSpeed < 0 or naviData.camLimitSpeedLeftDist < 0:
+        elif curNaviData.camLimitSpeed < 0 or curNaviData.camLimitSpeedLeftDist < 0:
           pass
-        elif naviData.camLimitSpeed > 250 :
+        elif curNaviData.camLimitSpeed > 250 or curNaviData.camLimitSpeedLeftDist  > 2000:
           pass        
-        elif naviData.camType < 0:
+        elif curNaviData.camType < 0:
           pass
         else:
           pm.send('naviCustom', msg )

@@ -134,6 +134,9 @@ void OnPaint::updateState(const UIState &s)
   auto navi_custom = sm["naviCustom"].getNaviCustom();  
   m_param.naviData = navi_custom.getNaviData();
 
+  if sm.updated["carStateCustom"]:
+    auto carState_custom = sm["carStateCustom"].getNaviCustom();
+    m_param.tpmsData  = carState_custom.getTpms();
 }
 
 
@@ -187,7 +190,13 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("rLS = %d", m_nda[0].roadLimitSpeed );                  p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLS = %d", m_nda[0].camLimitSpeed);                    p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLSD = %d", m_nda[0].camLimitSpeedLeftDist);       p.drawText( bb_x, nYPos+=nGap, text4 );
-  //text4.sprintf("sLS = %d", m_nda[0].sectionLimitSpeed );             p.drawText( bb_x, nYPos+=nGap, text4 );
+
+  int unit = m_param.tpmsData.getUnit();
+  int fl = m_param.tpmsData.getUnit();
+  int fr = m_param.tpmsData.getUnit();
+  int rl = m_param.tpmsData.getUnit();
+  int rr = m_param.tpmsData.getUnit();
+  text4.sprintf("tmps = %d,%d,%d,%d", fl, fr, rl,rr );             p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("sLD = %d", m_nda[0].sectionLeftDist );                p.drawText( bb_x, nYPos+=nGap, text4 );
 
 /*
