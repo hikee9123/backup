@@ -9,7 +9,7 @@ class CarControllerCustom:
   def __init__(self, CP):
     self.CP = CP
     self.resume_cnt = 0    
-    self.NC = NaviControl(self.params, CP)
+    self.NC = NaviControl( CP)
 
   def create_button_messages(self, CC, CS, can_sends):
     # pass

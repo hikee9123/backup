@@ -13,8 +13,7 @@ EventName = car.CarEvent.EventName
 
 
 class NaviControl():
-  def __init__(self, p , CP ):
-    self.p = p
+  def __init__(self,  CP ):
     self.CP = CP
     
     self.sm = messaging.SubMaster(['naviCustom']) 
