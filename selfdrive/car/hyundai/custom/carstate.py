@@ -48,7 +48,7 @@ class CarStateCustom():
     )
 
     self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
-    self.is_highway = cp.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0.     
+    self.is_highway = (cp_cruise.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0)     
 
     if self.frame % 100 == 0:
       self.pm.send('carStateCustom', self.msg )   
