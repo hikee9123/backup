@@ -16,6 +16,7 @@ class CarStateCustom():
     self.msg = messaging.new_message('carStateCustom')
     self.frame = 0
     self.acc_active = 0
+    self.cruise_set_mode = 0
 
   def get_can_parser( self, messages, CP ):
       messages += [

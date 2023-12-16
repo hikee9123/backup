@@ -211,7 +211,7 @@ class NaviControl():
       self.gasPressed_time -= 1
       if self.gasPressed_time <= 0:
         cruise_set_speed = CS.clu_Vanz - 5
-    elif CS.cruise_set_mode == 5:  # comma long control speed.
+    elif CS.carCustom.cruise_set_mode == 5:  # comma long control speed.
       vFuture = c.hudControl.vFuture * CV.MS_TO_KPH
       ctrl_speed = min( vFuture, ctrl_speed )
 
@@ -235,7 +235,7 @@ class NaviControl():
       kph_set_vEgo = self.get_navi_speed(  self.sm , CS, cruiseState_speed, frame )
       self.ctrl_speed = min( cruiseState_speed, kph_set_vEgo)
 
-      if CS.cruise_set_mode:
+      if CS.carCustom.cruise_set_mode:
         self.ctrl_speed = self.auto_speed_control( c, CS, self.ctrl_speed )
 
 
