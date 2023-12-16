@@ -29,6 +29,7 @@ class CarStateCustom():
         ("LFAHDA_MFC", 20),          
       ]
 
+
   def get_tpms(self, ret, unit, fl, fr, rl, rr):
     factor = 0.72519 if unit == 1 else 0.1 if unit == 2 else 1 # 0:psi, 1:kpa, 2:bar
     ret.unit = unit
@@ -48,7 +49,7 @@ class CarStateCustom():
     )
 
     self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
-    self.is_highway = (cp_cruise.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0)     
+    self.is_highway = False # (cp_cruise.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0)     
 
     if self.frame % 100 == 0:
       self.pm.send('carStateCustom', self.msg )   
