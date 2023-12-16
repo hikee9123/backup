@@ -193,7 +193,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("cLS = %d", m_nda[0].camLimitSpeed);                    p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLSD = %d", m_nda[0].camLimitSpeedLeftDist);       p.drawText( bb_x, nYPos+=nGap, text4 );
 
-  int unit = m_param.tpmsData.getUnit();
+  //short unit = m_param.tpmsData.getUnit();
   int fl = m_param.tpmsData.getUnit();
   int fr = m_param.tpmsData.getUnit();
   int rl = m_param.tpmsData.getUnit();
