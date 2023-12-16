@@ -51,7 +51,10 @@ class NaviControl():
 
     self.auto_resume_time = 0
 
-
+    self.speedLimit = 0
+    self.speedLimitDistance = 0
+    self.mapValid = 0
+    self.trafficType = 0
 
 
   def button_status(self, CS ):
@@ -161,12 +164,16 @@ class NaviControl():
 
     if sm.updated["naviCustom"]:
       naviData = sm["naviCustom"].naviData
-      speedLimit = naviData.camLimitSpeed
-      speedLimitDistance = naviData.camLimitSpeedLeftDist
-      mapValid = naviData.active
-      trafficType = naviData.camType      
-    else:
-      return  cruise_set_speed_kph          
+      self.speedLimit = naviData.camLimitSpeed
+      self.speedLimitDistance = naviData.camLimitSpeedLeftDist
+      self.mapValid = naviData.active
+      self.trafficType = naviData.camType      
+
+
+    speedLimit = self.speedLimit
+    speedLimitDistance = self.speedLimitDistance
+    mapValid = self.mapValid
+    trafficType = self.trafficType
 
     
     if not mapValid or trafficType == 0:
