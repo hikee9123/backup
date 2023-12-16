@@ -7,17 +7,20 @@ from openpilot.common.conversions import Conversions as CV
 
 
 class CarStateCustom():
-  def __init__(self, CP):
+  def __init__(self, CP, CS):
+    self.CS = CS
     self.CP = CP
     self.params = Params()    
     self.oldCruiseStateEnabled = False
     self.pm = messaging.PubMaster(['carStateCustom'])     
     self.msg = messaging.new_message('carStateCustom')
     self.frame = 0
+    self.acc_active = 0
 
   def get_can_parser( self, messages, CP ):
       messages += [
         ("TPMS11", 5),
+        ("LFAHDA_MFC", 20),          
       ]
 
   def get_tpms(self, ret, unit, fl, fr, rl, rr):
@@ -37,7 +40,11 @@ class CarStateCustom():
       cp.vl["TPMS11"]["PRESSURE_RL"],
       cp.vl["TPMS11"]["PRESSURE_RR"],
     )
-    if self.frame % 10 == 0:
+
+    self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
+    self.is_highway = cp.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0.     
+
+    if self.frame % 100 == 0:
       self.pm.send('carStateCustom', self.msg )   
 
     if not self.CP.openpilotLongitudinalControl:

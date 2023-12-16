@@ -55,8 +55,9 @@ class NaviControl():
 
 
 
-  def button_status(self, CS ): 
-    if not CS.acc_active or CS.cruise_buttons != Buttons.NONE or CS.out.brakePressed  or CS.out.gasPressed: 
+  def button_status(self, CS ):
+    cruise_button = CS.cruise_buttons[-1] 
+    if not CS.carCustom.acc_active or cruise_button != Buttons.NONE or CS.out.brakePressed  or CS.out.gasPressed: 
       self.wait_timer2 = 100 
     elif self.wait_timer2: 
       self.wait_timer2 -= 1
@@ -184,7 +185,7 @@ class NaviControl():
 
       return  cruise_set_speed_kph
 
-    elif CS.is_highway or speedLimit < 30:
+    elif CS.carCustom.is_highway or speedLimit < 30:
       return  cruise_set_speed_kph
     elif v_ego_kph < 80:
       if speedLimit <= 60:
@@ -223,13 +224,14 @@ class NaviControl():
     return  ctrl_speed
 
 
-  def update(self, c, CS, frame ):  
+  def update(self, c, CS, frame ):
+          
     self.sm.update(0)
     # send scc to car if longcontrol enabled and SCC not on bus 0 or ont live
     btn_signal = None
     if not self.button_status( CS  ):
       pass
-    elif CS.acc_active:
+    elif CS.carCustom.acc_active:
       cruiseState_speed = CS.out.cruiseState.speed * CV.MS_TO_KPH      
       kph_set_vEgo = self.get_navi_speed(  self.sm , CS, cruiseState_speed, frame )
       self.ctrl_speed = min( cruiseState_speed, kph_set_vEgo)

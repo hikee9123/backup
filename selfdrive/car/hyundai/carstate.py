@@ -53,7 +53,7 @@ class CarState(CarStateBase):
 
     self.params = CarControllerParams(CP)
 
-    self.carCustom = CarStateCustom(CP)
+    self.carCustom = CarStateCustom( CP, self )
 
 
 
