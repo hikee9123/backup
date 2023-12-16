@@ -322,6 +322,8 @@ class CarState(CarStateBase):
       if CP.flags & HyundaiFlags.USE_FCA.value:
         messages.append(("FCA11", 50))
 
+    CarStateCustom.get_cam_can_parser(CP,messages)
+
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 2)
 
   def get_can_parser_canfd(self, CP):
