@@ -4,6 +4,7 @@ from cereal import messaging
 from panda import ALTERNATIVE_EXPERIENCE
 from openpilot.common.params import Params
 from openpilot.common.conversions import Conversions as CV
+from openpilot.selfdrive.car.hyundai.values import CAMERA_SCC_CAR
 
 
 class CarStateCustom():
@@ -48,11 +49,16 @@ class CarStateCustom():
       cp.vl["TPMS11"]["PRESSURE_RR"],
     )
 
-    self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
-    self.is_highway = False # (cp_cruise.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0)     
 
     if self.frame % 100 == 0:
       self.pm.send('carStateCustom', self.msg )   
+
+
+    if not self.CP.openpilotLongitudinalControl and self.CP.carFingerprint in CAMERA_SCC_CAR:
+      self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
+
+    self.is_highway = False # (cp_cruise.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0)     
+
 
     if not self.CP.openpilotLongitudinalControl:
       if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
