@@ -24,7 +24,7 @@ class CarStateCustom():
       ]
 
   @staticmethod
-  def get_cam_can_parser(CP, messages):
+  def get_cam_can_parser( messages, CP):
       messages += [
         ("LFAHDA_MFC", 20),          
       ]
