@@ -38,7 +38,7 @@ private:
 
     
     cereal::NaviCustom::NaviData::Reader naviData;
-    cereal::carStateCustom::Tpms::Reader tpmsData;
+    cereal::CarStateCustom::Tpms::Reader tpmsData;
  
 
   } m_param, m_old;
