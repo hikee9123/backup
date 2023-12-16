@@ -134,7 +134,7 @@ void OnPaint::updateState(const UIState &s)
   auto navi_custom = sm["naviCustom"].getNaviCustom();  
   m_param.naviData = navi_custom.getNaviData();
 
-  if (sm.updated["carStateCustom"])
+  if ( sm.updated("carStateCustom") )
   {
     auto carState_custom = sm["carStateCustom"].getCarStateCustom();
     m_param.tpmsData  = carState_custom.getTpms();
