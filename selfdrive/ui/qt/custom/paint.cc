@@ -187,11 +187,12 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("cLSD = %d", m_nda[0].camLimitSpeedLeftDist);       p.drawText( bb_x, nYPos+=nGap, text4 );
 
 
-  int fl = m_param.tpmsData.getUnit();
-  int fr = m_param.tpmsData.getUnit();
-  int rl = m_param.tpmsData.getUnit();
-  int rr = m_param.tpmsData.getUnit();
-  text4.sprintf("tmps = %d,%d,%d,%d", fl, fr, rl,rr );             p.drawText( bb_x, nYPos+=nGap, text4 );
+  int unit = m_param.tpmsData.getUnit();
+  int fl = m_param.tpmsData.getFl();
+  int fr = m_param.tpmsData.getFr();
+  int rl = m_param.tpmsData.getRl();
+  int rr = m_param.tpmsData.getRr();
+  text4.sprintf("tmps = %d,%d,%d,%d,%d", unit, fl, fr, rl,rr );             p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("sLD = %d", m_nda[0].sectionLeftDist );                p.drawText( bb_x, nYPos+=nGap, text4 );
  
 }
