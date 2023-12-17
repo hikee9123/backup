@@ -49,9 +49,7 @@ private:
      int roadLimitSpeed;
      int camLimitSpeed;
      int camLimitSpeedLeftDist;
-     int sectionLimitSpeed;
-     int sectionLeftDist;
-  } m_nda[2];
+  } m_nda;
   
 
 private:
