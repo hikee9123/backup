@@ -246,9 +246,9 @@ def main():
 
   pm = messaging.PubMaster(['naviCustom']) 
   msg = messaging.new_message('naviCustom')
-  curNaviData = msg.naviCustom.naviData
-  #curNaviData = copy.copy(naviData)
-  #tmpData = copy.copy(naviData)
+  naviData = msg.naviCustom.naviData
+  curNaviData = copy.copy(naviData)
+  tmpData = copy.copy(naviData)
   server = NaviServer() 
   with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
     try:
@@ -274,24 +274,24 @@ def main():
         curNaviData.isNda2 = server.get_limit_val("is_nda2", False)
 
         #print(f"navData={naviData}")
-        #if curNaviData.active == 0 or curNaviData.active == 1 or curNaviData.active == 2: 
-        #  if curNaviData.camLimitSpeed >= 0 and curNaviData.camLimitSpeed <= 200 and curNaviData.roadLimitSpeed >= 0 and curNaviData.roadLimitSpeed <= 200:
-        #    tmpData = copy.copy(curNaviData)
+        if curNaviData.active == 0 or curNaviData.active == 1 or curNaviData.active == 2: 
+          if curNaviData.camLimitSpeed >= 0 and curNaviData.camLimitSpeed <= 200 and curNaviData.roadLimitSpeed >= 0 and curNaviData.roadLimitSpeed <= 200:
+            tmpData = copy.copy(curNaviData)
 
-        #naviData.active = tmpData.active
-        #naviData.roadLimitSpeed = tmpData.roadLimitSpeed
-        #naviData.isHighway = tmpData.isHighway
-        #naviData.camType = tmpData.camType
-        #naviData.camLimitSpeedLeftDist = tmpData.camLimitSpeedLeftDist
-        #naviData.camLimitSpeed = tmpData.camLimitSpeed
-        #naviData.sectionLimitSpeed = tmpData.sectionLimitSpeed
-        #naviData.sectionLeftDist = tmpData.sectionLeftDist
-        #naviData.sectionAvgSpeed = tmpData.sectionAvgSpeed
-        #naviData.sectionLeftTime = tmpData.sectionLeftTime
-        #naviData.sectionAdjustSpeed = tmpData.sectionAdjustSpeed
-        #naviData.camSpeedFactor = tmpData.camSpeedFactor
-        #naviData.currentRoadName = tmpData.currentRoadName
-        #naviData.isNda2 = tmpData.isNda2
+        naviData.active = tmpData.active
+        naviData.roadLimitSpeed = tmpData.roadLimitSpeed
+        naviData.isHighway = tmpData.isHighway
+        naviData.camType = tmpData.camType
+        naviData.camLimitSpeedLeftDist = tmpData.camLimitSpeedLeftDist
+        naviData.camLimitSpeed = tmpData.camLimitSpeed
+        naviData.sectionLimitSpeed = tmpData.sectionLimitSpeed
+        naviData.sectionLeftDist = tmpData.sectionLeftDist
+        naviData.sectionAvgSpeed = tmpData.sectionAvgSpeed
+        naviData.sectionLeftTime = tmpData.sectionLeftTime
+        naviData.sectionAdjustSpeed = tmpData.sectionAdjustSpeed
+        naviData.camSpeedFactor = tmpData.camSpeedFactor
+        naviData.currentRoadName = tmpData.currentRoadName
+        naviData.isNda2 = tmpData.isNda2
             
         pm.send('naviCustom', msg )
 
