@@ -54,7 +54,7 @@ private:
 
 private:
    NetworkImageWidget *icon_01;
-
+   QPixmap img_tire_pressure;
 
   
 
@@ -64,9 +64,11 @@ private:
   float  interp( float xv, float xp[], float fp[], int N);
   int    get_param( const std::string &key );
 
-// kegmen
+// tpms
 private:
-
+  QColor   get_tpms_color(int tpms); 
+  QString  get_tpms_text(int tpms);
+  void     bb_draw_tpms(QPainter &p, int viz_tpms_x, int viz_tpms_y );
 
 
 signals:
