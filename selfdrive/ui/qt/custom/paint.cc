@@ -198,23 +198,22 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLSD = %d", m_nda.camLimitSpeedLeftDist);    p.drawText( bb_x, nYPos+=nGap, text4 );
 
-/*
+
   int unit = m_param.tpmsData.getUnit();
   int fl = m_param.tpmsData.getFl();
   int fr = m_param.tpmsData.getFr();
   int rl = m_param.tpmsData.getRl();
   int rr = m_param.tpmsData.getRr();
   text4.sprintf("tpms = %d,%d,%d,%d,%d", unit, fl, fr, rl,rr ); p.drawText( bb_x, nYPos+=nGap, text4 );
-*/
-}
 
+}
 
 
 // tpms by neokii
 QColor OnPaint::get_tpms_color(int tpms) 
 {
     if(tpms < 5 || tpms > 60) // N/A
-        return QColor(255, 255, 255, 200);
+        return QColor(100, 100, 100, 100);
     if(tpms < 30)
         return QColor(255, 90, 90, 200);
     return QColor(255, 255, 255, 200);
@@ -230,7 +229,7 @@ QString OnPaint::get_tpms_text(int tpms)
     return str;
 }
 
-void OnPaint::bb_draw_tpms(QPainter &p, int viz_tpms_x, int viz_tpms_y )
+void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
 {
     int fl = m_param.tpmsData.getFl();
     int fr = m_param.tpmsData.getFr();
@@ -239,10 +238,8 @@ void OnPaint::bb_draw_tpms(QPainter &p, int viz_tpms_x, int viz_tpms_y )
 
     const int w = 58;
     const int h = 126;
-    int x = viz_tpms_x;// bdr_s + 80;
-    int y = viz_tpms_y - h;// s->fb_h - bdr_s - h - 60;
-
     const int margin = 30;
+
 
     p.setOpacity(0.8);
     p.drawPixmap(x, y, w, h, img_tire_pressure);

@@ -68,7 +68,7 @@ private:
 private:
   QColor   get_tpms_color(int tpms); 
   QString  get_tpms_text(int tpms);
-  void     bb_draw_tpms(QPainter &p, int viz_tpms_x, int viz_tpms_y );
+  void     bb_draw_tpms(QPainter &p, int x, int y );
 
 
 signals:
