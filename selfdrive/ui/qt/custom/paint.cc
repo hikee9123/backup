@@ -169,8 +169,8 @@ void OnPaint::ui_main_navi( QPainter &p )
   int roadLimitSpeed = m_param.naviData.getRoadLimitSpeed();
   int camLimitSpeed = m_param.naviData.getCamLimitSpeed();
   int camLimitSpeedLeftDist = m_param.naviData.getCamLimitSpeedLeftDist();
-  int sectionLimitSpeed = m_param.naviData.getSectionLimitSpeed();
-  int sectionLeftDist = m_param.naviData.getSectionLeftDist();
+  //int sectionLimitSpeed = m_param.naviData.getSectionLimitSpeed();
+  //int sectionLeftDist = m_param.naviData.getSectionLeftDist();
   int isNda2 = m_param.naviData.getIsNda2();
 
   m_nda.roadLimitSpeed = roadLimitSpeed;
