@@ -271,16 +271,9 @@ def main():
         curNaviData.isNda2 = server.get_limit_val("is_nda2", False)
 
         #print(f"navData={naviData}")
-        if curNaviData.active < 0 or curNaviData.active > 10: 
-          pass
-        elif curNaviData.camLimitSpeed < 0 or curNaviData.camLimitSpeedLeftDist < 0:
-          pass
-        elif curNaviData.camLimitSpeed > 250 or curNaviData.camLimitSpeedLeftDist  > 2000:
-          pass        
-        elif curNaviData.camType < 0:
-          pass
-        else:
-          pm.send('naviCustom', msg )
+        if curNaviData.active == 0 or curNaviData.active == 1 or curNaviData.active == 2: 
+          if curNaviData.camLimitSpeed >= 0 and curNaviData.camLimitSpeed <= 200 and curNaviData.roadLimitSpeed >= 0 and curNaviData.roadLimitSpeed <= 200:
+            pm.send('naviCustom', msg )
 
         server.send_sdp(sock)
         server.check()

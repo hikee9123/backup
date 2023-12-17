@@ -153,7 +153,7 @@ void OnPaint::ui_main_navi( QPainter &p )
 {
   QString text4;
 
-  int bb_x = 100;
+  int bb_x = 150;
   int bb_y = 300;
 
   int  nYPos = bb_y;
@@ -171,14 +171,14 @@ void OnPaint::ui_main_navi( QPainter &p )
   int isNda2 = m_param.naviData.getIsNda2();
 
 
-  if( activeNDA > 0  )
-  {
+ // if( activeNDA > 0  )
+  //{
     m_nda[0].roadLimitSpeed = roadLimitSpeed;
     m_nda[0].camLimitSpeed = camLimitSpeed;
     m_nda[0].camLimitSpeedLeftDist = camLimitSpeedLeftDist;
     m_nda[0].sectionLimitSpeed = sectionLimitSpeed;
     m_nda[0].sectionLeftDist = sectionLeftDist;
-  }
+  //}
 
 
   text4.sprintf("camType=%d NDA = %d, %d", camType, activeNDA, isNda2 );                                                p.drawText( bb_x, nYPos+=nGap, text4 );
