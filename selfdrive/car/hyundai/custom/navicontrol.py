@@ -217,10 +217,10 @@ class NaviControl():
     elif self.gasPressed_time > 0:
       self.gasPressed_time -= 1
       if self.gasPressed_time <= 0:
-        cruise_set_speed = CS.clu_Vanz - 5
-    elif CS.carCustom.cruise_set_mode == 5:  # comma long control speed.
-      vFuture = c.hudControl.vFuture * CV.MS_TO_KPH
-      ctrl_speed = min( vFuture, ctrl_speed )
+        cruise_set_speed = CS.carCustom.clu_Vanz - 5
+    #elif CS.carCustom.cruise_set_mode == 5:  # comma long control speed.
+    #  vFuture = c.hudControl.vFuture * CV.MS_TO_KPH
+    #  ctrl_speed = min( vFuture, ctrl_speed )
 
 
 

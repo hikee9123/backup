@@ -61,6 +61,7 @@ class CarStateCustom():
       self.pm.send('carStateCustom', self.msg )   
 
 
+    self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]  #kph  현재 차량의 속도.
     # save the entire LFAHDA_MFC
     self.lfahda = copy.copy(cp_cruise.vl["LFAHDA_MFC"])
     if not self.CP.openpilotLongitudinalControl and self.CP.carFingerprint in CAMERA_SCC_CAR:
