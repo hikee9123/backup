@@ -246,9 +246,8 @@ def main():
 
   pm = messaging.PubMaster(['naviCustom']) 
   msg = messaging.new_message('naviCustom')
-  naviData = msg.naviCustom.naviData
-  curNaviData = copy.copy(naviData)
-  tmpData = copy.copy(naviData)
+
+  curNaviData = msg.naviCustom.naviData
   server = NaviServer() 
   with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
     try:
@@ -273,11 +272,15 @@ def main():
         curNaviData.currentRoadName = server.get_limit_val("current_road_name", "")
         curNaviData.isNda2 = server.get_limit_val("is_nda2", False)
 
+        if tmpData is None:
+          tmpData = copy.copy(curNaviData)
+
         #print(f"navData={naviData}")
         if curNaviData.active == 0 or curNaviData.active == 1 or curNaviData.active == 2: 
           if curNaviData.camLimitSpeed >= 0 and curNaviData.camLimitSpeed <= 200 and curNaviData.roadLimitSpeed >= 0 and curNaviData.roadLimitSpeed <= 200:
             tmpData = copy.copy(curNaviData)
-
+        
+        naviData = msg.naviCustom.naviData
         naviData.active = tmpData.active
         naviData.roadLimitSpeed = tmpData.roadLimitSpeed
         naviData.isHighway = tmpData.isHighway
