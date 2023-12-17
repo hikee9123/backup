@@ -8,7 +8,6 @@
 
 #include <QDebug>
 
-#include "selfdrive/ui/qt/network/networking.h"
 
 #include "common/params.h"
 #include "common/watchdog.h"
@@ -17,8 +16,6 @@
 #include "selfdrive/ui/qt/widgets/controls.h"
 #include "selfdrive/ui/qt/widgets/input.h"
 #include "selfdrive/ui/qt/widgets/scrollview.h"
-#include "selfdrive/ui/qt/widgets/ssh_keys.h"
-#include "selfdrive/ui/qt/widgets/toggle.h"
 #include "selfdrive/ui/ui.h"
 #include "selfdrive/ui/qt/util.h"
 #include "selfdrive/ui/qt/qt_window.h"
@@ -79,10 +76,6 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         )");
         btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
         nav_btns->addButton(btn);
-
-        //sidebar_layout->addWidget(btn, 0, Qt::AlignRight);
-        //const int lr_margin = name != tr("Network") ? 50 : 0;  // Network panel handles its own margins
-        //panel->setContentsMargins(lr_margin, 25, lr_margin, 25);
 
         ScrollView *panel_frame = new ScrollView(panel, this);
         panel_widget->addWidget(panel_frame);
