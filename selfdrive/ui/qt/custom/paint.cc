@@ -135,6 +135,22 @@ void OnPaint::updateState(const UIState &s)
   {
     auto navi_custom = sm["naviCustom"].getNaviCustom();  
     m_param.naviData = navi_custom.getNaviData();
+
+    int activeNDA = m_param.naviData.getActive();
+    int camType  = m_param.naviData.getCamType();
+    int roadLimitSpeed = m_param.naviData.getRoadLimitSpeed();
+    int camLimitSpeed = m_param.naviData.getCamLimitSpeed();
+    int camLimitSpeedLeftDist = m_param.naviData.getCamLimitSpeedLeftDist();
+    //int sectionLimitSpeed = m_param.naviData.getSectionLimitSpeed();
+    //int sectionLeftDist = m_param.naviData.getSectionLeftDist();
+    int isNda2 = m_param.naviData.getIsNda2();
+
+
+    m_nda.activeNDA = activeNDA;
+    m_nda.camType = camType;
+    m_nda.roadLimitSpeed = roadLimitSpeed;
+    m_nda.camLimitSpeed = camLimitSpeed;
+    m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
   }
 
   if ( sm.updated("carStateCustom") )
@@ -162,27 +178,13 @@ void OnPaint::ui_main_navi( QPainter &p )
   int  nYPos = bb_y;
   int  nGap = 80; 
 
-  // p.setFont(InterFont(40, QFont::Normal));
-
-  int activeNDA = m_param.naviData.getActive();
-  int camType  = m_param.naviData.getCamType();
-  int roadLimitSpeed = m_param.naviData.getRoadLimitSpeed();
-  int camLimitSpeed = m_param.naviData.getCamLimitSpeed();
-  int camLimitSpeedLeftDist = m_param.naviData.getCamLimitSpeedLeftDist();
-  //int sectionLimitSpeed = m_param.naviData.getSectionLimitSpeed();
-  //int sectionLeftDist = m_param.naviData.getSectionLeftDist();
-  int isNda2 = m_param.naviData.getIsNda2();
-
-  m_nda.roadLimitSpeed = roadLimitSpeed;
-  m_nda.camLimitSpeed = camLimitSpeed;
-  m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;
 
   
 
-  text4.sprintf("cType=%d NDA = %d, %d", camType, activeNDA, isNda2 );    p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("rLS = %d", roadLimitSpeed );                             p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("cLS = %d", camLimitSpeed);                               p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("cLSD = %d", camLimitSpeedLeftDist);                      p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("NDA = %d", m_nda.activeNDA );                p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("cLSD = %d", m_nda.camLimitSpeedLeftDist);    p.drawText( bb_x, nYPos+=nGap, text4 );
 
 
   int unit = m_param.tpmsData.getUnit();
