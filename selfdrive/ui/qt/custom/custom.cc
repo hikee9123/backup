@@ -36,12 +36,16 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     });
 
 
-    panel_widget = new QStackedWidget();
     QList<QPair<QString, QWidget *>> panels = {
         {tr("Community"), new CommunityPanel(this)},
-        {tr("Menu2"), new QWidget(this)},
+        {tr("Tuning"), new QWidget(this)},
+        {tr("UI"), new QWidget(this)},
+        {tr("Debug"), new QWidget(this)},
+        {tr("Navigation"), new QWidget(this)},
     };
 
+
+    panel_widget = new QStackedWidget();
     nav_btns = new QButtonGroup(this);
 
 
