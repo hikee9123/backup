@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json
 import os
-import copy
+import time
 
 import select
 import subprocess
@@ -275,12 +275,12 @@ def main():
 
         #print(f"navData={naviData}")
         if curNaviData.active == 0 or curNaviData.active == 1 or curNaviData.active == 2: 
-          if curNaviData.camLimitSpeed >= 0 and curNaviData.camLimitSpeed <= 200 and curNaviData.roadLimitSpeed >= 0 and curNaviData.roadLimitSpeed <= 200:                
             pm.send('naviCustom', msg )
 
         server.send_sdp(sock)
         server.check()
 
+        time.sleep(0.1)
     except Exception as e:
       server.last_exception = e
 
