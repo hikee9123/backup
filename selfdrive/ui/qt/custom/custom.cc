@@ -102,7 +102,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     // 전체 레이아웃을 설정
     //setLayout(mainLayout);
 
-    addLayout(buttonLayout);
+   // addLayout(buttonLayout);
     //setLayout(panel_widget);    
 
     // Set the current page
