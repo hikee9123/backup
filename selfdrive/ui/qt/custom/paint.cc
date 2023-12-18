@@ -214,6 +214,9 @@ void OnPaint::ui_main_navi( QPainter &p )
   int rr = m_param.tpmsData.getRr();
   text4.sprintf("tpms = %d,%d,%d,%d,%d", unit, fl, fr, rl,rr ); p.drawText( bb_x, nYPos+=nGap, text4 );
 
+
+  text4 = "oooooooooooooooooooooooooooooppppppppppppppp9999999999---------";
+    p.drawText( 300, 500, text4 );
 }
 
 
