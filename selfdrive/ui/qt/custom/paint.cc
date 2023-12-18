@@ -180,10 +180,10 @@ void OnPaint::drawHud(QPainter &p)
   if( true )
   {
     const int x = 300;//(UI_BORDER_SIZE * 2);
-    const int y = 700; 
+    const int y = 800; 
 
-    QString text4 = "test------------------------";
-    p.drawText( x, y, text4 );
+    //QString text4 = "test------";
+    //p.drawText( x, y, text4 );
 
     bb_draw_tpms( p, x, y);
 
