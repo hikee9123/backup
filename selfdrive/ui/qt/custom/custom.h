@@ -16,20 +16,6 @@
 
 
 
-class CommunityPanel : public ListWidget {
-  Q_OBJECT
-public:
-  explicit CommunityPanel(CustomPanel *parent);
-  void showEvent(QShowEvent *event) override;
-
-private:
-  Params params;
-  std::map<std::string, ParamControl*> toggles;
-
-  void updateToggles();
-};
-
-
 class CustomPanel : public ListWidget {
   Q_OBJECT
 public:
@@ -48,3 +34,20 @@ private:
   QButtonGroup    *nav_btns;
   QStackedWidget  *panel_widget;
 };
+
+
+
+
+class CommunityPanel : public ListWidget {
+  Q_OBJECT
+public:
+  explicit CommunityPanel(CustomPanel *parent);
+  void showEvent(QShowEvent *event) override;
+
+private:
+  Params params;
+  std::map<std::string, ParamControl*> toggles;
+
+  void updateToggles();
+};
+
