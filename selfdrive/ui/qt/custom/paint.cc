@@ -150,12 +150,14 @@ void OnPaint::updateState(const UIState &s)
     //int sectionLeftDist = m_param.naviData.getSectionLeftDist();
     int isNda2 = m_param.naviData.getIsNda2();
 
-
-    m_nda.activeNDA = activeNDA;
-    m_nda.camType = camType;
-    m_nda.roadLimitSpeed = roadLimitSpeed;
-    m_nda.camLimitSpeed = camLimitSpeed;
-    m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
+    if( activeNDA >= 0 )
+    {
+      m_nda.activeNDA = activeNDA;
+      m_nda.camType = camType;
+      m_nda.roadLimitSpeed = roadLimitSpeed;
+      m_nda.camLimitSpeed = camLimitSpeed;
+      m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
+    }
   }
 
   if ( sm.updated("carStateCustom") )
