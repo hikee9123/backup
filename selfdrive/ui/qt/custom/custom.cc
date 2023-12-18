@@ -34,7 +34,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
 
     QList<QPair<QString, QWidget *>> panels = {
-        {tr("Community"), new CommunityPanel(this)},
+//        {tr("Community"), new CommunityPanel(this)},
         {tr("Tuning"), new QWidget(this)},
         {tr("UI"), new QWidget(this)},
         {tr("Debug"), new QWidget(this)},
