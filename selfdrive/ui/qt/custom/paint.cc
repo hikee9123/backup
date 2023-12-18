@@ -183,7 +183,7 @@ void OnPaint::drawHud(QPainter &p)
     const int y = 500; 
     bb_draw_tpms( p, x, y);
 
-    QString text4 = "test";
+    QString text4 = "test------------------------";
     p.drawText( x, y, text4 );
   } 
 }
