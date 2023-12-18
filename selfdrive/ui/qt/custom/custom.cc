@@ -47,7 +47,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
 
     // 버튼을 가로로 2개씩 세로로 배열할 레이아웃 생성
-    QVBoxLayout *mainLayout = new QVBoxLayout;
+  //  QVBoxLayout *mainLayout = new QVBoxLayout;
     QGridLayout *buttonLayout = new QGridLayout;
     int row = 0;
     int col = 0;
@@ -96,10 +96,12 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     }
 
     // 전체 레이아웃을 설정
-    mainLayout->addLayout(buttonLayout);
-    mainLayout->addWidget(panel_widget);
+   // mainLayout->addLayout(buttonLayout);
+    //mainLayout->addWidget(panel_widget);
     // 전체 레이아웃을 설정
-    setLayout(mainLayout);    
+    //setLayout(mainLayout);
+
+    setLayout(panel_widget);    
 
     // Set the current page
     panel_widget->setCurrentIndex(0);
