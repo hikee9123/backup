@@ -164,6 +164,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
 CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) {
 
+/*
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
 
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
@@ -179,7 +180,7 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) {
     }
   });
   addItem(changeCar);
-
+*/
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
     {
