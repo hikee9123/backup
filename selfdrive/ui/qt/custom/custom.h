@@ -32,8 +32,7 @@ private:
   Params params;
 
  private:
-  QButtonGroup    *nav_btns;
-  QStackedWidget  *panel_widget;
+
 };
 
 

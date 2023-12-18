@@ -42,13 +42,11 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         {tr("Navigation"), new QWidget(this)},
     };
 
-
-    panel_widget = new QStackedWidget();
-    nav_btns = new QButtonGroup(this);
+    QStackedWidget  *panel_widget = new QStackedWidget();
+    QButtonGroup    *nav_btns = new QButtonGroup(this);
 
 
     // 버튼을 가로로 2개씩 세로로 배열할 레이아웃 생성
-  //  QVBoxLayout *mainLayout = new QVBoxLayout;
     QGridLayout *buttonLayout = new QGridLayout();
     int row = 0;
     int col = 0;
@@ -96,20 +94,17 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         }                
     }
 
-    // 전체 레이아웃을 설정
-   // mainLayout->addLayout(buttonLayout);
-    //mainLayout->addWidget(panel_widget);
-    // 전체 레이아웃을 설정
-    //setLayout(mainLayout);
-
-   // addLayout(buttonLayout);
-    //setLayout(panel_widget);    
+    // 전체 레이아웃 설정
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addLayout(buttonLayout);
+    mainLayout->addWidget(panel_widget);
+    setLayout(mainLayout);
 
     // Set the current page
     panel_widget->setCurrentIndex(0);
 
     // Show the stacked widget
-    panel_widget->show();
+    //panel_widget->show();
 
     setStyleSheet(R"(
         * {
