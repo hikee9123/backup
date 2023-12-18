@@ -72,35 +72,21 @@ float OnPaint::interp( float xv, float xp[], float fp[], int N)
 	return  dResult;
 }
 
+void OnPaint::configFont(QPainter &p, const QString &family, int size, const QString &style) 
+{
+  QFont f(family);
+  f.setPixelSize(size);
+  f.setStyleName(style);
+  p.setFont(f);
+}
 
-
-void OnPaint::drawText(QPainter &p, int x, int y, const QString &text, QColor qColor, int nAlign ) 
+void OnPaint::drawText(QPainter &p, int x, int y, int flags, const QString &text, const QColor color) 
 {
   QFontMetrics fm(p.font());
-  QRect init_rect = fm.boundingRect(text);
-  QRect real_rect = fm.boundingRect(init_rect, 0, text);
-
-  if( nAlign == Qt::AlignCenter ) // Qt::AlignLeft )
-  {
-     real_rect.moveCenter({x, y - real_rect.height() / 2});
-  }
-/*  
-  else  if( nAlign ==  Qt::AlignRight  )
-  {
-    real_rect.moveLeft( x );
-  }
-  else  if( nAlign ==  Qt::AlignLeft  )
-  {
-    real_rect.moveRight( x );
-  }
-*/  
-  else
-  {
-    real_rect.moveTo(x, y);
-  }
-
-  p.setPen( qColor ); //QColor(0xff, 0xff, 0xff, alpha));
-  p.drawText(real_rect, nAlign, text);
+  QRect rect = fm.boundingRect(text);
+  rect.adjust(-1, -1, 1, 1);
+  p.setPen(color);
+  p.drawText(QRect(x, y, rect.width()+1, rect.height()), flags, text);
 }
 
 
@@ -141,33 +127,41 @@ void OnPaint::updateState(const UIState &s)
 
   if ( sm.updated("naviCustom") )
   {
-    auto navi_custom = sm["naviCustom"].getNaviCustom();  
-    m_param.naviData = navi_custom.getNaviData();
+    auto navi_custom = sm["naviCustom"].getNaviCustom();
+    auto naviData = navi_custom.getNaviData();
+    //m_param.naviData = navi_custom.getNaviData();
 
-    int activeNDA = m_param.naviData.getActive();
-    int camType  = m_param.naviData.getCamType();
-    int roadLimitSpeed = m_param.naviData.getRoadLimitSpeed();
-    int camLimitSpeed = m_param.naviData.getCamLimitSpeed();
-    int camLimitSpeedLeftDist = m_param.naviData.getCamLimitSpeedLeftDist();
-    //int sectionLimitSpeed = m_param.naviData.getSectionLimitSpeed();
-    //int sectionLeftDist = m_param.naviData.getSectionLeftDist();
-    //int isNda2 = m_param.naviData.getIsNda2();
+    int activeNDA = naviData.getActive();
+    int camType  = naviData.getCamType();
+    int roadLimitSpeed = naviData.getRoadLimitSpeed();
+    int camLimitSpeed = naviData.getCamLimitSpeed();
+    int camLimitSpeedLeftDist = naviData.getCamLimitSpeedLeftDist();
+    //int sectionLimitSpeed = naviData.getSectionLimitSpeed();
+    //int sectionLeftDist = naviData.getSectionLeftDist();
+    //int isNda2 = naviData.getIsNda2();
 
     if( activeNDA >= 0 )
     {
-      m_nda.activeNDA = activeNDA;
-      m_nda.camType = camType;
-      m_nda.roadLimitSpeed = roadLimitSpeed;
-      m_nda.camLimitSpeed = camLimitSpeed;
-      m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
+        m_nda.activeNDA = activeNDA;
+        m_nda.camType = camType;
+        m_nda.roadLimitSpeed = roadLimitSpeed;
+        m_nda.camLimitSpeed = camLimitSpeed;
+        m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
     }
   }
 
   if ( sm.updated("carStateCustom") )
   {
-    auto carState_custom = sm["carStateCustom"].getCarStateCustom();
-    m_param.tpmsData  = carState_custom.getTpms();
+      auto carState_custom = sm["carStateCustom"].getCarStateCustom();
+      m_param.tpmsData  = carState_custom.getTpms();
+
+      // debug Message
+      alert.alertTextMsg1 = carState_custom.getAlertTextMsg1();
+      alert.alertTextMsg2 = carState_custom.getAlertTextMsg2();
+      alert.alertTextMsg3 = carState_custom.getAlertTextMsg3();    
   }
+
+
 }
 
 
@@ -179,15 +173,17 @@ void OnPaint::drawHud(QPainter &p)
   // 2. tpms
   if( true )
   {
-    const int x = 300;//(UI_BORDER_SIZE * 2);
+    const int x = 300;
     const int y = 800; 
-
-    //QString text4 = "test------";
-    //p.drawText( x, y, text4 );
 
     bb_draw_tpms( p, x, y);
 
   } 
+
+  if( true )
+  {
+    ui_draw_debug1( p );
+  }
 }
 
 
@@ -215,10 +211,6 @@ void OnPaint::ui_main_navi( QPainter &p )
   int rl = m_param.tpmsData.getRl();
   int rr = m_param.tpmsData.getRr();
   text4.sprintf("tpms = %d,%d,%d,%d,%d", unit, fl, fr, rl,rr ); p.drawText( bb_x, nYPos+=nGap, text4 );
-
-
-//  text4 = "oooooooooooooooooooooooooooooppppppppppppppp9999999999---------";
-//    p.drawText( 300, 500, text4 );
 }
 
 
@@ -256,11 +248,37 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
 
     //p.setOpacity(0.8);
     //p.drawPixmap(x, y, w, h, img_tire_pressure);
+    //p.setFont(InterFont(38, QFont::Bold));
+    drawText( p, x   -margin, y+45,   Qt::AlignRight, get_tpms_text(fl), get_tpms_color(fl)  );
+    drawText( p, x+w +margin, y+45,   Qt::AlignLeft,  get_tpms_text(fr), get_tpms_color(fr)  );
 
-   // p.setFont(InterFont(38, QFont::Bold));
-    drawText( p, x  -margin, y+45,   get_tpms_text(fl), get_tpms_color(fl), Qt::AlignLeft  );
-    drawText( p, x+w+margin, y+45,   get_tpms_text(fr), get_tpms_color(fr), Qt::AlignRight  );
+    drawText( p, x   -margin, y+h-15, Qt::AlignRight, get_tpms_text(rl), get_tpms_color(rl)  );
+    drawText( p, x+w +margin, y+h-15, Qt::AlignLeft,  get_tpms_text(rr), get_tpms_color(rr)  );
+}
 
-    drawText( p, x  -margin, y+h-15, get_tpms_text(rl), get_tpms_color(rl), Qt::AlignLeft  );
-    drawText( p, x+w+margin, y+h-15, get_tpms_text(rr), get_tpms_color(rr), Qt::AlignRight  );
+
+
+void OnPaint::ui_draw_debug1( QPainter &p ) 
+{
+  QString text1 = QString::fromStdString(alert.alertTextMsg1);
+  QString text2 = QString::fromStdString(alert.alertTextMsg2);
+  QString text3 = QString::fromStdString(alert.alertTextMsg3);
+
+  int bb_x = 0;
+  int bb_y = 930;
+  int bb_w = width();
+
+  QRect rc( bb_x, bb_y, bb_w, 90);
+
+  p.setBrush(QColor(0, 0, 0, 100));
+  p.drawRoundedRect(rc, 20, 20); 
+  p.setPen( QColor(0xff, 0xff, 0xff, 255) ); 
+
+  QTextOption  textOpt =  QTextOption( Qt::AlignLeft );
+  configFont( p, "Open Sans",  40, "Regular");
+
+
+  p.drawText( QRect(bb_x, 0, bb_w, 42), text1, textOpt );
+  p.drawText( QRect(bb_x, bb_y, bb_w, 42), text2, textOpt );
+  p.drawText( QRect(bb_x, bb_y+45, bb_w, 42), text3, textOpt );
 }

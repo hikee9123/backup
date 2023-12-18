@@ -7,6 +7,8 @@ from openpilot.common.params import Params
 from openpilot.common.conversions import Conversions as CV
 from openpilot.selfdrive.car.hyundai.values import CAMERA_SCC_CAR
 
+import openpilot.selfdrive.custom.loger as  trace1
+
 
 class CarStateCustom():
   def __init__(self, CP, CS):
@@ -58,6 +60,10 @@ class CarStateCustom():
 
 
     if self.frame % 100 == 0:
+      global trace1
+      carStatus.alertTextMsg1 = str(trace1.global_alertTextMsg1)
+      carStatus.alertTextMsg2 = str(trace1.global_alertTextMsg2)
+      carStatus.alertTextMsg3 = str(trace1.global_alertTextMsg3)       
       self.pm.send('carStateCustom', self.msg )   
 
 

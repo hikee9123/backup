@@ -13,6 +13,10 @@ using Car = import "car.capnp";
 struct CarStateCustom @0x81c2f05a394cf4af {
 
   tpms @0 :Tpms;
+  alertTextMsg1  @1 :Text;
+  alertTextMsg2  @2 :Text;
+  alertTextMsg3  @3 :Text;
+
 
   struct Tpms {
     unit @0 :Int16;

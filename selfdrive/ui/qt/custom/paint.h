@@ -22,7 +22,7 @@ public:
 
 private:
   void    paintEvent(QPaintEvent *event) override;
-  void    drawText(QPainter &p, int x, int y, const QString &text, QColor qColor = QColor(255,255,255,255), int nAlign = Qt::AlignCenter );
+  void    drawText(QPainter &p, int x, int y, int flags, const QString &text, const QColor color = QColor(255, 255, 255, 220) );
   int     get_time();
 
 private:
@@ -40,12 +40,18 @@ private:
   {
 
     
-    cereal::NaviCustom::NaviData::Reader naviData;
+    //cereal::NaviCustom::NaviData::Reader naviData;
     cereal::CarStateCustom::Tpms::Reader tpmsData;
  
 
   } m_param, m_old;
   
+  struct _STATUS_
+  {
+      std::string alertTextMsg1;
+      std::string alertTextMsg2; 
+      std::string alertTextMsg3;
+  } alert;
 
   struct _NDA
   {
@@ -62,7 +68,8 @@ private:
    QPixmap img_tire_pressure;
 
   
-
+private:
+  void   configFont(QPainter &p, const QString &family, int size, const QString &style);
 
 // navi
 private:
@@ -74,7 +81,7 @@ private:
   QColor   get_tpms_color(int tpms); 
   QString  get_tpms_text(int tpms);
   void     bb_draw_tpms(QPainter &p, int x, int y );
-
+  void     ui_draw_debug1( QPainter &p );
 
 signals:
   void valueChanged();  
