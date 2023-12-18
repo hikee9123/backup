@@ -47,6 +47,7 @@ private:
   struct _NDA
   {
      int activeNDA;
+     int camType;
      int roadLimitSpeed;
      int camLimitSpeed;
      int camLimitSpeedLeftDist;
