@@ -148,7 +148,7 @@ void OnPaint::updateState(const UIState &s)
     int camLimitSpeedLeftDist = m_param.naviData.getCamLimitSpeedLeftDist();
     //int sectionLimitSpeed = m_param.naviData.getSectionLimitSpeed();
     //int sectionLeftDist = m_param.naviData.getSectionLeftDist();
-    int isNda2 = m_param.naviData.getIsNda2();
+    //int isNda2 = m_param.naviData.getIsNda2();
 
     if( activeNDA >= 0 )
     {
