@@ -274,13 +274,13 @@ def main():
 
 
         #print(f"navData={naviData}")
-        if curNaviData.active == 0 or curNaviData.active == 1 or curNaviData.active == 2: 
-            pm.send('naviCustom', msg )
+        #if curNaviData.active == 0 or curNaviData.active == 1 or curNaviData.active == 2: 
+        pm.send('naviCustom', msg )
 
         server.send_sdp(sock)
         server.check()
 
-        time.sleep(0.1)
+        #time.sleep(0.1)
     except Exception as e:
       server.last_exception = e
 

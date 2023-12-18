@@ -176,7 +176,7 @@ void OnPaint::drawHud(QPainter &p)
   // 2. tpms
   if( true )
   {
-    const int x = (UI_BORDER_SIZE * 2);
+    const int x = width() - 100;//(UI_BORDER_SIZE * 2);
     const int y = height() - 211; 
     bb_draw_tpms( p, x, y);
   } 
@@ -195,7 +195,7 @@ void OnPaint::ui_main_navi( QPainter &p )
 
  
 
-  text4.sprintf("NDA = %d", m_nda.activeNDA );                p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("NDA = %d, %d,%d", m_nda.activeNDA, width(), height() );                p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLSD = %d", m_nda.camLimitSpeedLeftDist);    p.drawText( bb_x, nYPos+=nGap, text4 );
