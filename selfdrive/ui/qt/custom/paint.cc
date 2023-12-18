@@ -182,6 +182,9 @@ void OnPaint::drawHud(QPainter &p)
     const int x = 300;//(UI_BORDER_SIZE * 2);
     const int y = 500; 
     bb_draw_tpms( p, x, y);
+
+    QString text4 = "test";
+    p.drawText( x, y, text4 );
   } 
 }
 
