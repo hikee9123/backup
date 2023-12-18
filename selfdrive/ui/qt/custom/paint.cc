@@ -176,8 +176,8 @@ void OnPaint::drawHud(QPainter &p)
   // 2. tpms
   if( true )
   {
-    const int x = 100;//(UI_BORDER_SIZE * 2);
-    const int y = 300; 
+    const int x = 300;//(UI_BORDER_SIZE * 2);
+    const int y = 500; 
     bb_draw_tpms( p, x, y);
   } 
 }
