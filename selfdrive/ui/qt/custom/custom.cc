@@ -26,12 +26,13 @@
 CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     setSpacing(50);
 
+/*
     QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
         for (auto btn : findChildren<ButtonControl *>()) {
         btn->setEnabled(offroad);
         }
     });
-
+*/
 
     QList<QPair<QString, QWidget *>> panels = {
 //        {tr("Community"), new CommunityPanel(this)},
@@ -48,7 +49,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
     // 버튼을 가로로 2개씩 세로로 배열할 레이아웃 생성
   //  QVBoxLayout *mainLayout = new QVBoxLayout;
-    QGridLayout *buttonLayout = new QGridLayout;
+    QGridLayout *buttonLayout = new QGridLayout();
     int row = 0;
     int col = 0;
 
@@ -101,6 +102,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     // 전체 레이아웃을 설정
     //setLayout(mainLayout);
 
+    addWidget(panel_widget);
     //setLayout(panel_widget);    
 
     // Set the current page
