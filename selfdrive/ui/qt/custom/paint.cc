@@ -16,8 +16,11 @@
 
 
 // OnroadHud
-OnPaint::OnPaint(QWidget *parent) : QWidget(parent) 
+OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent) 
 {
+  m_width = width;
+  m_height = height;
+
   state = uiState();
   scene = &(state->scene);
 
@@ -195,7 +198,7 @@ void OnPaint::ui_main_navi( QPainter &p )
 
  
 
-  text4.sprintf("NDA = %d, %d,%d", m_nda.activeNDA, width(), height() );                p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("NDA = %d, %d,%d", m_nda.activeNDA, m_width, m_height );                p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLSD = %d", m_nda.camLimitSpeedLeftDist);    p.drawText( bb_x, nYPos+=nGap, text4 );

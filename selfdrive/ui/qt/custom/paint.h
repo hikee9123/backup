@@ -16,7 +16,7 @@ class OnPaint : public QWidget
 
 
 public:
-  explicit OnPaint(QWidget *parent);
+  explicit OnPaint(QWidget *parent, int width, int height );
   void updateState(const UIState &s);
   void drawHud(QPainter &p);
 
@@ -32,6 +32,9 @@ private:
   UIState  *state;
   UIScene  *scene;
 
+
+  int m_width;
+  int m_height;
  
   struct _PARAM_
   {
