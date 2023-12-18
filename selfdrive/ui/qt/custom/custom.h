@@ -19,7 +19,7 @@
 class CommunityPanel : public ListWidget {
   Q_OBJECT
 public:
-  explicit CommunityPanel(SettingsWindow *parent);
+  explicit CommunityPanel(CustomPanel *parent);
   void showEvent(QShowEvent *event) override;
 
 private:
@@ -33,7 +33,7 @@ private:
 class CustomPanel : public ListWidget {
   Q_OBJECT
 public:
-  explicit CustomPanel(CustomPanel *parent);
+  explicit CustomPanel(SettingsWindow *parent);
 
 signals:
 
