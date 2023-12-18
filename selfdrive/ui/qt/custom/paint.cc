@@ -180,11 +180,13 @@ void OnPaint::drawHud(QPainter &p)
   if( true )
   {
     const int x = 300;//(UI_BORDER_SIZE * 2);
-    const int y = 500; 
-    bb_draw_tpms( p, x, y);
+    const int y = 700; 
 
     QString text4 = "test------------------------";
     p.drawText( x, y, text4 );
+
+    bb_draw_tpms( p, x, y);
+
   } 
 }
 
@@ -215,8 +217,8 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("tpms = %d,%d,%d,%d,%d", unit, fl, fr, rl,rr ); p.drawText( bb_x, nYPos+=nGap, text4 );
 
 
-  text4 = "oooooooooooooooooooooooooooooppppppppppppppp9999999999---------";
-    p.drawText( 300, 500, text4 );
+//  text4 = "oooooooooooooooooooooooooooooppppppppppppppp9999999999---------";
+//    p.drawText( 300, 500, text4 );
 }
 
 
