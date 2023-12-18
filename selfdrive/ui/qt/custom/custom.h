@@ -14,6 +14,7 @@
 #include "selfdrive/ui/qt/util.h"
 #include "selfdrive/ui/qt/widgets/controls.h"
 
+#include "selfdrive/ui/qt/offroad/settings.h"
 
 
 class CustomPanel : public ListWidget {
