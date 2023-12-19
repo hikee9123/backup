@@ -36,9 +36,9 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 */
 
     QList<QPair<QString, QWidget *>> panels = {
-//        {tr("Community"), new CommunityPanel(this)},
+        {tr("Community"), new CommunityPanel(this)},
         {tr("Tuning"), new QWidget(this)},
-        {tr("UI"), new QWidget(this)},
+     //   {tr("UI"), new QWidget(this)},
         //{tr("Debug"), new QWidget(this)},
         //{tr("Navigation"), new QWidget(this)},
     };
@@ -84,7 +84,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     }
 
     // Add the stacked widget to the main layout
-    //mainLayout->addWidget(panel_widget);
+    mainLayout->addWidget(panel_widget);
 
     // Set the main layout for the widget
     setLayout(mainLayout);
