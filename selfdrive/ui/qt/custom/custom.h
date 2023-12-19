@@ -17,7 +17,7 @@
 #include "selfdrive/ui/qt/offroad/settings.h"
 
 
-class CustomPanel : public ListWidget {
+class CustomPanel : public QWidget {
   Q_OBJECT
 public:
   explicit CustomPanel(SettingsWindow *parent);

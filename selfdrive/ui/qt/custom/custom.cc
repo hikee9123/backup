@@ -58,6 +58,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     mainLayout->addWidget(tabWidget);
     setLayout(mainLayout);
     show();
+*/
 
     QPushButton *button1 = new QPushButton("Button 1");
     QPushButton *button2 = new QPushButton("Button 2");
@@ -83,39 +84,8 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         border-radius: 30px;
         }
     )");
-*/
 
-   // param, title, desc, icon
-  std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
-    {
-      "HapticFeedbackWhenSpeedCamera",
-      tr("Haptic feedback (speed-cam alert)"),
-      tr("Haptic feedback when a speed camera is detected"),
-      "../assets/offroad/icon_openpilot.png",
-    },
-    {
-      "UseExternalNaviRoutes",
-      tr("Use external navi routes"),
-      "",
-      "../assets/offroad/icon_openpilot.png",
-    },
-    {
-      "ShowDebugMessage",
-      tr("Show Debug Message"),
-      "",
-      "../assets/offroad/icon_shell.png",
-    },
-  };
 
-  for (auto &[param, title, desc, icon] : toggle_defs) {
-    auto toggle = new ParamControl(param, title, desc, icon, this);
-
-    bool locked = params.getBool((param + "Lock").toStdString());
-    toggle->setEnabled(!locked);
-
-    addItem(toggle);
-    toggles[param.toStdString()] = toggle;
-  }   
 }
 
 
