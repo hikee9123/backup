@@ -38,8 +38,8 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 //        {tr("Community"), new CommunityPanel(this)},
         {tr("Tuning"), new QWidget(this)},
         {tr("UI"), new QWidget(this)},
-        {tr("Debug"), new QWidget(this)},
-        {tr("Navigation"), new QWidget(this)},
+        //{tr("Debug"), new QWidget(this)},
+        //{tr("Navigation"), new QWidget(this)},
     };
 
     QStackedWidget  *panel_widget = new QStackedWidget();

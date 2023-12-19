@@ -228,7 +228,7 @@ QColor OnPaint::get_tpms_color(int tpms)
 QString OnPaint::get_tpms_text(int tpms) 
 {
     if(tpms < 5 || tpms > 200)
-        return "--";
+        return "-";
 
     QString str;
     str.sprintf("%d", tpms );
@@ -255,6 +255,8 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
 
     drawText( p, x   -margin, y+h+20, Qt::AlignRight, get_tpms_text(rl), get_tpms_color(rl)  );
     drawText( p, x+w +margin, y+h+20, Qt::AlignLeft,  get_tpms_text(rr), get_tpms_color(rr)  );
+
+    p.setPen( QColor(255, 255, 255, 255) );
 }
 
 
@@ -271,9 +273,10 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 
   QRect rc( bb_x, bb_y, bb_w, 90);
 
+  p.setPen( QColor(255, 255, 255, 255) );
   p.setBrush(QColor(0, 0, 0, 100));
   p.drawRoundedRect(rc, 20, 20); 
-  p.setPen( QColor(0xff, 0xff, 0xff, 255) ); 
+
 
   QTextOption  textOpt =  QTextOption( Qt::AlignLeft );
   configFont( p, "Open Sans",  40, "Regular");
