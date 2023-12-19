@@ -250,11 +250,11 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
     //p.setOpacity(0.8);
     //p.drawPixmap(x, y, w, h, img_tire_pressure);
     p.setFont(InterFont(38, QFont::Bold));
-    drawText( p, x   -margin, y+20,   Qt::AlignRight, get_tpms_text(fl), get_tpms_color(fl)  );
-    drawText( p, x+w +margin, y+20,   Qt::AlignLeft,  get_tpms_text(fr), get_tpms_color(fr)  );
+    drawText( p, x   -margin, y+10,   Qt::AlignRight, get_tpms_text(fl), get_tpms_color(fl)  );
+    drawText( p, x+w +margin, y+10,   Qt::AlignLeft,  get_tpms_text(fr), get_tpms_color(fr)  );
 
-    drawText( p, x   -margin, y+h+30, Qt::AlignRight, get_tpms_text(rl), get_tpms_color(rl)  );
-    drawText( p, x+w +margin, y+h+30, Qt::AlignLeft,  get_tpms_text(rr), get_tpms_color(rr)  );
+    drawText( p, x   -margin, y+h+20, Qt::AlignRight, get_tpms_text(rl), get_tpms_color(rl)  );
+    drawText( p, x+w +margin, y+h+20, Qt::AlignLeft,  get_tpms_text(rr), get_tpms_color(rr)  );
 }
 
 
