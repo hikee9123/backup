@@ -35,7 +35,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 */
 
 
-
+/*
     QList<QPair<QString, QWidget *>> panels = {
         {tr("Community"), new CommunityPanel(this)},
         {tr("Tuning"), new QWidget(this)},
@@ -44,8 +44,6 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         //{tr("Navigation"), new QWidget(this)},
     };
 
-    //setWindowTitle("Tab Example");
-    //setGeometry(100, 100, 1024, 900);
 
     // 탭 위젯
     QTabWidget *tabWidget = new QTabWidget(this);
@@ -58,10 +56,9 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
-    mainLayout->setGeometry( 1024, 900);
     setLayout(mainLayout);
     show();
-
+*/
 
     setStyleSheet(R"(
         * {
@@ -79,8 +76,8 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
 
 
-    /*
-    stackedWidget = new QStackedWidget();
+    
+    QStackedWidget *stackedWidget = new QStackedWidget();
     // Create two pages
     // 1.
     CommunityPanel *page1 = new CommunityPanel(this); // QWidget();
@@ -111,7 +108,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
     // Show the stacked widget
     stackedWidget->show();
-    */
+    
 }
 
 
