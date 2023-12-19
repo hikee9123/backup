@@ -54,7 +54,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     for (auto &[name, panel] : panels) {
         QPushButton *btn = new QPushButton(name);
         btn->setCheckable(true);
-        zbtn->setChecked(nav_btns->buttons().size() == 0);
+        btn->setChecked(nav_btns->buttons().size() == 0);
         btn->setStyleSheet(R"(
         QPushButton {
             color: black;
