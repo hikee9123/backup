@@ -43,12 +43,16 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         //{tr("Navigation"), new QWidget(this)},
     };
 
-   // QStackedWidget  *panel_widget = new QStackedWidget(this);
-    QVBoxLayout     *mainLayout = new QVBoxLayout(this);
+    QStackedLayout  *layout = new QStackedLayout(this);
+    layout->setStackingMode(QStackedLayout::StackAll);
+
+    QWidget *w = new QWidget;    
+    QVBoxLayout     *vlayout = new QVBoxLayout(w);
+    vlayout->setMargin(45);
+    layout->addWidget(w);    
 
     for (auto &[name, panel] : panels) {
         QPushButton *btn = new QPushButton(name);
-        btn->setCheckable(true);
         btn->setStyleSheet(R"(
         QPushButton {
             color: black;
@@ -67,8 +71,16 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
             color: #FFADAD;
         }
         )");
-        btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        mainLayout->addWidget(btn);
+        vlayout->addWidget(btn, 0, Qt::AlignBottom | Qt::AlignRight);        
+
+        QObject::connect(btn, &QPushButton::clicked, [=](bool checked) {
+          //btn->setEnabled(false);
+          //Params().putBool("DisableLogging", !checked);
+          //last_button = nanos_since_boot();
+        });
+
+        //btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        //mainLayout->addWidget(btn);
 
        // Add panel directly to the stacked widget
        // panel_widget->addWidget(panel);
@@ -83,13 +95,15 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
            
     }
 
+    w->raise();
+
     // Add the stacked widget to the main layout
     //mainLayout->addWidget(panel_widget);
 
     // Set the main layout for the widget
-    setLayout(mainLayout);
+    //setLayout(mainLayout);
 
-    show();
+    //show();
 
 
     setStyleSheet(R"(
