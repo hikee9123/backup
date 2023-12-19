@@ -24,8 +24,6 @@
 
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
-    
-
 /*
     QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
         for (auto btn : findChildren<ButtonControl *>()) {
@@ -33,24 +31,22 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
         }
     });
 */
-
-
+   setContentsMargins(1, 1, 1, 1);
 
     QList<QPair<QString, QWidget *>> panels = {
         {tr("Community"), new CommunityPanel(this)},
-        {tr("Tuning"), new QWidget(this)},
         {tr("UI"), new QWidget(this)},
-        //{tr("Debug"), new QWidget(this)},
-        //{tr("Navigation"), new QWidget(this)},
+        {tr("Tuning"), new QWidget(this)},
+        {tr("Navigation"), new QWidget(this)},
+        {tr("Debug"), new QWidget(this)},
     };
 
 
     // 탭 위젯
     QTabWidget *tabWidget = new QTabWidget(this);
-    // 탭 버튼에 대한 스타일시트 설정
     tabWidget->setStyleSheet(R"(
         QTabBar::tab {
-            border: 2px solid #C4C4C3;
+            border: 1px solid #C4C4C3;
             border-bottom-color: #C2C7CB; /* 위쪽 선 색상 */
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
@@ -76,37 +72,17 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
         }
     )");
     for (auto &[name, panel] : panels) {
-        tabWidget->addTab(panel, name);
+      panel->setContentsMargins(5, 10, 5, 5);
+      ScrollView *panel_frame = new ScrollView(panel, this);
+      //addWidget(panel_frame);
+
+      tabWidget->addTab(panel_frame, name);
     }
 
     // 탭 위젯을 전체 화면으로 표시
-   // tabWidget->showMaximized();    
-
-
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
-
-    //tabWidget->move(100, 50);
-   // resize(1024, 900);
-   // setLayout(mainLayout);
-    //show();
-
-
-/*
-    setStyleSheet(R"(
-        * {
-        color: white;
-        font-size: 50px;
-        }
-        SettingsWindow {
-        background-color: black;
-        }
-        QStackedWidget, ScrollView {
-        background-color: #292929;
-        border-radius: 30px;
-        }
-    )");
-*/
+    setLayout(mainLayout);
 }
 
 
@@ -114,10 +90,8 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
 
 
 CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) {
-
 /*
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
-
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
                     selected_car.length() ? tr("CHANGE") : tr("SELECT"), "");
 
