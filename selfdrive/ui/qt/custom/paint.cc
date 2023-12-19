@@ -243,7 +243,7 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
 
     const int w = 58;
     const int h = 126;
-    const int margin = 30;
+    const int margin = 40;
 
     fl = 30; fr = 31;
     rl = 28; rr = 29;
@@ -268,7 +268,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 
   int bb_x = 250;
   int bb_y = 930;
-  int bb_w = 1900;//width();
+  int bb_w = 1500;//width();
 
   QRect rc( bb_x, bb_y, bb_w, 90);
 
