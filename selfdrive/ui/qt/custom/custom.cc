@@ -100,12 +100,14 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     mainLayout->addWidget(panel_widget);
     setLayout(mainLayout);
 
+    mainLayout->show();
     // Set the current page
     //panel_widget->setCurrentIndex(0);
 
     // Show the stacked widget
     //panel_widget->show();
 
+/*
     setStyleSheet(R"(
         * {
         color: white;
@@ -119,7 +121,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         border-radius: 30px;
         }
     )");
-
+*/
 
 
     /*
