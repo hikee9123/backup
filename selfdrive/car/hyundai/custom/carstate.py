@@ -59,7 +59,7 @@ class CarStateCustom():
     )
 
 
-    if self.frame % 100 == 0:
+    if self.frame % 10 == 0:
       global trace1
       carStatus.alertTextMsg1 = str(trace1.global_alertTextMsg1)
       carStatus.alertTextMsg2 = str(trace1.global_alertTextMsg2)
