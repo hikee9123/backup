@@ -79,14 +79,16 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
         tabWidget->addTab(panel, name);
     }
 
-    tabWidget->move(100, 50);
     // 탭 위젯을 전체 화면으로 표시
    // tabWidget->showMaximized();    
 
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
-    setLayout(mainLayout);
+
+    tabWidget->move(100, 50);
+    resize(1024, 900);
+   // setLayout(mainLayout);
     //show();
 
 
