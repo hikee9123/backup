@@ -37,7 +37,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
 
     QList<QPair<QString, QWidget *>> panels = {
-//        {tr("Community"), new CommunityPanel(this)},
+        {tr("Community"), new CommunityPanel(this)},
         {tr("Tuning"), new QWidget(this)},
         {tr("UI"), new QWidget(this)},
         //{tr("Debug"), new QWidget(this)},
@@ -45,15 +45,15 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     };
 
     setWindowTitle("Tab Example");
-    setGeometry(100, 100, 400, 300);
+    setGeometry(100, 100, 1024, 900);
 
     // 탭 위젯
     QTabWidget *tabWidget = new QTabWidget(this);
     for (auto &[name, panel] : panels) {
          QVBoxLayout *layout1 = new QVBoxLayout(panel);
-        layout1->addWidget(new QPushButton( name , panel));
+        layout1->addWidget(new QPushButton("Button 1-1" , panel));
         layout1->addWidget(new QPushButton("Button 1-2", panel));
-        tabWidget->addTab(panel, "Tab 1");
+        tabWidget->addTab(panel, name);
     }
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
