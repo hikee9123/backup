@@ -95,10 +95,10 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     }
 
     // 전체 레이아웃 설정
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addLayout(nav_btns);
-    mainLayout->addWidget(panel_widget);
-    setLayout(mainLayout);
+    //QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    //mainLayout->addLayout(nav_btns);
+    //mainLayout->addWidget(panel_widget);
+    setLayout(nav_btns);
 
     //mainLayout->show();
     // Set the current page
