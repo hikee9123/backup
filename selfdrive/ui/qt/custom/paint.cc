@@ -244,7 +244,7 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
 
     const int w = 58;
     const int h = 126;
-    const int margin = 55;
+    const int margin = 50;
 
     fl = 30; fr = 31;
     rl = 28; rr = 29;
