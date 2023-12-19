@@ -228,7 +228,7 @@ QColor OnPaint::get_tpms_color(int tpms)
 QString OnPaint::get_tpms_text(int tpms) 
 {
     if(tpms < 5 || tpms > 200)
-        return "-";
+        return "--";
 
     QString str;
     str.sprintf("%d", tpms );
@@ -246,8 +246,6 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
     const int h = 126;
     const int margin = 50;
 
-    fl = 30; fr = 31;
-    rl = 28; rr = 29;
 
     //p.setOpacity(0.8);
     //p.drawPixmap(x, y, w, h, img_tire_pressure);
@@ -281,7 +279,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
   configFont( p, "Open Sans",  40, "Regular");
 
 
-  text3 = "1234567890";
+  //text3 = "1234567890";
   p.drawText( QRect(bb_x, 0, bb_w, 42), text1, textOpt );
   p.drawText( QRect(bb_x, bb_y, bb_w, 42), text2, textOpt );
   p.drawText( QRect(bb_x, bb_y+45, bb_w, 42), text3, textOpt );
