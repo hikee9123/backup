@@ -43,18 +43,18 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     };
 
     QStackedWidget  *panel_widget = new QStackedWidget();
-    //QButtonGroup    *nav_btns = new QButtonGroup(this);
+    QButtonGroup    *nav_btns = new QButtonGroup(this);
 
 
     // 버튼을 가로로 2개씩 세로로 배열할 레이아웃 생성
-    QGridLayout *buttonLayout = new QGridLayout();
+    //QGridLayout *buttonLayout = new QGridLayout();
     int row = 0;
     int col = 0;
 
     for (auto &[name, panel] : panels) {
         QPushButton *btn = new QPushButton(name);
         btn->setCheckable(true);
-        //btn->setChecked(nav_btns->buttons().size() == 0);
+        btn->setChecked(nav_btns->buttons().size() == 0);
         btn->setStyleSheet(R"(
         QPushButton {
             color: black;
@@ -74,7 +74,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         }
         )");
         btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        //nav_btns->addButton(btn);
+        nav_btns->addButton(btn);
 
         ScrollView *panel_frame = new ScrollView(panel, this);
         panel_widget->addWidget(panel_frame);
@@ -85,7 +85,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         });
 
         // 버튼을 가로로 2개씩 배열
-        buttonLayout->addWidget(btn, row, col);
+       // buttonLayout->addWidget(btn, row, col);
         col++;
         // 두 개의 버튼이 가로로 배치되면 다음 행으로 이동
         if (col == 2) {
@@ -96,7 +96,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
     // 전체 레이아웃 설정
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addLayout(buttonLayout);
+    mainLayout->addLayout(nav_btns);
     mainLayout->addWidget(panel_widget);
     setLayout(mainLayout);
 
@@ -105,7 +105,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     //panel_widget->setCurrentIndex(0);
 
     // Show the stacked widget
-    panel_widget->show();
+    //panel_widget->show();
 
 /*
     setStyleSheet(R"(
