@@ -43,7 +43,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     };
 
     QStackedWidget  *panel_widget = new QStackedWidget();
-    QButtonGroup    *nav_btns = new QButtonGroup(this);
+    //QButtonGroup    *nav_btns = new QButtonGroup(this);
 
 
     // 버튼을 가로로 2개씩 세로로 배열할 레이아웃 생성
