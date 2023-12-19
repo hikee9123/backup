@@ -18,4 +18,4 @@ class CarControllerCustom:
       can_sends.append(hyundaican.create_clu11( CC.packer, CC.frame, CS.clu11, btn_signal, self.CP.carFingerprint))
 
     str_log1 = 'bs={}  seq={}'.format(  btn_signal, self.NC.seq_command )
-    trace1.printf1( '{}'.format( str_log1 ) )
+    trace1.printf2( '{}'.format( str_log1 ) )
