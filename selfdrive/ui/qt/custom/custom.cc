@@ -23,7 +23,7 @@
 #include "selfdrive/ui/qt/custom/custom.h"
 
 
-CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
+CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
     
 
 /*
