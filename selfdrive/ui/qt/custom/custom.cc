@@ -44,8 +44,8 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         //{tr("Navigation"), new QWidget(this)},
     };
 
-    setWindowTitle("Tab Example");
-    setGeometry(100, 100, 1024, 900);
+    //setWindowTitle("Tab Example");
+    //setGeometry(100, 100, 1024, 900);
 
     // 탭 위젯
     QTabWidget *tabWidget = new QTabWidget(this);
