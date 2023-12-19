@@ -54,7 +54,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
             border-bottom-color: #C2C7CB; /* 위쪽 선 색상 */
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
-            min-width: 8ex; /* 탭의 최소 너비 */
+            min-width: 100ex; /* 탭의 최소 너비 */
             padding: 2px; /* 탭의 내부 여백 */
             margin-right: 1px; /* 탭 사이의 간격 조절 */
             background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
