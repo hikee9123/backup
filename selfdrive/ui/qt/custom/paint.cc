@@ -245,7 +245,9 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
     const int h = 126;
     const int margin = 30;
 
-
+    fl = 30;
+    rl = 29;
+    
     //p.setOpacity(0.8);
     //p.drawPixmap(x, y, w, h, img_tire_pressure);
     //p.setFont(InterFont(38, QFont::Bold));
@@ -264,7 +266,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
   QString text2 = QString::fromStdString(alert.alertTextMsg2);
   QString text3 = QString::fromStdString(alert.alertTextMsg3);
 
-  int bb_x = 0;
+  int bb_x = 200;
   int bb_y = 930;
   int bb_w = width();
 
