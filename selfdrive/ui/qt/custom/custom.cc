@@ -68,6 +68,9 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
     setLayout(mainLayout);
     //show();
 
+    // 탭 위젯을 전체 화면으로 표시
+    tabWidget->showMaximized();    
+
 /*
     setStyleSheet(R"(
         * {
