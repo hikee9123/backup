@@ -24,7 +24,7 @@
 
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
-    setSpacing(50);
+    
 
 /*
     QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
