@@ -7,7 +7,7 @@
 #include <vector>
 
 #include <QDebug>
-
+#include <QTabWidget>
 
 #include "common/params.h"
 #include "common/watchdog.h"
