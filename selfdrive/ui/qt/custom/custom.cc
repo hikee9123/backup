@@ -54,7 +54,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     for (auto &[name, panel] : panels) {
         QPushButton *btn = new QPushButton(name);
         btn->setCheckable(true);
-        btn->setChecked(nav_btns->buttons().size() == 0);
+        //btn->setChecked(nav_btns->buttons().size() == 0);
         btn->setStyleSheet(R"(
         QPushButton {
             color: black;
@@ -74,13 +74,13 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         }
         )");
         btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        nav_btns->addButton(btn);
+        //nav_btns->addButton(btn);
 
         ScrollView *panel_frame = new ScrollView(panel, this);
         panel_widget->addWidget(panel_frame);
 
         QObject::connect(btn, &QPushButton::clicked, [=, w = panel_frame]() {
-            //btn->setChecked(true);
+            btn->setChecked(true);
             panel_widget->setCurrentWidget(w);
         });
 
@@ -101,7 +101,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     setLayout(mainLayout);
 
     // Set the current page
-    panel_widget->setCurrentIndex(0);
+    //panel_widget->setCurrentIndex(0);
 
     // Show the stacked widget
     //panel_widget->show();
