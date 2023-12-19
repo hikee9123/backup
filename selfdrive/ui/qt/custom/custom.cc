@@ -53,7 +53,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         QPushButton {
             color: black;
             border: none;
-            background: gray;
+            background: white;
             font-size: 65px;
             font-weight: 500;
             width: 350px; /* 너비 추가 */
@@ -76,7 +76,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         //ScrollView *panel_frame = new ScrollView(panel, this);
         //panel_widget->addWidget(panel_frame);
 
-        QObject::connect(btn, &QPushButton::clicked, [=, w = panel]() {
+        QObject::connect(btn, &QPushButton::clicked, [w = panel]() {
             // Set the current widget based on the button clicked
             panel_widget->setCurrentWidget(w);
         });
@@ -84,14 +84,14 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     }
 
     // Add the stacked widget to the main layout
-    mainLayout->addWidget(panel_widget);
+    //mainLayout->addWidget(panel_widget);
 
     // Set the main layout for the widget
     setLayout(mainLayout);
 
     show();
 
-/*
+
     setStyleSheet(R"(
         * {
         color: white;
@@ -105,7 +105,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         border-radius: 30px;
         }
     )");
-*/
+
 
 
     /*
