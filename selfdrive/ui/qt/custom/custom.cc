@@ -26,7 +26,6 @@
 CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     setSpacing(50);
 
-  setWindowTitle("Button Example");
 /*
     QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
         for (auto btn : findChildren<ButtonControl *>()) {
@@ -36,28 +35,31 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 */
 
     QList<QPair<QString, QWidget *>> panels = {
-        {tr("Community"), new CommunityPanel(this)},
+//        {tr("Community"), new CommunityPanel(this)},
         {tr("Tuning"), new QWidget(this)},
-     //   {tr("UI"), new QWidget(this)},
+        {tr("UI"), new QWidget(this)},
         //{tr("Debug"), new QWidget(this)},
         //{tr("Navigation"), new QWidget(this)},
     };
 
-    QStackedLayout  *layout = new QStackedLayout(this);
-    layout->setStackingMode(QStackedLayout::StackAll);
+    QStackedWidget  *panel_widget = new QStackedWidget();
+    QButtonGroup    *nav_btns = new QButtonGroup(this);
 
-    QWidget *w = new QWidget;    
-    QVBoxLayout     *vlayout = new QVBoxLayout(w);
-    vlayout->setMargin(45);
-    layout->addWidget(w);    
+
+    // 버튼을 가로로 2개씩 세로로 배열할 레이아웃 생성
+    QGridLayout *buttonLayout = new QGridLayout();
+    int row = 0;
+    int col = 0;
 
     for (auto &[name, panel] : panels) {
         QPushButton *btn = new QPushButton(name);
+        btn->setCheckable(true);
+        zbtn->setChecked(nav_btns->buttons().size() == 0);
         btn->setStyleSheet(R"(
         QPushButton {
             color: black;
             border: none;
-            background: white;
+            background: gray;
             font-size: 65px;
             font-weight: 500;
             width: 350px; /* 너비 추가 */
@@ -71,40 +73,38 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
             color: #FFADAD;
         }
         )");
-        vlayout->addWidget(btn, 0, Qt::AlignBottom | Qt::AlignRight);        
+        btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        nav_btns->addButton(btn);
 
-        QObject::connect(btn, &QPushButton::clicked, [=](bool checked) {
-          //btn->setEnabled(false);
-          //Params().putBool("DisableLogging", !checked);
-          //last_button = nanos_since_boot();
+        ScrollView *panel_frame = new ScrollView(panel, this);
+        panel_widget->addWidget(panel_frame);
+
+        QObject::connect(btn, &QPushButton::clicked, [=, w = panel_frame]() {
+            //btn->setChecked(true);
+            panel_widget->setCurrentWidget(w);
         });
 
-        //btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        //mainLayout->addWidget(btn);
-
-       // Add panel directly to the stacked widget
-       // panel_widget->addWidget(panel);
-
-        //ScrollView *panel_frame = new ScrollView(panel, this);
-        //panel_widget->addWidget(panel_frame);
-
-        //QObject::connect(btn, &QPushButton::clicked, [=,w = panel]() {
-            // Set the current widget based on the button clicked
-          //  panel_widget->setCurrentWidget(w);
-        //});
-           
+        // 버튼을 가로로 2개씩 배열
+        buttonLayout->addWidget(btn, row, col);
+        col++;
+        // 두 개의 버튼이 가로로 배치되면 다음 행으로 이동
+        if (col == 2) {
+            col = 0;
+            row++;
+        }                
     }
 
-    w->raise();
+    // 전체 레이아웃 설정
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addLayout(buttonLayout);
+    mainLayout->addWidget(panel_widget);
+    setLayout(mainLayout);
 
-    // Add the stacked widget to the main layout
-    //mainLayout->addWidget(panel_widget);
+    // Set the current page
+    //panel_widget->setCurrentIndex(0);
 
-    // Set the main layout for the widget
-    setLayout(layout);
-
-    show();
-
+    // Show the stacked widget
+    //panel_widget->show();
 
     setStyleSheet(R"(
         * {
