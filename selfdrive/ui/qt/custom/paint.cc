@@ -269,7 +269,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 
   int bb_x = 250;
   int bb_y = 930;
-  int bb_w = 1700;//width();
+  int bb_w = 1600;//width();
 
   QRect rc( bb_x, bb_y, bb_w, 90);
 
