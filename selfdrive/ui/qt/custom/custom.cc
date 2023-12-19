@@ -26,6 +26,7 @@
 CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     setSpacing(50);
 
+  setWindowTitle("Button Example");
 /*
     QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
         for (auto btn : findChildren<ButtonControl *>()) {
@@ -42,7 +43,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         //{tr("Navigation"), new QWidget(this)},
     };
 
-    QStackedWidget  *panel_widget = new QStackedWidget();
+    QStackedWidget  *panel_widget = new QStackedWidget(this);
     QVBoxLayout     *mainLayout = new QVBoxLayout(this);
 
     for (auto &[name, panel] : panels) {
@@ -72,9 +73,9 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
        // Add panel directly to the stacked widget
         panel_widget->addWidget(panel);
 
-        QObject::connect(btn, &QPushButton::clicked, [=, w = panel_frame]() {
+        QObject::connect(btn, &QPushButton::clicked, [=]() {
             // Set the current widget based on the button clicked
-            panel_widget->setCurrentWidget(w);
+            panel_widget->setCurrentWidget(panel);
         });
            
     }
@@ -85,7 +86,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     // Set the main layout for the widget
     setLayout(mainLayout);
 
-
+    show();
 
 /*
     setStyleSheet(R"(
