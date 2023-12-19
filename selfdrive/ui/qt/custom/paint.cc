@@ -173,7 +173,7 @@ void OnPaint::drawHud(QPainter &p)
   // 2. tpms
   if( true )
   {
-    const int x = 78;
+    const int x = 75;
     const int y = 800; 
 
     bb_draw_tpms( p, x, y);
@@ -244,7 +244,7 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
 
     const int w = 58;
     const int h = 126;
-    const int margin = 50;
+    const int margin = 55;
 
     fl = 30; fr = 31;
     rl = 28; rr = 29;
@@ -281,6 +281,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
   configFont( p, "Open Sans",  40, "Regular");
 
 
+  text1 = "1234567890";
   p.drawText( QRect(bb_x, 0, bb_w, 42), text1, textOpt );
   p.drawText( QRect(bb_x, bb_y, bb_w, 42), text2, textOpt );
   p.drawText( QRect(bb_x, bb_y+45, bb_w, 42), text3, textOpt );
