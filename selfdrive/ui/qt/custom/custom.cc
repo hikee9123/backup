@@ -59,6 +59,13 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     setLayout(mainLayout);
     show();
 */
+    QPushButton *button1 = new QPushButton("Button 1");
+    QPushButton *button2 = new QPushButton("Button 2");
+
+    // 수직 레이아웃에 버튼 추가
+    addWidget(button1);
+    addWidget(button2);
+
 
     setStyleSheet(R"(
         * {
@@ -75,39 +82,6 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     )");
 
 
-
-    
-    QStackedWidget *stackedWidget = new QStackedWidget();
-    // Create two pages
-    // 1.
-    CommunityPanel *page1 = new CommunityPanel(this); // QWidget();
-    page1->setStyleSheet("background-color: lightblue;");
-    QPushButton *button1 = new QPushButton("Community");
-    QObject::connect(button1, &QPushButton::clicked, [stackedWidget]() {
-        stackedWidget->setCurrentIndex(1);
-    });
-    QVBoxLayout *layout1 = new QVBoxLayout(page1);
-    layout1->addWidget(button1);
-
-    // 2.
-    QWidget *page2 = new QWidget();
-    page2->setStyleSheet("background-color: lightgreen;");
-    QPushButton *button2 = new QPushButton("Go to Page 1");
-    QObject::connect(button2, &QPushButton::clicked, [stackedWidget]() {
-        stackedWidget->setCurrentIndex(0);
-    });
-    QVBoxLayout *layout2 = new QVBoxLayout(page2);
-    layout2->addWidget(button2);
-
-    // Add pages to the stacked widget
-    stackedWidget->addWidget(page1);
-    stackedWidget->addWidget(page2);
-
-    // Set the current page
-    stackedWidget->setCurrentIndex(0);
-
-    // Show the stacked widget
-    stackedWidget->show();
     
 }
 
