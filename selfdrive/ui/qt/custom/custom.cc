@@ -58,7 +58,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
-   // mainLayout->setGeometry(0, 0, 1024, 900);
+    mainLayout->setGeometry( 1024, 900);
     setLayout(mainLayout);
     show();
 
