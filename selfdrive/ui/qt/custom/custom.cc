@@ -34,6 +34,8 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     });
 */
 
+
+
     QList<QPair<QString, QWidget *>> panels = {
 //        {tr("Community"), new CommunityPanel(this)},
         {tr("Tuning"), new QWidget(this)},
@@ -42,69 +44,23 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         //{tr("Navigation"), new QWidget(this)},
     };
 
-    QStackedWidget  *panel_widget = new QStackedWidget();
-    QButtonGroup    *nav_btns = new QButtonGroup(this);
+    setWindowTitle("Tab Example");
+    setGeometry(100, 100, 400, 300);
 
-
-    // 버튼을 가로로 2개씩 세로로 배열할 레이아웃 생성
-    QGridLayout *buttonLayout = new QGridLayout();
-    int row = 0;
-    int col = 0;
-
+    // 탭 위젯
+    QTabWidget *tabWidget = new QTabWidget(this);
     for (auto &[name, panel] : panels) {
-        QPushButton *btn = new QPushButton(name);
-        btn->setCheckable(true);
-        btn->setChecked(nav_btns->buttons().size() == 0);
-        btn->setStyleSheet(R"(
-        QPushButton {
-            color: black;
-            border: none;
-            background: gray;
-            font-size: 65px;
-            font-weight: 500;
-            width: 350px; /* 너비 추가 */
-            height: 80px; /* 높이 추가 */            
-        }
-        QPushButton:checked {
-            color: white;
-            background: darkgrey;
-        }
-        QPushButton:pressed {
-            color: #FFADAD;
-        }
-        )");
-        btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        nav_btns->addButton(btn);
-
-        ScrollView *panel_frame = new ScrollView(panel, this);
-        panel_widget->addWidget(panel_frame);
-
-        QObject::connect(btn, &QPushButton::clicked, [=, w = panel_frame]() {
-            //btn->setChecked(true);
-            panel_widget->setCurrentWidget(w);
-        });
-
-        // 버튼을 가로로 2개씩 배열
-        buttonLayout->addWidget(btn, row, col);
-        col++;
-        // 두 개의 버튼이 가로로 배치되면 다음 행으로 이동
-        if (col == 2) {
-            col = 0;
-            row++;
-        }                
+         QVBoxLayout *layout1 = new QVBoxLayout(panels);
+        layout1->addWidget(new QPushButton("Button 1-1", panels));
+        layout1->addWidget(new QPushButton("Button 1-2", panels));
+        tabWidget->addTab(panels, "Tab 1");
     }
 
-    // 전체 레이아웃 설정
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->addLayout(buttonLayout);
-    mainLayout->addWidget(panel_widget);
+    mainLayout->addWidget(tabWidget);
     setLayout(mainLayout);
+    show();
 
-    // Set the current page
-    //panel_widget->setCurrentIndex(0);
-
-    // Show the stacked widget
-    //panel_widget->show();
 
     setStyleSheet(R"(
         * {
