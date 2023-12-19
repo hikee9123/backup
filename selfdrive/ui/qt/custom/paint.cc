@@ -173,7 +173,7 @@ void OnPaint::drawHud(QPainter &p)
   // 2. tpms
   if( true )
   {
-    const int x = 80;
+    const int x = 78;
     const int y = 800; 
 
     bb_draw_tpms( p, x, y);
@@ -204,13 +204,14 @@ void OnPaint::ui_main_navi( QPainter &p )
   text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("cLSD = %d", m_nda.camLimitSpeedLeftDist);    p.drawText( bb_x, nYPos+=nGap, text4 );
 
-
+/*
   int unit = m_param.tpmsData.getUnit();
   int fl = m_param.tpmsData.getFl();
   int fr = m_param.tpmsData.getFr();
   int rl = m_param.tpmsData.getRl();
   int rr = m_param.tpmsData.getRr();
   text4.sprintf("tpms = %d,%d,%d,%d,%d", unit, fl, fr, rl,rr ); p.drawText( bb_x, nYPos+=nGap, text4 );
+*/
 }
 
 
@@ -243,7 +244,7 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
 
     const int w = 58;
     const int h = 126;
-    const int margin = 40;
+    const int margin = 50;
 
     fl = 30; fr = 31;
     rl = 28; rr = 29;
@@ -268,7 +269,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 
   int bb_x = 250;
   int bb_y = 930;
-  int bb_w = 1500;//width();
+  int bb_w = 1700;//width();
 
   QRect rc( bb_x, bb_y, bb_w, 90);
 
