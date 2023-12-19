@@ -76,10 +76,10 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         //ScrollView *panel_frame = new ScrollView(panel, this);
         //panel_widget->addWidget(panel_frame);
 
-        QObject::connect(btn, &QPushButton::clicked, [=,w = panel]() {
+        //QObject::connect(btn, &QPushButton::clicked, [=,w = panel]() {
             // Set the current widget based on the button clicked
           //  panel_widget->setCurrentWidget(w);
-        });
+        //});
            
     }
 
