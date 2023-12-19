@@ -50,15 +50,15 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     // 탭 위젯
     QTabWidget *tabWidget = new QTabWidget(this);
     for (auto &[name, panel] : panels) {
-         QVBoxLayout *layout1 = new QVBoxLayout(panel);
-        layout1->addWidget(new QPushButton("Button 1-1" , panel));
-        layout1->addWidget(new QPushButton("Button 1-2", panel));
+         //QVBoxLayout *layout1 = new QVBoxLayout(panel);
+        //layout1->addWidget(new QPushButton("Button 1-1" , panel));
+        //layout1->addWidget(new QPushButton("Button 1-2", panel));
         tabWidget->addTab(panel, name);
     }
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
-    mainLayout->setGeometry(0, 0, 1024, 900);
+   // mainLayout->setGeometry(0, 0, 1024, 900);
     setLayout(mainLayout);
     show();
 
