@@ -173,7 +173,7 @@ void OnPaint::drawHud(QPainter &p)
   // 2. tpms
   if( true )
   {
-    const int x = 100;
+    const int x = 80;
     const int y = 800; 
 
     bb_draw_tpms( p, x, y);
@@ -268,7 +268,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 
   int bb_x = 250;
   int bb_y = 930;
-  int bb_w = 2048;//width();
+  int bb_w = 1900;//width();
 
   QRect rc( bb_x, bb_y, bb_w, 90);
 
