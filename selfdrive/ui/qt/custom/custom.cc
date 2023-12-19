@@ -62,7 +62,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     QPushButton *button1 = new QPushButton("Button 1");
     QPushButton *button2 = new QPushButton("Button 2");
 
-   QVBoxLayout *verticalLayout = new QVBoxLayout(&parentWidget);
+   QVBoxLayout *verticalLayout = new QVBoxLayout(this);
 
     // 수직 레이아웃에 버튼 추가
     verticalLayout->addWidget(button1);
