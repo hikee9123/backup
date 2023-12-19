@@ -101,9 +101,9 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     //mainLayout->addWidget(panel_widget);
 
     // Set the main layout for the widget
-    //setLayout(mainLayout);
+    setLayout(layout);
 
-    //show();
+    show();
 
 
     setStyleSheet(R"(
