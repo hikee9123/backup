@@ -43,18 +43,11 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     };
 
     QStackedWidget  *panel_widget = new QStackedWidget();
-    QButtonGroup    *nav_btns = new QButtonGroup(this);
-
-
-    // 버튼을 가로로 2개씩 세로로 배열할 레이아웃 생성
-    //QGridLayout *buttonLayout = new QGridLayout();
-    int row = 0;
-    int col = 0;
+    QVBoxLayout     *mainLayout = new QVBoxLayout(this);
 
     for (auto &[name, panel] : panels) {
         QPushButton *btn = new QPushButton(name);
         btn->setCheckable(true);
-        btn->setChecked(nav_btns->buttons().size() == 0);
         btn->setStyleSheet(R"(
         QPushButton {
             color: black;
@@ -74,38 +67,25 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         }
         )");
         btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        nav_btns->addButton(btn);
+        mainLayout->addWidget(btn);
 
-        ScrollView *panel_frame = new ScrollView(panel, this);
-        panel_widget->addWidget(panel_frame);
+       // Add panel directly to the stacked widget
+        panel_widget->addWidget(panel);
 
         QObject::connect(btn, &QPushButton::clicked, [=, w = panel_frame]() {
-            btn->setChecked(true);
+            // Set the current widget based on the button clicked
             panel_widget->setCurrentWidget(w);
         });
-
-        // 버튼을 가로로 2개씩 배열
-       // buttonLayout->addWidget(btn, row, col);
-        col++;
-        // 두 개의 버튼이 가로로 배치되면 다음 행으로 이동
-        if (col == 2) {
-            col = 0;
-            row++;
-        }                
+           
     }
 
-    // 전체 레이아웃 설정
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    //mainLayout->addLayout(nav_btns);
+    // Add the stacked widget to the main layout
     mainLayout->addWidget(panel_widget);
+
+    // Set the main layout for the widget
     setLayout(mainLayout);
 
-    //mainLayout->show();
-    // Set the current page
-    //panel_widget->setCurrentIndex(0);
 
-    // Show the stacked widget
-    //panel_widget->show();
 
 /*
     setStyleSheet(R"(
