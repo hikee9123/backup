@@ -35,7 +35,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
 */
 
 
-/*
+*
     QList<QPair<QString, QWidget *>> panels = {
         {tr("Community"), new CommunityPanel(this)},
         {tr("Tuning"), new QWidget(this)},
@@ -58,8 +58,8 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
     mainLayout->addWidget(tabWidget);
     setLayout(mainLayout);
     show();
-*/
 
+/*
     QPushButton *button1 = new QPushButton("Button 1");
     QPushButton *button2 = new QPushButton("Button 2");
 
@@ -70,7 +70,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
     verticalLayout->addWidget(button2);
 
     setLayout(verticalLayout);
-
+*/
     setStyleSheet(R"(
         * {
         color: white;
