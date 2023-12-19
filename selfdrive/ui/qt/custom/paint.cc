@@ -170,20 +170,20 @@ void OnPaint::drawHud(QPainter &p)
   ui_main_navi( p );
 
 
-  // 2. tpms
-  if( true )
-  {
-    const int x = 75;
-    const int y = 800; 
-
-    bb_draw_tpms( p, x, y);
-
-  } 
 
   if( true )
   {
     ui_draw_debug1( p );
   }
+
+  // 2. tpms
+  if( true )
+  {
+    const int x = 75;
+    const int y = 800; 
+    bb_draw_tpms( p, x, y);
+  } 
+
 }
 
 
