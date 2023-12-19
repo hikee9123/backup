@@ -51,7 +51,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     QTabWidget *tabWidget = new QTabWidget(this);
     for (auto &[name, panel] : panels) {
          QVBoxLayout *layout1 = new QVBoxLayout(panels);
-        layout1->addWidget(new QPushButton("Button 1-1", panels));
+        layout1->addWidget(new QPushButton( name , panels));
         layout1->addWidget(new QPushButton("Button 1-2", panels));
         tabWidget->addTab(panels, "Tab 1");
     }
