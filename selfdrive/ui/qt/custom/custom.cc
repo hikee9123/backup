@@ -87,7 +87,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
     mainLayout->addWidget(tabWidget);
 
     //tabWidget->move(100, 50);
-    resize(1024, 900);
+   // resize(1024, 900);
    // setLayout(mainLayout);
     //show();
 
