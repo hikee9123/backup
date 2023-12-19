@@ -48,17 +48,32 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
     // 탭 위젯
     QTabWidget *tabWidget = new QTabWidget(this);
     // 탭 버튼에 대한 스타일시트 설정
+    // 스타일시트를 사용하여 탭의 버튼 모양 변경
     tabWidget->setStyleSheet(R"(
         QTabBar::tab {
-            background: gray;
-            color: white;
-            padding: 8px 16px;
+            border: 2px solid #C4C4C3;
+            border-bottom-color: #C2C7CB; /* 위쪽 선 색상 */
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            min-width: 8ex; /* 탭의 최소 너비 */
+            padding: 2px; /* 탭의 내부 여백 */
+            margin-right: -1px; /* 탭 사이의 간격 조절 */
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #FAFAFA, stop: 0.4 #F4F4F4,
+                                        stop: 0.5 #EDEDED, stop: 1.0 #FAFAFA);
         }
+
         QTabBar::tab:selected {
-            background: white;
-            color: gray;
+            border-bottom-color: #B1B1B0; /* 선택된 탭의 위쪽 선 색상 */
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #FAFAFA, stop: 0.4 #F4F4F4,
+                                        stop: 0.5 #EDEDED, stop: 1.0 #FAFAFA);
         }
-    )");    
+
+        QTabBar::tab:!selected {
+            margin-top: 2px; /* 선택되지 않은 탭의 위치 조절 */
+        }
+    )");  
     for (auto &[name, panel] : panels) {
         tabWidget->addTab(panel, name);
     }
