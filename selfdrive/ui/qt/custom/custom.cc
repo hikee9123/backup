@@ -43,7 +43,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         //{tr("Navigation"), new QWidget(this)},
     };
 
-    QStackedWidget  *panel_widget = new QStackedWidget(this);
+   // QStackedWidget  *panel_widget = new QStackedWidget(this);
     QVBoxLayout     *mainLayout = new QVBoxLayout(this);
 
     for (auto &[name, panel] : panels) {
@@ -71,20 +71,20 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
         mainLayout->addWidget(btn);
 
        // Add panel directly to the stacked widget
-        panel_widget->addWidget(panel);
+       // panel_widget->addWidget(panel);
 
         //ScrollView *panel_frame = new ScrollView(panel, this);
         //panel_widget->addWidget(panel_frame);
 
         QObject::connect(btn, &QPushButton::clicked, [=,w = panel]() {
             // Set the current widget based on the button clicked
-            panel_widget->setCurrentWidget(w);
+          //  panel_widget->setCurrentWidget(w);
         });
            
     }
 
     // Add the stacked widget to the main layout
-    mainLayout->addWidget(panel_widget);
+    //mainLayout->addWidget(panel_widget);
 
     // Set the main layout for the widget
     setLayout(mainLayout);
