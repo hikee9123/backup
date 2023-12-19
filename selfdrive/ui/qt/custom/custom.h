@@ -30,7 +30,7 @@ private slots:
 
 private:
   Params params;
-  std::map<std::string, ParamControl*> toggles;
+
  private:
 
 };

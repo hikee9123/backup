@@ -47,10 +47,18 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
 
     // 탭 위젯
     QTabWidget *tabWidget = new QTabWidget(this);
+    // 탭 버튼에 대한 스타일시트 설정
+    tabWidget->setStyleSheet(R"(
+        QTabBar::tab {
+            background: gray;
+            color: white;
+            padding: 8px 16px;
+        }
+        QTabBar::tab:selected {
+            background: darkgray;
+        }
+    )");    
     for (auto &[name, panel] : panels) {
-         //QVBoxLayout *layout1 = new QVBoxLayout(panel);
-        //layout1->addWidget(new QPushButton("Button 1-1" , panel));
-        //layout1->addWidget(new QPushButton("Button 1-2", panel));
         tabWidget->addTab(panel, name);
     }
 
