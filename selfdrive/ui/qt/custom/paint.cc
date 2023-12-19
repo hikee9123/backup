@@ -192,17 +192,17 @@ void OnPaint::ui_main_navi( QPainter &p )
   QString text4;
 
   int bb_x = 100;
-  int bb_y = 300;
+  int bb_y = 150;
 
   int  nYPos = bb_y;
   int  nGap = 80; 
 
  
 
-  text4.sprintf("NDA = %d, %d,%d", m_nda.activeNDA, m_width, m_height );                p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("cLSD = %d", m_nda.camLimitSpeedLeftDist);    p.drawText( bb_x, nYPos+=nGap, text4 );
+//  text4.sprintf("NDA = %d, %d,%d", m_nda.activeNDA, m_width, m_height );                p.drawText( bb_x, nYPos+=nGap, text4 );
+//  text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
+//  text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("%d", m_nda.camLimitSpeedLeftDist);    p.drawText( bb_x, nYPos+=nGap, text4 );
 
 /*
   int unit = m_param.tpmsData.getUnit();
