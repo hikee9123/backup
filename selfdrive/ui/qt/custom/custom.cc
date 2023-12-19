@@ -55,7 +55,8 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
             padding: 8px 16px;
         }
         QTabBar::tab:selected {
-            background: darkgray;
+            background: white;
+            color: gray;
         }
     )");    
     for (auto &[name, panel] : panels) {
@@ -65,20 +66,9 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
     setLayout(mainLayout);
-    show();
+    //show();
 
 /*
-    QPushButton *button1 = new QPushButton("Button 1");
-    QPushButton *button2 = new QPushButton("Button 2");
-
-   QVBoxLayout *verticalLayout = new QVBoxLayout(this);
-
-    // 수직 레이아웃에 버튼 추가
-    verticalLayout->addWidget(button1);
-    verticalLayout->addWidget(button2);
-
-    setLayout(verticalLayout);
-*/
     setStyleSheet(R"(
         * {
         color: white;
@@ -92,8 +82,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
         border-radius: 30px;
         }
     )");
-
-
+*/
 }
 
 
