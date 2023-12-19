@@ -192,7 +192,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   QString text4;
 
   int bb_x = 100;
-  int bb_y = 150;
+  int bb_y = 450;
 
   int  nYPos = bb_y;
   int  nGap = 80; 
