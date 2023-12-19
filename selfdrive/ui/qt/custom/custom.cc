@@ -58,7 +58,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     mainLayout->addWidget(tabWidget);
     setLayout(mainLayout);
     show();
-*/
+
     QPushButton *button1 = new QPushButton("Button 1");
     QPushButton *button2 = new QPushButton("Button 2");
 
@@ -69,7 +69,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : ListWidget(parent) {
     verticalLayout->addWidget(button2);
 
     setLayout(verticalLayout);
-
+*/
     setStyleSheet(R"(
         * {
         color: white;
