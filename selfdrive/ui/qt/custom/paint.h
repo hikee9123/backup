@@ -44,7 +44,7 @@ private:
     cereal::CarStateCustom::Tpms::Reader tpmsData;
  
 
-  } m_param, m_old;
+  } m_param;
   
   struct _STATUS_
   {
