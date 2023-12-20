@@ -211,6 +211,8 @@ class RouteEngine:
       else:
         msg.navInstruction.speedLimit = naviData.roadLimitSpeed / 3.6
         msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
+
+      msg.distanceRemaining = naviData.camLimitSpeedLeftDist
     else:
       naviData = None
 
