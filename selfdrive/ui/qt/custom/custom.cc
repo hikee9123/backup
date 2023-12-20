@@ -31,8 +31,6 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
         }
     });
 */
-   setContentsMargins(1, 1, 1, 1);
-
     QList<QPair<QString, QWidget *>> panels = {
         {tr("Community"), new CommunityPanel(this)},
         {tr("UI"), new QWidget(this)},
@@ -72,10 +70,8 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
         }
     )");
     for (auto &[name, panel] : panels) {
-      panel->setContentsMargins(5, 10, 5, 5);
+      panel->setContentsMargins(50, 25, 50, 25);
       ScrollView *panel_frame = new ScrollView(panel, this);
-      //addWidget(panel_frame);
-
       tabWidget->addTab(panel_frame, name);
     }
 
@@ -86,8 +82,35 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
 }
 
 
+void CustomPanel::setContentsMargins(int left, int top, int right, int bottom)
+{
+  QWidget::setContentsMargins(0,0,0,0);
+  printf("CustomPanel::setContentsMargins= %d,%d,%d,%d,%d\n", left, top,right,bottom);
+}
+
+void CustomPanel::create(WId window, bool initializeWindow, bool destroyOldWindow)
+{
+  printf("CustomPanel::create= %d,%d,%d,%d\n", window, initializeWindow,destroyOldWindow);  
+  QWidget::create( window,  initializeWindow,  destroyOldWindow);
+
+}
+
+void CustomPanel::destroy(bool destroyWindow , bool destroySubWindows)
+{
+  printf("CustomPanel::destroy= %d,%d\n", destroyWindow, destroySubWindows );  
+  QWidget::destroy( destroyWindow,  destroySubWindows );
+}
+
+void CustomPanel::showEvent(QShowEvent *event)
+{
+  printf("CustomPanel::showEvent \n" );  
+  QWidget::showEvent( event );
+}
 
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
 
 CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) {
 /*
@@ -139,10 +162,13 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) {
   }
 }
 
-void CommunityPanel::showEvent(QShowEvent *event) {
+void CommunityPanel::showEvent(QShowEvent *event) 
+{
+  printf("CommunityPanel::showEvent \n" );  
   updateToggles();
 }
 
-void CommunityPanel::updateToggles() {
+void CommunityPanel::updateToggles()
+{
 
 }
