@@ -85,12 +85,12 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
 void CustomPanel::setContentsMargins(int left, int top, int right, int bottom)
 {
   QWidget::setContentsMargins(0,0,0,0);
-  printf("CustomPanel::setContentsMargins= %d,%d,%d,%d,%d\n", left, top,right,bottom);
+  printf("CustomPanel::setContentsMargins= %d,%d,%d,%d\n", left, top,right,bottom);
 }
 
 void CustomPanel::create(WId window, bool initializeWindow, bool destroyOldWindow)
 {
-  printf("CustomPanel::create= %d,%d,%d,%d\n", window, initializeWindow,destroyOldWindow);  
+  printf("CustomPanel::create= %d,%d\n", initializeWindow,destroyOldWindow);  
   QWidget::create( window,  initializeWindow,  destroyOldWindow);
 
 }
