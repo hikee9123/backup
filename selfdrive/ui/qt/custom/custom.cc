@@ -103,6 +103,7 @@ void CustomPanel::destroy(bool destroyWindow , bool destroySubWindows)
 
 void CustomPanel::showEvent(QShowEvent *event)
 {
+  QWidget::setContentsMargins(0,0,0,0);
   printf("CustomPanel::showEvent \n" );  
   QWidget::showEvent( event );
 }
