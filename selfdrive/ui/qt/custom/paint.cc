@@ -150,8 +150,8 @@ void OnPaint::updateState(const UIState &s)
     //}
   //}
 
-  const auto nav_instruction = sm["navInstruction"].getNavInstruction();
-  m_nda.camLimitSpeedLeftDist = nav_instruction.getManeuverDistance();
+  //const auto nav_instruction = sm["navInstruction"].getNavInstruction();
+  //m_nda.camLimitSpeedLeftDist = nav_instruction.getManeuverDistance();
 
 
   if ( sm.updated("carStateCustom") )
