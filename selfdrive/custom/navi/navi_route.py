@@ -48,6 +48,9 @@ class RouteEngine:
 
     self.reroute_counter = 0
 
+    for key, value in os.environ.items():
+      print(f'{key}: {value}')    
+
     if "MAPBOX_TOKEN" in os.environ:
       self.mapbox_token = os.environ["MAPBOX_TOKEN"]
       self.mapbox_host = "https://api.mapbox.com"

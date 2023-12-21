@@ -126,6 +126,12 @@ node {
   env.SOURCE_DIR = "/data/openpilot_source/"
   setupCredentials()
 
+  if (fileExists("/data/params/d/MapboxToken")) {
+    env.MAPBOX_TOKEN = readFile("/data/params/d/MapboxToken").trim()
+  }
+  echo "Mapbox Token: ${env.MAPBOX_TOKEN}"
+
+
   env.GIT_BRANCH = checkout(scm).GIT_BRANCH
   env.GIT_COMMIT = checkout(scm).GIT_COMMIT
 
