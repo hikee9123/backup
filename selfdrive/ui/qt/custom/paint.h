@@ -65,8 +65,8 @@ private:
 
 private:
    NetworkImageWidget *icon_01;
-   QPixmap img_tire_pressure;
-
+   //QPixmap img_tire_pressure;
+   int  is_debug;
   
 private:
   void   configFont(QPainter &p, const QString &family, int size, const QString &style);

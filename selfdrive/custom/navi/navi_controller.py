@@ -245,9 +245,7 @@ class NaviServer:
 def main():
 
   pm = messaging.PubMaster(['naviCustom']) 
-  
 
-  #curNaviData = msg.naviCustom.naviData
   server = NaviServer() 
   with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
     try:

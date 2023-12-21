@@ -161,7 +161,7 @@ class NaviControl():
   def get_navi_speed(self, sm, CS, cruiseState_speed, frame ):
     cruise_set_speed_kph = cruiseState_speed
     v_ego_kph = CS.out.vEgo * CV.MS_TO_KPH
-
+    self.sm.update()
     if sm.updated["naviCustom"]:
       naviData = sm["naviCustom"].naviData
       self.speedLimit = naviData.camLimitSpeed
@@ -232,7 +232,7 @@ class NaviControl():
 
   def update(self, c, CS, frame ):
           
-    self.sm.update(0)
+
     # send scc to car if longcontrol enabled and SCC not on bus 0 or ont live
     btn_signal = None
     if not self.button_status( CS  ):

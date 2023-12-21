@@ -33,8 +33,8 @@ OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent)
   main_layout->addLayout(top_layout);
   //connect(this, &OnPaint::valueChanged, [=] { update(); });
 
-
-  img_tire_pressure = QPixmap("images/img_tire_pressure.png");  
+  is_debug = Params().getBool("ShowDebugMessage");
+  //img_tire_pressure = QPixmap("images/img_tire_pressure.png");  
 }
 
 
@@ -167,6 +167,7 @@ void OnPaint::updateState(const UIState &s)
 
 void OnPaint::drawHud(QPainter &p)
 {
+  if( !is_debug ) return;
   ui_main_navi( p );
 
 

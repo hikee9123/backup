@@ -43,8 +43,7 @@ def only_offroad(started, params, CP: car.CarParams) -> bool:
 
 
 def UseExternalNaviRoutes()  -> bool:
-  return True
-  #return Params().get_bool('UseExternalNaviRoutes')
+  return Params().get_bool('UseExternalNaviRoutes')
 
 procs = [
   DaemonProcess("manage_athenad", "selfdrive.athena.manage_athenad", "AthenadPid"),
@@ -88,7 +87,7 @@ procs = [
   PythonProcess("statsd", "selfdrive.statsd", always_run),
 
   #custom
-  PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", always_run),
+  PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", only_onroad),
   PythonProcess("navi_route", "selfdrive.custom.navi.navi_route", only_onroad, enabled=UseExternalNaviRoutes() ),
 
 
