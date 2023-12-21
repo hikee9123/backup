@@ -154,8 +154,8 @@ void OnPaint::updateState(const UIState &s)
   //m_nda.camLimitSpeedLeftDist = nav_instruction.getManeuverDistance();
 
 
-  if ( sm.updated("carStateCustom") )
-  {
+  //if ( sm.updated("carStateCustom") )
+  //{
       auto carState_custom = sm["carStateCustom"].getCarStateCustom();
       m_param.tpmsData  = carState_custom.getTpms();
 
@@ -163,7 +163,7 @@ void OnPaint::updateState(const UIState &s)
       alert.alertTextMsg1 = carState_custom.getAlertTextMsg1();
       alert.alertTextMsg2 = carState_custom.getAlertTextMsg2();
       alert.alertTextMsg3 = carState_custom.getAlertTextMsg3();    
-  }
+  //}
 
 
 }
