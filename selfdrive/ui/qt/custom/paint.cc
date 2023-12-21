@@ -136,6 +136,9 @@ void OnPaint::updateState(const UIState &s)
     int roadLimitSpeed = naviData.getRoadLimitSpeed();
     int camLimitSpeed = naviData.getCamLimitSpeed();
     int camLimitSpeedLeftDist = naviData.getCamLimitSpeedLeftDist();
+    int cntIdx = naviData.getCntIdx();
+
+    
     //int sectionLimitSpeed = naviData.getSectionLimitSpeed();
     //int sectionLeftDist = naviData.getSectionLeftDist();
     //int isNda2 = naviData.getIsNda2();
@@ -147,6 +150,7 @@ void OnPaint::updateState(const UIState &s)
         m_nda.roadLimitSpeed = roadLimitSpeed;
         m_nda.camLimitSpeed = camLimitSpeed;
         m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
+        m_nda.cntIdx = cntIdx;
     //}
   //}
 
@@ -203,9 +207,11 @@ void OnPaint::ui_main_navi( QPainter &p )
   int  nGap = 80; 
 
  
-  text4.sprintf("NDA = %d", m_nda.activeNDA );                p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
+  //text4.sprintf("NDA = %d", m_nda.activeNDA );                p.drawText( bb_x, nYPos+=nGap, text4 );
+  //text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  //text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
+
+  text4.sprintf("cnt = %d", m_nda.cntIdx);             p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("%d", m_nda.camLimitSpeedLeftDist);    p.drawText( bb_x, nYPos+=nGap, text4 );
 }
 

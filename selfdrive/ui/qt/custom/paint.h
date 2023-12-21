@@ -60,6 +60,7 @@ private:
      int roadLimitSpeed;
      int camLimitSpeed;
      int camLimitSpeedLeftDist;
+     int cntIdx;
   } m_nda;
   
 

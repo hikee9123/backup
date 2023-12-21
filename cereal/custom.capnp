@@ -52,6 +52,7 @@ struct NaviCustom @0xf35cc4560bbf6ec2 {
         camSpeedFactor @11 :Float32;
         currentRoadName @12 :Text;
         isNda2 @13 :Bool;
+        cntIdx @14 :Int16;
     }       
 }
 

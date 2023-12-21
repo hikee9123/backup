@@ -263,10 +263,8 @@ def main():
           "roadLimitSpeed": server.get_limit_val("road_limit_speed", 0),
           "isHighway": server.get_limit_val("is_highway", False),
           "camType": server.get_limit_val("cam_type", 0),
-          #"camLimitSpeedLeftDist": server.get_limit_val("cam_limit_speed_left_dist", 0),
-          #"camLimitSpeed": server.get_limit_val("cam_limit_speed", 0),
-          "camLimitSpeedLeftDist": test_dist,
-          "camLimitSpeed": test_spd,
+          "camLimitSpeedLeftDist": server.get_limit_val("cam_limit_speed_left_dist", 0),
+          "camLimitSpeed": server.get_limit_val("cam_limit_speed", 0),
           "sectionLimitSpeed": server.get_limit_val("section_limit_speed", 0),
           "sectionLeftDist": server.get_limit_val("section_left_dist", 0),
           "sectionAvgSpeed": server.get_limit_val("section_avg_speed", 0),
@@ -275,6 +273,7 @@ def main():
           "camSpeedFactor": server.get_limit_val("cam_speed_factor", CAMERA_SPEED_FACTOR),
           "currentRoadName": server.get_limit_val("current_road_name", ""),
           "isNda2": server.get_limit_val("is_nda2", False),
+          "cntIdx": test_dist,
         }
 
         pm.send('naviCustom', dat )
@@ -283,10 +282,6 @@ def main():
         if test_dist > 1000:
           test_dist = 0
 
-
-        test_spd += 1
-        if test_spd > 100:
-          test_spd = 30
 
         server.send_sdp(sock)
         server.check()
