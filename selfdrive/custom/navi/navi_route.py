@@ -212,7 +212,7 @@ class RouteEngine:
         msg.navInstruction.speedLimit = naviData.roadLimitSpeed / 3.6
         msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
 
-      msg.navInstruction.distanceRemaining = naviData.camLimitSpeedLeftDist
+      msg.navInstruction.maneuverDistance = naviData.camLimitSpeedLeftDist
     else:
       naviData = None
 
