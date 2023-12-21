@@ -17,7 +17,6 @@ class CarStateCustom():
     self.params = Params()
     self.oldCruiseStateEnabled = False
     self.pm = messaging.PubMaster(['carStateCustom'])
-    self.msg = messaging.new_message('carStateCustom')
     self.frame = 0
     self.acc_active = 0
     self.cruise_set_mode = 0
@@ -49,24 +48,6 @@ class CarStateCustom():
 
 
   def update(self, ret, CS,  cp, cp_cruise ):
-    carStatus = self.msg.carStateCustom
-    self.get_tpms( carStatus.tpms,
-      cp.vl["TPMS11"]["UNIT"],
-      cp.vl["TPMS11"]["PRESSURE_FL"],
-      cp.vl["TPMS11"]["PRESSURE_FR"],
-      cp.vl["TPMS11"]["PRESSURE_RL"],
-      cp.vl["TPMS11"]["PRESSURE_RR"],
-    )
-
-
-    if self.frame % 10 == 0:
-      global trace1
-      carStatus.alertTextMsg1 = str(trace1.global_alertTextMsg1)
-      carStatus.alertTextMsg2 = str(trace1.global_alertTextMsg2)
-      carStatus.alertTextMsg3 = str(trace1.global_alertTextMsg3)       
-      self.pm.send('carStateCustom', self.msg )   
-
-
     self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]  #kph  현재 차량의 속도.
     # save the entire LFAHDA_MFC
     # self.lfahda = copy.copy(cp_cruise.vl["LFAHDA_MFC"])
@@ -92,3 +73,20 @@ class CarStateCustom():
 
     self.frame += 1
        
+
+    if self.frame % 10 == 0:
+      dat = messaging.new_message('carStateCustom')
+      carStatus = dat.carStateCustom
+      self.get_tpms( carStatus.tpms,
+        cp.vl["TPMS11"]["UNIT"],
+        cp.vl["TPMS11"]["PRESSURE_FL"],
+        cp.vl["TPMS11"]["PRESSURE_FR"],
+        cp.vl["TPMS11"]["PRESSURE_RL"],
+        cp.vl["TPMS11"]["PRESSURE_RR"],
+      )
+
+      global trace1
+      carStatus.alertTextMsg1 = str(trace1.global_alertTextMsg1)
+      carStatus.alertTextMsg2 = str(trace1.global_alertTextMsg2)
+      carStatus.alertTextMsg3 = str(trace1.global_alertTextMsg3)       
+      self.pm.send('carStateCustom', dat )          
