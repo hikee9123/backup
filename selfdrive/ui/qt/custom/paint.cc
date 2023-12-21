@@ -140,14 +140,14 @@ void OnPaint::updateState(const UIState &s)
     //int sectionLeftDist = naviData.getSectionLeftDist();
     //int isNda2 = naviData.getIsNda2();
 
-    if( activeNDA >= 0 )
-    {
+    //if( activeNDA >= 0 )
+    //{
         m_nda.activeNDA = activeNDA;
         m_nda.camType = camType;
         m_nda.roadLimitSpeed = roadLimitSpeed;
         m_nda.camLimitSpeed = camLimitSpeed;
         m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
-    }
+    //}
   }
 
   if ( sm.updated("carStateCustom") )
@@ -200,8 +200,8 @@ void OnPaint::ui_main_navi( QPainter &p )
 
  
   text4.sprintf("NDA = %d", m_nda.activeNDA );                p.drawText( bb_x, nYPos+=nGap, text4 );
-//  text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
-//  text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("%d", m_nda.camLimitSpeedLeftDist);    p.drawText( bb_x, nYPos+=nGap, text4 );
 }
 
