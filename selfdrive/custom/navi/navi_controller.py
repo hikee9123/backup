@@ -258,24 +258,24 @@ def main():
         server.udp_recv(sock)
 
         dat = messaging.new_message('naviCustom')
-        dat.init('naviCustom')
-        dat.naviCustom.naviData.active = server.active
-        dat.naviCustom.naviData.roadLimitSpeed = server.get_limit_val("road_limit_speed", 0)
-        dat.naviCustom.naviData.isHighway = server.get_limit_val("is_highway", False)
-        dat.naviCustom.naviData.camType = server.get_limit_val("cam_type", 0)
-        dat.naviCustom.naviData.camLimitSpeedLeftDist = server.get_limit_val("cam_limit_speed_left_dist", 0)
-        dat.naviCustom.naviData.camLimitSpeed = server.get_limit_val("cam_limit_speed", 0)
-        dat.naviCustom.naviData.sectionLimitSpeed = server.get_limit_val("section_limit_speed", 0)
-        dat.naviCustom.naviData.sectionLeftDist = server.get_limit_val("section_left_dist", 0)
-        dat.naviCustom.naviData.sectionAvgSpeed = server.get_limit_val("section_avg_speed", 0)
-        dat.naviCustom.naviData.sectionLeftTime = server.get_limit_val("section_left_time", 0)
-        dat.naviCustom.naviData.sectionAdjustSpeed = server.get_limit_val("section_adjust_speed", False)
-        dat.naviCustom.naviData.camSpeedFactor = server.get_limit_val("cam_speed_factor", CAMERA_SPEED_FACTOR)
-        dat.naviCustom.naviData.currentRoadName = server.get_limit_val("current_road_name", "")
-        dat.naviCustom.naviData.isNda2 = server.get_limit_val("is_nda2", False)
+        dat.naviCustom.naviData = {
+          "active": server.active,
+          "roadLimitSpeed": server.get_limit_val("road_limit_speed", 0),
+          "isHighway": server.get_limit_val("is_highway", False),
+          "camType": server.get_limit_val("cam_type", 0),
+          "camLimitSpeedLeftDist": server.get_limit_val("cam_limit_speed_left_dist", 0),
+          "camLimitSpeed": server.get_limit_val("cam_limit_speed", 0),
+          "sectionLimitSpeed": server.get_limit_val("section_limit_speed", 0),
+          "sectionLeftDist": server.get_limit_val("section_left_dist", 0),
+          "sectionAvgSpeed": server.get_limit_val("section_avg_speed", 0),
+          "sectionLeftTime": server.get_limit_val("section_left_time", 0),
+          "sectionAdjustSpeed": server.get_limit_val("section_adjust_speed", False),
+          "camSpeedFactor": server.get_limit_val("cam_speed_factor", CAMERA_SPEED_FACTOR),
+          "currentRoadName": server.get_limit_val("current_road_name", ""),
+          "isNda2": server.get_limit_val("is_nda2", False),
+        }
 
-
-        pm.send('naviCustom', dat.to_bytes() )
+        pm.send('naviCustom', dat )
 
         server.send_sdp(sock)
         server.check()
