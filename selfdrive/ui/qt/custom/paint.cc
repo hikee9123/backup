@@ -125,8 +125,8 @@ void OnPaint::updateState(const UIState &s)
   SubMaster &sm = *(s.sm);
   if (sm.frame % (UI_FREQ / 2) != 0) return;
 
-  if ( sm.updated("naviCustom") )
-  {
+  //if ( sm.updated("naviCustom") )
+  //{
     auto navi_custom = sm["naviCustom"].getNaviCustom();
     auto naviData = navi_custom.getNaviData();
     //m_param.naviData = navi_custom.getNaviData();
@@ -148,7 +148,11 @@ void OnPaint::updateState(const UIState &s)
         m_nda.camLimitSpeed = camLimitSpeed;
         m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
     //}
-  }
+  //}
+
+  const auto nav_instruction = sm["navInstruction"].getNavInstruction();
+  m_nda.camLimitSpeedLeftDist = nav_instruction.maneuverDistance
+
 
   if ( sm.updated("carStateCustom") )
   {
