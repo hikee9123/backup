@@ -24,16 +24,12 @@ class CustomPanel : public QWidget {
 public:
   explicit CustomPanel(SettingsWindow *parent);
 
+protected:
+
 signals:
 
 
-protected:
-  virtual void showEvent(QShowEvent *event) override;
-  virtual void hideEvent(QHideEvent *event) override;
 
-
-protected:  
-  void closeEvent(QCloseEvent *event) override;
 
 private slots:
 
@@ -43,8 +39,7 @@ private:
 
 
  private:
-  int  m_cmdIdx = 0;
-};
+ ;
 
 
 
@@ -60,5 +55,17 @@ private:
   std::map<std::string, ParamControl*> toggles;
 
   void updateToggles();
+
+protected:
+  virtual void showEvent(QShowEvent *event) override;
+  virtual void hideEvent(QHideEvent *event) override;
+
+
+protected:  
+  void closeEvent(QCloseEvent *event) override;  
+
+private:
+  int  m_cmdIdx = 0;
+}
 };
 
