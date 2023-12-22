@@ -12,6 +12,7 @@
 
 
 #include "cereal/messaging/messaging.h"
+#include "third_party/json11/json11.hpp"
 
 #include "selfdrive/ui/qt/util.h"
 #include "selfdrive/ui/qt/widgets/controls.h"
@@ -39,11 +40,14 @@ private slots:
 private:
   Params params;
 
-
- private:
+private:
  
 public:
    PubMaster *pm = nullptr;
+
+public:
+   void  save_json_to_file(const json11::Json::object& log_j, const std::string& filename);
+   json11::Json::object load_json_from_file(const std::string& filename) ;
 };
 
 
@@ -60,6 +64,8 @@ private:
   std::map<std::string, ParamControl*> toggles;
   int  getToggle( std::string szName );
 
+  json11::Json::object log_j;
+
 
   void updateToggles();
 
@@ -72,6 +78,7 @@ protected:
   void closeEvent(QCloseEvent *event) override;  
 
 private:
+  CustomPanel *m_pCustom = nullptr;;
   PubMaster *pm = nullptr;
   int  m_cmdIdx = 0;
 };

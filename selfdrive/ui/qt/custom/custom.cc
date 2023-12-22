@@ -106,12 +106,52 @@ void CustomPanel::showEvent(QShowEvent *event)
   QWidget::showEvent( event );
 }
 
+void CustomPanel::save_json_to_file(const json11::Json::object& log_j, const std::string& file ) 
+{
+    std::string filename = "/data/params/d/" + file + ".json";
+
+    std::ofstream outputFile(filename);
+    if (outputFile.is_open()) {
+        outputFile << json11::Json(log_j).dump();
+        outputFile.close();
+        std::cout << "JSON data successfully written to " << filename << "." << std::endl;
+    } else {
+        std::cerr << "Unable to open the file for writing." << std::endl;
+    }
+}
+
+
+json11::Json::object CustomPanel::load_json_from_file(const std::string& file) 
+{
+   std::string filename = "/data/params/d/" + file + ".json";
+
+    json11::Json json_data;
+
+    std::ifstream inputFile(filename);
+    if (inputFile.is_open()) {
+        std::string file_content((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
+        inputFile.close();
+
+        std::string err;
+        json_data = json11::Json::parse(file_content, err);
+
+        if (!err.empty()) {
+            std::cerr << "Error parsing JSON: " << err << std::endl;
+        }
+    } else {
+        std::cerr << "Unable to open the file for reading." << std::endl;
+    }
+
+    return json_data.object_items();
+}
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
 
 CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) 
 {
+  m_pCustom = parent;
+  pm = parent->pm;  
 /*
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
@@ -129,7 +169,11 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   addItem(changeCar);
 */
 
-  pm = parent->pm;
+  log_j = m_pCustom->load_json_from_file( "customCommunity" );
+
+  int levelnum = log_j["HapticFeedbackWhenSpeedCamera"].int_value();
+  printf("HapticFeedbackWhenSpeedCamera = %d ", levelnum );
+
 
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
@@ -210,7 +254,7 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   int ShowDebugMessage = getToggle("ShowDebugMessage");
 
 
-  //PubMaster pm({"uICustom"});
+
 
   MessageBuilder msg;
 
@@ -220,9 +264,17 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
-
-  m_cmdIdx++;
   pm->send("uICustom", msg);
+  m_cmdIdx++;
+
+
+  // JSON 객체 초기화
+  json11::Json::object log_j = json11::Json::object {
+      {"HapticFeedbackWhenSpeedCamera", HapticFeedbackWhenSpeedCamera},
+      {"UseExternalNaviRoutes", UseExternalNaviRoutes},
+      {"ShowDebugMessage", ShowDebugMessage}
+  };
+  m_pCustom->save_json_to_file(  log_j, "customCommunity" );  
 }
 
 
