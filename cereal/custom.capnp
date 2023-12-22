@@ -65,7 +65,7 @@ struct UICustom @0xda96579883444c35 {
        hapticFeedbackWhenSpeedCamera @0 :Int16;
        useExternalNaviRoutes @1 :Int16;
        showDebugMessage @2 :Int16;
-       cmdIdx @14 :Int16;
+       cmdIdx @3 :Int16;
     }
 }
 
