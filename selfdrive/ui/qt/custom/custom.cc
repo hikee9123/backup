@@ -9,8 +9,7 @@
 #include <QDebug>
 #include <QTabWidget>
 
-#include "cereal/gen/cpp/custom.capnp.h"
-#include "cereal/messaging/messaging.h"
+
 
 #include "common/params.h"
 #include "common/watchdog.h"
