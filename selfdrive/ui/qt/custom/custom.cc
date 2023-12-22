@@ -9,6 +9,9 @@
 #include <QDebug>
 #include <QTabWidget>
 
+#include "cereal/gen/cpp/custom.capnp.h"
+#include "cereal/messaging/messaging.h"
+
 #include "common/params.h"
 #include "common/watchdog.h"
 #include "common/util.h"
@@ -82,24 +85,6 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
 }
 
 
-void CustomPanel::setContentsMargins(int left, int top, int right, int bottom)
-{
-  QWidget::setContentsMargins(0,0,0,0);
-  printf("CustomPanel::setContentsMargins= %d,%d,%d,%d\n", left, top,right,bottom);
-}
-
-void CustomPanel::create(WId window, bool initializeWindow, bool destroyOldWindow)
-{
-  printf("CustomPanel::create= %d,%d\n", initializeWindow,destroyOldWindow);  
-  QWidget::create( window,  initializeWindow,  destroyOldWindow);
-
-}
-
-void CustomPanel::destroy(bool destroyWindow , bool destroySubWindows)
-{
-  printf("CustomPanel::destroy= %d,%d\n", destroyWindow, destroySubWindows );  
-  QWidget::destroy( destroyWindow,  destroySubWindows );
-}
 
 void CustomPanel::showEvent(QShowEvent *event)
 {
@@ -169,7 +154,106 @@ void CommunityPanel::showEvent(QShowEvent *event)
   updateToggles();
 }
 
+
+void CommunityPanel::hideEvent(QShowEvent *event)
+{
+  printf("CommunityPanel::hideEvent \n" );
+  
+  auto HapticFeedbackWhenSpeedCamera = toggles["HapticFeedbackWhenSpeedCamera"];
+  auto UseExternalNaviRoutes = toggles["UseExternalNaviRoutes"];
+  auto ShowDebugMessage = toggles["ShowDebugMessage"];
+
+  MessageBuilder msg;
+
+  auto community = msg.initEvent().initUICustom().initCommunity();
+  
+  community.setHapticFeedbackWhenSpeedCamera( HapticFeedbackWhenSpeedCamera  );
+  community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
+  community.setShowDebugMessage( ShowDebugMessage );  // Float32;
+  community.setCmdIdx( m_cmdIdx );
+
+  m_cmdIdx++;
+  pm.send("uiCustom", msg);
+}
+
+void CommunityPanel::closeEvent(QCloseEvent *event) 
+{
+    printf("CommunityPanel::closeEvent \n" );
+      // closeEvent 처리 코드
+      // 사용자 정의 작업을 수행할 수 있습니다.
+
+      // 예를 들어, 닫기를 취소하려면 event->ignore()를 호출할 수 있습니다.
+      // event->ignore();
+
+      // 부모 클래스의 closeEvent()를 호출하여 원래의 동작을 유지합니다.
+      QWidget::closeEvent(event);
+}
+
 void CommunityPanel::updateToggles()
 {
 
 }
+
+
+
+/*
+typedef struct LiveNaviDataResult {
+      float speedLimit;  // Float32;
+      float speedLimitDistance;  // Float32;
+      float remainTime;  // Float32;
+      float roadCurvature;    // Float32;
+
+      int   safetySign1;    // Camera
+      int   safetySign2;    // Road
+
+      int   turnInfo;    // Int32;
+      int   distanceToTurn;    // Int32;      
+      bool  mapValid;    // bool;
+      int   mapEnable;    // bool;
+      int   mapType;
+
+      double  dArrivalDistance;    // unit:  M
+      double  dArrivalTimeSec;    // unit: sec
+      double  dEventSec;
+      double  dHideTimeSec;
+
+      long  tv_sec;
+} LiveNaviDataResult;
+
+
+      PubMaster pm({"liveNaviData"});
+
+      MessageBuilder msg;
+
+     LiveNaviDataResult  event;
+     event.mapValid = 1;
+     event.roadCurvature = m_message;
+
+      auto framed = msg.initEvent().initLiveNaviData();
+     
+      framed.setId(log_msg.id());
+
+      framed.setMapType( event.mapType  );
+      framed.setTs( event.tv_sec );
+      framed.setSpeedLimit( event.speedLimit );  // Float32;
+      framed.setSpeedLimitDistance( event.speedLimitDistance );  // raw_target_speed_map_dist Float32;
+
+      framed.setSafetySign1( event.safetySign1 ); // map_sign Float32;
+      framed.setSafetySign2( event.safetySign2 ); 
+
+      framed.setRoadCurvature( event.roadCurvature ); // road_curvature Float32;
+      framed.setRemainTime( event.remainTime ); // road_curvature Float32;
+
+      // Turn Info
+      framed.setTurnInfo( event.turnInfo );
+      framed.setDistanceToTurn( event.distanceToTurn );
+
+      framed.setMapEnable( event.mapEnable );
+      framed.setMapValid( event.mapValid );
+      framed.setTrafficType( traffic_type );
+
+      framed.setArrivalSec(  event.dArrivalTimeSec );
+      framed.setArrivalDistance(  event.dArrivalDistance );
+
+      pm.send("liveNaviData", msg);
+*/

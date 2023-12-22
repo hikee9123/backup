@@ -2290,7 +2290,7 @@ struct Event {
     carStateCustom @107 :Custom.CarStateCustom;
     carControlCustom @108 :Custom.CarControlCustom;
     naviCustom @109 :Custom.NaviCustom;
-    drawCustom @110 :Custom.DrawCustom;
+    uiCustom @110 :Custom.UICustom;
     customReserved4 @111 :Custom.CustomReserved4;
     customReserved5 @112 :Custom.CustomReserved5;
     customReserved6 @113 :Custom.CustomReserved6;

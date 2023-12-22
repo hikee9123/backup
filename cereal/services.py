@@ -86,7 +86,7 @@ services: dict[str, tuple] = {
   "carStateCustom": (True, 100., 10),
   "carControlCustom": (True, 100., 10),
   "naviCustom": (True, 20., 5),
-  "drawCustom": (True, 0.),
+  "uiCustom": (True, 0.),
 
   # debug
   "uiDebug": (True, 0., 1),

@@ -56,7 +56,17 @@ struct NaviCustom @0xf35cc4560bbf6ec2 {
     }       
 }
 
-struct DrawCustom @0xda96579883444c35 {
+struct UICustom @0xda96579883444c35 {
+    community @0 :Community;
+
+
+    struct Community
+    {
+       hapticFeedbackWhenSpeedCamera @0 :Int16;
+       useExternalNaviRoutes @1 :Int16;
+       showDebugMessage @2 :Int16;
+       cmdIdx @14 :Int16;
+    }
 }
 
 struct CustomReserved4 @0x80ae746ee2596b11 {

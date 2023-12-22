@@ -21,25 +21,28 @@ class CustomPanel : public QWidget {
   Q_OBJECT
 public:
   explicit CustomPanel(SettingsWindow *parent);
-  void     setContentsMargins(int left, int top, int right, int bottom);
 
 signals:
 
 
 protected:
-  void create(WId window = 0, bool initializeWindow = true, bool destroyOldWindow = true);
-  void destroy(bool destroyWindow = true, bool destroySubWindows = true);
+  virtual void showEvent(QShowEvent *event) override;
+  virtual void hideEvent(QHideEvent *event) override;
 
-  virtual void showEvent(QShowEvent *event);
+
+protected:  
+  void closeEvent(QCloseEvent *event) override;
 
 private slots:
 
 
 private:
   Params params;
+  PubMaster pm({"uiCustom"});
+
 
  private:
-
+  int  m_cmdIdx = 0;
 };
 
 
