@@ -24,11 +24,12 @@ class CustomPanel : public QWidget {
 public:
   explicit CustomPanel(SettingsWindow *parent);
 
-protected:
+
 
 signals:
 
-
+protected:
+  virtual void showEvent(QShowEvent *event) override;
 
 
 private slots:
