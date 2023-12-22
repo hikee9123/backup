@@ -34,7 +34,9 @@ OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent)
   //connect(this, &OnPaint::valueChanged, [=] { update(); });
 
   is_debug = Params().getBool("ShowDebugMessage");
-  //img_tire_pressure = QPixmap("images/img_tire_pressure.png");  
+  //img_tire_pressure = QPixmap("images/img_tire_pressure.png");
+
+  m_param.nIdx = 0;  
 }
 
 
@@ -123,7 +125,7 @@ void OnPaint::paintEvent(QPaintEvent *event)
 void OnPaint::updateState(const UIState &s)
 {
   SubMaster &sm = *(s.sm);
-  if (sm.frame % (UI_FREQ / 2) != 0) return;
+  //if (sm.frame % (UI_FREQ / 2) != 0) return;
 
   //if ( sm.updated("naviCustom") )
   //{
@@ -169,7 +171,9 @@ void OnPaint::updateState(const UIState &s)
       alert.alertTextMsg3 = carState_custom.getAlertTextMsg3();    
   //}
 
-
+    m_param.nIdx++;
+    if( m_param.nIdx > 1000 )
+        m_param.nIdx = 0;
 }
 
 
@@ -210,7 +214,15 @@ void OnPaint::ui_main_navi( QPainter &p )
   //text4.sprintf("NDA = %d", m_nda.activeNDA );                p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("%d, %d", m_nda.camLimitSpeedLeftDist , m_nda.cntIdx );    p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("%d, %d, %d", m_nda.camLimitSpeedLeftDist , m_nda.cntIdx, m_param.nIdx );    p.drawText( bb_x, nYPos+=nGap, text4 );
+
+
+
+  auto uiCustom = sm["uICustom"].getUICustom();
+  text4.sprintf("HapticFeedback = %d", uiCustom.community.getHapticFeedbackWhenSpeedCamera() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("UseExternal = %d", uiCustom.community.getUseExternalNaviRoutes() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("ShowDebug = %d", uiCustom.community.getShowDebugMessage() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("m_cmdIdx = %d", uiCustom.community.getCmdIdx() );           p.drawText( bb_x, nYPos+=nGap, text4 );
 }
 
 

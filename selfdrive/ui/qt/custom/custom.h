@@ -24,7 +24,8 @@ class CustomPanel : public QWidget {
 public:
   explicit CustomPanel(SettingsWindow *parent);
 
-
+protected:  
+  void closeEvent(QCloseEvent *event) override;  
 
 signals:
 
@@ -41,6 +42,8 @@ private:
 
  private:
  
+public:
+   PubMaster *pm = nullptr;
 };
 
 
@@ -55,6 +58,8 @@ public:
 private:
   Params params;
   std::map<std::string, ParamControl*> toggles;
+  int  getToggle( std::string szName );
+
 
   void updateToggles();
 
@@ -67,6 +72,7 @@ protected:
   void closeEvent(QCloseEvent *event) override;  
 
 private:
+  PubMaster *pm = nullptr;
   int  m_cmdIdx = 0;
 };
 

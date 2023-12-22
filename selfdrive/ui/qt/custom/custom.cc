@@ -25,7 +25,8 @@
 #include "selfdrive/ui/qt/custom/custom.h"
 
 
-CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
+CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
+{
 /*
     QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
         for (auto btn : findChildren<ButtonControl *>()) {
@@ -81,9 +82,22 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
     setLayout(mainLayout);
+
+    if( pm == nullptr )
+      pm = new PubMaster({"uICustom"});  
 }
 
 
+void CustomPanel::closeEvent(QCloseEvent *event)
+{
+  if( pm )
+  {
+    delete pm;
+    pm = nullptr;
+  }
+  printf("CustomPanel::closeEvent \n" );  
+  QWidget::closeEvent( event );
+}
 
 void CustomPanel::showEvent(QShowEvent *event)
 {
@@ -92,12 +106,12 @@ void CustomPanel::showEvent(QShowEvent *event)
   QWidget::showEvent( event );
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
 
-CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) {
+CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) 
+{
 /*
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
@@ -114,6 +128,9 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) {
   });
   addItem(changeCar);
 */
+
+  pm = parent->pm;
+
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
     {
@@ -147,36 +164,6 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) {
   }
 }
 
-void CommunityPanel::showEvent(QShowEvent *event) 
-{
-  printf("CommunityPanel::showEvent \n" );  
-  updateToggles();
-}
-
-
-void CommunityPanel::hideEvent(QHideEvent *event)
-{
-  printf("CommunityPanel::hideEvent \n" );
-  
-  int HapticFeedbackWhenSpeedCamera = 0;// toggles["HapticFeedbackWhenSpeedCamera"];
-  int UseExternalNaviRoutes = 0;// toggles["UseExternalNaviRoutes"];
-  int ShowDebugMessage = 0;// toggles["ShowDebugMessage"];
-
-
-  PubMaster pm({"uICustom"});
-
-  MessageBuilder msg;
-
-  auto community = msg.initEvent().initUICustom().initCommunity();
-  
-  community.setHapticFeedbackWhenSpeedCamera( HapticFeedbackWhenSpeedCamera  );
-  community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
-  community.setShowDebugMessage( ShowDebugMessage );  // Float32;
-  community.setCmdIdx( m_cmdIdx );
-
-  m_cmdIdx++;
-  pm.send("uICustom", msg);
-}
 
 void CommunityPanel::closeEvent(QCloseEvent *event) 
 {
@@ -190,6 +177,54 @@ void CommunityPanel::closeEvent(QCloseEvent *event)
       // 부모 클래스의 closeEvent()를 호출하여 원래의 동작을 유지합니다.
       QWidget::closeEvent(event);
 }
+
+void CommunityPanel::showEvent(QShowEvent *event) 
+{
+    printf("CommunityPanel::showEvent \n" );  
+    updateToggles();
+}
+
+int CommunityPanel::getToggle( std::string szName )
+{
+  int nValue = 0;
+
+  auto it = toggles.find( szName );
+  if (it != toggles.end()) {
+      nValue = it->second->getValue();
+      // HapticFeedbackWhenSpeedCamera를 사용하려면 계속 진행
+  } else {
+      // 키가 존재하지 않는 경우 처리
+  }
+
+  return nValue;
+}
+
+
+
+void CommunityPanel::hideEvent(QHideEvent *event)
+{
+  printf("CommunityPanel::hideEvent \n" );
+  
+  int HapticFeedbackWhenSpeedCamera = getToggle("HapticFeedbackWhenSpeedCamera");
+  int UseExternalNaviRoutes = getToggle("UseExternalNaviRoutes");
+  int ShowDebugMessage = getToggle("ShowDebugMessage");
+
+
+  //PubMaster pm({"uICustom"});
+
+  MessageBuilder msg;
+
+  auto community = msg->initEvent().initUICustom().initCommunity();
+  
+  community.setHapticFeedbackWhenSpeedCamera( HapticFeedbackWhenSpeedCamera  );
+  community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
+  community.setShowDebugMessage( ShowDebugMessage );  // Float32;
+  community.setCmdIdx( m_cmdIdx );
+
+  m_cmdIdx++;
+  pm->send("uICustom", msg);
+}
+
 
 void CommunityPanel::updateToggles()
 {

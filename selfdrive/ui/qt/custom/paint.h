@@ -43,7 +43,7 @@ private:
     //cereal::NaviCustom::NaviData::Reader naviData;
     cereal::CarStateCustom::Tpms::Reader tpmsData;
  
-
+    int  nIdx;
   } m_param;
   
   struct _STATUS_
@@ -85,5 +85,5 @@ private:
   void     ui_draw_debug1( QPainter &p );
 
 signals:
-  void valueChanged();  
+  //void    valueChanged();  
 };
