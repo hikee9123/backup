@@ -10,7 +10,7 @@
 #include <QStackedWidget>
 #include <QWidget>
 
-#include "cereal/gen/cpp/custom.capnp.h"
+#include "cereal/gen/cpp/log.capnp.h"
 #include "cereal/messaging/messaging.h"
 
 #include "selfdrive/ui/qt/util.h"
