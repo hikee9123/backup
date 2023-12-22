@@ -40,7 +40,6 @@ private slots:
 
 private:
   Params params;
-  PubMaster pm({"uICustom"});
 
 
  private:

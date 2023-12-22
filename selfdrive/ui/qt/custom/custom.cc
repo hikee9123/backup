@@ -162,6 +162,9 @@ void CommunityPanel::hideEvent(QShowEvent *event)
   auto UseExternalNaviRoutes = toggles["UseExternalNaviRoutes"];
   auto ShowDebugMessage = toggles["ShowDebugMessage"];
 
+
+  PubMaster pm({"uICustom"});
+
   MessageBuilder msg;
 
   auto community = msg.initEvent().initUICustom().initCommunity();
