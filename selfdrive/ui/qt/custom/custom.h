@@ -38,7 +38,7 @@ private slots:
 
 private:
   Params params;
-  PubMaster pm({"uiCustom"});
+  PubMaster pm({"uICustom"});
 
 
  private:

@@ -173,7 +173,7 @@ void CommunityPanel::hideEvent(QShowEvent *event)
   community.setCmdIdx( m_cmdIdx );
 
   m_cmdIdx++;
-  pm.send("uiCustom", msg);
+  pm.send("uICustom", msg);
 }
 
 void CommunityPanel::closeEvent(QCloseEvent *event) 
