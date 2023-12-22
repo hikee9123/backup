@@ -154,13 +154,13 @@ void CommunityPanel::showEvent(QShowEvent *event)
 }
 
 
-void CommunityPanel::hideEvent(QShowEvent *event)
+void CommunityPanel::hideEvent(QHideEvent *event)
 {
   printf("CommunityPanel::hideEvent \n" );
   
-  auto HapticFeedbackWhenSpeedCamera = toggles["HapticFeedbackWhenSpeedCamera"];
-  auto UseExternalNaviRoutes = toggles["UseExternalNaviRoutes"];
-  auto ShowDebugMessage = toggles["ShowDebugMessage"];
+  int HapticFeedbackWhenSpeedCamera = toggles["HapticFeedbackWhenSpeedCamera"];
+  int UseExternalNaviRoutes = toggles["UseExternalNaviRoutes"];
+  int ShowDebugMessage = toggles["ShowDebugMessage"];
 
 
   PubMaster pm({"uICustom"});
