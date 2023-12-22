@@ -40,7 +40,8 @@ private:
 
 
  private:
- ;
+ 
+};
 
 
 
@@ -67,6 +68,5 @@ protected:
 
 private:
   int  m_cmdIdx = 0;
-}
 };
 
