@@ -49,7 +49,7 @@ class CommunityPanel : public ListWidget {
   Q_OBJECT
 public:
   explicit CommunityPanel(CustomPanel *parent);
-  void showEvent(QShowEvent *event) override;
+
 
 private:
   Params params;
