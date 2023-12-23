@@ -32,10 +32,16 @@ def register(show_spinner=False) -> Optional[str]:
   dongle_id: Optional[str] = params.get("DongleId", encoding='utf8')
   needs_registration = None in (IMEI, HardwareSerial, dongle_id)
 
+  print('register = IMEI {}'.format( IMEI) )
+  print('register = HardwareSerial {}'.format( HardwareSerial) )
+  print('register = dongle_id {}'.format( dongle_id) )
+  print('register = needs_registration {}'.format( needs_registration) )
   pubkey = Path(Paths.persist_root()+"/comma/id_rsa.pub")
+  print('register = pubkey {}'.format( pubkey) )
   if not pubkey.is_file():
     dongle_id = UNREGISTERED_DONGLE_ID
     cloudlog.warning(f"missing public key: {pubkey}")
+    print('register = missing public key {}'.format( pubkey) )
   elif needs_registration:
     if show_spinner:
       spinner = Spinner()
@@ -54,6 +60,7 @@ def register(show_spinner=False) -> Optional[str]:
     while imei1 is None and imei2 is None:
       try:
         imei1, imei2 = HARDWARE.get_imei(0), HARDWARE.get_imei(1)
+        print('register = imei1={}  imei2={}'.format( imei1, imei2) )
       except Exception:
         cloudlog.exception("Error getting imei, trying again...")
         time.sleep(1)
@@ -69,10 +76,13 @@ def register(show_spinner=False) -> Optional[str]:
     while True:
       try:
         register_token = jwt.encode({'register': True, 'exp': datetime.utcnow() + timedelta(hours=1)}, private_key, algorithm='RS256')
+        print('register = register_token {}'.format( register_token) )
+
         cloudlog.info("getting pilotauth")
         resp = api_get("v2/pilotauth/", method='POST', timeout=15,
                        imei=imei1, imei2=imei2, serial=serial, public_key=public_key, register_token=register_token)
 
+        print('register = resp {}'.format( resp) )
         if resp.status_code in (402, 403):
           cloudlog.info(f"Unable to register device, got {resp.status_code}")
           dongle_id = UNREGISTERED_DONGLE_ID
@@ -91,6 +101,7 @@ def register(show_spinner=False) -> Optional[str]:
     if show_spinner:
       spinner.close()
 
+  print('register = dongle_id {}'.format( dongle_id) )
   if dongle_id:
     params.put("DongleId", dongle_id)
     set_offroad_alert("Offroad_UnofficialHardware", (dongle_id == UNREGISTERED_DONGLE_ID) and not PC)
