@@ -119,9 +119,12 @@ void CustomPanel::save_json_to_file(const json11::Json::object& log_j, const std
     if (outputFile.is_open()) {
         outputFile << json11::Json(log_j).dump();
         outputFile.close();
-        std::cout << "JSON data successfully written to " << filename << "." << std::endl;
+
+        printf( "JSON data successfully written to %s ", filename );
+        //std::cout << "JSON data successfully written to " << filename << "." << std::endl;
     } else {
-        std::cerr << "Unable to open the file for writing." << std::endl;
+         printf( "Unable to open the file for writing. " );
+        //std::cerr << "Unable to open the file for writing." << std::endl;
     }
 }
 
@@ -141,10 +144,12 @@ json11::Json::object CustomPanel::load_json_from_file(const std::string& file)
         json_data = json11::Json::parse(file_content, err);
 
         if (!err.empty()) {
-            std::cerr << "Error parsing JSON: " << err << std::endl;
+            printf( "Error parsing JSON: %s ", err );
+            //std::cerr << "Error parsing JSON: " << err << std::endl;
         }
     } else {
-        std::cerr << "Unable to open the file for reading." << std::endl;
+      printf( "Unable to open the file for reading." );
+      // std::cerr << "Unable to open the file for reading." << std::endl;
     }
 
     return json_data.object_items();
@@ -264,7 +269,7 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 
   MessageBuilder msg;
 
-  auto community = msg->initEvent().initUICustom().initCommunity();
+  auto community = msg.initEvent().initUICustom().initCommunity();
   
   community.setHapticFeedbackWhenSpeedCamera( HapticFeedbackWhenSpeedCamera  );
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );

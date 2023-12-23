@@ -42,7 +42,9 @@ private:
     
     //cereal::NaviCustom::NaviData::Reader naviData;
     cereal::CarStateCustom::Tpms::Reader tpmsData;
- 
+    cereal::UICustom::Community::Reader uiCustom;
+
+
     int  nIdx;
   } m_param;
   
