@@ -268,7 +268,7 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
-  m_pm->send("uICustom", msg);
+  //m_pm->send("uICustom", msg);
   m_cmdIdx++;
 
 
