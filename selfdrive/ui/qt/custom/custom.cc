@@ -178,8 +178,8 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
 
   m_jsondata = m_pCustom->load_json_from_file( "customCommunity" );
 
-  int levelnum = m_jsondata["HapticFeedbackWhenSpeedCamera"].int_value();
-  printf("HapticFeedbackWhenSpeedCamera = %d ", levelnum );
+  int levelnum = m_jsondata["ShowDebugMessage"].int_value();
+  printf("ShowDebugMessage = %d ", levelnum );
 
 
   // param, title, desc, icon
