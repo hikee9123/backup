@@ -219,6 +219,8 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
     addItem(toggle);
     toggles[param.toStdString()] = toggle;
   }
+
+  updateToggles();
 }
 
 
@@ -238,7 +240,8 @@ void CommunityPanel::closeEvent(QCloseEvent *event)
 void CommunityPanel::showEvent(QShowEvent *event) 
 {
     printf("CommunityPanel::showEvent \n" );  
-    updateToggles();
+    QWidget::showEvent(event);
+
 }
 
 int CommunityPanel::getToggle( std::string szName )
@@ -261,6 +264,14 @@ int CommunityPanel::getToggle( std::string szName )
 void CommunityPanel::hideEvent(QHideEvent *event)
 {
   printf("CommunityPanel::hideEvent \n" );
+  QWidget::hideEvent(event);
+
+  updateToggles();
+}
+
+
+void CommunityPanel::updateToggles()
+{
   auto str1 = QString::fromStdString( params.get( "HapticFeedbackWhenSpeedCamera" ) );
   int HapticFeedbackWhenSpeedCamera = str1.toInt();
 
@@ -281,7 +292,6 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 
 
   m_cmdIdx++;
-
   MessageBuilder msg;
   auto community = msg.initEvent().initUICustom().initCommunity();
   community.setHapticFeedbackWhenSpeedCamera( HapticFeedbackWhenSpeedCamera  );
@@ -289,13 +299,5 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
   m_pCustom->send("uICustom", msg);
-
-
-  printf("m_cmdIdx = %d   %d,%d,%d", m_cmdIdx, HapticFeedbackWhenSpeedCamera, UseExternalNaviRoutes, ShowDebugMessage );
-}
-
-
-void CommunityPanel::updateToggles()
-{
 
 }
