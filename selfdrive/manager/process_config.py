@@ -41,9 +41,21 @@ def only_onroad(started: bool, params, CP: car.CarParams) -> bool:
 def only_offroad(started, params, CP: car.CarParams) -> bool:
   return not started
 
-
 def UseExternalNaviRoutes()  -> bool:
   return Params().get_bool('UseExternalNaviRoutes')
+
+def set_mapbox()  -> bool:
+  if UseExternalNaviRoutes():
+    mapbox_token = Params().get("MapboxToken", encoding='utf8')
+    if mapbox_token is not None:
+        os.environ['MAPBOX_TOKEN'] = mapbox_token
+    else:
+        print("Mapbox token is None. Please check your configuration.")
+  
+  print('1.environ (set_mapbox)  mapbox_token ={}'.format(mapbox_token) )
+  return True 
+
+
 
 procs = [
   DaemonProcess("manage_athenad", "selfdrive.athena.manage_athenad", "AthenadPid"),

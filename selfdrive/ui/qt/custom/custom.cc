@@ -82,19 +82,11 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
     setLayout(mainLayout);
-
-    if( m_pm == nullptr )
-      m_pm = new PubMaster({"uICustom"});  
 }
 
 
 void CustomPanel::closeEvent(QCloseEvent *event)
 {
-  if( m_pm )
-  {
-    delete m_pm;
-    m_pm = nullptr;
-  }
   printf("CustomPanel::closeEvent \n" );  
   QWidget::closeEvent( event );
 }
@@ -158,7 +150,7 @@ json11::Json::object CustomPanel::load_json_from_file(const std::string& file)
 CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) 
 {
   m_pCustom = parent;
-  m_pm = parent->m_pm;  
+
 /*
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
@@ -175,11 +167,15 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   });
   addItem(changeCar);
 */
+  pm.reset(new PubMaster({"uICustom"}));
 
   m_jsondata = m_pCustom->load_json_from_file( "customCommunity" );
 
+  auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
+  int ShowDebugMessage = str3.toInt();
+
   int levelnum = m_jsondata["ShowDebugMessage"].int_value();
-  printf("ShowDebugMessage = %d ", levelnum );
+  printf("ShowDebugMessage = %d  %d", levelnum, ShowDebugMessage );
 
 
   // param, title, desc, icon
@@ -255,14 +251,26 @@ int CommunityPanel::getToggle( std::string szName )
 void CommunityPanel::hideEvent(QHideEvent *event)
 {
   printf("CommunityPanel::hideEvent \n" );
-  
 
-  int HapticFeedbackWhenSpeedCamera = std::atoi(params.get("HapticFeedbackWhenSpeedCamera").c_str());
-  int UseExternalNaviRoutes = std::atoi(params.get("UseExternalNaviRoutes").c_str());
-  int ShowDebugMessage = std::atoi(params.get("ShowDebugMessage").c_str());
+   // JSON 객체 Save
+  json11::Json::object log_j = json11::Json::object {
+      {"HapticFeedbackWhenSpeedCamera", HapticFeedbackWhenSpeedCamera},
+      {"UseExternalNaviRoutes", UseExternalNaviRoutes},
+      {"ShowDebugMessage", ShowDebugMessage}
+  };
+  m_pCustom->save_json_to_file(  log_j, "customCommunity" );   
 
 
-  PubMaster  pm({"uICustom"});  
+  auto str1 = QString::fromStdString( params.get( "HapticFeedbackWhenSpeedCamera" ) );
+  int HapticFeedbackWhenSpeedCamera = str1.toInt();
+
+  auto str2 = QString::fromStdString( params.get( "UseExternalNaviRoutes" ) );
+  int UseExternalNaviRoutes = str2.toInt();
+
+  auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
+  int ShowDebugMessage = str3.toInt();
+
+
 
   MessageBuilder msg;
   auto community = msg.initEvent().initUICustom().initCommunity();
@@ -270,18 +278,10 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
-  pm.send("uICustom", msg);
+  pm->send("uICustom", msg);
+
   m_cmdIdx++;
-
   printf("m_cmdIdx = %d", m_cmdIdx );
-  // JSON 객체 초기화
-  json11::Json::object log_j = json11::Json::object {
-      {"HapticFeedbackWhenSpeedCamera", HapticFeedbackWhenSpeedCamera},
-      {"UseExternalNaviRoutes", UseExternalNaviRoutes},
-      {"ShowDebugMessage", ShowDebugMessage}
-  };
-  m_pCustom->save_json_to_file(  log_j, "customCommunity" );  
-
 }
 
 

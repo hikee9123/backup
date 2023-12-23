@@ -43,7 +43,7 @@ private:
 private:
  
 public:
-   PubMaster *m_pm = nullptr;
+
 
 public:
    void  save_json_to_file(const json11::Json::object& log_j, const std::string& filename);
@@ -79,7 +79,8 @@ protected:
 
 private:
   CustomPanel *m_pCustom = nullptr;;
-  PubMaster *m_pm = nullptr;
   int  m_cmdIdx = 0;
+
+  std::unique_ptr<PubMaster> pm; 
 };
 
