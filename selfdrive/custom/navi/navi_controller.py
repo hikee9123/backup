@@ -279,7 +279,7 @@ def main():
         pm.send('naviCustom', dat )
 
         test_dist += 1
-        if test_dist >= 100:
+        if test_dist >= 10:
           test_dist = 0
 
 

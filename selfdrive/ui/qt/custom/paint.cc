@@ -176,7 +176,7 @@ void OnPaint::updateState(const UIState &s)
   //}
 
     m_param.nIdx++;
-    if( m_param.nIdx > 1000 )
+    if( m_param.nIdx >= 10 )
         m_param.nIdx = 0;
 }
 
