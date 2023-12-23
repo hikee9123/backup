@@ -281,7 +281,7 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   pm->send("uICustom", msg);
 
   m_cmdIdx++;
-  printf("m_cmdIdx = %d", m_cmdIdx );
+  printf("m_cmdIdx = %d   %d,%d,%d", m_cmdIdx, HapticFeedbackWhenSpeedCamera, UseExternalNaviRoutes, ShowDebugMessage );
 }
 
 
