@@ -120,7 +120,7 @@ void CustomPanel::save_json_to_file(const json11::Json::object& log_j, const std
         outputFile << json11::Json(log_j).dump();
         outputFile.close();
 
-        printf( "JSON data successfully written to %s ", filename );
+        printf( "JSON data successfully written to %s ", filename.c_str() );
         //std::cout << "JSON data successfully written to " << filename << "." << std::endl;
     } else {
          printf( "Unable to open the file for writing. " );
@@ -144,7 +144,7 @@ json11::Json::object CustomPanel::load_json_from_file(const std::string& file)
         json_data = json11::Json::parse(file_content, err);
 
         if (!err.empty()) {
-            printf( "Error parsing JSON: %s ", err );
+            printf( "Error parsing JSON: %s ", err.c_str() );
             //std::cerr << "Error parsing JSON: " << err << std::endl;
         }
     } else {
