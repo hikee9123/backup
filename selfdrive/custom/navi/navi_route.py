@@ -52,7 +52,7 @@ class RouteEngine:
     for key, value in os.environ.items():
       print(f'key = {key}: {value}')    
 
-    mapbox_token = self.params.get("MapboxToken", encoding='utf8').rstrip('\n')
+    mapbox_token = self.params.get("MapboxToken", encoding='utf8')
     os.environ["MAPBOX_TOKEN"] = mapbox_token
 
     print('2.environ') 
