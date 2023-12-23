@@ -18,6 +18,12 @@
 // OnroadHud
 OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent) 
 {
+  sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
+    "peripheralState", "pandaStates",
+    "naviCustom", "carStateCustom", "uICustom", //"carControlCustom",  // #custom
+  });
+
+
   m_width = width;
   m_height = height;
 
@@ -124,56 +130,51 @@ void OnPaint::paintEvent(QPaintEvent *event)
 
 void OnPaint::updateState(const UIState &s)
 {
-  SubMaster &sm = *(s.sm);
+  //SubMaster &sm = *(s.sm);
   //if (sm.frame % (UI_FREQ / 2) != 0) return;
+
+  SubMaster &sm = *(sm);
+  sm.update(0);
+
+  auto peripheralState = sm["peripheralState"].getPeripheralState();
+  
+  m_param.batteryVoltage = peripheralState.getVoltage();
+
 
   auto uiCustom = sm["uICustom"].getUICustom();
 
   m_param.community  = uiCustom.getCommunity();
  is_debug = m_param.community.getShowDebugMessage();
-  //if ( sm.updated("naviCustom") )
-  //{
-    auto navi_custom = sm["naviCustom"].getNaviCustom();
-    auto naviData = navi_custom.getNaviData();
-    //m_param.naviData = navi_custom.getNaviData();
 
-    int activeNDA = naviData.getActive();
-    int camType  = naviData.getCamType();
-    int roadLimitSpeed = naviData.getRoadLimitSpeed();
-    int camLimitSpeed = naviData.getCamLimitSpeed();
-    int camLimitSpeedLeftDist = naviData.getCamLimitSpeedLeftDist();
-    int cntIdx = naviData.getCntIdx();
+  auto navi_custom = sm["naviCustom"].getNaviCustom();
+  auto naviData = navi_custom.getNaviData();
+
+
+  int activeNDA = naviData.getActive();
+  int camType  = naviData.getCamType();
+  int roadLimitSpeed = naviData.getRoadLimitSpeed();
+  int camLimitSpeed = naviData.getCamLimitSpeed();
+  int camLimitSpeedLeftDist = naviData.getCamLimitSpeedLeftDist();
+  int cntIdx = naviData.getCntIdx();
 
     
-    //int sectionLimitSpeed = naviData.getSectionLimitSpeed();
-    //int sectionLeftDist = naviData.getSectionLeftDist();
-    //int isNda2 = naviData.getIsNda2();
 
-    //if( activeNDA >= 0 )
-    //{
-        m_nda.activeNDA = activeNDA;
-        m_nda.camType = camType;
-        m_nda.roadLimitSpeed = roadLimitSpeed;
-        m_nda.camLimitSpeed = camLimitSpeed;
-        m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
-        m_nda.cntIdx = cntIdx;
-    //}
-  //}
-
-  //const auto nav_instruction = sm["navInstruction"].getNavInstruction();
-  //m_nda.camLimitSpeedLeftDist = nav_instruction.getManeuverDistance();
+  m_nda.activeNDA = activeNDA;
+  m_nda.camType = camType;
+  m_nda.roadLimitSpeed = roadLimitSpeed;
+  m_nda.camLimitSpeed = camLimitSpeed;
+  m_nda.camLimitSpeedLeftDist = camLimitSpeedLeftDist;    
+  m_nda.cntIdx = cntIdx;
 
 
-  //if ( sm.updated("carStateCustom") )
-  //{
-      auto carState_custom = sm["carStateCustom"].getCarStateCustom();
-      m_param.tpmsData  = carState_custom.getTpms();
+    auto carState_custom = sm["carStateCustom"].getCarStateCustom();
+    m_param.tpmsData  = carState_custom.getTpms();
 
-      // debug Message
-      alert.alertTextMsg1 = carState_custom.getAlertTextMsg1();
-      alert.alertTextMsg2 = carState_custom.getAlertTextMsg2();
-      alert.alertTextMsg3 = carState_custom.getAlertTextMsg3();    
-  //}
+    // debug Message
+    alert.alertTextMsg1 = carState_custom.getAlertTextMsg1();
+    alert.alertTextMsg2 = carState_custom.getAlertTextMsg2();
+    alert.alertTextMsg3 = carState_custom.getAlertTextMsg3();    
+
 
     m_param.nIdx++;
     if( m_param.nIdx >= 10 )
@@ -223,7 +224,7 @@ void OnPaint::ui_main_navi( QPainter &p )
  
 
   // auto uiCustom = sm["uICustom"].getUICustom();
-  text4.sprintf("HapticFeedback = %d", m_param.community.getHapticFeedbackWhenSpeedCamera() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("batteryVoltage = %.1fV", m_param.batteryVoltage );           p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("UseExternal = %d",  m_param.community.getUseExternalNaviRoutes() );           p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("ShowDebug = %d",  is_debug );           p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("m_cmdIdx = %d",  m_param.community.getCmdIdx() );           p.drawText( bb_x, nYPos+=nGap, text4 );

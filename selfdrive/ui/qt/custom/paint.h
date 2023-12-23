@@ -32,6 +32,7 @@ private:
   UIState  *state;
   UIScene  *scene;
 
+  std::unique_ptr<SubMaster> sm;
 
   int m_width;
   int m_height;
@@ -44,7 +45,7 @@ private:
     cereal::CarStateCustom::Tpms::Reader tpmsData;
     cereal::UICustom::Community::Reader community;
 
-
+    float batteryVoltage;
     int  nIdx;
   } m_param;
   
