@@ -22,7 +22,7 @@
 #include "selfdrive/ui/ui.h"
 #include "selfdrive/ui/qt/util.h"
 #include "selfdrive/ui/qt/qt_window.h"
-#include "selfdrive/ui/qt/custom/custom.h"
+#include "selfdrive/ui/qt/custom/custom.h"   // #custom
 
 TogglesPanel::TogglesPanel(SettingsWindow *parent) : ListWidget(parent) {
   // param, title, desc, icon
@@ -384,7 +384,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) : QFrame(parent) {
     {tr("Network"), new Networking(this)},
     {tr("Toggles"), toggles},
     {tr("Software"), new SoftwarePanel(this)},
-    {tr("Custom"), new CustomPanel(this)},
+    {tr("Custom"), new CustomPanel(this)},    // #custom
   };
 
   nav_btns = new QButtonGroup(this);

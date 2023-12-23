@@ -279,9 +279,6 @@ AnnotatedCameraWidget::AnnotatedCameraWidget(VisionStreamType type, QWidget* par
 
   // #custom
   m_pPaint = new OnPaint(this, width(), height());
-
-  
-  //main_layout->addWidget(m_pPaint);  
 }
 
 void AnnotatedCameraWidget::updateState(const UIState &s) {

@@ -7,7 +7,7 @@ from openpilot.selfdrive.car import apply_driver_steer_torque_limits, common_fau
 from openpilot.selfdrive.car.hyundai import hyundaicanfd, hyundaican
 from openpilot.selfdrive.car.hyundai.hyundaicanfd import CanBus
 from openpilot.selfdrive.car.hyundai.values import HyundaiFlags, Buttons, CarControllerParams, CANFD_CAR, CAR
-from openpilot.selfdrive.car.hyundai.custom.carcontroller import CarControllerCustom
+from openpilot.selfdrive.car.hyundai.custom.carcontroller import CarControllerCustom   #custom
 
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 LongCtrlState = car.CarControl.Actuators.LongControlState
@@ -57,6 +57,7 @@ class CarController:
     self.car_fingerprint = CP.carFingerprint
     self.last_button_frame = 0
 
+    #custom
     self.carCtrlCustom = CarControllerCustom(CP)    
 
   def update(self, CC, CS, now_nanos):
@@ -186,6 +187,7 @@ class CarController:
           if (self.frame - self.last_button_frame) * DT_CTRL >= 0.15:
             self.last_button_frame = self.frame
       else:
+        #custom
         self.carCtrlCustom.create_button_messages( self, CS, can_sends )
     else:
       if (self.frame - self.last_button_frame) * DT_CTRL > 0.25:

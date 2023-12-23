@@ -41,6 +41,7 @@ def only_onroad(started: bool, params, CP: car.CarParams) -> bool:
 def only_offroad(started, params, CP: car.CarParams) -> bool:
   return not started
 
+#custom
 def UseExternalNaviRoutes()  -> bool:
   return Params().get_bool('UseExternalNaviRoutes')
 
