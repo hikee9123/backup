@@ -138,7 +138,7 @@ void OnPaint::updateState(const UIState &s)
 
   auto peripheralState = sm["peripheralState"].getPeripheralState();
   
-  m_param.batteryVoltage = peripheralState.getVoltage();
+  m_param.batteryVoltage = peripheralState.getVoltage() * 0.001;
 
 
   auto uiCustom = sm["uICustom"].getUICustom();
