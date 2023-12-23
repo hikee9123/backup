@@ -155,7 +155,7 @@ def manager_thread() -> None:
     sm.update()
 
     started = sm['deviceState'].started
-    
+
     if started and not started_prev:
       params.clear_all(ParamKeyType.CLEAR_ON_ONROAD_TRANSITION)
     elif not started and started_prev:
