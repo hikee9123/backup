@@ -32,7 +32,7 @@ private:
   UIState  *state;
   UIScene  *scene;
 
-  std::unique_ptr<SubMaster> sm;
+  std::unique_ptr<SubMaster> m_sm;
 
   int m_width;
   int m_height;

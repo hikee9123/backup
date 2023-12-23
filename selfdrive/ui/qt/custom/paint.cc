@@ -18,7 +18,7 @@
 // OnroadHud
 OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent) 
 {
-  sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
+  m_sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
     "peripheralState", "pandaStates",
     "naviCustom", "carStateCustom", "uICustom", //"carControlCustom",  // #custom
   });
@@ -133,7 +133,7 @@ void OnPaint::updateState(const UIState &s)
   //SubMaster &sm = *(s.sm);
   //if (sm.frame % (UI_FREQ / 2) != 0) return;
 
-  SubMaster &sm = *(sm);
+  SubMaster &sm = *(m_sm);
   sm.update(0);
 
   auto peripheralState = sm["peripheralState"].getPeripheralState();
