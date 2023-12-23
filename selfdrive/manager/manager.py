@@ -99,16 +99,6 @@ def manager_init() -> None:
     os.environ['CLEAN'] = '1'
 
   set_mapbox()
-  """
-  external_navi = params.get_bool('UseExternalNaviRoutes')
-  mapbox_token = params.get("MapboxToken", encoding='utf8')
-  if mapbox_token is not None:
-      os.environ['MAPBOX_TOKEN'] = mapbox_token
-  else:
-      print("Mapbox token is None. Please check your configuration.")  
-
-  print('2.environ  mapbox_token ={}'.format(mapbox_token) )
-  """
 
 
   # init logging
