@@ -271,9 +271,9 @@ void MapWindow::initializeGL() {
   // m_map->setStyleUrl("mapbox://styles/mapbox/traffic-night-v2");  // 교통정보.
 
   //m_map->setStyleUrl("mapbox://styles/mapbox/navigation-preview-night-v4");  // Navigation Styles.
-   m_map->setStyleUrl("mapbox://styles/mapbox/outdoors-v11");   // 자연 환경과 도로가 결합된 스타일.
+  // m_map->setStyleUrl("mapbox://styles/mapbox/outdoors-v11");   // 자연 환경과 도로가 결합된 스타일.
   // m_map->setStyleUrl("mapbox://styles/mapbox/satellite-streets-v12");  // 위성  
-  // m_map->setStyleUrl("mapbox://styles/mapbox/satellite-streets-v11");   //  위성 사진과 도로 지도가 결합된 스타일.
+   m_map->setStyleUrl("mapbox://styles/mapbox/satellite-streets-v11");   //  위성 사진과 도로 지도가 결합된 스타일.
 
 
   QObject::connect(m_map.data(), &QMapboxGL::mapChanged, [=](QMapboxGL::MapChange change) {
