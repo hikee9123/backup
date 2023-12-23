@@ -208,6 +208,13 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
       "",
       "../assets/offroad/icon_shell.png",
     },
+    {
+      "DisableLogging",
+      tr("disable logging"),
+      "",
+      "../assets/offroad/icon_openpilot.png",
+    },
+    
   };
 
   for (auto &[param, title, desc, icon] : toggle_defs) {
