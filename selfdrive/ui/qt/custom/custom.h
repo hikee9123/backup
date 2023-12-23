@@ -9,7 +9,7 @@
 #include <QPushButton>
 #include <QStackedWidget>
 #include <QWidget>
-
+#include <QTimer>
 
 #include "cereal/messaging/messaging.h"
 #include "third_party/json11/json11.hpp"
@@ -78,6 +78,13 @@ protected:
 
 protected:  
   void closeEvent(QCloseEvent *event) override;  
+
+private slots:
+    void OnTimer();
+
+private:
+    QTimer *timer = nullptr;
+
 
 private:
   CustomPanel *m_pCustom = nullptr;;

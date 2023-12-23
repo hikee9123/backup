@@ -146,7 +146,7 @@ json11::Json::object CustomPanel::load_json_from_file(const std::string& file)
             //std::cerr << "Error parsing JSON: " << err << std::endl;
         }
     } else {
-      printf( "Unable to open the file for reading." );
+      printf( "Unable to open the file for reading. %s  ", file.c_str() );
       // std::cerr << "Unable to open the file for reading." << std::endl;
     }
 
@@ -220,13 +220,26 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
     toggles[param.toStdString()] = toggle;
   }
 
-  updateToggles();
+
+  timer = new QTimer(this);
+  connect(timer, &QTimer::timeout, this, &CommunityPanel::OnTimer);
+   timer->start(1000);
 }
 
+
+void CommunityPanel::OnTimer() 
+{
+  //qDebug() << "This function is called periodically.";
+  updateToggles();    
+}
 
 void CommunityPanel::closeEvent(QCloseEvent *event) 
 {
     printf("CommunityPanel::closeEvent \n" );
+
+    timer->stop();
+    delete timer;
+    timer = nullptr;
       // closeEvent 처리 코드
       // 사용자 정의 작업을 수행할 수 있습니다.
 
