@@ -276,7 +276,7 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   pm->send("uICustom", msg);
   m_cmdIdx++;
 
-
+/*
   // JSON 객체 초기화
   json11::Json::object log_j = json11::Json::object {
       {"HapticFeedbackWhenSpeedCamera", HapticFeedbackWhenSpeedCamera},
@@ -284,6 +284,7 @@ void CommunityPanel::hideEvent(QHideEvent *event)
       {"ShowDebugMessage", ShowDebugMessage}
   };
   m_pCustom->save_json_to_file(  log_j, "customCommunity" );  
+*/
 }
 
 
