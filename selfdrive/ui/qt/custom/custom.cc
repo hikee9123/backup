@@ -104,7 +104,9 @@ void CustomPanel::showEvent(QShowEvent *event)
 
 int CustomPanel::send(const char *name, MessageBuilder &msg)
 {
-   pm->send( name, msg );
+   return pm->send( name, msg );
+
+
 }
 
 void CustomPanel::save_json_to_file(const json11::Json::object& log_j, const std::string& file ) 
