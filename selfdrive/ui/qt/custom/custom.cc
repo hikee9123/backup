@@ -263,9 +263,7 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 
 /*
   MessageBuilder msg;
-
   auto community = msg.initEvent().initUICustom().initCommunity();
-  
   community.setHapticFeedbackWhenSpeedCamera( HapticFeedbackWhenSpeedCamera  );
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
