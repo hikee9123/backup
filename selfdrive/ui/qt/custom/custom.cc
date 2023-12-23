@@ -251,6 +251,15 @@ int CommunityPanel::getToggle( std::string szName )
 void CommunityPanel::hideEvent(QHideEvent *event)
 {
   printf("CommunityPanel::hideEvent \n" );
+  auto str1 = QString::fromStdString( params.get( "HapticFeedbackWhenSpeedCamera" ) );
+  int HapticFeedbackWhenSpeedCamera = str1.toInt();
+
+  auto str2 = QString::fromStdString( params.get( "UseExternalNaviRoutes" ) );
+  int UseExternalNaviRoutes = str2.toInt();
+
+  auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
+  int ShowDebugMessage = str3.toInt();
+
 
    // JSON 객체 Save
   json11::Json::object log_j = json11::Json::object {
@@ -260,15 +269,6 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   };
   m_pCustom->save_json_to_file(  log_j, "customCommunity" );   
 
-
-  auto str1 = QString::fromStdString( params.get( "HapticFeedbackWhenSpeedCamera" ) );
-  int HapticFeedbackWhenSpeedCamera = str1.toInt();
-
-  auto str2 = QString::fromStdString( params.get( "UseExternalNaviRoutes" ) );
-  int UseExternalNaviRoutes = str2.toInt();
-
-  auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
-  int ShowDebugMessage = str3.toInt();
 
 
 
