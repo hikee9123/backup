@@ -241,23 +241,8 @@ void CommunityPanel::showEvent(QShowEvent *event)
 {
     printf("CommunityPanel::showEvent \n" );  
     QWidget::showEvent(event);
-
 }
 
-int CommunityPanel::getToggle( std::string szName )
-{
-  int nValue = 0;
-
-  auto it = toggles.find( szName );
-  if (it != toggles.end()) {
-      nValue = 0;//it->second->int_value();
-      // HapticFeedbackWhenSpeedCamera를 사용하려면 계속 진행
-  } else {
-      // 키가 존재하지 않는 경우 처리
-  }
-
-  return nValue;
-}
 
 
 
@@ -299,5 +284,5 @@ void CommunityPanel::updateToggles()
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
   m_pCustom->send("uICustom", msg);
-
+  printf("uiCustom  send  = ShowDebugMessage %d", ShowDebugMessage);
 }
