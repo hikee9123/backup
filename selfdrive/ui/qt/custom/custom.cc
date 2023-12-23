@@ -245,7 +245,7 @@ int CommunityPanel::getToggle( std::string szName )
 
   auto it = toggles.find( szName );
   if (it != toggles.end()) {
-      nValue = it->second->int_value();
+      nValue = 0;//it->second->int_value();
       // HapticFeedbackWhenSpeedCamera를 사용하려면 계속 진행
   } else {
       // 키가 존재하지 않는 경우 처리
@@ -260,9 +260,9 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 {
   printf("CommunityPanel::hideEvent \n" );
   
-  int HapticFeedbackWhenSpeedCamera = getToggle("HapticFeedbackWhenSpeedCamera");
-  int UseExternalNaviRoutes = getToggle("UseExternalNaviRoutes");
-  int ShowDebugMessage = getToggle("ShowDebugMessage");
+  int HapticFeedbackWhenSpeedCamera = toggles["HapticFeedbackWhenSpeedCamera"].int_value();
+  int UseExternalNaviRoutes = toggles["UseExternalNaviRoutes"].int_value();
+  int ShowDebugMessage = toggles["ShowDebugMessage"].int_value();
 
 
 
