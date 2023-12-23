@@ -39,7 +39,7 @@ def manager_init() -> None:
 
   params = Params()
   mapbox_token = params.get("MapboxToken", encoding='utf8')
-  os.environ["MAPBOX_TOKEN"] = mapbox_token
+  os.environ["MAPBOX_TOKEN"] = mapbox_token.decode('utf-8')
 
   print('4.environ') 
   for key, value in os.environ.items():
