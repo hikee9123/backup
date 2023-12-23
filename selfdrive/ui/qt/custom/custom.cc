@@ -83,17 +83,17 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
     mainLayout->addWidget(tabWidget);
     setLayout(mainLayout);
 
-    if( pm == nullptr )
-      pm = new PubMaster({"uICustom"});  
+    if( m_pm == nullptr )
+      m_pm = new PubMaster({"uICustom"});  
 }
 
 
 void CustomPanel::closeEvent(QCloseEvent *event)
 {
-  if( pm )
+  if( m_pm )
   {
-    delete pm;
-    pm = nullptr;
+    delete m_pm;
+    m_pm = nullptr;
   }
   printf("CustomPanel::closeEvent \n" );  
   QWidget::closeEvent( event );
@@ -158,7 +158,7 @@ json11::Json::object CustomPanel::load_json_from_file(const std::string& file)
 CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) 
 {
   m_pCustom = parent;
-  pm = parent->pm;  
+  m_pm = parent->m_pm;  
 /*
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
@@ -256,12 +256,12 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 {
   printf("CommunityPanel::hideEvent \n" );
   
-  /*
+
   int HapticFeedbackWhenSpeedCamera = std::atoi(params.get("HapticFeedbackWhenSpeedCamera").c_str());
   int UseExternalNaviRoutes = std::atoi(params.get("UseExternalNaviRoutes").c_str());
   int ShowDebugMessage = std::atoi(params.get("ShowDebugMessage").c_str());
 
-
+/*
   MessageBuilder msg;
 
   auto community = msg.initEvent().initUICustom().initCommunity();
@@ -270,9 +270,9 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
-  pm->send("uICustom", msg);
+  m_pm->send("uICustom", msg);
   m_cmdIdx++;
-
+*/
 
   // JSON 객체 초기화
   json11::Json::object log_j = json11::Json::object {
@@ -281,7 +281,7 @@ void CommunityPanel::hideEvent(QHideEvent *event)
       {"ShowDebugMessage", ShowDebugMessage}
   };
   m_pCustom->save_json_to_file(  log_j, "customCommunity" );  
-*/
+
 }
 
 
