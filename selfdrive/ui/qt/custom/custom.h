@@ -42,9 +42,9 @@ private:
 
 private:
   std::unique_ptr<PubMaster> pm; 
-  int send(const char *name, MessageBuilder &msg);
 
 public:
+  int send(const char *name, MessageBuilder &msg);
 
 
 public:
