@@ -214,6 +214,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"UseExternalNaviRoutes", PERSISTENT},
     {"HapticFeedbackWhenSpeedCamera", PERSISTENT},
     {"ShowDebugMessage", PERSISTENT},
+    {"MapboxToken", PERSISTENT},    
 };
 
 } // namespace

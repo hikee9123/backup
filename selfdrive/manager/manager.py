@@ -33,8 +33,18 @@ def manager_init() -> None:
   # save boot log
   #custom
   #subprocess.call("./bootlog", cwd=os.path.join(BASEDIR, "system/loggerd"))
+  print('3.environ') 
+  for key, value in os.environ.items():
+    print(f'key = {key}: {value}')   
 
   params = Params()
+  mapbox_token = params.get("MapboxToken", encoding='utf8').rstrip('\n')
+  os.environ["MAPBOX_TOKEN"] = mapbox_token
+
+  print('4.environ') 
+  for key, value in os.environ.items():
+    print(f'key = {key}: {value}')  
+
   params.clear_all(ParamKeyType.CLEAR_ON_MANAGER_START)
   params.clear_all(ParamKeyType.CLEAR_ON_ONROAD_TRANSITION)
   params.clear_all(ParamKeyType.CLEAR_ON_OFFROAD_TRANSITION)

@@ -48,8 +48,16 @@ class RouteEngine:
 
     self.reroute_counter = 0
 
+    print('1.environ') 
     for key, value in os.environ.items():
-      print(f'{key}: {value}')    
+      print(f'key = {key}: {value}')    
+
+    mapbox_token = self.params.get("MapboxToken", encoding='utf8').rstrip('\n')
+    os.environ["MAPBOX_TOKEN"] = mapbox_token
+
+    print('2.environ') 
+    for key, value in os.environ.items():
+      print(f'key = {key}: {value}')    
 
     if "MAPBOX_TOKEN" in os.environ:
       self.mapbox_token = os.environ["MAPBOX_TOKEN"]
