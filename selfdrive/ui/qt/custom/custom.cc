@@ -101,6 +101,9 @@ void CustomPanel::closeEvent(QCloseEvent *event)
 
 void CustomPanel::showEvent(QShowEvent *event)
 {
+  std::string prefix = "/" + util::getenv("OPENPILOT_PREFIX", "d");
+  printf("OPENPILOT_PREFIX = %s", prefix.c_str() );
+
   QWidget::setContentsMargins(0,0,0,0);
   printf("CustomPanel::showEvent \n" );  
   QWidget::showEvent( event );
@@ -108,6 +111,8 @@ void CustomPanel::showEvent(QShowEvent *event)
 
 void CustomPanel::save_json_to_file(const json11::Json::object& log_j, const std::string& file ) 
 {
+    // std::string prefix = "/" + util::getenv("OPENPILOT_PREFIX", "d");
+    // printf("OPENPILOT_PREFIX = %s", prefix.c_str() );
     std::string filename = "/data/params/d/" + file + ".json";
 
     std::ofstream outputFile(filename);
@@ -144,6 +149,7 @@ json11::Json::object CustomPanel::load_json_from_file(const std::string& file)
 
     return json_data.object_items();
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -169,9 +175,9 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   addItem(changeCar);
 */
 
-  log_j = m_pCustom->load_json_from_file( "customCommunity" );
+  m_jsondata = m_pCustom->load_json_from_file( "customCommunity" );
 
-  int levelnum = log_j["HapticFeedbackWhenSpeedCamera"].int_value();
+  int levelnum = m_jsondata["HapticFeedbackWhenSpeedCamera"].int_value();
   printf("HapticFeedbackWhenSpeedCamera = %d ", levelnum );
 
 

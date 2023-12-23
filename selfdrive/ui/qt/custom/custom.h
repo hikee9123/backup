@@ -64,7 +64,7 @@ private:
   std::map<std::string, ParamControl*> toggles;
   int  getToggle( std::string szName );
 
-  json11::Json::object log_j;
+  json11::Json::object m_jsondata;
 
 
   void updateToggles();
