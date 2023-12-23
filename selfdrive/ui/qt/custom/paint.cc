@@ -129,7 +129,7 @@ void OnPaint::updateState(const UIState &s)
 
   auto uiCustom = sm["uICustom"].getUICustom();
 
-  m_param.uiCustom  = uiCustom.getCommunity();
+  m_param.community  = uiCustom.getCommunity();
 
   //if ( sm.updated("naviCustom") )
   //{
@@ -223,10 +223,10 @@ void OnPaint::ui_main_navi( QPainter &p )
 
 
   // auto uiCustom = sm["uICustom"].getUICustom();
-  text4.sprintf("HapticFeedback = %d", m_param.uiCustom.community.getHapticFeedbackWhenSpeedCamera() );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("UseExternal = %d",  m_param.uiCustom.community.getUseExternalNaviRoutes() );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("ShowDebug = %d",  m_param.uiCustom.community.getShowDebugMessage() );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("m_cmdIdx = %d",  m_param.uiCustom.community.getCmdIdx() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("HapticFeedback = %d", m_param.community.getHapticFeedbackWhenSpeedCamera() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("UseExternal = %d",  m_param.community.getUseExternalNaviRoutes() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("ShowDebug = %d",  m_param.community.getShowDebugMessage() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("m_cmdIdx = %d",  m_param.community.getCmdIdx() );           p.drawText( bb_x, nYPos+=nGap, text4 );
 }
 
 
