@@ -262,13 +262,15 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   int ShowDebugMessage = std::atoi(params.get("ShowDebugMessage").c_str());
 
 
+  PubMaster  pm({"uICustom"});  
+
   MessageBuilder msg;
   auto community = msg.initEvent().initUICustom().initCommunity();
   community.setHapticFeedbackWhenSpeedCamera( HapticFeedbackWhenSpeedCamera  );
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
-  //m_pm->send("uICustom", msg);
+  pm.send("uICustom", msg);
   m_cmdIdx++;
 
 
