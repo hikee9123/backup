@@ -260,9 +260,9 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 {
   printf("CommunityPanel::hideEvent \n" );
   
-  int HapticFeedbackWhenSpeedCamera = toggles["HapticFeedbackWhenSpeedCamera"].int_value();
-  int UseExternalNaviRoutes = toggles["UseExternalNaviRoutes"].int_value();
-  int ShowDebugMessage = toggles["ShowDebugMessage"].int_value();
+  int HapticFeedbackWhenSpeedCamera = toggles["HapticFeedbackWhenSpeedCamera"]->int_value();
+  int UseExternalNaviRoutes = toggles["UseExternalNaviRoutes"]->int_value();
+  int ShowDebugMessage = toggles["ShowDebugMessage"]->int_value();
 
 
 
