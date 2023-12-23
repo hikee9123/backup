@@ -101,8 +101,6 @@ void CustomPanel::closeEvent(QCloseEvent *event)
 
 void CustomPanel::showEvent(QShowEvent *event)
 {
-  std::string prefix = "/" + util::getenv("OPENPILOT_PREFIX", "d");
-  printf("OPENPILOT_PREFIX = %s", prefix.c_str() );
 
   QWidget::setContentsMargins(0,0,0,0);
   printf("CustomPanel::showEvent \n" );  
@@ -111,8 +109,6 @@ void CustomPanel::showEvent(QShowEvent *event)
 
 void CustomPanel::save_json_to_file(const json11::Json::object& log_j, const std::string& file ) 
 {
-    // std::string prefix = "/" + util::getenv("OPENPILOT_PREFIX", "d");
-    // printf("OPENPILOT_PREFIX = %s", prefix.c_str() );
     std::string filename = "/data/params/d/" + file + ".json";
 
     std::ofstream outputFile(filename);
