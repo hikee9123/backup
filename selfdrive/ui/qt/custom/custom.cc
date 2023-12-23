@@ -27,6 +27,8 @@
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
+  pm.reset(new PubMaster({"uICustom"}));
+
 /*
     QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
         for (auto btn : findChildren<ButtonControl *>()) {
@@ -99,6 +101,12 @@ void CustomPanel::showEvent(QShowEvent *event)
   QWidget::showEvent( event );
 }
 
+
+int CustomPanel::send(const char *name, MessageBuilder &msg)
+{
+   pm->send( name, msg );
+}
+
 void CustomPanel::save_json_to_file(const json11::Json::object& log_j, const std::string& file ) 
 {
     std::string filename = "/data/params/d/" + file + ".json";
@@ -167,7 +175,7 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   });
   addItem(changeCar);
 */
-  pm.reset(new PubMaster({"uICustom"}));
+//  pm.reset(new PubMaster({"uICustom"}));
 
   m_jsondata = m_pCustom->load_json_from_file( "customCommunity" );
 
@@ -270,7 +278,7 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   m_pCustom->save_json_to_file(  log_j, "customCommunity" );   
 
 
-
+  m_cmdIdx++;
 
   MessageBuilder msg;
   auto community = msg.initEvent().initUICustom().initCommunity();
@@ -278,9 +286,9 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
-  pm->send("uICustom", msg);
+  m_pCustom->send("uICustom", msg);
 
-  m_cmdIdx++;
+
   printf("m_cmdIdx = %d   %d,%d,%d", m_cmdIdx, HapticFeedbackWhenSpeedCamera, UseExternalNaviRoutes, ShowDebugMessage );
 }
 

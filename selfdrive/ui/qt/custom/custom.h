@@ -41,7 +41,9 @@ private:
   Params params;
 
 private:
- 
+  std::unique_ptr<PubMaster> pm; 
+  int send(const char *name, MessageBuilder &msg);
+
 public:
 
 
@@ -80,7 +82,5 @@ protected:
 private:
   CustomPanel *m_pCustom = nullptr;;
   int  m_cmdIdx = 0;
-
-  std::unique_ptr<PubMaster> pm; 
 };
 
