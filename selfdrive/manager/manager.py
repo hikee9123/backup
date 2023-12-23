@@ -33,17 +33,11 @@ def manager_init() -> None:
   # save boot log
   #custom
   #subprocess.call("./bootlog", cwd=os.path.join(BASEDIR, "system/loggerd"))
-  print('3.environ') 
+  print('1.environ') 
   for key, value in os.environ.items():
     print(f'key = {key}: {value}')   
 
   params = Params()
-  #os.environ["MAPBOX_TOKEN"] = params.get("MapboxToken", encoding='utf8')
-
-  print('4.environ') 
-  for key, value in os.environ.items():
-    print(f'key = {key}: {value}')  
-
   params.clear_all(ParamKeyType.CLEAR_ON_MANAGER_START)
   params.clear_all(ParamKeyType.CLEAR_ON_ONROAD_TRANSITION)
   params.clear_all(ParamKeyType.CLEAR_ON_OFFROAD_TRANSITION)
@@ -106,6 +100,16 @@ def manager_init() -> None:
 
   if not is_dirty():
     os.environ['CLEAN'] = '1'
+
+  mapbox_token = params.get("MapboxToken", encoding='utf8')
+  if mapbox_token is not None:
+      os.environ['MAPBOX_TOKEN'] = mapbox_token
+  else:
+      print("Mapbox token is None. Please check your configuration.")  
+
+  print('2.environ  mapbox_token ={}'.format(mapbox_token) ) 
+  for key, value in os.environ.items():
+    print(f'key = {key}: {value}')  
 
   # init logging
   sentry.init(sentry.SentryProject.SELFDRIVE)
