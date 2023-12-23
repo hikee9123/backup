@@ -17,7 +17,7 @@ QString get_mapbox_token() {
 
   QString  mapbox_token = MAPBOX_TOKEN.isEmpty() ? CommaApi::create_jwt({}, 4 * 7 * 24 * 3600) : MAPBOX_TOKEN;
 
-  printf("mapbox_token=%s", mapbox_token );
+  printf("mapbox_token=%s", mapbox_token.c_str() );
   
   return mapbox_token;
 }
