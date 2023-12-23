@@ -260,11 +260,9 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 {
   printf("CommunityPanel::hideEvent \n" );
   
-  int HapticFeedbackWhenSpeedCamera = params.get("HapticFeedbackWhenSpeedCamera");
-  int UseExternalNaviRoutes = params.get("UseExternalNaviRoutes");
-  int ShowDebugMessage = params.get("ShowDebugMessage");
-
-
+  int HapticFeedbackWhenSpeedCamera = std::atoi(params.get("HapticFeedbackWhenSpeedCamera").c_str());
+  int UseExternalNaviRoutes = std::atoi(params.get("UseExternalNaviRoutes").c_str());
+  int ShowDebugMessage = std::atoi(params.get("ShowDebugMessage").c_str());
 
 
   MessageBuilder msg;
