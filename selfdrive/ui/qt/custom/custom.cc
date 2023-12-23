@@ -296,6 +296,6 @@ void CommunityPanel::updateToggles()
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
-  m_pCustom->send("uICustom", msg);
-  printf("uiCustom  send  = ShowDebugMessage %d", ShowDebugMessage);
+  int ret = m_pCustom->send("uICustom", msg);
+  printf("uiCustom  send(%d)  = ShowDebugMessage %d", ret, ShowDebugMessage);
 }
