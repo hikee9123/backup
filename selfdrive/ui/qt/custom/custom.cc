@@ -160,7 +160,7 @@ QJsonObject CustomPanel::readJsonFile(const QString& fileName )
     // JSON 파일 열기
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open the JSON file: " << filePath;
+        printf( "Failed to open the JSON file: %s  ", filePath.toStdString().c_str() );
         return jsonObject;  // Return an empty object in case of failure
     }
 
@@ -171,7 +171,7 @@ QJsonObject CustomPanel::readJsonFile(const QString& fileName )
     // JSON 파싱
     QJsonDocument doc = QJsonDocument::fromJson(jsonData);
     if (doc.isNull()) {
-        qDebug() << "Failed to parse the JSON document: " << filePath;
+        printf( "Failed to parse the JSON document: %s  ", filePath.toStdString().c_str() );
         return jsonObject;  // Return an empty object in case of failure
     }
 
@@ -187,7 +187,7 @@ void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& 
     // JSON 파일 열기
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Failed to open the JSON file for writing: " << filePath;
+        printf( "Failed to open the JSON file for writing: %s  ", filePath.toStdString().c_str() );
         return;
     }
 
@@ -200,9 +200,9 @@ void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& 
     file.close();
 
     if (bytesWritten == -1) {
-        qDebug() << "Failed to write JSON data to the file: " << filePath;
+        printf( "Failed to write JSON data to the file: %s  ", filePath.toStdString().c_str() );
     } else {
-        qDebug() << "JSON data successfully written to the file: " << filePath;
+        printf( "JSON data successfully written to the file: %s  ", filePath.toStdString().c_str() );
     }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,7 +237,7 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   int ShowDebugMessage = str3.toInt();
 
   int levelnum = m_jsondata["ShowDebugMessage"].toInt();
-  printf("ShowDebugMessage = %d  %d", levelnum, ShowDebugMessage );
+  printf("ShowDebugMessage = %d  %d \n", levelnum, ShowDebugMessage );
 
 
   // param, title, desc, icon
@@ -292,11 +292,10 @@ void CommunityPanel::OnTimer()
   UIState *s = uiState();
   UIScene &scene = s->scene;
 
-  printf("scene.started=%d \n", scene.started);
+  //printf("scene.started=%d \n", scene.started);
 
 
   updateToggles( false );
-  //      
   if( scene.started )
   {
     timer->stop();
