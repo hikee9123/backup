@@ -235,18 +235,17 @@ void OnPaint::ui_main_navi( QPainter &p )
   int  nGap = 80; 
 
  
-  //text4.sprintf("NDA = %d", m_nda.activeNDA );                p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("rc = %d", rect().right() );                p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("%d, %d, %d", m_nda.camLimitSpeedLeftDist , m_nda.cntIdx, m_param.nIdx );    p.drawText( bb_x, nYPos+=nGap, text4 );
-
  
 
   // auto uiCustom = sm["uICustom"].getUICustom();
-  text4.sprintf("batteryVoltage = %.1fV", m_param.batteryVoltage );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("UseExternal = %d",  m_param.community.getUseExternalNaviRoutes() );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("ShowDebug = %d",  is_debug );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("m_cmdIdx = %d",  m_param.community.getCmdIdx() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  //text4.sprintf("batteryVoltage = %.1fV", m_param.batteryVoltage );           p.drawText( bb_x, nYPos+=nGap, text4 );
+ // text4.sprintf("UseExternal = %d",  m_param.community.getUseExternalNaviRoutes() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+ // text4.sprintf("ShowDebug = %d",  is_debug );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  //text4.sprintf("m_cmdIdx = %d",  m_param.community.getCmdIdx() );           p.drawText( bb_x, nYPos+=nGap, text4 );
 }
 
 
