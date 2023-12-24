@@ -41,23 +41,35 @@ int CSidebar::updateState(const UIState &s)
 void CSidebar::paintEvent(QPainter &p) 
 {
   // atom - battery
-  float  batteryPercent = 95.0;
+  float  batteryPercent = 90.0;
 
 
-  int nB = (125 + (fBatteryVoltage - 12.0)*150);
-  if( nB  < 0 ) nB = 0;
-  else if( nB > 255 ) nB = 255;
-
-  int nR = (255-nB);
+  
+ QColor  color;
 
 
   QString beterryValtage;
   beterryValtage.sprintf("%.1f", fBatteryVoltage );
 
-  if( fBatteryVoltage <= 0)
+  if( fBatteryVoltage > 12.3 )
   {
-    nB = 255;
-    nR = 255;
+      color = QColor( 0, 200, 255 );
+  }
+  else if( fBatteryVoltage > 12.0 )
+  {
+      color = QColor( 100, 255, 100 );
+  } 
+  else if( fBatteryVoltage > 11.8 )
+  {
+      color = QColor( 255, 200, 50 );
+  }     
+  else if( fBatteryVoltage > 5)
+  {
+     color = QColor( 255, 100, 0 );
+  }
+  else 
+  {
+    color = QColor( 100, 100, 100 );
     beterryValtage = "-";
   }
 
@@ -71,7 +83,7 @@ void CSidebar::paintEvent(QPainter &p)
 
   p.drawPixmap( rect.x(), rect.y(), beterrry1_img );
 
-  p.setPen(Qt::white);
+  p.setPen(Qt::black);
   configFont(p, "Open Sans", 25, "Regular");  
   p.drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, beterryValtage);    
 }
