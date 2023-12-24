@@ -51,6 +51,7 @@ def register(show_spinner=False) -> Optional[str]:
     with open(Paths.persist_root()+"/comma/id_rsa.pub") as f1, open(Paths.persist_root()+"/comma/id_rsa") as f2:
       public_key = f1.read()
       private_key = f2.read()
+      print('register =  public_key {}  private_key'.format( public_key, private_key) )
 
     # Block until we get the imei
     serial = HARDWARE.get_serial()
