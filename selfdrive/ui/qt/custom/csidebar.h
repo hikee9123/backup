@@ -18,7 +18,7 @@ public:
 
 
 public:
-  void paintEvent(QPaintEvent *event);
+  void paintEvent(QPainter &p);
   void updateState(const UIState &s);
 
 

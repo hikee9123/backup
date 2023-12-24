@@ -26,7 +26,7 @@ void CSidebar::updateState(const UIState &s)
   beterryValtage.sprintf("%.1fV %.0fW/h", fBatteryVoltage, carBatteryCapacityWh);
 }
 
-void CSidebar::paintEvent(QPaintEvent *event) 
+void CSidebar::paintEvent(QPainter &p) 
 {
   // atom - battery
   float  batteryPercent = 50.0;

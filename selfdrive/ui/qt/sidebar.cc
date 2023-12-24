@@ -150,5 +150,5 @@ void Sidebar::paintEvent(QPaintEvent *event) {
 
   // #custom
   if( m_pSideBar )
-    m_pSideBar->paintEvent( event );
+    m_pSideBar->paintEvent( p );
 }
