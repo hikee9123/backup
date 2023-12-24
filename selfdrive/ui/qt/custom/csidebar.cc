@@ -40,6 +40,6 @@ void CSidebar::paintEvent(QPainter &p)
   else p.drawImage(rect, beterrry1_img );
 
   p.setPen(Qt::white);
-  configFont(p, "Open Sans", 25, "Regular");  
+  //configFont(p, "Open Sans", 25, "Regular");  
   p.drawText(rect, Qt::AlignCenter, beterryValtage);    
 }
