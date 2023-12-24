@@ -292,7 +292,7 @@ void CommunityPanel::OnTimer()
   UIState *s = uiState();
   UIScene &scene = s->scene;
 
-  printf("cene.started=%d \n", cene.started);
+  printf("scene.started=%d \n", scene.started);
 
 
   updateToggles();
