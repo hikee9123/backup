@@ -50,7 +50,7 @@ void CSidebar::paintEvent(QPainter &p)
   p.fillRect(bq, bgBrush);
 
   QString beterryValtage;
-  beterryValtage.sprintf("%.1fV", fBatteryVoltage );
+  beterryValtage.sprintf("%.1f", fBatteryVoltage );
 
   if( fBatteryVoltage > 12.5 ) p.drawPixmap(rect.x(), rect.y(), beterrry2_img );
   else p.drawPixmap( rect.x(), rect.y(), beterrry1_img );
