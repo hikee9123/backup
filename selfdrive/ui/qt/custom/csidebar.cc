@@ -51,34 +51,23 @@ void CSidebar::paintEvent(QPainter &p)
   QString beterryValtage;
   beterryValtage.sprintf("%.1f", fBatteryVoltage );
 
-  if( fBatteryVoltage > 12.3 )
-  {
-      color = QColor( 0, 200, 255 );
-  }
-  else if( fBatteryVoltage > 12.0 )
-  {
-      color = QColor( 100, 255, 100 );
-  } 
-  else if( fBatteryVoltage > 11.8 )
-  {
-      color = QColor( 255, 200, 50 );
-  }     
-  else if( fBatteryVoltage > 5)
-  {
-     color = QColor( 255, 100, 0 );
-  }
-  else 
-  {
+  if( fBatteryVoltage > 12.3 )     color = QColor( 0, 200, 255 );
+  else if( fBatteryVoltage > 12.0 )   color = QColor( 100, 255, 100 );
+  else if( fBatteryVoltage > 11.8 )   color = QColor( 255, 200, 50 );
+  else if( fBatteryVoltage > 5)   color = QColor( 255, 100, 0 );
+  else {
     color = QColor( 100, 100, 100 );
     beterryValtage = "-";
   }
 
   const QRect  rect = battery_rc;
-  QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
-  QBrush bgBrush = QColor( nR, nB, nB); //("#149948");
-  p.fillRect(bq, bgBrush);
 
-
+  if( fBatteryVoltage > 5 )
+  {
+    QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
+    QBrush bgBrush = QColor( nR, nB, nB); //("#149948");
+    p.fillRect(bq, bgBrush);
+  }
 
 
   p.drawPixmap( rect.x(), rect.y(), beterrry1_img );
