@@ -36,8 +36,8 @@ void CSidebar::paintEvent(QPainter &p)
   QBrush bgBrush("#149948");
   p.fillRect(bq, bgBrush);
 
-  if( fBatteryVoltage > 12.5 ) p.drawImage(rect, beterrry2_img );
-  else p.drawImage(rect, beterrry1_img );
+ // if( fBatteryVoltage > 12.5 ) p.drawImage(rect, beterrry2_img );
+  //else p.drawImage(rect, beterrry1_img );
 
   p.setPen(Qt::white);
   //configFont(p, "Open Sans", 25, "Regular");  
