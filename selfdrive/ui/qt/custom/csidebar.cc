@@ -33,7 +33,7 @@ void CSidebar::paintEvent(QPainter &p)
 
   //const QRect  rect(160, 247, 76, 36);
 
-  const QRect  rect(60, 237, 76, 36);
+  const QRect  rect(60, 237, 276, 36);
   QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
   QBrush bgBrush("#149948");
   p.fillRect(bq, bgBrush);
