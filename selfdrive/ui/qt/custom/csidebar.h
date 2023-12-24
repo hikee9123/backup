@@ -32,5 +32,5 @@ private:
   float  fBatteryVoltage = 0.;
   
 
-  const QRect battery_rc = QRect(160, 255, 85, 38);
+  const QRect battery_rc = QRect(160, 255, 80, 38);
 };
