@@ -18,7 +18,7 @@ void CSidebar::updateState(const UIState &s)
   float  fBatteryVoltage = 0.;
   auto pandaStates = sm["pandaStates"].getPandaStates();
   if (pandaStates.size() > 0) {
-    fBatteryVoltage = pandaStates[0].getVoltage() * 0.01;
+    fBatteryVoltage = pandaStates[0].getVoltage() * 0.001;
   }
   auto deviceState = sm["deviceState"].getDeviceState();
   float carBatteryCapacityWh = (int)deviceState.getCarBatteryCapacityUwh() * 0.0000001;
@@ -33,7 +33,7 @@ void CSidebar::paintEvent(QPainter &p)
 
   //const QRect  rect(160, 247, 76, 36);
 
-  const QRect  rect(60, 237, 276, 36);
+  const QRect  rect(30, 237, 276, 36);
   QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
   QBrush bgBrush("#149948");
   p.fillRect(bq, bgBrush);
