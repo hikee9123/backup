@@ -21,7 +21,7 @@ public:
 
 
 public:
-  void paintEvent(QPaintEvent *event) override;
+  void paintEvent(QPaintEvent *event);
   void updateState(const UIState &s);
 
 
@@ -29,5 +29,5 @@ private:
   QPixmap beterrry1_img, beterrry2_img;
   QString beterryValtage;
 
-  const QRect home_btn = QRect(60, 860, 180, 180);
+  //const QRect home_btn = QRect(60, 860, 180, 180);
 };
