@@ -6,7 +6,7 @@
 #include <QMap>
 
 #include "selfdrive/ui/ui.h"
-
+#include "selfdrive/ui/qt/sidebar.h"
 
 
 
