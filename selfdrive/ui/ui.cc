@@ -251,7 +251,7 @@ UIState::UIState(QObject *parent) : QObject(parent) {
     prime_type = static_cast<PrimeType>(std::atoi(prime_value.c_str()));
   }
 
-  printf("register = prime_value=%s prime_type=%d",prime_value.c_str(),  prime_type);
+  printf("#register= prime_value=%s prime_type=%d \n",prime_value.c_str(),  prime_type);
 
   // update timer
   timer = new QTimer(this);

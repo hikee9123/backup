@@ -42,6 +42,7 @@ OnroadWindow::OnroadWindow(QWidget *parent) : QWidget(parent) {
   split->setSpacing(0);
   split->addWidget(nvg);
 
+  printf( "#register= DUAL_CAMERA_VIEW=%d MAP_RENDER_VIEW=%d\n", getenv("DUAL_CAMERA_VIEW"), getenv("MAP_RENDER_VIEW") );
   if (getenv("DUAL_CAMERA_VIEW")) {
     CameraWidget *arCam = new CameraWidget("camerad", VISION_STREAM_ROAD, true, this);
     split->insertWidget(0, arCam);
@@ -107,6 +108,7 @@ void OnroadWindow::mousePressEvent(QMouseEvent* e) {
 void OnroadWindow::offroadTransition(bool offroad) {
 #ifdef ENABLE_MAPS
   if (!offroad) {
+    printf("#register= offroadTransition  MAPBOX_TOKEN=%s hasPrime=%d\n",MAPBOX_TOKEN.toStdString().c_str(), uiState()->hasPrime() );
     if (map == nullptr && (uiState()->hasPrime() || !MAPBOX_TOKEN.isEmpty())) {
       auto m = new MapPanel(get_mapbox_settings());
       map = m;
@@ -129,6 +131,7 @@ void OnroadWindow::offroadTransition(bool offroad) {
 
 void OnroadWindow::primeChanged(bool prime) {
 #ifdef ENABLE_MAPS
+  printf("#register= primeChanged  MAPBOX_TOKEN=%s prime=%d\n",MAPBOX_TOKEN.toStdString().c_str(), prime );
   if (map && (!prime && MAPBOX_TOKEN.isEmpty())) {
     nvg->map_settings_btn->setEnabled(false);
     nvg->map_settings_btn->setVisible(false);

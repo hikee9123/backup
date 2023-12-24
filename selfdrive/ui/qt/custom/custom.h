@@ -11,6 +11,13 @@
 #include <QWidget>
 #include <QTimer>
 
+
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QDebug>
+
 #include "cereal/messaging/messaging.h"
 #include "third_party/json11/json11.hpp"
 
@@ -49,7 +56,11 @@ public:
 
 public:
    void  save_json_to_file(const json11::Json::object& log_j, const std::string& filename);
-   json11::Json::object load_json_from_file(const std::string& filename) ;
+   json11::Json::object load_json_from_file(const std::string& filename);
+
+
+   QJsonObject readJsonFile(const QString& fileName);
+   void     writeJsonToFile(const QJsonObject& jsonObject, const QString& fileName);
 };
 
 
@@ -66,10 +77,10 @@ private:
   std::map<std::string, ParamControl*> toggles;
 
 
-  json11::Json::object m_jsondata;
+  QJsonObject m_jsondata;
 
 
-  void updateToggles();
+  void updateToggles( int bSave );
 
 protected:
   virtual void showEvent(QShowEvent *event) override;

@@ -6,7 +6,7 @@
 #include <tuple>
 #include <vector>
 
-#include <QDebug>
+
 #include <QTabWidget>
 
 
@@ -95,7 +95,6 @@ void CustomPanel::closeEvent(QCloseEvent *event)
 
 void CustomPanel::showEvent(QShowEvent *event)
 {
-
   QWidget::setContentsMargins(0,0,0,0);
   printf("CustomPanel::showEvent \n" );  
   QWidget::showEvent( event );
@@ -105,8 +104,6 @@ void CustomPanel::showEvent(QShowEvent *event)
 int CustomPanel::send(const char *name, MessageBuilder &msg)
 {
    return pm->send( name, msg );
-
-
 }
 
 void CustomPanel::save_json_to_file(const json11::Json::object& log_j, const std::string& file ) 
@@ -146,13 +143,68 @@ json11::Json::object CustomPanel::load_json_from_file(const std::string& file)
             //std::cerr << "Error parsing JSON: " << err << std::endl;
         }
     } else {
-      printf( "Unable to open the file for reading. %s  ", file.c_str() );
+      printf( "Unable to open the file for reading. %s  ", filename.c_str() );
       // std::cerr << "Unable to open the file for reading." << std::endl;
     }
 
     return json_data.object_items();
 }
 
+
+QJsonObject CustomPanel::readJsonFile(const QString& fileName ) 
+{
+   QString filePath = "/data/params/d/" + fileName + ".json";
+
+    QJsonObject jsonObject;
+
+    // JSON 파일 열기
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open the JSON file: " << filePath;
+        return jsonObject;  // Return an empty object in case of failure
+    }
+
+    // JSON 파일 내용 읽기
+    QByteArray jsonData = file.readAll();
+    file.close();
+
+    // JSON 파싱
+    QJsonDocument doc = QJsonDocument::fromJson(jsonData);
+    if (doc.isNull()) {
+        qDebug() << "Failed to parse the JSON document: " << filePath;
+        return jsonObject;  // Return an empty object in case of failure
+    }
+
+    // JSON 객체 얻기
+    jsonObject = doc.object();
+
+    return jsonObject;
+}
+
+void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& fileName) 
+{
+    QString filePath = "/data/params/d/" + fileName + ".json"; 
+    // JSON 파일 열기
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open the JSON file for writing: " << filePath;
+        return;
+    }
+
+    // JSON 객체를 문자열로 변환
+    QJsonDocument jsonDoc(jsonObject);
+    QByteArray jsonData = jsonDoc.toJson();
+
+    // 파일에 JSON 데이터 쓰기
+    qint64 bytesWritten = file.write(jsonData);
+    file.close();
+
+    if (bytesWritten == -1) {
+        qDebug() << "Failed to write JSON data to the file: " << filePath;
+    } else {
+        qDebug() << "JSON data successfully written to the file: " << filePath;
+    }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -179,12 +231,12 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
 */
 //  pm.reset(new PubMaster({"uICustom"}));
 
-  m_jsondata = m_pCustom->load_json_from_file( "customCommunity" );
+  m_jsondata = m_pCustom->readJsonFile( "customCommunity" );
 
   auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
   int ShowDebugMessage = str3.toInt();
 
-  int levelnum = m_jsondata["ShowDebugMessage"].int_value();
+  int levelnum = m_jsondata["ShowDebugMessage"].toInt();
   printf("ShowDebugMessage = %d  %d", levelnum, ShowDebugMessage );
 
 
@@ -237,6 +289,12 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
 void CommunityPanel::OnTimer() 
 {
   //qDebug() << "This function is called periodically.";
+  UIState *s = uiState();
+  UIScene &scene = s->scene;
+
+  printf("cene.started=%d \n", cene.started);
+
+
   updateToggles();
   //timer->stop();      
 }
@@ -272,11 +330,11 @@ void CommunityPanel::hideEvent(QHideEvent *event)
   printf("CommunityPanel::hideEvent \n" );
   QWidget::hideEvent(event);
 
-  updateToggles();
+  updateToggles( true );
 }
 
 
-void CommunityPanel::updateToggles()
+void CommunityPanel::updateToggles( int bSave )
 {
   auto str1 = QString::fromStdString( params.get( "HapticFeedbackWhenSpeedCamera" ) );
   int HapticFeedbackWhenSpeedCamera = str1.toInt();
@@ -288,13 +346,17 @@ void CommunityPanel::updateToggles()
   int ShowDebugMessage = str3.toInt();
 
 
-   // JSON 객체 Save
-  json11::Json::object log_j = json11::Json::object {
-      {"HapticFeedbackWhenSpeedCamera", HapticFeedbackWhenSpeedCamera},
-      {"UseExternalNaviRoutes", UseExternalNaviRoutes},
-      {"ShowDebugMessage", ShowDebugMessage}
-  };
-  m_pCustom->save_json_to_file(  log_j, "customCommunity" );   
+  if( bSave )
+  {
+    // JSON 객체 Save
+    QJsonObject log_j =  {
+        {"HapticFeedbackWhenSpeedCamera", HapticFeedbackWhenSpeedCamera},
+        {"UseExternalNaviRoutes", UseExternalNaviRoutes},
+        {"ShowDebugMessage", ShowDebugMessage}
+    };
+    m_pCustom->writeJsonToFile(  log_j, "customCommunity" );   
+  }
+
 
 
   m_cmdIdx++;
