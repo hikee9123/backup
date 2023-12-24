@@ -6,7 +6,7 @@
 #include <QMap>
 
 #include "selfdrive/ui/ui.h"
-//#include "selfdrive/ui/qt/sidebar.h"
+
 
 
 
@@ -23,8 +23,12 @@ public:
 
 
 private:
+  void   configFont(QPainter &p, const QString &family, int size, const QString &style);
+
+
+private:
   QPixmap beterrry1_img, beterrry2_img;
   QString beterryValtage;
 
-  //const QRect home_btn = QRect(60, 860, 180, 180);
+  const QRect battery_rc = QRect(30, 170, 260, 36);
 };
