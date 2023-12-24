@@ -4,7 +4,7 @@
 
 #include "selfdrive/ui/qt/util.h"
 
-CSidebar::CSidebar(Sidebar *parent)  
+CSidebar::CSidebar(QFrame *parent)  
 {
   beterrry1_img = loadPixmap("qt/custom/images/battery.png", home_btn.size());
   beterrry2_img = loadPixmap("qt/custom/images/battery_charging.png", home_btn.size());

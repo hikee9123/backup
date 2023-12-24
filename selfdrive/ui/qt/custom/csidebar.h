@@ -15,7 +15,7 @@ class CSidebar  {
 
 
 public:
-  explicit CSidebar(Sidebar* parent = 0);
+  explicit CSidebar(QFrame* parent = 0);
 
 
 
