@@ -30,5 +30,5 @@ private:
   QPixmap beterrry1_img, beterrry2_img;
   QString beterryValtage;
 
-  const QRect battery_rc = QRect(30, 170, 260, 36);
+  const QRect battery_rc = QRect(100, 196, 150, 45);
 };

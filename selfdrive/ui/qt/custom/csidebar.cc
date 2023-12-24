@@ -32,7 +32,7 @@ void CSidebar::updateState(const UIState &s)
   auto deviceState = sm["deviceState"].getDeviceState();
   float carBatteryCapacityWh = (int)deviceState.getCarBatteryCapacityUwh() * 0.0000001;
 
-  beterryValtage.sprintf("%.1fV %.0fW/h", fBatteryVoltage, carBatteryCapacityWh);
+  beterryValtage.sprintf("%.1fV", fBatteryVoltage );
 }
 
 void CSidebar::paintEvent(QPainter &p) 
