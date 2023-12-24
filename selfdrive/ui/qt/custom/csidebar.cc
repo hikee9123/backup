@@ -50,13 +50,22 @@ void CSidebar::paintEvent(QPainter &p)
 
   int nR = (255-nB);
 
+
+  QString beterryValtage;
+  beterryValtage.sprintf("%.1f", fBatteryVoltage );
+
+  if( fBatteryVoltage <= 0)
+  {
+    nB = 255;
+    nR = 255;
+    beterryValtage = "-";
+  }
+
   const QRect  rect = battery_rc;
   QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
   QBrush bgBrush = QColor( nR, nB, nB); //("#149948");
   p.fillRect(bq, bgBrush);
 
-  QString beterryValtage;
-  beterryValtage.sprintf("%.1f", fBatteryVoltage );
 
 
 
