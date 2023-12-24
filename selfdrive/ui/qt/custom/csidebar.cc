@@ -52,7 +52,7 @@ void CSidebar::paintEvent(QPainter &p)
 
   const QRect  rect = battery_rc;
   QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
-  QBrush bgBrush = QColor( nR, 255, nB); //("#149948");
+  QBrush bgBrush = QColor( nR, 100, nB); //("#149948");
   p.fillRect(bq, bgBrush);
 
   QString beterryValtage;
