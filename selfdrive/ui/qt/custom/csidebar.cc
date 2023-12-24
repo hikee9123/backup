@@ -41,7 +41,7 @@ int CSidebar::updateState(const UIState &s)
 void CSidebar::paintEvent(QPainter &p) 
 {
   // atom - battery
-  float  batteryPercent = 100.0;
+  float  batteryPercent = 95.0;
 
 
   int nB = (125 + (fBatteryVoltage - 12.0)*150);
