@@ -40,7 +40,7 @@ Sidebar::Sidebar(QWidget *parent) : QFrame(parent), onroad(false), flag_pressed(
   pm = std::make_unique<PubMaster, const std::initializer_list<const char *>>({"userFlag"});
   
   // #custom
-  m_pSideBar = new CSidebar( this );
+  m_pSideBar = new CSidebar( nullptr );
 }
 
 void Sidebar::mousePressEvent(QMouseEvent *event) {
