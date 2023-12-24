@@ -6,8 +6,9 @@
 
 CSidebar::CSidebar(QFrame *parent)  
 {
-  beterrry1_img = loadPixmap("qt/custom/images/battery.png", home_btn.size());
-  beterrry2_img = loadPixmap("qt/custom/images/battery_charging.png", home_btn.size());
+  QRect  rect(160, 247, 76, 36)
+  beterrry1_img = loadPixmap("qt/custom/images/battery.png", rect.size());
+  beterrry2_img = loadPixmap("qt/custom/images/battery_charging.png", rect.size());
 }
 
 void CSidebar::updateState(const UIState &s) 
