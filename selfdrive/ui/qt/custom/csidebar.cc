@@ -23,7 +23,7 @@ CSidebar::CSidebar(QFrame *parent)
 int CSidebar::updateState(const UIState &s) 
 {
   SubMaster &sm = *(s.sm);
-  if (sm.frame % (UI_FREQ / 2) != 0) return 0;
+  if (sm.frame % (UI_FREQ) != 0) return 0;
 
   //auto &sm = *(s.sm);
 
