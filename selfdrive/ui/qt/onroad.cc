@@ -42,7 +42,7 @@ OnroadWindow::OnroadWindow(QWidget *parent) : QWidget(parent) {
   split->setSpacing(0);
   split->addWidget(nvg);
 
-  printf( "#register= DUAL_CAMERA_VIEW=%s MAP_RENDER_VIEW=%s\n", getenv("DUAL_CAMERA_VIEW").c_str(), getenv("MAP_RENDER_VIEW").c_str() );
+  //printf( "#register= DUAL_CAMERA_VIEW=%s MAP_RENDER_VIEW=%s\n", getenv("DUAL_CAMERA_VIEW").c_str(), getenv("MAP_RENDER_VIEW").c_str() );
   if (getenv("DUAL_CAMERA_VIEW")) {
     CameraWidget *arCam = new CameraWidget("camerad", VISION_STREAM_ROAD, true, this);
     split->insertWidget(0, arCam);
