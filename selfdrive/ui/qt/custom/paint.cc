@@ -235,7 +235,7 @@ void OnPaint::ui_main_navi( QPainter &p )
   int  nGap = 80; 
 
  
-  text4.sprintf("rc = %d", rect().right() );                p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("rc = %d, %d", rect().right(), state->fb_w );                p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
   text4.sprintf("%d, %d, %d", m_nda.camLimitSpeedLeftDist , m_nda.cntIdx, m_param.nIdx );    p.drawText( bb_x, nYPos+=nGap, text4 );
