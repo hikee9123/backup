@@ -44,7 +44,7 @@ void CSidebar::paintEvent(QPainter &p)
   float  batteryPercent = 50.0;
 
 
-  int nB = (125 + (beterryValtage - 12.0)*100);
+  int nB = (125 + (fBatteryVoltage - 12.0)*100);
   if( nB  < 0 ) nB = 0;
   else if( nB > 255 ) nB = 255;
 
