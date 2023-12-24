@@ -219,8 +219,10 @@ void OnPaint::drawHud(QPainter &p)
     bb_draw_tpms( p, x, y);
   } 
 
-
-  bb_ui_draw_UI( p );
+  if( true )
+  {
+     bb_ui_draw_UI( p );
+  }
 }
 
 
