@@ -19,7 +19,6 @@ public:
   void drawHud(QPainter &p);
 
 private:
-  void    paintEvent(QPaintEvent *event) override;
   void    drawText(QPainter &p, int x, int y, int flags, const QString &text, const QColor color = QColor(255, 255, 255, 220) );
   int     get_time();
 

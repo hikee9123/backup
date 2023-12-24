@@ -121,11 +121,6 @@ int OnPaint::get_param( const std::string &key )
 }
 
 
-void OnPaint::paintEvent(QPaintEvent *event) 
-{
-  QPainter p(this);
-
-}
 
 
 void OnPaint::updateState(const UIState &s)
@@ -224,6 +219,8 @@ void OnPaint::drawHud(QPainter &p)
     bb_draw_tpms( p, x, y);
   } 
 
+
+  bb_ui_draw_UI( p );
 }
 
 
@@ -319,7 +316,6 @@ void OnPaint::ui_draw_debug1( QPainter &p )
   configFont( p, "Open Sans",  40, "Regular");
 
 
-  //text3 = "1234567890";
   p.drawText( QRect(bb_x, 0, bb_w, 42), text1, textOpt );
   p.drawText( QRect(bb_x, bb_y, bb_w, 42), text2, textOpt );
   p.drawText( QRect(bb_x, bb_y+45, bb_w, 42), text3, textOpt );
