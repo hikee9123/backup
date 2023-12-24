@@ -112,7 +112,11 @@ void Sidebar::updateState(const UIState &s) {
 
   // #custom
   if( m_pSideBar )
-     m_pSideBar->updateState(s);   
+  {
+      if( m_pSideBar->updateState(s) )
+        update();
+  }
+       
 }
 
 void Sidebar::paintEvent(QPaintEvent *event) {

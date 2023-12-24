@@ -19,7 +19,7 @@ public:
 
 public:
   void paintEvent(QPainter &p);
-  void updateState(const UIState &s);
+  int  updateState(const UIState &s);
 
 
 private:
@@ -28,7 +28,9 @@ private:
 
 private:
   QPixmap beterrry1_img, beterrry2_img;
-  QString beterryValtage;
+  int    frame_cnt = 0;
+  float  fBatteryVoltage = 0.;
+  
 
   const QRect battery_rc = QRect(100, 196, 150, 45);
 };

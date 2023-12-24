@@ -20,11 +20,14 @@ CSidebar::CSidebar(QFrame *parent)
   beterrry2_img = loadPixmap("qt/custom/images/battery_charging.png", battery_rc.size());
 }
 
-void CSidebar::updateState(const UIState &s) 
+int CSidebar::updateState(const UIState &s) 
 {
-  auto &sm = *(s.sm);
+  SubMaster &sm = *(s.sm);
+  if (sm.frame % (UI_FREQ / 2) != 0) return 0;
 
-  float  fBatteryVoltage = 0.;
+  //auto &sm = *(s.sm);
+
+  frame_cnt++;
   auto pandaStates = sm["pandaStates"].getPandaStates();
   if (pandaStates.size() > 0) {
     fBatteryVoltage = pandaStates[0].getVoltage() * 0.001;
@@ -32,7 +35,7 @@ void CSidebar::updateState(const UIState &s)
   //auto deviceState = sm["deviceState"].getDeviceState();
  // float carBatteryCapacityWh = (int)deviceState.getCarBatteryCapacityUwh() * 0.0000001;
 
-  beterryValtage.sprintf("%.1fV", fBatteryVoltage );
+  return 1;
 }
 
 void CSidebar::paintEvent(QPainter &p) 
@@ -45,6 +48,9 @@ void CSidebar::paintEvent(QPainter &p)
   QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
   QBrush bgBrush("#149948");
   p.fillRect(bq, bgBrush);
+
+  QString beterryValtage;
+  beterryValtage.sprintf("%.1fV", fBatteryVoltage );
 
   if( fBatteryVoltage > 12.5 ) p.drawPixmap(rect.x(), rect.y(), beterrry2_img );
   else p.drawPixmap( rect.x(), rect.y(), beterrry1_img );
