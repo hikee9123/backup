@@ -40,7 +40,7 @@ OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent)
   //connect(this, &OnPaint::valueChanged, [=] { update(); });
 
   is_debug = Params().getBool("ShowDebugMessage");
-  //img_tire_pressure = QPixmap("images/img_tire_pressure.png");
+  //img_tire_pressure = QPixmap("qt/custom/images/img_tire_pressure.png");
 
   m_param.nIdx = 0;  
 }

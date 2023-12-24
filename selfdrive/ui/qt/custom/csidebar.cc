@@ -6,7 +6,8 @@
 
 CSidebar::CSidebar(Sidebar *parent)  
 {
-
+  beterrry1_img = loadPixmap("qt/custom/images/battery.png", home_btn.size());
+  beterrry2_img = loadPixmap("qt/custom/images/battery_charging.png", home_btn.size());
 }
 
 void CSidebar::updateState(const UIState &s) 
@@ -26,8 +27,18 @@ void CSidebar::updateState(const UIState &s)
 
 void CSidebar::paintEvent(QPaintEvent *event) 
 {
-  p.setFont(InterFont(35));
-  p.setPen(QColor(0xff, 0xff, 0xff));
-  const QRect r = QRect(50, 267, 100, 50);
-  p.drawText(r, Qt::AlignCenter, beterryValtage);    
+  // atom - battery
+  float  batteryPercent = 50.0;
+
+  const QRect  rect(160, 247, 76, 36);
+  QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
+  QBrush bgBrush("#149948");
+  p.fillRect(bq, bgBrush);
+
+  if( fBatteryVoltage > 12.5 ) p.drawImage(rect, beterrry2_img );
+  else p.drawImage(rect, beterrry1_img );
+
+  p.setPen(Qt::white);
+  configFont(p, "Open Sans", 25, "Regular");  
+  p.drawText(rect, Qt::AlignCenter, beterryValtage);    
 }
