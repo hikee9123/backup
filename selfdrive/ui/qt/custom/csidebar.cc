@@ -29,7 +29,7 @@ void CSidebar::updateState(const UIState &s)
   if (pandaStates.size() > 0) {
     fBatteryVoltage = pandaStates[0].getVoltage() * 0.001;
   }
-  auto deviceState = sm["deviceState"].getDeviceState();
+  //auto deviceState = sm["deviceState"].getDeviceState();
  // float carBatteryCapacityWh = (int)deviceState.getCarBatteryCapacityUwh() * 0.0000001;
 
   beterryValtage.sprintf("%.1fV", fBatteryVoltage );
