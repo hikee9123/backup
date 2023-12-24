@@ -13,8 +13,6 @@ class OnPaint : public QWidget
   Q_OBJECT
 
 
-
-
 public:
   explicit OnPaint(QWidget *parent, int width, int height );
   void updateState(const UIState &s);
@@ -40,12 +38,25 @@ private:
   struct _PARAM_
   {
 
-    
-    //cereal::NaviCustom::NaviData::Reader naviData;
+    cereal::RadarState::LeadData::Reader lead_radar;
+    //cereal::CarState::Reader car_state;
+
     cereal::CarStateCustom::Tpms::Reader tpmsData;
     cereal::UICustom::Community::Reader community;
 
+    int   cpuPerc;
+    float cpuTemp; 
+
+    int   electGearStep;
+
+    float  angleSteers;
+    int   enginRpm = 0;
+
     float batteryVoltage;
+
+    float altitudeUblox;    
+    float gpsAccuracyUblox;
+
     int  nIdx;
   } m_param;
   
@@ -86,6 +97,22 @@ private:
   QString  get_tpms_text(int tpms);
   void     bb_draw_tpms(QPainter &p, int x, int y );
   void     ui_draw_debug1( QPainter &p );
+
+
+// kegmen
+private:
+  int  bb_ui_draw_measure(QPainter &p,  const QString &bb_value, const QString &bb_uom, const QString &bb_label,
+    int bb_x, int bb_y, int bb_uom_dx,
+    QColor bb_valueColor, QColor bb_labelColor, QColor bb_uomColor,
+    int bb_valueFontSize, int bb_labelFontSize, int bb_uomFontSize );
+
+  void bb_ui_draw_measures_right(QPainter &p, int bb_x, int bb_y, int bb_w );
+  void bb_ui_draw_measures_left(QPainter &p, int bb_x, int bb_y, int bb_w );
+
+  QColor  get_color( int nVal, int nRed, int nYellow );
+  QColor angleSteersColor( int angleSteers );
+
+  void  bb_ui_draw_UI(QPainter &p);
 
 signals:
   //void    valueChanged();  
