@@ -58,5 +58,5 @@ void CSidebar::paintEvent(QPainter &p)
 
   p.setPen(Qt::white);
   configFont(p, "Open Sans", 25, "Regular");  
-  p.drawText(rect, Qt::AlignLeft, beterryValtage);    
+  p.drawText(rect, Qt::AlignLeft | Qt::AlignHCenter, beterryValtage);    
 }
