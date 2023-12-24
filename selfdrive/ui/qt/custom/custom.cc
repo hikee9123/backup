@@ -230,7 +230,7 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
 
   timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &CommunityPanel::OnTimer);
-  timer->start(10000);
+  timer->start(5000);
 }
 
 
@@ -238,7 +238,7 @@ void CommunityPanel::OnTimer()
 {
   //qDebug() << "This function is called periodically.";
   updateToggles();
-  timer->stop();      
+  //timer->stop();      
 }
 
 void CommunityPanel::closeEvent(QCloseEvent *event) 
