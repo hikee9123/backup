@@ -52,10 +52,11 @@ void CSidebar::paintEvent(QPainter &p)
   QString beterryValtage;
   beterryValtage.sprintf("%.1f", fBatteryVoltage );
 
-  if( fBatteryVoltage > 12.5 ) p.drawPixmap(rect.x(), rect.y(), beterrry2_img );
-  else p.drawPixmap( rect.x(), rect.y(), beterrry1_img );
+  //if( fBatteryVoltage > 12.5 ) p.drawPixmap(rect.x(), rect.y(), beterrry2_img );
+  //else 
+  p.drawPixmap( rect.x(), rect.y(), beterrry1_img );
 
   p.setPen(Qt::white);
   configFont(p, "Open Sans", 25, "Regular");  
-  p.drawText(rect, Qt::AlignCenter, beterryValtage);    
+  p.drawText(rect, Qt::AlignLeft, beterryValtage);    
 }
