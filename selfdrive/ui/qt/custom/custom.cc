@@ -295,7 +295,7 @@ void CommunityPanel::OnTimer()
   printf("scene.started=%d \n", scene.started);
 
 
-  updateToggles();
+  updateToggles( false );
   //timer->stop();      
 }
 
