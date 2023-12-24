@@ -296,7 +296,11 @@ void CommunityPanel::OnTimer()
 
 
   updateToggles( false );
-  //timer->stop();      
+  //      
+  if( scene.started )
+  {
+    timer->stop();
+  }
 }
 
 void CommunityPanel::closeEvent(QCloseEvent *event) 
@@ -367,5 +371,5 @@ void CommunityPanel::updateToggles( int bSave )
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
   int ret = m_pCustom->send("uICustom", msg);
-  printf("uiCustom  send(%d)  = ShowDebugMessage %d", ret, ShowDebugMessage);
+  //printf("uiCustom  send(%d)  = ShowDebugMessage %d", ret, ShowDebugMessage);
 }
