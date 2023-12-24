@@ -370,6 +370,6 @@ void CommunityPanel::updateToggles( int bSave )
   community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
   community.setShowDebugMessage( ShowDebugMessage );  // Float32;
   community.setCmdIdx( m_cmdIdx );
-  int ret = m_pCustom->send("uICustom", msg);
+  m_pCustom->send("uICustom", msg);
   //printf("uiCustom  send(%d)  = ShowDebugMessage %d", ret, ShowDebugMessage);
 }
