@@ -41,7 +41,7 @@ OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent)
   is_debug = Params().getBool("ShowDebugMessage");
   //img_tire_pressure = QPixmap("qt/custom/images/img_tire_pressure.png");
 
-  m_param.nIdx = 0;  
+
 }
 
 
@@ -145,8 +145,11 @@ int OnPaint::get_param( const std::string &key )
 void OnPaint::updateState(const UIState &s)
 {
   // user message
+  SubMaster &sm1 = *(s.sm);  
   SubMaster &sm2 = *(m_sm);
-  sm2.update(0);
+
+  if (sm.frame % (UI_FREQ*0.5) != 0) 
+      sm2.update(0);
 
   // 1.
   auto uiCustom = sm2["uICustom"].getUICustom();
@@ -194,13 +197,10 @@ void OnPaint::updateState(const UIState &s)
   m_param.electGearStep  = carState_custom.getElectGearStep();
 
 
-  m_param.nIdx++;
-  if( m_param.nIdx >= 10 )
-      m_param.nIdx = 0;
 
 
 
-  SubMaster &sm1 = *(s.sm);
+ 
   // 1.
   auto deviceState = sm1["deviceState"].getDeviceState();
   auto  maxCpuTemp = deviceState.getCpuTempC();  

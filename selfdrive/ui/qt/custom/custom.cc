@@ -24,6 +24,7 @@
 
 #include "selfdrive/ui/qt/custom/custom.h"
 
+#include "selfdrive/ui/qt/custom/jsonContrl.h"
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
@@ -160,7 +161,16 @@ QJsonObject CustomPanel::readJsonFile(const QString& fileName )
     // JSON 파일 열기
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        printf( "Failed to open the JSON file: %s  ", filePath.toStdString().c_str() );
+        printf( "Failed to open the JSON file: %s  \n", filePath.toStdString().c_str() );
+
+        QString json = util::read_file( filePath.toStdString() );
+        printf( "Retry JSON file: %s  \n", json.toStdString().c_str() );
+        QJsonParseError error;
+        jsonObject = QJsonDocument::fromJson(json.toUtf8(), &error).object();
+        if (error.error != QJsonParseError::NoError) {
+            printf( "JSON parsing error: %s  \n", error.errorString().c_str() );
+            // 에러 처리 코드 추가
+        }
         return jsonObject;  // Return an empty object in case of failure
     }
 
@@ -229,8 +239,6 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   });
   addItem(changeCar);
 */
-//  pm.reset(new PubMaster({"uICustom"}));
-
   m_jsondata = m_pCustom->readJsonFile( "customCommunity" );
 
   auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
@@ -260,19 +268,12 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
       "",
       "../assets/offroad/icon_shell.png",
     },
-    {
-      "DisableLogging",
-      tr("disable logging"),
-      "",
-      "../assets/offroad/icon_openpilot.png",
-    },
-    
   };
 
   for (auto &[param, title, desc, icon] : toggle_defs) {
-    auto toggle = new ParamControl(param, title, desc, icon, this);
+    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
 
-    bool locked = params.getBool((param + "Lock").toStdString());
+    bool locked = m_jsondata[param].toBool();// params.getBool((param + "Lock").toStdString());
     toggle->setEnabled(!locked);
 
     addItem(toggle);
@@ -339,25 +340,32 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 
 void CommunityPanel::updateToggles( int bSave )
 {
+  /*
   auto str1 = QString::fromStdString( params.get( "HapticFeedbackWhenSpeedCamera" ) );
   int HapticFeedbackWhenSpeedCamera = str1.toInt();
-
   auto str2 = QString::fromStdString( params.get( "UseExternalNaviRoutes" ) );
   int UseExternalNaviRoutes = str2.toInt();
-
   auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
   int ShowDebugMessage = str3.toInt();
+  */
 
+  int HapticFeedbackWhenSpeedCamera = m_jsondata["HapticFeedbackWhenSpeedCamera"].toInt();
+  int UseExternalNaviRoutes = m_jsondata["UseExternalNaviRoutes" ].toInt();
+  int ShowDebugMessage = m_jsondata["ShowDebugMessage" ].toInt();
+
+  printf("HapticFeedbackWhenSpeedCamera =%d \n", HapticFeedbackWhenSpeedCamera);
+  printf("UseExternalNaviRoutes =%d \n", UseExternalNaviRoutes);
+  printf("ShowDebugMessage =%d \n", ShowDebugMessage);
 
   if( bSave )
   {
     // JSON 객체 Save
-    QJsonObject log_j =  {
-        {"HapticFeedbackWhenSpeedCamera", HapticFeedbackWhenSpeedCamera},
-        {"UseExternalNaviRoutes", UseExternalNaviRoutes},
-        {"ShowDebugMessage", ShowDebugMessage}
-    };
-    m_pCustom->writeJsonToFile(  log_j, "customCommunity" );   
+    //QJsonObject log_j =  {
+    //    {"HapticFeedbackWhenSpeedCamera", HapticFeedbackWhenSpeedCamera},
+    //    {"UseExternalNaviRoutes", UseExternalNaviRoutes},
+    //    {"ShowDebugMessage", ShowDebugMessage}
+    //};
+    m_pCustom->writeJsonToFile(  m_jsondata, "customCommunity" );   
   }
 
 

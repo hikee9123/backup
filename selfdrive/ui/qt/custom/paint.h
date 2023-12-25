@@ -60,7 +60,7 @@ private:
     float altitudeUblox;    
     float gpsAccuracyUblox;
 
-    int  nIdx;
+
   } m_param;
   
   struct _STATUS_
