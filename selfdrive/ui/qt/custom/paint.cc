@@ -678,8 +678,8 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
 void OnPaint::bb_ui_draw_UI(QPainter &p)
 {
   const int bb_dml_w = 180;
-  const int bb_dml_x = (0 + bdr_s) + 30;
-  const int bb_dml_y = (0 + bdr_s) + 450;
+  const int bb_dml_x = (0 + bdr_s) + 20;
+  const int bb_dml_y = (0 + bdr_s) + 430;
 
   const int bb_dmr_w = 180;
   const int bb_dmr_x = 0 + state->fb_w - bb_dmr_w - bdr_s;
