@@ -88,7 +88,37 @@ void OnPaint::configFont(QPainter &p, const QString &family, int size, const QSt
   p.setFont(f);
 }
 
-void OnPaint::drawText(QPainter &p, int x, int y, int flags, const QString &text, const QColor color) 
+
+void OnPaint::drawText1(QPainter &p, int x, int y, const QString &text, QColor qColor, int nAlign ) 
+{
+  QFontMetrics fm(p.font());
+  QRect init_rect = fm.boundingRect(text);
+  QRect real_rect = fm.boundingRect(init_rect, 0, text);
+
+  if( nAlign == Qt::AlignCenter ) // Qt::AlignLeft )
+  {
+     real_rect.moveCenter({x, y - real_rect.height() / 2});
+  }
+  else  if( nAlign ==  Qt::AlignRight  )
+  {
+    real_rect.moveLeft( x );
+  }
+  else  if( nAlign ==  Qt::AlignLeft  )
+  {
+    real_rect.moveRight( x );
+  }
+  else
+  {
+    real_rect.moveTo(x, y - real_rect.height() / 2);
+  }
+
+
+  p.setPen( qColor );
+  p.drawText(real_rect, nAlign, text);
+}
+
+
+void OnPaint::drawText2(QPainter &p, int x, int y, int flags, const QString &text, const QColor color) 
 {
   QFontMetrics fm(p.font());
   QRect rect = fm.boundingRect(text);
@@ -286,11 +316,11 @@ void OnPaint::bb_draw_tpms(QPainter &p, int x, int y )
 
 
     p.setFont(InterFont(38, QFont::Bold));
-    drawText( p, x   -margin, y+10,   Qt::AlignRight, get_tpms_text(fl), get_tpms_color(fl)  );
-    drawText( p, x+w +margin, y+10,   Qt::AlignLeft,  get_tpms_text(fr), get_tpms_color(fr)  );
+    drawText2( p, x   -margin, y+10,   Qt::AlignRight, get_tpms_text(fl), get_tpms_color(fl)  );
+    drawText2( p, x+w +margin, y+10,   Qt::AlignLeft,  get_tpms_text(fr), get_tpms_color(fr)  );
 
-    drawText( p, x   -margin, y+h+20, Qt::AlignRight, get_tpms_text(rl), get_tpms_color(rl)  );
-    drawText( p, x+w +margin, y+h+20, Qt::AlignLeft,  get_tpms_text(rr), get_tpms_color(rr)  );
+    drawText2( p, x   -margin, y+h+20, Qt::AlignRight, get_tpms_text(rl), get_tpms_color(rl)  );
+    drawText2( p, x+w +margin, y+h+20, Qt::AlignLeft,  get_tpms_text(rr), get_tpms_color(rr)  );
 
     p.setPen( QColor(255, 255, 255, 255) );
 }
@@ -342,10 +372,10 @@ int OnPaint::bb_ui_draw_measure(QPainter &p,  const QString &bb_value, const QSt
 
   //print value
   configFont( p, "Open Sans",  bb_valueFontSize*2, "SemiBold");
-  drawText( p, bb_x-dx/2, bb_y+ (int)(bb_valueFontSize*2.5)+5, Qt::AlignCenter, bb_value, bb_valueColor );
+  drawText1( p, bb_x-dx/2, bb_y+ (int)(bb_valueFontSize*2.5)+5,  bb_value, bb_valueColor );
   //print label
   configFont( p, "Open Sans",  bb_valueFontSize*1, "Regular");
-  drawText( p, bb_x, bb_y + (int)(bb_valueFontSize*2.5)+5 + (int)(bb_labelFontSize*2.5)+5, Qt::AlignCenter, bb_label, bb_labelColor);
+  drawText1( p, bb_x, bb_y + (int)(bb_valueFontSize*2.5)+5 + (int)(bb_labelFontSize*2.5)+5,  bb_label, bb_labelColor);
 
   //print uom
   if (nLen > 0) {
