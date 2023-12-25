@@ -127,7 +127,7 @@ void OnPaint::updateState(const UIState &s)
 {
   SubMaster &sm1 = *(s.sm);
 
-
+/*
   // 1.
   auto gps_ext = sm1["gpsLocationExternal"].getGpsLocationExternal();
   m_param.gpsAccuracyUblox = gps_ext.getAccuracy();
@@ -148,7 +148,7 @@ void OnPaint::updateState(const UIState &s)
   auto car_state = sm1["carState"].getCarState();
   m_param.angleSteers = car_state.getSteeringAngleDeg();
   m_param.enginRpm =  car_state.getEngineRpm();
-
+*/
 
   // user message
   SubMaster &sm2 = *(m_sm);
