@@ -288,9 +288,6 @@ int Params::remove(const std::string &key) {
 }
 
 std::string Params::get(const std::string &key, bool block) {
-
-  printf( "Params::Params  key = %s \n", key.c_str() );
-
   if (!block) {
     return util::read_file(getParamPath(key));
   } else {
