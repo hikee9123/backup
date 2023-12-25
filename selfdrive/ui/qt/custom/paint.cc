@@ -247,17 +247,18 @@ void OnPaint::ui_main_navi( QPainter &p )
 
   int bb_x = 50;
   int bb_y = 430;
-  int bb_w = 200;
+  int bb_w = 190;
 
 
-
-  text4.sprintf("%d", m_nda.camLimitSpeedLeftDist );
-  QRect rc( bb_x, bb_y, bb_w, 90);
-  p.setPen( QColor(0, 0, 0, 255) );
-  p.setBrush(QColor(255, 255, 255, 100));
-  p.drawRoundedRect(rc, 20, 20);
-  //p.drawText( rc.x(), rc.y(), text4 );
-  p.drawText( rc, Qt::AlignCenter, text4);
+  if( m_nda.camLimitSpeedLeftDist > 0)
+  {
+    text4.sprintf("%d", m_nda.camLimitSpeedLeftDist );
+    QRect rc( bb_x, bb_y, bb_w, 85);
+    p.setPen( QColor(0, 0, 0, 255) );
+    p.setBrush(QColor(255, 255, 255, 100));
+    p.drawRoundedRect(rc, 20, 20);
+    p.drawText( rc, Qt::AlignCenter, text4);
+  }
   //int  nYPos = bb_y;
  // int  nGap = 80;    
  // text4.sprintf("rc = %d, %d", rect().right(), state->fb_w );                p.drawText( bb_x, nYPos+=nGap, text4 );
@@ -351,7 +352,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 int OnPaint::bb_ui_draw_measure(QPainter &p,  const QString &bb_value, const QString &bb_uom, const QString &bb_label,
     int bb_x, int bb_y, int bb_uom_dx,
     QColor bb_valueColor, QColor bb_labelColor, QColor bb_uomColor,
-    int bb_valueFontSize, int bb_labelFontSize, int bb_uomFontSize )
+    int bb_valueFontSize, int bb_labelFontSize, int bb_uomFontSize, int bb_uom_dy )
 {
  
   int dx = 0;
@@ -372,7 +373,7 @@ int OnPaint::bb_ui_draw_measure(QPainter &p,  const QString &bb_value, const QSt
   if (nLen > 0) {
 
     int rx =bb_x + bb_uom_dx + bb_valueFontSize -3;
-    int ry = bb_y + (int)(bb_valueFontSize*2.5/2)+25;
+    int ry = bb_y + bb_uom_dy + (int)(bb_valueFontSize*2.5/2)+25;
     configFont( p, "Open Sans",  bb_uomFontSize*2, "Regular");
 
     p.save();
@@ -549,7 +550,8 @@ QString OnPaint::gearGap( int gear_step, QColor &color )
     QString  strGap;
 
     color = QColor(0, 180, 255, 220);
-    if (gear_step == 1) strGap = "■";
+    if (gear_step == 1) strGap = "P";
+    else if (gear_step == 1) strGap = "■";
     else if (gear_step == 2) strGap = "■■";
     else if (gear_step == 3) strGap = "■■■";
     else if (gear_step == 4) strGap = "■■■■■";      
@@ -698,7 +700,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
     bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "ENGINE",
       bb_rx, bb_ry, bb_uom_dx,
       val_color, lab_color, uom_color,
-      value_fontSize, label_fontSize, uom_fontSize );
+      value_fontSize, label_fontSize, 8, 50 );
     bb_ry = bb_y + bb_h;
   }
 

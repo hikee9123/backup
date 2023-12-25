@@ -107,7 +107,7 @@ private:
   int  bb_ui_draw_measure(QPainter &p,  const QString &bb_value, const QString &bb_uom, const QString &bb_label,
     int bb_x, int bb_y, int bb_uom_dx,
     QColor bb_valueColor, QColor bb_labelColor, QColor bb_uomColor,
-    int bb_valueFontSize, int bb_labelFontSize, int bb_uomFontSize );
+    int bb_valueFontSize, int bb_labelFontSize, int bb_uomFontSize, int bb_uom_dy = 0 );
 
   void bb_ui_draw_measures_right(QPainter &p, int bb_x, int bb_y, int bb_w );
   void bb_ui_draw_measures_left(QPainter &p, int bb_x, int bb_y, int bb_w );
