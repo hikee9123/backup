@@ -607,7 +607,9 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   {
     QColor val_color = QColor(255, 255, 255, 200);
 
-    val_color = get_color( (int) m_param.batteryVoltage, 15, 11 );
+    if( m_param.batteryVoltage > 14.7 ) val_color = QColor(255, 100, 0, 200);
+    else if( m_param.batteryVoltage < 11.7 ) val_color = QColor(255, 0, 0, 200);
+    else if( m_param.batteryVoltage < 12.0 ) val_color = QColor(255, 100, 0, 200);
 
 
     val_str.sprintf("%.1f", m_param.batteryVoltage );
@@ -622,7 +624,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
 
 
   //add grey panda GPS accuracy
-  if( true )
+  if( false )
   {
     QColor val_color = QColor(255, 255, 255, 200);
     //show red/orange if gps accuracy is low
@@ -644,6 +646,27 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
         value_fontSize, label_fontSize, uom_fontSize );
     bb_ry = bb_y + bb_h;
   }
+
+  //add  steering angle
+  if( true )
+  {
+    QColor val_color = QColor(0, 255, 0, 200);
+
+    val_color = angleSteersColor( (int)(m_param.angleSteers) );
+
+    // steering is in degrees
+    val_str.sprintf("%.1f",m_param.angleSteers);
+
+    // steering is in degrees des
+    uom_str = "des";
+
+    bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "REAL STEER",
+        bb_rx, bb_ry, bb_uom_dx,
+        val_color, lab_color, uom_color,
+        value_fontSize, label_fontSize, uom_fontSize );
+    bb_ry = bb_y + bb_h;
+  }
+
 
   if( true )
   {
@@ -694,7 +717,7 @@ void OnPaint::bb_ui_draw_UI(QPainter &p)
 
 
   // 1. kegman ui
-  bb_ui_draw_measures_left(p, bb_dml_x, bb_dml_y, bb_dml_w);
+  //bb_ui_draw_measures_left(p, bb_dml_x, bb_dml_y, bb_dml_w);
   bb_ui_draw_measures_right(p, bb_dmr_x, bb_dmr_y, bb_dmr_w);
 }
 //BB END: functions added for the display of various itemsapType
