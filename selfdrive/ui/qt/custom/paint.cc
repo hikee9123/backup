@@ -144,29 +144,16 @@ int OnPaint::get_param( const std::string &key )
 
 void OnPaint::updateState(const UIState &s)
 {
-  if( !is_debug ) return;
-
-
-  SubMaster &sm1 = *(s.sm);
-  // 1.
-  auto deviceState = sm1["deviceState"].getDeviceState();
-  auto  maxCpuTemp = deviceState.getCpuTempC();  
-  m_param.cpuPerc = deviceState.getCpuUsagePercent()[0];  
-  m_param.cpuTemp = maxCpuTemp[0];
-
-  // 1.
-  auto radar_state = sm1["radarState"].getRadarState();  // radar
-  m_param.lead_radar = radar_state.getLeadOne();
-
-  // 1.
-  auto car_state = sm1["carState"].getCarState();
-  m_param.angleSteers = car_state.getSteeringAngleDeg();
-  m_param.enginRpm =  car_state.getEngineRpm();
-
-
   // user message
   SubMaster &sm2 = *(m_sm);
   sm2.update(0);
+
+  // 1.
+  auto uiCustom = sm2["uICustom"].getUICustom();
+  m_param.community  = uiCustom.getCommunity();
+  is_debug = m_param.community.getShowDebugMessage();
+
+  if( !is_debug ) return;
 
   // 1.
   auto gps_ext = sm2["gpsLocationExternal"].getGpsLocationExternal();
@@ -177,10 +164,6 @@ void OnPaint::updateState(const UIState &s)
   auto peripheralState = sm2["peripheralState"].getPeripheralState();
   m_param.batteryVoltage = peripheralState.getVoltage() * 0.001;
 
-  // 1.
-  auto uiCustom = sm2["uICustom"].getUICustom();
-  m_param.community  = uiCustom.getCommunity();
-  is_debug = m_param.community.getShowDebugMessage();
 
   // 1.
   auto navi_custom = sm2["naviCustom"].getNaviCustom();
@@ -211,9 +194,28 @@ void OnPaint::updateState(const UIState &s)
   m_param.electGearStep  = carState_custom.getElectGearStep();
 
 
-    m_param.nIdx++;
-    if( m_param.nIdx >= 10 )
-        m_param.nIdx = 0;
+  m_param.nIdx++;
+  if( m_param.nIdx >= 10 )
+      m_param.nIdx = 0;
+
+
+
+  SubMaster &sm1 = *(s.sm);
+  // 1.
+  auto deviceState = sm1["deviceState"].getDeviceState();
+  auto  maxCpuTemp = deviceState.getCpuTempC();  
+  m_param.cpuPerc = deviceState.getCpuUsagePercent()[0];  
+  m_param.cpuTemp = maxCpuTemp[0];
+
+  // 1.
+  auto radar_state = sm1["radarState"].getRadarState();  // radar
+  m_param.lead_radar = radar_state.getLeadOne();
+
+  // 1.
+  auto car_state = sm1["carState"].getCarState();
+  m_param.angleSteers = car_state.getSteeringAngleDeg();
+  m_param.enginRpm =  car_state.getEngineRpm();
+
 }
 
 
