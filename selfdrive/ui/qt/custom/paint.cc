@@ -247,17 +247,24 @@ void OnPaint::ui_main_navi( QPainter &p )
 
   int bb_x = 50;
   int bb_y = 430;
+  int bb_w = 100;
 
-  int  nYPos = bb_y;
-  int  nGap = 80; 
 
- 
+
+  text4.sprintf("%d", m_nda.camLimitSpeedLeftDist );
+  QRect rc( bb_x, bb_y, bb_w, 90);
+  p.setPen( QColor(0, 0, 0, 255) );
+  p.setBrush(QColor(255, 255, 255, 100));
+  p.drawRoundedRect(rc, 20, 20);
+  //p.drawText( rc.x(), rc.y(), text4 );
+  p.drawText( rc, Qt::AlignCenter, text4);
+  //int  nYPos = bb_y;
+ // int  nGap = 80;    
  // text4.sprintf("rc = %d, %d", rect().right(), state->fb_w );                p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("%d", m_nda.camLimitSpeedLeftDist  );    p.drawText( bb_x, nYPos+=nGap, text4 );
+  //text4.sprintf("%d", m_nda.camLimitSpeedLeftDist  );    p.drawText( bb_x, nYPos+=nGap, text4 );
  
-
   // auto uiCustom = sm["uICustom"].getUICustom();
   //text4.sprintf("batteryVoltage = %.1fV", m_param.batteryVoltage );           p.drawText( bb_x, nYPos+=nGap, text4 );
  // text4.sprintf("UseExternal = %d",  m_param.community.getUseExternalNaviRoutes() );           p.drawText( bb_x, nYPos+=nGap, text4 );
