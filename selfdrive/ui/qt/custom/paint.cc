@@ -550,7 +550,7 @@ QString OnPaint::gearGap( int gear_step, QColor &color )
     QString  strGap;
 
     color = QColor(0, 180, 255, 220);
-    if (gear_step == 1) strGap = "P";
+    if (gear_step == 0) strGap = "P";
     else if (gear_step == 1) strGap = "■";
     else if (gear_step == 2) strGap = "■■";
     else if (gear_step == 3) strGap = "■■■";
@@ -700,7 +700,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
     bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "ENGINE",
       bb_rx, bb_ry, bb_uom_dx,
       val_color, lab_color, uom_color,
-      value_fontSize, label_fontSize, 8, 50 );
+      value_fontSize, label_fontSize, 8, 60 );
     bb_ry = bb_y + bb_h;
   }
 
