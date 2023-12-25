@@ -289,12 +289,8 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
 
 void CommunityPanel::OnTimer() 
 {
-  //qDebug() << "This function is called periodically.";
   UIState *s = uiState();
   UIScene &scene = s->scene;
-
-  //printf("scene.started=%d \n", scene.started);
-
 
   updateToggles( false );
   if( scene.started )
@@ -340,15 +336,6 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 
 void CommunityPanel::updateToggles( int bSave )
 {
-  /*
-  auto str1 = QString::fromStdString( params.get( "HapticFeedbackWhenSpeedCamera" ) );
-  int HapticFeedbackWhenSpeedCamera = str1.toInt();
-  auto str2 = QString::fromStdString( params.get( "UseExternalNaviRoutes" ) );
-  int UseExternalNaviRoutes = str2.toInt();
-  auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
-  int ShowDebugMessage = str3.toInt();
-  */
-
   int HapticFeedbackWhenSpeedCamera = m_jsondata["HapticFeedbackWhenSpeedCamera"].toInt();
   int UseExternalNaviRoutes = m_jsondata["UseExternalNaviRoutes" ].toInt();
   int ShowDebugMessage = m_jsondata["ShowDebugMessage" ].toInt();
