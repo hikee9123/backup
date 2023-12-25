@@ -54,6 +54,7 @@ class CarStateCustom():
     if not self.CP.openpilotLongitudinalControl and self.CP.carFingerprint in CAMERA_SCC_CAR:
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
 
+    ret.engineRpm = cp.vl["E_EMS11"]["N"] # opkr
     #self.is_highway = False # (cp_cruise.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0)     
     #self.is_highway = self.lfahda["HDA_Icon_State"] != 0.
 

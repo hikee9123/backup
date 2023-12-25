@@ -637,8 +637,8 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
 
 
     val_str.sprintf("%.1f", m_param.batteryVoltage );
-    uom_str = "V";
-    bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "BAT V",
+    uom_str = "volt";
+    bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "battery",
         bb_rx, bb_ry, bb_uom_dx,
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
@@ -654,7 +654,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
 
     // gps accuracy is always in meters
     if(m_param.gpsAccuracyUblox > 99 || m_param.gpsAccuracyUblox == 0) {
-       val_str = "None";
+       val_str = "-";
     }else if(m_param.gpsAccuracyUblox > 9.99) {
       val_str.sprintf("%.1f", m_param.gpsAccuracyUblox );
     }
