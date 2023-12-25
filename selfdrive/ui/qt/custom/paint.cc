@@ -247,7 +247,7 @@ void OnPaint::ui_main_navi( QPainter &p )
 
   int bb_x = 50;
   int bb_y = 430;
-  int bb_w = 100;
+  int bb_w = 200;
 
 
 
