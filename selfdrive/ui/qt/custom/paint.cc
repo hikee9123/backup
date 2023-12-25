@@ -546,33 +546,7 @@ void OnPaint::bb_ui_draw_measures_left(QPainter &p, int bb_x, int bb_y, int bb_w
 
 
     
-  if( true )
-  {
-    float fEngineRpm = m_param.enginRpm;
-    int   electGearStep  = m_param.electGearStep;
-  
-    uom_color = QColor(255, 255, 255, 200);
-    QColor val_color = QColor(255, 255, 255, 200);
 
-    if (  fEngineRpm <= 0 )
-    {
-      val_str.sprintf("EV"); 
-      val_color = QColor(0, 255, 0, 200);
-    }
-    else 
-    {
-      val_str.sprintf("%.0f", fEngineRpm); 
-      if( fEngineRpm > 2000 ) val_color = QColor(255, 188, 3, 200);
-      else if( fEngineRpm > 3000 ) val_color = QColor(255, 0, 0, 200);
-    }
-    
-    uom_str.sprintf("%d", electGearStep );
-    bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "ENGINE",
-      bb_rx, bb_ry, bb_uom_dx,
-      val_color, lab_color, uom_color,
-      value_fontSize, label_fontSize, uom_fontSize );
-    bb_ry = bb_y + bb_h;
-  }
 
   //finally draw the frame
   bb_h += 20;
@@ -648,6 +622,8 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
 
 
   //add grey panda GPS accuracy
+  if( true )
+  {
     QColor val_color = QColor(255, 255, 255, 200);
     //show red/orange if gps accuracy is low
      val_color = get_color( (int)m_param.gpsAccuracyUblox, 5, 2 );
@@ -667,7 +643,35 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
     bb_ry = bb_y + bb_h;
+  }
 
+  if( true )
+  {
+    float fEngineRpm = m_param.enginRpm;
+    int   electGearStep  = m_param.electGearStep;
+  
+    uom_color = QColor(255, 255, 255, 200);
+    QColor val_color = QColor(255, 255, 255, 200);
+
+    if (  fEngineRpm <= 0 )
+    {
+      val_str.sprintf("EV"); 
+      val_color = QColor(0, 255, 0, 200);
+    }
+    else 
+    {
+      val_str.sprintf("%.0f", fEngineRpm); 
+      if( fEngineRpm > 2000 ) val_color = QColor(255, 188, 3, 200);
+      else if( fEngineRpm > 3000 ) val_color = QColor(255, 0, 0, 200);
+    }
+    
+    uom_str.sprintf("%d", electGearStep );
+    bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "ENGINE",
+      bb_rx, bb_ry, bb_uom_dx,
+      val_color, lab_color, uom_color,
+      value_fontSize, label_fontSize, uom_fontSize );
+    bb_ry = bb_y + bb_h;
+  }
 
   //finally draw the frame
   bb_h += 20;
@@ -681,7 +685,7 @@ void OnPaint::bb_ui_draw_UI(QPainter &p)
   //const int bb_dml_x = (0 + bdr_s) + 20;
   //const int bb_dml_y = (0 + bdr_s) + 430;
 
-  const int bb_dml_x = (0 + bdr_s) + 220;
+  const int bb_dml_x = (0 + bdr_s) + 230;
   const int bb_dml_y = (0 + bdr_s) + 10;
 
   const int bb_dmr_w = 180;
