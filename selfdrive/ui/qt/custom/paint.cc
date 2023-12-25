@@ -144,6 +144,9 @@ int OnPaint::get_param( const std::string &key )
 
 void OnPaint::updateState(const UIState &s)
 {
+  if( !is_debug ) return;
+
+
   SubMaster &sm1 = *(s.sm);
   // 1.
   auto deviceState = sm1["deviceState"].getDeviceState();
