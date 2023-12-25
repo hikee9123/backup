@@ -206,7 +206,7 @@ class RouteEngine:
     msg.valid = False
     if self.sm.updated["naviCustom"]:
       naviData = self.sm["naviCustom"].naviData
-      msg.valid = True
+      msg.valid = naviData.active
       if naviData.camLimitSpeed:
         msg.navInstruction.speedLimit = naviData.camLimitSpeed / 3.6
         msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna        
@@ -214,7 +214,7 @@ class RouteEngine:
         msg.navInstruction.speedLimit = naviData.roadLimitSpeed / 3.6
         msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
 
-      msg.navInstruction.maneuverDistance = naviData.camLimitSpeedLeftDist
+      #msg.navInstruction.maneuverDistance = naviData.camLimitSpeedLeftDist
     else:
       naviData = None
 
