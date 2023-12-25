@@ -17,6 +17,7 @@ struct CarStateCustom @0x81c2f05a394cf4af {
   alertTextMsg2  @2 :Text;
   alertTextMsg3  @3 :Text;
 
+  electGearStep @4 :Int16;
 
   struct Tpms {
     unit @0 :Int16;

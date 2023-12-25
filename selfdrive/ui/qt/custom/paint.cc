@@ -148,7 +148,6 @@ void OnPaint::updateState(const UIState &s)
   auto car_state = sm1["carState"].getCarState();
   m_param.angleSteers = car_state.getSteeringAngleDeg();
   m_param.enginRpm =  car_state.getEngineRpm();
-  m_param.electGearStep  = car_state.getElectGearStep();
 
 
   // user message
@@ -191,6 +190,8 @@ void OnPaint::updateState(const UIState &s)
   alert.alertTextMsg1 = carState_custom.getAlertTextMsg1();
   alert.alertTextMsg2 = carState_custom.getAlertTextMsg2();
   alert.alertTextMsg3 = carState_custom.getAlertTextMsg3();    
+
+  m_param.electGearStep  = carState_custom.getElectGearStep();
 
 
     m_param.nIdx++;
@@ -585,10 +586,10 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   {
     QColor val_color = QColor(255, 255, 255, 200);
 
-    val_color = get_color( (int) m_param.batteryVoltage, 15, 11.4 );
+    val_color = get_color( (int) m_param.batteryVoltage, 15, 11 );
 
 
-    val_str.sprintf("%.1f", m_param.batteryVoltage, );
+    val_str.sprintf("%.1f", m_param.batteryVoltage );
     uom_str = "V";
     bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "BAT V",
         bb_rx, bb_ry, bb_uom_dx,
