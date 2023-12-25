@@ -127,8 +127,6 @@ void OnPaint::updateState(const UIState &s)
 {
   SubMaster &sm1 = *(s.sm);
 
-
-
   // 1.
   auto deviceState = sm1["deviceState"].getDeviceState();
   auto  maxCpuTemp = deviceState.getCpuTempC();  
@@ -224,7 +222,7 @@ void OnPaint::drawHud(QPainter &p)
 
   if( true )
   {
-     //bb_ui_draw_UI( p );
+     bb_ui_draw_UI( p );
   }
 }
 
