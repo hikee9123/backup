@@ -261,8 +261,8 @@ void OnPaint::ui_main_navi( QPainter &p )
 {
   QString text4;
 
-  int bb_x = 10;
-  int bb_y = 0;// 430;
+  int bb_x = 50;
+  int bb_y = 430;
 
   int  nYPos = bb_y;
   int  nGap = 80; 
@@ -271,7 +271,7 @@ void OnPaint::ui_main_navi( QPainter &p )
  // text4.sprintf("rc = %d, %d", rect().right(), state->fb_w );                p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
   //text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
-  text4.sprintf("%d, %d, %d", m_nda.camLimitSpeedLeftDist , m_nda.cntIdx, m_param.nIdx );    p.drawText( bb_x, nYPos+=nGap, text4 );
+  text4.sprintf("%d", m_nda.camLimitSpeedLeftDist  );    p.drawText( bb_x, nYPos+=nGap, text4 );
  
 
   // auto uiCustom = sm["uICustom"].getUICustom();
