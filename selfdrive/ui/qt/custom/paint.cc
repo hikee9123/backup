@@ -125,9 +125,10 @@ int OnPaint::get_param( const std::string &key )
 
 void OnPaint::updateState(const UIState &s)
 {
-  SubMaster &sm1 = *(s.sm);
 
 /*
+  SubMaster &sm1 = *(s.sm);
+
   // 1.
   auto gps_ext = sm1["gpsLocationExternal"].getGpsLocationExternal();
   m_param.gpsAccuracyUblox = gps_ext.getAccuracy();
