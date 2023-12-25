@@ -33,7 +33,10 @@ private:
 
   int m_width;
   int m_height;
- 
+  int bbh_left = 0;
+  int bbh_right = 0;
+  const int bdr_s = 30;
+
   struct _PARAM_
   {
 
