@@ -282,7 +282,7 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
 
   timer = new QTimer(this);
   connect(timer, &QTimer::timeout, this, &CommunityPanel::OnTimer);
-  timer->start(5000);
+  timer->start(2000);
 }
 
 

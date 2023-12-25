@@ -93,7 +93,7 @@ private:
 private:
   float  interp( float xv, float xp[], float fp[], int N);
   int    get_param( const std::string &key );
-
+  QString gearGap( int gear_step, QColor &color );
 // tpms
 private:
   QColor   get_tpms_color(int tpms); 

@@ -24,15 +24,14 @@ int CSidebar::updateState(const UIState &s)
 {
   SubMaster &sm = *(s.sm);
   if (sm.frame % (UI_FREQ) != 0) return 0;
-
-
   frame_cnt++;
+  if( frame_cnt < 2 ) return 0;
+  frame_cnt = 0;
+
   auto pandaStates = sm["pandaStates"].getPandaStates();
   if (pandaStates.size() > 0) {
     fBatteryVoltage = pandaStates[0].getVoltage() * 0.001;
   }
-  //auto deviceState = sm["deviceState"].getDeviceState();
- // float carBatteryCapacityWh = (int)deviceState.getCarBatteryCapacityUwh() * 0.0000001;
 
   return 1;
 }
@@ -61,18 +60,18 @@ void CSidebar::paintEvent(QPainter &p)
   else if( scene.started )  // 충전중.
   {
       if( fBatteryVoltage > 14.4 )     color = QColor( 0, 128, 255 );
-      else if( fBatteryVoltage > 13.4 )     color = QColor( 0, 255, 0 );
-      else if( fBatteryVoltage > 13.2 )   color = QColor( 255, 255, 0 );
-      else if( fBatteryVoltage > 12.5 )   color = QColor( 255, 128, 64 );
+      else if( fBatteryVoltage > 13.4 ) color = QColor( 0, 255, 0 );
+      else if( fBatteryVoltage > 13.2 ) color = QColor( 255, 255, 0 );
+      else if( fBatteryVoltage > 12.5 ) color = QColor( 255, 128, 64 );
       else  color = QColor( 255, 0, 0 );
   }
   else
   {
       if( fBatteryVoltage > 12.7 )     color = QColor( 0, 128, 255  );
-      else if( fBatteryVoltage > 12.4 )     color = QColor( 0, 255, 0  );
-      else if( fBatteryVoltage > 12.0 )   color = QColor( 255, 255, 0  );
-      else if( fBatteryVoltage > 11.6 )   color = QColor( 255, 128, 64 );
-      else if( fBatteryVoltage > 10.8)   color = QColor( 255, 0, 0 );
+      else if( fBatteryVoltage > 12.4 ) color = QColor( 0, 255, 0  );
+      else if( fBatteryVoltage > 12.0 ) color = QColor( 255, 255, 0  );
+      else if( fBatteryVoltage > 11.6 ) color = QColor( 255, 128, 64 );
+      else if( fBatteryVoltage > 10.8)  color = QColor( 255, 0, 0 );
       else if( fBatteryVoltage > 5)   color = QColor( 128, 0, 0 );
       else  color = QColor( 255, 0, 0 );
   }
