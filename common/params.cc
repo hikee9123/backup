@@ -223,8 +223,6 @@ std::unordered_map<std::string, uint32_t> keys = {
 Params::Params(const std::string &path) {
   prefix = "/" + util::getenv("OPENPILOT_PREFIX", "d");
   params_path = ensure_params_path(prefix, path);
-
-  printf( "Params::Params  prefix= %s  params_path=%s \n", prefix.c_str(), params_path.c_str() );
 }
 
 std::vector<std::string> Params::allKeys() const {
@@ -290,6 +288,9 @@ int Params::remove(const std::string &key) {
 }
 
 std::string Params::get(const std::string &key, bool block) {
+
+  printf( "Params::Params  key = %s \n", key.c_str() );
+
   if (!block) {
     return util::read_file(getParamPath(key));
   } else {
