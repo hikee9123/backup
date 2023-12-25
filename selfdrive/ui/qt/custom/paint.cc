@@ -408,6 +408,14 @@ void OnPaint::bb_ui_draw_measures_left(QPainter &p, int bb_x, int bb_y, int bb_w
   int bb_uom_dx =  (int)(bb_w /2 - uom_fontSize*2.5) ;
 
 
+  //if( m_param.bbh_left > 5 )
+  {
+    QRect rc( bb_x, bb_y, bb_w, m_param.bbh_left);
+    p.setPen(QPen(QColor(0xff, 0xff, 0xff, 100), 3));
+    p.setBrush(QColor(0, 0, 0, 100));
+    p.drawRoundedRect(rc, 20, 20);
+    p.setPen(Qt::NoPen);  
+  }
 
 
   QString val_str;
@@ -554,6 +562,15 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   int uom_fontSize = 15;
   int bb_uom_dx =  (int)(bb_w /2 - uom_fontSize*2.5) ;
 
+
+//  if ( m_param.bbh_right > 5 )
+  {
+    QRect rc( bb_x, bb_y, bb_w, m_param.bbh_right);
+    p.setPen(QPen(QColor(0xff, 0xff, 0xff, 100), 3)); 
+    p.setBrush(QColor(0, 0, 0, 100));
+    p.drawRoundedRect(rc, 20, 20); 
+    p.setPen(Qt::NoPen);
+  }
 
 
   QString val_str;
