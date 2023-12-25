@@ -222,7 +222,7 @@ void OnPaint::drawHud(QPainter &p)
 
   if( true )
   {
-     bb_ui_draw_UI( p );
+     //bb_ui_draw_UI( p );
   }
 }
 
