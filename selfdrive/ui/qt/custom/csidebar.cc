@@ -83,7 +83,7 @@ void CSidebar::paintEvent(QPainter &p)
   if( fBatteryVoltage > 5 )
   {
     QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
-    QBrush bgBrush = QColor( nR, nB, nB); //("#149948");
+    QBrush bgBrush = color; //("#149948");
     p.fillRect(bq, bgBrush);
   }
 
