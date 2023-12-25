@@ -19,7 +19,7 @@ const int bdr_s = 30;
 OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent) 
 {
   m_sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
-    "peripheralState", "pandaStates",
+    "peripheralState", "pandaStates", "gpsLocationExternal",
     "naviCustom", "carStateCustom", "uICustom", //"carControlCustom",
   });
 
@@ -125,14 +125,9 @@ int OnPaint::get_param( const std::string &key )
 
 void OnPaint::updateState(const UIState &s)
 {
-
-/*
   SubMaster &sm1 = *(s.sm);
 
-  // 1.
-  auto gps_ext = sm1["gpsLocationExternal"].getGpsLocationExternal();
-  m_param.gpsAccuracyUblox = gps_ext.getAccuracy();
-  m_param.altitudeUblox = gps_ext.getAltitude(); 
+
 
   // 1.
   auto deviceState = sm1["deviceState"].getDeviceState();
@@ -149,11 +144,17 @@ void OnPaint::updateState(const UIState &s)
   auto car_state = sm1["carState"].getCarState();
   m_param.angleSteers = car_state.getSteeringAngleDeg();
   m_param.enginRpm =  car_state.getEngineRpm();
-*/
+
 
   // user message
   SubMaster &sm2 = *(m_sm);
   sm2.update(0);
+
+  // 1.
+  auto gps_ext = sm2["gpsLocationExternal"].getGpsLocationExternal();
+  m_param.gpsAccuracyUblox = gps_ext.getAccuracy();
+  m_param.altitudeUblox = gps_ext.getAltitude(); 
+
 
   // 1.
   auto peripheralState = sm2["peripheralState"].getPeripheralState();
