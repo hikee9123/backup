@@ -261,8 +261,8 @@ void OnPaint::ui_main_navi( QPainter &p )
 {
   QString text4;
 
-  int bb_x = 100;
-  int bb_y = 430;
+  int bb_x = 10;
+  int bb_y = 0;// 430;
 
   int  nYPos = bb_y;
   int  nGap = 80; 
@@ -678,8 +678,8 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
 void OnPaint::bb_ui_draw_UI(QPainter &p)
 {
   const int bb_dml_w = 180;
-  const int bb_dml_x = (0 + bdr_s);
-  const int bb_dml_y = (0 + bdr_s) + 500;
+  const int bb_dml_x = (0 + bdr_s) + 50;
+  const int bb_dml_y = (0 + bdr_s) + 400;
 
   const int bb_dmr_w = 180;
   const int bb_dmr_x = 0 + state->fb_w - bb_dmr_w - bdr_s;
