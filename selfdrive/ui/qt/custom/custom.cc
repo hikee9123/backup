@@ -215,6 +215,7 @@ void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& 
         printf( "JSON data successfully written to the file: %s  ", filePath.toStdString().c_str() );
     }
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
