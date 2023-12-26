@@ -24,7 +24,7 @@
 
 #include "selfdrive/ui/qt/custom/custom.h"
 
-#include "selfdrive/ui/qt/custom/jsonContrl.h"
+
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
