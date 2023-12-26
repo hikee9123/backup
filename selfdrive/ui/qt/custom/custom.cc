@@ -240,6 +240,7 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   });
   addItem(changeCar);
 */
+
   m_jsondata = m_pCustom->readJsonFile( "customCommunity" );
 
   auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
@@ -274,8 +275,8 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   for (auto &[param, title, desc, icon] : toggle_defs) {
     auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
 
-    bool locked = m_jsondata[param].toBool();// params.getBool((param + "Lock").toStdString());
-    toggle->setEnabled(!locked);
+    //bool locked = m_jsondata[param].toBool();// params.getBool((param + "Lock").toStdString());
+    //toggle->setEnabled(!locked);
 
     addItem(toggle);
     toggles[param.toStdString()] = toggle;
@@ -337,14 +338,6 @@ void CommunityPanel::hideEvent(QHideEvent *event)
 
 void CommunityPanel::updateToggles( int bSave )
 {
-  int HapticFeedbackWhenSpeedCamera = m_jsondata["HapticFeedbackWhenSpeedCamera"].toInt();
-  int UseExternalNaviRoutes = m_jsondata["UseExternalNaviRoutes" ].toInt();
-  int ShowDebugMessage = m_jsondata["ShowDebugMessage" ].toInt();
-
-  printf("HapticFeedbackWhenSpeedCamera =%d \n", HapticFeedbackWhenSpeedCamera);
-  printf("UseExternalNaviRoutes =%d \n", UseExternalNaviRoutes);
-  printf("ShowDebugMessage =%d \n", ShowDebugMessage);
-
   if( bSave )
   {
     // JSON 객체 Save
@@ -356,6 +349,13 @@ void CommunityPanel::updateToggles( int bSave )
     m_pCustom->writeJsonToFile(  m_jsondata, "customCommunity" );   
   }
 
+  int HapticFeedbackWhenSpeedCamera = m_jsondata["HapticFeedbackWhenSpeedCamera"].toInt();
+  int UseExternalNaviRoutes = m_jsondata["UseExternalNaviRoutes" ].toInt();
+  int ShowDebugMessage = m_jsondata["ShowDebugMessage" ].toInt();
+
+  printf("HapticFeedbackWhenSpeedCamera =%d \n", HapticFeedbackWhenSpeedCamera);
+  printf("UseExternalNaviRoutes =%d \n", UseExternalNaviRoutes);
+  printf("ShowDebugMessage =%d \n", ShowDebugMessage);
 
 
   m_cmdIdx++;
