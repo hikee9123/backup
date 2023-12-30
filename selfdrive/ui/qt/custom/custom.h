@@ -55,12 +55,9 @@ public:
 
 
 public:
-   void  save_json_to_file(const json11::Json::object& log_j, const std::string& filename);
-   json11::Json::object load_json_from_file(const std::string& filename);
-
-
    QJsonObject readJsonFile(const QString& fileName);
    void     writeJsonToFile(const QJsonObject& jsonObject, const QString& fileName);
+   
 };
 
 

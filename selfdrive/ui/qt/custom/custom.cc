@@ -107,50 +107,6 @@ int CustomPanel::send(const char *name, MessageBuilder &msg)
    return pm->send( name, msg );
 }
 
-void CustomPanel::save_json_to_file(const json11::Json::object& log_j, const std::string& file ) 
-{
-    std::string filename = "/data/params/d/" + file + ".json";
-
-    std::ofstream outputFile(filename);
-    if (outputFile.is_open()) {
-        outputFile << json11::Json(log_j).dump();
-        outputFile.close();
-
-        printf( "JSON data successfully written to %s ", filename.c_str() );
-        //std::cout << "JSON data successfully written to " << filename << "." << std::endl;
-    } else {
-         printf( "Unable to open the file for writing. " );
-        //std::cerr << "Unable to open the file for writing." << std::endl;
-    }
-}
-
-
-json11::Json::object CustomPanel::load_json_from_file(const std::string& file) 
-{
-   std::string filename = "/data/params/d/" + file + ".json";
-
-    json11::Json json_data;
-
-    std::ifstream inputFile(filename);
-    if (inputFile.is_open()) {
-        std::string file_content((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
-        inputFile.close();
-
-        std::string err;
-        json_data = json11::Json::parse(file_content, err);
-
-        if (!err.empty()) {
-            printf( "Error parsing JSON: %s ", err.c_str() );
-            //std::cerr << "Error parsing JSON: " << err << std::endl;
-        }
-    } else {
-      printf( "Unable to open the file for reading. %s  ", filename.c_str() );
-      // std::cerr << "Unable to open the file for reading." << std::endl;
-    }
-
-    return json_data.object_items();
-}
-
 
 QJsonObject CustomPanel::readJsonFile(const QString& filePath ) 
 {
