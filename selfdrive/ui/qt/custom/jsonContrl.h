@@ -21,7 +21,7 @@ public:
   JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, QJsonObject &jsonobj)
     : ToggleControl(title, desc, icon, false, parent), key(param.toStdString())
     {
-    m_jsonobj = jsonobj; 
+    m_jsonobj = &jsonobj; 
     //key = param.toStdString();
     QObject::connect(this, &JsonControl::toggleFlipped, [=](bool state) {
       QString content("<body><h2 style=\"text-align: center;\">" + title + "</h2><br>"
@@ -48,7 +48,7 @@ public:
   }
 
   void refresh() {
-    if (m_jsonobj.contains(QString::fromStdString(key))) {
+    if (m_jsonobj->contains(QString::fromStdString(key))) {
       bool state = 0;// m_jsonobj[key].toBool();
       if (state != toggle.on) {
         toggle.togglePosition();
@@ -71,7 +71,7 @@ private:
   }
 
   std::string key;
-  QJsonObject &m_jsonobj;
+  QJsonObject *m_jsonobj = nullptr;
   QPixmap active_icon_pixmap;
   bool confirm = false;
   bool store_confirm = false;
