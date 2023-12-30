@@ -243,7 +243,9 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   };
 
   for (auto &[param, title, desc, icon] : toggle_defs) {
-    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
+    //auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
+    auto toggle = new ParamControl(param, title, desc, icon, this );
+
 
     //bool locked = m_jsondata[param].toBool();// params.getBool((param + "Lock").toStdString());
     //toggle->setEnabled(!locked);

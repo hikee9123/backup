@@ -25,7 +25,7 @@
 #include "selfdrive/ui/qt/widgets/controls.h"
 
 #include "selfdrive/ui/qt/offroad/settings.h"
-#include "selfdrive/ui/qt/custom/jsonContrl.h"
+//#include "selfdrive/ui/qt/custom/jsonContrl.h"
 
 class CustomPanel : public QWidget {
   Q_OBJECT
@@ -57,7 +57,7 @@ public:
 public:
    QJsonObject readJsonFile(const QString& fileName);
    void     writeJsonToFile(const QJsonObject& jsonObject, const QString& fileName);
-   
+
 };
 
 
