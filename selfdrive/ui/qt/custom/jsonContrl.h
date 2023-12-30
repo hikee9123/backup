@@ -30,7 +30,7 @@ public:
 
       bool confirmed = store_confirm;
       if (!confirm || confirmed || !state || dialog.exec()) {
-        m_jsonobj[key] = state;
+        //m_jsonobj[key] = state;
         setIcon(state);
       } else {
         toggle.togglePosition();
@@ -49,7 +49,7 @@ public:
 
   void refresh() {
   if (m_jsonobj.contains(QString::fromStdString(key))) {
-    bool state = m_jsonobj[key].toBool();
+    bool state = 0;// m_jsonobj[key].toBool();
     if (state != toggle.on) {
       toggle.togglePosition();
       setIcon(state);
