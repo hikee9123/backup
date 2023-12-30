@@ -324,7 +324,7 @@ void CommunityPanel::updateToggles( int bSave )
 
   int HapticFeedbackWhenSpeedCamera = m_jsondata["HapticFeedbackWhenSpeedCamera"].toInt();
   int UseExternalNaviRoutes = m_jsondata["UseExternalNaviRoutes" ].toInt();
-  int ShowDebugMessage = m_jsondata["ShowDebugMessage" ].toInt();
+  int ShowDebugMessage = m_jsondata["ShowDebugMessage" ].toBool();
 
   printf("HapticFeedbackWhenSpeedCamera =%d \n", HapticFeedbackWhenSpeedCamera);
   printf("UseExternalNaviRoutes =%d \n", UseExternalNaviRoutes);
