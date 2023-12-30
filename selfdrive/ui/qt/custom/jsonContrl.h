@@ -19,10 +19,10 @@ class JsonControl : public ToggleControl {
 
 public:
   JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, QJsonObject *jsonobj)
-    : ToggleControl(title, desc, icon, false, parent), key(param.toStdString())
+    : ToggleControl(title, desc, icon, false, parent)
     {
     m_jsonobj = jsonobj; 
-    //key = param.toStdString();
+    key = param.toStdString();
     QObject::connect(this, &JsonControl::toggleFlipped, [=](bool state) {
       QString content("<body><h2 style=\"text-align: center;\">" + title + "</h2><br>"
                       "<p style=\"text-align: center; margin: 0 128px; font-size: 50px;\">" + getDescription() + "</p></body>");
