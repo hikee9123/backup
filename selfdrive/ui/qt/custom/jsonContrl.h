@@ -31,7 +31,7 @@ public:
       bool confirmed = store_confirm;
       if (!confirm || confirmed || !state || dialog.exec()) {
         //QJsonValue value = QJsonValue::fromVariant(state);
-        m_jsonobj.insert(key, state);
+        //m_jsonobj.insert(key, state);
         setIcon(state);
       } else {
         toggle.togglePosition();
@@ -49,6 +49,7 @@ public:
   }
 
   void refresh() {
+    /*
     if (m_jsonobj.contains(key)) {
       bool state = 0;// m_jsonobj[key].toBool();
       if (state != toggle.on) {
@@ -56,6 +57,7 @@ public:
         setIcon(state);
       }
     }
+    */
   }
 
   void showEvent(QShowEvent *event) override {
