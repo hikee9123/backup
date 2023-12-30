@@ -37,7 +37,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
         {tr("Community"), new CommunityTab(this, m_jsondata)},
         {tr("Tuning"), new QWidget(this)},
         {tr("Navigation"), new NavigationTab(this, m_jsondata)},
-        {tr("Debug"), new QWidget(this)},
+        {tr("Debug"), new Debug(this,m_jsondata)},
     };
 
 
