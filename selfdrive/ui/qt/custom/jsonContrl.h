@@ -30,8 +30,8 @@ public:
 
       bool confirmed = store_confirm;
       if (!confirm || confirmed || !state || dialog.exec()) {
-        QJsonValue value = QJsonValue::fromVariant(state);
-        m_jsonobj[key] = value;
+        //QJsonValue value = QJsonValue::fromVariant(state);
+        m_jsonobj.insert(key, state);
         setIcon(state);
       } else {
         toggle.togglePosition();
