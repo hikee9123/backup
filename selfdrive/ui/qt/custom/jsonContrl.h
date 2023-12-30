@@ -51,7 +51,7 @@ public:
   void refresh() {
     
     if (m_jsonobj.contains(key)) {
-      bool state = 0;// m_jsonobj[key].toBool();
+      bool state =  m_jsonobj[key].toBool();
       if (state != toggle.on) {
         toggle.togglePosition();
         setIcon(state);
