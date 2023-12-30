@@ -18,7 +18,7 @@ class JsonControl : public ToggleControl {
 Q_OBJECT
 
 public:
-  JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, const QJsonObject &jsonobj)
+  JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, QJsonObject &jsonobj)
     : ToggleControl(title, desc, icon, false, parent)
     {
     m_jsonobj = jsonobj; 
@@ -30,7 +30,7 @@ public:
 
       bool confirmed = store_confirm;
       if (!confirm || confirmed || !state || dialog.exec()) {
-        jsonobj[key] = 0;//state;
+        jsonobj[key] = state;
         setIcon(state);
       } else {
         toggle.togglePosition();
