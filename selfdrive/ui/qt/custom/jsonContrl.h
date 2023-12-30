@@ -18,9 +18,10 @@ class JsonControl : public ToggleControl {
   Q_OBJECT
 
 public:
-  JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent,  QJsonObject &jsonobj)
-    : ToggleControl(title, desc, icon, false, parent), key(param.toStdString()), m_jsonobj(jsonobj) 
+  JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, QJsonObject &jsonobj)
+    : ToggleControl(title, desc, icon, false, parent), key(param.toStdString())
     {
+    m_jsonobj = jsonobj; 
     //key = param.toStdString();
     QObject::connect(this, &JsonControl::toggleFlipped, [=](bool state) {
       QString content("<body><h2 style=\"text-align: center;\">" + title + "</h2><br>"
@@ -47,15 +48,13 @@ public:
   }
 
   void refresh() {
-  if (m_jsonobj.contains(QString::fromStdString(key))) {
-    bool state = 0;// m_jsonobj[key].toBool();
-    if (state != toggle.on) {
-      toggle.togglePosition();
-      setIcon(state);
+    if (m_jsonobj.contains(QString::fromStdString(key))) {
+      bool state = 0;// m_jsonobj[key].toBool();
+      if (state != toggle.on) {
+        toggle.togglePosition();
+        setIcon(state);
+      }
     }
-  } else {
-    // 처리하지 않을 경우에 대한 로직 추가
-  }
   }
 
   void showEvent(QShowEvent *event) override {
