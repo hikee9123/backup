@@ -152,25 +152,31 @@ json11::Json::object CustomPanel::load_json_from_file(const std::string& file)
 }
 
 
-QJsonObject CustomPanel::readJsonFile(const QString& fileName ) 
+QJsonObject CustomPanel::readJsonFile(const QString& filePath ) 
 {
-   QString filePath = "/data/params/d/" + fileName + ".json";
-
     QJsonObject jsonObject;
+
+
+    QString json_str = QString::fromStdString(params.get(filePath.toStdString()));
+    if (json_str.isEmpty()) return jsonObject;
+    printf( "JSON file: %s  \n", json_str.toStdString().c_str() );
+
+    QJsonDocument doc = QJsonDocument::fromJson(json_str.toUtf8());
+    if (doc.isNull()) {
+        printf( "Failed to parse the JSON document: %s  ", filePath.toStdString().c_str() );
+        return jsonObject;  // Return an empty object in case of failure
+    }  
+    jsonObject = doc.object();
+    return jsonObject;
+
+
+  /*
+    QString filePath = "/data/params/d/" + fileName;
 
     // JSON 파일 열기
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         printf( "Failed to open the JSON file: %s  \n", filePath.toStdString().c_str() );
-
-        QString json = util::read_file( filePath.toStdString() );
-        printf( "Retry JSON file: %s  \n", json.toStdString().c_str() );
-        QJsonParseError error;
-        jsonObject = QJsonDocument::fromJson(json.toUtf8(), &error).object();
-        if (error.error != QJsonParseError::NoError) {
-            printf( "JSON parsing error: %s  \n", error.errorString().c_str() );
-            // 에러 처리 코드 추가
-        }
         return jsonObject;  // Return an empty object in case of failure
     }
 
@@ -187,20 +193,27 @@ QJsonObject CustomPanel::readJsonFile(const QString& fileName )
 
     // JSON 객체 얻기
     jsonObject = doc.object();
-
     return jsonObject;
+  */    
 }
 
 void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& fileName) 
 {
-    QString filePath = "/data/params/d/" + fileName + ".json"; 
+    QJsonDocument jsonDoc(jsonObject);
+    QByteArray jsonData = jsonDoc.toJson();  
+    params.put( fileName.toStdString(), jsonData.toStdString() );
+
+    //params.put( fileName.toStdString(), jsonDoc.toJson().toStdString());
+
+  /*
+    QString filePath = "/data/params/d/" + fileName; 
     // JSON 파일 열기
     QFile file(filePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         printf( "Failed to open the JSON file for writing: %s  ", filePath.toStdString().c_str() );
         return;
     }
-
+  
     // JSON 객체를 문자열로 변환
     QJsonDocument jsonDoc(jsonObject);
     QByteArray jsonData = jsonDoc.toJson();
@@ -214,6 +227,7 @@ void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& 
     } else {
         printf( "JSON data successfully written to the file: %s  ", filePath.toStdString().c_str() );
     }
+  */
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
