@@ -158,7 +158,45 @@ protected:
   void closeEvent(QCloseEvent *event) override;  
 
 private slots:
+  void offroadTransition( bool offroad  );
 
+private:
+
+
+
+private:
+  CustomPanel *m_pCustom = nullptr;
+  QJsonObject &m_jsondata;  
+  int  m_cmdIdx = 0;
+};
+
+
+
+class Debug : public ListWidget {
+  Q_OBJECT
+public:
+  explicit Debug(CustomPanel *parent, QJsonObject &jsonobj);
+
+
+private:
+  std::map<std::string, JsonControl*> toggles;
+
+
+
+
+
+  void updateToggles( int bSave );
+
+protected:
+  virtual void showEvent(QShowEvent *event) override;
+  virtual void hideEvent(QHideEvent *event) override;
+
+
+protected:  
+  void closeEvent(QCloseEvent *event) override;  
+
+private slots:
+  void offroadTransition( bool offroad  );
 
 private:
 

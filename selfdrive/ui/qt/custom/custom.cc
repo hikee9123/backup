@@ -28,7 +28,7 @@
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
-  pm.reset(new PubMaster({"uICustom"}));
+  pm.reset( new PubMaster({"uICustom"}) );
 
   m_jsondata = readJsonFile( "CustomParam" );
 
@@ -492,6 +492,7 @@ void Debug::updateToggles( int bSave )
   m_cmdIdx++;
   MessageBuilder msg;
   auto debug = msg.initEvent().initUICustom().initDebug();
+  debug.setCmdIdx( m_cmdIdx );    
   debug.setIdx1( idx1 );
   debug.setIdx2( idx2);
   debug.setIdx3( idx3 );
