@@ -38,7 +38,7 @@ OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent)
   main_layout->addLayout(top_layout);
   //connect(this, &OnPaint::valueChanged, [=] { update(); });
 
-  is_debug = Params().getBool("ShowDebugMessage");
+  is_debug = 0;//Params().getBool("ShowDebugMessage");
   //img_tire_pressure = QPixmap("qt/custom/images/img_tire_pressure.png");
 
 

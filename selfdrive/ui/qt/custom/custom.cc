@@ -188,12 +188,6 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
 
   m_jsondata = m_pCustom->readJsonFile( "CustomCommunity" );
 
-  auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
-  int ShowDebugMessage = str3.toInt();
-
-  int levelnum = m_jsondata["ShowDebugMessage"].toInt();
-  printf("ShowDebugMessage = %d  %d \n", levelnum, ShowDebugMessage );
-
 
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{

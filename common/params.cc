@@ -211,10 +211,11 @@ std::unordered_map<std::string, uint32_t> keys = {
 
 
     // #custom
+    {"CustomCommunity", PERSISTENT},
     {"UseExternalNaviRoutes", PERSISTENT},
     {"HapticFeedbackWhenSpeedCamera", PERSISTENT},
-    {"ShowDebugMessage", PERSISTENT},
-    {"MapboxToken", PERSISTENT},    
+    {"MapboxToken", PERSISTENT},
+
 };
 
 } // namespace
