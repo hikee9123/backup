@@ -212,7 +212,7 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
   addItem(changeCar);
 */
 
-  m_jsondata = m_pCustom->readJsonFile( "customCommunity" );
+  m_jsondata = m_pCustom->readJsonFile( "CustomCommunity" );
 
   auto str3 = QString::fromStdString( params.get( "ShowDebugMessage" ) );
   int ShowDebugMessage = str3.toInt();
@@ -319,7 +319,7 @@ void CommunityPanel::updateToggles( int bSave )
     //    {"UseExternalNaviRoutes", UseExternalNaviRoutes},
     //    {"ShowDebugMessage", ShowDebugMessage}
     //};
-    m_pCustom->writeJsonToFile(  m_jsondata, "customCommunity" );   
+    m_pCustom->writeJsonToFile(  m_jsondata, "CustomCommunity" );   
   }
 
   int HapticFeedbackWhenSpeedCamera = m_jsondata["HapticFeedbackWhenSpeedCamera"].toInt();
