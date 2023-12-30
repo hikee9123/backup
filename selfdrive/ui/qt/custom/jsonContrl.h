@@ -74,7 +74,7 @@ private:
   }
 
   QString key;
-  QJsonObject m_jsonobj;
+  QJsonObject &m_jsonobj;
   QPixmap active_icon_pixmap;
   bool confirm = false;
   bool store_confirm = false;
