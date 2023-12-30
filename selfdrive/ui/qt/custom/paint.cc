@@ -154,7 +154,9 @@ void OnPaint::updateState(const UIState &s)
   // 1.
   auto uiCustom = sm2["uICustom"].getUICustom();
   m_param.community  = uiCustom.getCommunity();
-  is_debug = m_param.community.getShowDebugMessage();
+  m_param.ui  = uiCustom.getUserInterface();
+  m_param.debug  = uiCustom.getDebug();
+  is_debug = m_param.ui.getShowDebugMessage();
 
   if( !is_debug ) return;
 
@@ -197,10 +199,6 @@ void OnPaint::updateState(const UIState &s)
   m_param.electGearStep  = carState_custom.getElectGearStep();
 
 
-
-
-
- 
   // 1.
   auto deviceState = sm1["deviceState"].getDeviceState();
   auto  maxCpuTemp = deviceState.getCpuTempC();  
@@ -222,24 +220,21 @@ void OnPaint::updateState(const UIState &s)
 void OnPaint::drawHud(QPainter &p)
 {
   if( !is_debug ) return;
+  
   ui_main_navi( p );
 
-
-
-  if( true )
+  if( m_param.ui.getDebug() )
   {
     ui_draw_debug1( p );
   }
 
   // 2. tpms
-  if( true )
+  if( m_param.ui.getTpms() )
   {
-    const int x = 75;
-    const int y = 800; 
-    bb_draw_tpms( p, x, y);
+    bb_draw_tpms( p, 75, 800);
   } 
 
-  if( true )
+  if( m_param.ui.getKegman() )
   {
      bb_ui_draw_UI( p );
   }
@@ -264,18 +259,7 @@ void OnPaint::ui_main_navi( QPainter &p )
     p.drawRoundedRect(rc, 20, 20);
     p.drawText( rc, Qt::AlignCenter, text4);
   }
-  //int  nYPos = bb_y;
- // int  nGap = 80;    
- // text4.sprintf("rc = %d, %d", rect().right(), state->fb_w );                p.drawText( bb_x, nYPos+=nGap, text4 );
-  //text4.sprintf("rLS = %d", m_nda.roadLimitSpeed );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  //text4.sprintf("cLS = %d", m_nda.camLimitSpeed);             p.drawText( bb_x, nYPos+=nGap, text4 );
-  //text4.sprintf("%d", m_nda.camLimitSpeedLeftDist  );    p.drawText( bb_x, nYPos+=nGap, text4 );
- 
-  // auto uiCustom = sm["uICustom"].getUICustom();
-  //text4.sprintf("batteryVoltage = %.1fV", m_param.batteryVoltage );           p.drawText( bb_x, nYPos+=nGap, text4 );
- // text4.sprintf("UseExternal = %d",  m_param.community.getUseExternalNaviRoutes() );           p.drawText( bb_x, nYPos+=nGap, text4 );
- // text4.sprintf("ShowDebug = %d",  is_debug );           p.drawText( bb_x, nYPos+=nGap, text4 );
-  //text4.sprintf("m_cmdIdx = %d",  m_param.community.getCmdIdx() );           p.drawText( bb_x, nYPos+=nGap, text4 );
+  p.drawText( bb_x, nYPos+=nGap, text4 );
 }
 
 

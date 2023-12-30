@@ -46,6 +46,7 @@ private:
 
     cereal::CarStateCustom::Tpms::Reader tpmsData;
     cereal::UICustom::Community::Reader community;
+    cereal::UICustom::Ui::Reader ui;
 
     int   cpuPerc;
     float cpuTemp; 

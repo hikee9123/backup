@@ -30,18 +30,13 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 {
   pm.reset(new PubMaster({"uICustom"}));
 
-/*
-    QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
-        for (auto btn : findChildren<ButtonControl *>()) {
-        btn->setEnabled(offroad);
-        }
-    });
-*/
+  m_jsondata = readJsonFile( "CustomParam" );
+
     QList<QPair<QString, QWidget *>> panels = {
-        {tr("Community"), new CommunityPanel(this)},
-        {tr("UI"), new QWidget(this)},
+        {tr("UI"), new UITab(this, m_jsondata)},      
+        {tr("Community"), new CommunityTab(this, m_jsondata)},
         {tr("Tuning"), new QWidget(this)},
-        {tr("Navigation"), new QWidget(this)},
+        {tr("Navigation"), new NavigationTab(this, m_jsondata)},
         {tr("Debug"), new QWidget(this)},
     };
 
@@ -85,27 +80,50 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(tabWidget);
     setLayout(mainLayout);
+
+
+    QObject::connect(uiState(), &UIState::offroadTransition, this, &CustomPanel::offroadTransition);
+}
+
+void CustomPanel::offroadTransition( bool offroad  )
+{
+
 }
 
 
 void CustomPanel::closeEvent(QCloseEvent *event)
 {
-  printf("CustomPanel::closeEvent \n" );  
   QWidget::closeEvent( event );
+  printf("CustomPanel::closeEvent \n" );  
 }
 
 void CustomPanel::showEvent(QShowEvent *event)
 {
   QWidget::setContentsMargins(0,0,0,0);
-  printf("CustomPanel::showEvent \n" );  
   QWidget::showEvent( event );
+
+  printf("CustomPanel::showEvent \n" );    
 }
 
+void CustomPanel::hideEvent(QHideEvent *event)
+{
+  QWidget::hideEvent(event);
+
+
+  writeJson();
+  printf("CustomPanel::hideEvent \n" );       
+}
 
 int CustomPanel::send(const char *name, MessageBuilder &msg)
 {
    return pm->send( name, msg );
 }
+
+void CustomPanel::writeJson()
+{
+   writeJsonToFile( m_jsondata, "CustomParam" );
+}
+
 
 
 QJsonObject CustomPanel::readJsonFile(const QString& filePath ) 
@@ -114,7 +132,6 @@ QJsonObject CustomPanel::readJsonFile(const QString& filePath )
 
 
     QString json_str = QString::fromStdString(params.get(filePath.toStdString()));
-    printf( "JSON file: %s  \n", json_str.toStdString().c_str() );
 
     if (json_str.isEmpty()) return jsonObject;
 
@@ -125,33 +142,6 @@ QJsonObject CustomPanel::readJsonFile(const QString& filePath )
     }  
     jsonObject = doc.object();
     return jsonObject;
-
-
-  /*
-    QString filePath = "/data/params/d/" + fileName;
-
-    // JSON 파일 열기
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        printf( "Failed to open the JSON file: %s  \n", filePath.toStdString().c_str() );
-        return jsonObject;  // Return an empty object in case of failure
-    }
-
-    // JSON 파일 내용 읽기
-    QByteArray jsonData = file.readAll();
-    file.close();
-
-    // JSON 파싱
-    QJsonDocument doc = QJsonDocument::fromJson(jsonData);
-    if (doc.isNull()) {
-        printf( "Failed to parse the JSON document: %s  ", filePath.toStdString().c_str() );
-        return jsonObject;  // Return an empty object in case of failure
-    }
-
-    // JSON 객체 얻기
-    jsonObject = doc.object();
-    return jsonObject;
-  */    
 }
 
 void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& fileName) 
@@ -165,47 +155,163 @@ void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& 
 //
 //
 
-CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent) 
+CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
 {
   m_pCustom = parent;
 
-/*
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
                     selected_car.length() ? tr("CHANGE") : tr("SELECT"), "");
 
   connect(changeCar, &ButtonControl::clicked, [=]() {
-    QStringList items = get_list("/data/params/d/SupportedCars");
+    QStringList items = "HYUNDAI AZERA HYBRID 6TH GEN,HYUNDAI ELANTRA 2017";// = get_list("/data/params/d/SupportedCars");  
+    //QStringList items = QString::fromStdString(params.get("SupportedCars")).split(",");  // UpdaterAvailableBranches
     QString selection = MultiOptionDialog::getSelection(tr("Select a car"), items, selected_car, this);
     if (!selection.isEmpty()) {
       Params().put("SelectedCar", selection.toStdString());
-      qApp->exit(18);
-      watchdog_kick(0);
     }
   });
   addItem(changeCar);
-*/
 
-  m_jsondata = m_pCustom->readJsonFile( "CustomCommunity" );
-
-
+/*
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
     {
-      "HapticFeedbackWhenSpeedCamera",
-      tr("Haptic feedback (speed-cam alert)"),
-      tr("Haptic feedback when a speed camera is detected"),
-      "../assets/offroad/icon_openpilot.png",
-    },
+      "SelectedCar",
+      tr("Select your car"),
+      "",
+      "../assets/offroad/icon_shell.png",
+    },    
+  };
+
+  for (auto &[param, title, desc, icon] : toggle_defs) {
+    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
+
+    addItem(toggle);
+    toggles[param.toStdString()] = toggle;
+  }
+*/
+
+  QObject::connect(uiState(), &UIState::offroadTransition, this, &CommunityTab::offroadTransition);
+}
+
+
+void CommunityTab::offroadTransition( bool offroad  )
+{
+  if( !offroad )
+  {
+    updateToggles( false );
+  }
+}
+
+
+void CommunityTab::closeEvent(QCloseEvent *event) 
+{
+    QWidget::closeEvent(event);
+}
+
+void CommunityTab::showEvent(QShowEvent *event) 
+{
+    QWidget::showEvent(event);
+}
+
+
+void CommunityTab::hideEvent(QHideEvent *event)
+{
+  QWidget::hideEvent(event);
+
+  updateToggles( true );
+}
+
+
+void CommunityTab::updateToggles( int bSave )
+{
+  /*
+  if( bSave )
+  {
+    m_pCustom->writeJson();   
+  }
+
+  m_cmdIdx++;
+  MessageBuilder msg;
+  auto community = msg.initEvent().initUICustom().initCommunity();
+  community.setCmdIdx( m_cmdIdx );
+  m_pCustom->send("uICustom", msg);
+  */
+}
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+
+NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
+{
+  QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
+      for (auto btn : findChildren<ButtonControl *>()) {
+      btn->setEnabled(offroad);
+      }
+  });
+
+  m_pCustom = parent;
+
+  // param, title, desc, icon
+  std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
     {
       "UseExternalNaviRoutes",
       tr("Use external navi routes"),
       "",
       "../assets/offroad/icon_openpilot.png",
     },
+  };
+
+  for (auto &[param, title, desc, icon] : toggle_defs) {
+    auto toggle = new ParamControl(param, title, desc, icon, this);
+
+    bool locked = params.getBool((param + "Lock").toStdString());
+    toggle->setEnabled(!locked);
+
+    addItem(toggle);
+    toggles[param.toStdString()] = toggle;
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+
+UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
+{
+  m_pCustom = parent;
+
+
+  // param, title, desc, icon
+  std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
     {
       "ShowDebugMessage",
-      tr("Show Debug Message"),
+      "Show Debug Message",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "tpms",
+      "Show tpms",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "kegman",
+      "Show kegman",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "debug",
+      "Show debug",
       "",
       "../assets/offroad/icon_shell.png",
     },
@@ -213,93 +319,183 @@ CommunityPanel::CommunityPanel(CustomPanel *parent) : ListWidget(parent)
 
   for (auto &[param, title, desc, icon] : toggle_defs) {
     auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
-    //auto toggle = new ParamControl(param, title, desc, icon, this );
-
-
-    //bool locked = m_jsondata[param].toBool();// params.getBool((param + "Lock").toStdString());
-    //toggle->setEnabled(!locked);
 
     addItem(toggle);
     toggles[param.toStdString()] = toggle;
   }
 
-
-  timer = new QTimer(this);
-  connect(timer, &QTimer::timeout, this, &CommunityPanel::OnTimer);
-  timer->start(2000);
+  QObject::connect(uiState(), &UIState::offroadTransition, this, &UITab::offroadTransition);
+  connect(toggles["ShowDebugMessage"], &ToggleControl::toggleFlipped, [=]() {
+    updateToggles( false );
+  });    
 }
 
-
-void CommunityPanel::OnTimer() 
+void UITab::offroadTransition( bool offroad  )
 {
-  UIState *s = uiState();
-  UIScene &scene = s->scene;
-
-  updateToggles( false );
-  if( scene.started )
+  if( !offroad )
   {
-    timer->stop();
+    updateToggles( false );
   }
 }
 
-void CommunityPanel::closeEvent(QCloseEvent *event) 
+
+void UITab::closeEvent(QCloseEvent *event) 
 {
-    printf("CommunityPanel::closeEvent \n" );
-
-    timer->stop();
-    delete timer;
-    timer = nullptr;
-      // closeEvent 처리 코드
-      // 사용자 정의 작업을 수행할 수 있습니다.
-
-      // 예를 들어, 닫기를 취소하려면 event->ignore()를 호출할 수 있습니다.
-      // event->ignore();
-
-      // 부모 클래스의 closeEvent()를 호출하여 원래의 동작을 유지합니다.
-      QWidget::closeEvent(event);
+    QWidget::closeEvent(event);
 }
 
-void CommunityPanel::showEvent(QShowEvent *event) 
+void UITab::showEvent(QShowEvent *event) 
 {
-    printf("CommunityPanel::showEvent \n" );  
     QWidget::showEvent(event);
 }
 
 
 
-
-void CommunityPanel::hideEvent(QHideEvent *event)
+void UITab::hideEvent(QHideEvent *event)
 {
-  printf("CommunityPanel::hideEvent \n" );
   QWidget::hideEvent(event);
 
   updateToggles( true );
 }
 
 
-void CommunityPanel::updateToggles( int bSave )
+void UITab::updateToggles( int bSave )
 {
   if( bSave )
   {
-    m_pCustom->writeJsonToFile(  m_jsondata, "CustomCommunity" );   
+    m_pCustom->writeJson();
   }
 
-  int HapticFeedbackWhenSpeedCamera = m_jsondata["HapticFeedbackWhenSpeedCamera"].toBool();
-  int UseExternalNaviRoutes = m_jsondata["UseExternalNaviRoutes" ].toBool();
-  int ShowDebugMessage = m_jsondata["ShowDebugMessage" ].toBool();
+  int bDebug = m_jsondata["ShowDebugMessage"].toBool();
+  auto tpms_mode_toggle = toggles["tpms"];
+  auto kegman_mode_toggle = toggles["kegman"];
+  auto debug_mode_toggle = toggles["debug"];
 
-  printf("HapticFeedbackWhenSpeedCamera =%d \n", HapticFeedbackWhenSpeedCamera);
-  printf("UseExternalNaviRoutes =%d \n", UseExternalNaviRoutes);
-  printf("ShowDebugMessage =%d \n", ShowDebugMessage);
+  tpms_mode_toggle->setEnabled(bDebug);
+  kegman_mode_toggle->setEnabled(bDebug);
+  debug_mode_toggle->setEnabled(bDebug);
+
+
+
+  int tpms = m_jsondata["tpms"].toInit();
+  int kegman = m_jsondata["kegman"].toInit();
+  int debug = m_jsondata["debug"].toInit();
 
 
   m_cmdIdx++;
   MessageBuilder msg;
-  auto community = msg.initEvent().initUICustom().initCommunity();
-  community.setHapticFeedbackWhenSpeedCamera( HapticFeedbackWhenSpeedCamera  );
-  community.setUseExternalNaviRoutes( UseExternalNaviRoutes );
-  community.setShowDebugMessage( ShowDebugMessage );  // Float32;
-  community.setCmdIdx( m_cmdIdx );
+  auto ui = msg.initEvent().initUICustom().initUserInterface();
+  ui.setCmdIdx( m_cmdIdx );  
+  ui.setShowDebugMessage( bDebug );
+  ui.setTpms( m_cmdIdx );
+  ui.setKegman( m_cmdIdx );
+  ui.setDebug( m_cmdIdx );
   m_pCustom->send("uICustom", msg);
-  //printf("uiCustom  send(%d)  = ShowDebugMessage %d", ret, ShowDebugMessage);
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+
+Debug::Debug(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
+{
+  m_pCustom = parent;
+
+
+  // param, title, desc, icon
+  std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
+    {
+      "debug1",
+      tr("debug1"),
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "debug2",
+      tr("debug2"),
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "debug3",
+      tr("debug3"),
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "debug4",
+      tr("debug4"),
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "debug5",
+      tr("debug5"),
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+  };
+
+  for (auto &[param, title, desc, icon] : toggle_defs) {
+    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
+
+    addItem(toggle);
+    toggles[param.toStdString()] = toggle;
+  }
+
+  QObject::connect(uiState(), &UIState::offroadTransition, this, &Debug::offroadTransition);  
+}
+
+void Debug::offroadTransition( bool offroad  )
+{
+  if( !offroad )
+  {
+    updateToggles( false );
+  }
+}
+
+
+void Debug::closeEvent(QCloseEvent *event) 
+{
+    QWidget::closeEvent(event);
+}
+
+void Debug::showEvent(QShowEvent *event) 
+{
+    QWidget::showEvent(event);
+}
+
+void Debug::hideEvent(QHideEvent *event)
+{
+  QWidget::hideEvent(event);
+
+  updateToggles( true );
+}
+
+
+void Debug::updateToggles( int bSave )
+{
+  if( bSave )
+  {
+    m_pCustom->writeJson();
+  }
+
+  int idx1 = m_jsondata["debug1"].toInt();
+  int idx2 = m_jsondata["debug2"].toInt();
+  int idx3 = m_jsondata["debug3"].toInt();
+  int idx4 = m_jsondata["debug4"].toInt();
+  int idx5 = m_jsondata["debug5"].toInt();
+
+
+  m_cmdIdx++;
+  MessageBuilder msg;
+  auto debug = msg.initEvent().initUICustom().initDebug();
+  debug.setIdx1( idx1 );
+  debug.setIdx2( idx2);
+  debug.setIdx3( idx3 );
+  debug.setIdx4( idx4 );
+  debug.setIdx5( idx5 );
+  m_pCustom->send("uICustom", msg);
 }

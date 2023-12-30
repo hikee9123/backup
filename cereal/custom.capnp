@@ -18,6 +18,7 @@ struct CarStateCustom @0x81c2f05a394cf4af {
   alertTextMsg3  @3 :Text;
 
   electGearStep @4 :Int16;
+  SupportedCars @5 :List(Text);
 
   struct Tpms {
     unit @0 :Int16;
@@ -59,15 +60,34 @@ struct NaviCustom @0xf35cc4560bbf6ec2 {
 
 struct UICustom @0xda96579883444c35 {
     community @0 :Community;
+    userInterface @1 :UserInterface;
+    debug @2 :Debug;
 
 
     struct Community
     {
-       hapticFeedbackWhenSpeedCamera @0 :Int16;
-       useExternalNaviRoutes @1 :Int16;
-       showDebugMessage @2 :Int16;
-       cmdIdx @3 :Int16;
+       cmdIdx @0 :Int16;
     }
+
+    struct UserInterface
+    {
+       cmdIdx @0 :Int16;      
+       showDebugMessage @1 :Int16;
+       tpms @2 :Int16;
+       kegman @3 :Int16;
+       debug @4 :Int16;
+    }
+
+    struct Debug
+    {
+       cmdIdx @0 :Int16;         
+       idx1 @1 :Int16;
+       idx2 @2 :Int16;
+       idx3 @3 :Int16;
+       idx4 @4 :Int16;
+       idx5 @5 :Int16;
+       idx6 @6 :Int16;
+    }          
 }
 
 struct CustomReserved4 @0x80ae746ee2596b11 {

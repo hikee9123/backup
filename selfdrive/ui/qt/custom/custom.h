@@ -9,7 +9,7 @@
 #include <QPushButton>
 #include <QStackedWidget>
 #include <QWidget>
-#include <QTimer>
+
 
 
 #include <QFile>
@@ -39,13 +39,18 @@ signals:
 
 protected:
   virtual void showEvent(QShowEvent *event) override;
-
+  virtual void hideEvent(QHideEvent *event) override;
 
 private slots:
+  void offroadTransition( bool offroad  );
+
+private:
 
 
 private:
   Params params;
+
+  QJsonObject m_jsondata;
 
 private:
   std::unique_ptr<PubMaster> pm; 
@@ -57,16 +62,16 @@ public:
 public:
    QJsonObject readJsonFile(const QString& fileName);
    void     writeJsonToFile(const QJsonObject& jsonObject, const QString& fileName);
-
+   void     writeJson();
 };
 
 
 
 
-class CommunityPanel : public ListWidget {
+class CommunityTab : public ListWidget {
   Q_OBJECT
 public:
-  explicit CommunityPanel(CustomPanel *parent);
+  explicit CommunityTab(CustomPanel *parent, QJsonObject &jsonobj);
 
 
 private:
@@ -74,7 +79,7 @@ private:
   std::map<std::string, JsonControl*> toggles;
 
 
-  QJsonObject m_jsondata;
+
 
 
   void updateToggles( int bSave );
@@ -88,14 +93,79 @@ protected:
   void closeEvent(QCloseEvent *event) override;  
 
 private slots:
-    void OnTimer();
+  void offroadTransition( bool offroad  );
 
 private:
-    QTimer *timer = nullptr;
+
 
 
 private:
-  CustomPanel *m_pCustom = nullptr;;
+  CustomPanel *m_pCustom = nullptr;
+  QJsonObject &m_jsondata;  
   int  m_cmdIdx = 0;
 };
 
+
+
+class NavigationTab : public ListWidget {
+  Q_OBJECT
+public:
+  explicit NavigationTab(CustomPanel *parent, QJsonObject &jsonobj);
+
+
+private:
+  std::map<std::string, ParamControl*> toggles;
+
+
+protected:
+
+
+protected:  
+
+
+private slots:
+
+
+
+private:
+  CustomPanel *m_pCustom = nullptr;
+  QJsonObject &m_jsondata;  
+};
+
+
+
+class UITab : public ListWidget {
+  Q_OBJECT
+public:
+  explicit UITab(CustomPanel *parent, QJsonObject &jsonobj);
+
+
+private:
+  std::map<std::string, JsonControl*> toggles;
+
+
+
+
+
+  void updateToggles( int bSave );
+
+protected:
+  virtual void showEvent(QShowEvent *event) override;
+  virtual void hideEvent(QHideEvent *event) override;
+
+
+protected:  
+  void closeEvent(QCloseEvent *event) override;  
+
+private slots:
+
+
+private:
+
+
+
+private:
+  CustomPanel *m_pCustom = nullptr;
+  QJsonObject &m_jsondata;  
+  int  m_cmdIdx = 0;
+};
