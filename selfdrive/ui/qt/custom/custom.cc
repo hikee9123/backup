@@ -159,32 +159,6 @@ void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& 
     QJsonDocument jsonDoc(jsonObject);
     QByteArray jsonData = jsonDoc.toJson();  
     params.put( fileName.toStdString(), jsonData.toStdString() );
-
-    //params.put( fileName.toStdString(), jsonDoc.toJson().toStdString());
-
-  /*
-    QString filePath = "/data/params/d/" + fileName; 
-    // JSON 파일 열기
-    QFile file(filePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        printf( "Failed to open the JSON file for writing: %s  ", filePath.toStdString().c_str() );
-        return;
-    }
-  
-    // JSON 객체를 문자열로 변환
-    QJsonDocument jsonDoc(jsonObject);
-    QByteArray jsonData = jsonDoc.toJson();
-
-    // 파일에 JSON 데이터 쓰기
-    qint64 bytesWritten = file.write(jsonData);
-    file.close();
-
-    if (bytesWritten == -1) {
-        printf( "Failed to write JSON data to the file: %s  ", filePath.toStdString().c_str() );
-    } else {
-        printf( "JSON data successfully written to the file: %s  ", filePath.toStdString().c_str() );
-    }
-  */
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
