@@ -30,7 +30,7 @@ public:
 
       bool confirmed = store_confirm;
       if (!confirm || confirmed || !state || dialog.exec()) {
-        jsonobj[key] = state;
+        jsonobj[key] = 0;//state;
         setIcon(state);
       } else {
         toggle.togglePosition();
