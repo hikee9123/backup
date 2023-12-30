@@ -114,8 +114,9 @@ QJsonObject CustomPanel::readJsonFile(const QString& filePath )
 
 
     QString json_str = QString::fromStdString(params.get(filePath.toStdString()));
-    if (json_str.isEmpty()) return jsonObject;
     printf( "JSON file: %s  \n", json_str.toStdString().c_str() );
+
+    if (json_str.isEmpty()) return jsonObject;
 
     QJsonDocument doc = QJsonDocument::fromJson(json_str.toUtf8());
     if (doc.isNull()) {
