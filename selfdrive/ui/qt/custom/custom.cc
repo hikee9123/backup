@@ -313,17 +313,11 @@ void CommunityPanel::updateToggles( int bSave )
 {
   if( bSave )
   {
-    // JSON 객체 Save
-    //QJsonObject log_j =  {
-    //    {"HapticFeedbackWhenSpeedCamera", HapticFeedbackWhenSpeedCamera},
-    //    {"UseExternalNaviRoutes", UseExternalNaviRoutes},
-    //    {"ShowDebugMessage", ShowDebugMessage}
-    //};
     m_pCustom->writeJsonToFile(  m_jsondata, "CustomCommunity" );   
   }
 
-  int HapticFeedbackWhenSpeedCamera = m_jsondata["HapticFeedbackWhenSpeedCamera"].toInt();
-  int UseExternalNaviRoutes = m_jsondata["UseExternalNaviRoutes" ].toInt();
+  int HapticFeedbackWhenSpeedCamera = m_jsondata["HapticFeedbackWhenSpeedCamera"].toBool();
+  int UseExternalNaviRoutes = m_jsondata["UseExternalNaviRoutes" ].toBool();
   int ShowDebugMessage = m_jsondata["ShowDebugMessage" ].toBool();
 
   printf("HapticFeedbackWhenSpeedCamera =%d \n", HapticFeedbackWhenSpeedCamera);
