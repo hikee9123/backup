@@ -25,7 +25,7 @@ public:
     QObject::connect(this, &JsonControl::toggleFlipped, [=](bool state) {
       QString content("<body><h2 style=\"text-align: center;\">" + title + "</h2><br>"
                       "<p style=\"text-align: center; margin: 0 128px; font-size: 50px;\">" + getDescription() + "</p></body>");
-      ConfirmationDialog dialog(content, tr("Enable"), tr("Cancel"), true, this);
+      ConfirmationDialog dialog(content, "Enable", "Cancel", true, this);
 
       bool confirmed = store_confirm;
       if (!confirm || confirmed || !state || dialog.exec()) {
