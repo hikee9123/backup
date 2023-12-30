@@ -18,7 +18,7 @@ class JsonControl : public ToggleControl {
   Q_OBJECT
 
 public:
-  JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent = nullptr, QJsonObject &jsonobj)
+  JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent = nullptr, const QJsonObject &jsonobj)
     : ToggleControl(title, desc, icon, false, parent), key(param.toStdString()), m_jsonobj(jsonobj) 
     //: ToggleControl(title, desc, icon, false, parent) 
     {

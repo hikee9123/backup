@@ -148,7 +148,7 @@ void OnPaint::updateState(const UIState &s)
   SubMaster &sm1 = *(s.sm);  
   SubMaster &sm2 = *(m_sm);
 
-  if (sm1.frame % (UI_FREQ*0.5) != 0) 
+  if (sm1->frame % UI_FREQ != 0) 
       sm2.update(0);
 
   // 1.
