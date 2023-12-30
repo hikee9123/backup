@@ -71,7 +71,7 @@ public:
 
 private:
   Params params;
-  std::map<std::string, JsonControl*> toggles;
+  std::map<std::string, ParamControl*> toggles;
 
 
   QJsonObject m_jsondata;
