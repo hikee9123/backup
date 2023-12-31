@@ -135,7 +135,7 @@ void CustomPanel::hideEvent(QHideEvent *event)
   int bDebug = m_jsonobj["ShowDebugMessage"].toBool();
   int tpms = m_jsonobj["tpms"].toBool();
   int kegman = m_jsonobj["kegman"].toBool();
-  int debug = m_jsonobj["debug"].toBool();
+  int ndebug = m_jsonobj["debug"].toBool();
 
 
   auto ui = custom.initUserInterface();
@@ -143,7 +143,7 @@ void CustomPanel::hideEvent(QHideEvent *event)
   ui.setShowDebugMessage( bDebug );
   ui.setTpms( tpms );
   ui.setKegman( kegman );
-  ui.setDebug( debug );
+  ui.setDebug( ndebug );
 
   send("uICustom", m_msg);
 
