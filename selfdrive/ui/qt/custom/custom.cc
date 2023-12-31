@@ -388,9 +388,9 @@ void UITab::updateToggles( int bSave )
   auto ui = msg.initEvent().initUICustom().initUserInterface();
   ui.setCmdIdx( m_cmdIdx );  
   ui.setShowDebugMessage( bDebug );
-  ui.setTpms( m_cmdIdx );
-  ui.setKegman( m_cmdIdx );
-  ui.setDebug( m_cmdIdx );
+  ui.setTpms( tpms );
+  ui.setKegman( kegman );
+  ui.setDebug( debug );
   m_pCustom->send("uICustom", msg);
 }
 
