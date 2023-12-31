@@ -26,6 +26,7 @@ private:
 private:
   void   ui_main_navi( QPainter &p );
 
+
 private:
   UIState  *state;
   UIScene  *scene;
@@ -63,6 +64,7 @@ private:
     float altitudeUblox;    
     float gpsAccuracyUblox;
 
+    float cumLagMs;
 
   } m_param;
   
@@ -103,7 +105,7 @@ private:
   QString  get_tpms_text(int tpms);
   void     bb_draw_tpms(QPainter &p, int x, int y );
   void     ui_draw_debug1( QPainter &p );
-
+  void     ui_main_debug(QPainter &p);
 
 // kegmen
 private:

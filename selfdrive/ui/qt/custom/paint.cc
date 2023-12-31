@@ -200,21 +200,24 @@ void OnPaint::updateState(const UIState &s)
   m_param.electGearStep  = carState_custom.getElectGearStep();
 
 
-  // 1.
+  // 2.
   auto deviceState = sm1["deviceState"].getDeviceState();
   auto  maxCpuTemp = deviceState.getCpuTempC();  
   m_param.cpuPerc = deviceState.getCpuUsagePercent()[0];  
   m_param.cpuTemp = maxCpuTemp[0];
 
-  // 1.
+  // 2.
   auto radar_state = sm1["radarState"].getRadarState();  // radar
   m_param.lead_radar = radar_state.getLeadOne();
 
-  // 1.
+  // 2.
   auto car_state = sm1["carState"].getCarState();
   m_param.angleSteers = car_state.getSteeringAngleDeg();
   m_param.enginRpm =  car_state.getEngineRpm();
 
+  // 2.
+  auto controls_state = sm1["controlsState"].getControlsState();
+  m_param.cumLagMs = controls_state.getCumLagMs();
 }
 
 
@@ -227,6 +230,7 @@ void OnPaint::drawHud(QPainter &p)
   if( m_param.ui.getDebug() )
   {
     ui_draw_debug1( p );
+    ui_main_debug( p );
   }
 
   // 2. tpms
@@ -239,7 +243,9 @@ void OnPaint::drawHud(QPainter &p)
   {
      bb_ui_draw_UI( p );
   }
+
 }
+
 
 
 void OnPaint::ui_main_navi( QPainter &p ) 
@@ -260,7 +266,6 @@ void OnPaint::ui_main_navi( QPainter &p )
     p.drawRoundedRect(rc, 20, 20);
     p.drawText( rc, Qt::AlignCenter, text4);
   }
-  //p.drawText( bb_x, nYPos+=nGap, text4 );
 }
 
 
@@ -336,6 +341,19 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 }
 
 
+void OnPaint::ui_main_debug(QPainter &p)
+{
+  if( m_param.debug.getIdx1() )
+  {
+    QString text;
+    int  bb_x = 150;
+    int  bb_y = 200;
+    int  nGap = 30;
+    
+    text.sprintf("lag ms=%.3f", m_param.cumLagMs );    
+    p.drawText( bb_x, bb_y+nGap, text );
+  }
+}
 
 
 //BB START: functions added for the display of various items

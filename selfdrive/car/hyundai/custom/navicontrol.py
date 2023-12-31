@@ -232,8 +232,8 @@ class NaviControl():
 
 
   def update(self, c, CS, frame ):
-    if (frame % 5) == 0:
-      self.sm.update()
+    if (frame % 10) == 0:
+      self.sm.update(0)
 
     self.speeds = self.sm['longitudinalPlan'].speeds
 
@@ -259,7 +259,7 @@ class NaviControl():
 
     speeds = self.speeds
     if len( speeds ):
-      str_log1 = 'speed={:.1f}'.format( speeds[-1] )
+      str_log1 = 'speed={:.1f} kph={}'.format( speeds[-1], speeds[-1]*CV.MS_TOKPH )
     else:
       str_log1 = None
 
