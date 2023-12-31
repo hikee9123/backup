@@ -45,6 +45,7 @@ private slots:
   void offroadTransition( bool offroad  );
 
 private:
+  void  updateToggles( int bSave );
 
 public:
 

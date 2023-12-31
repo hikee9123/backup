@@ -90,28 +90,15 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 
 void CustomPanel::offroadTransition( bool offroad  )
 {
-
+  if( !offroad )
+  {
+    updateToggles( false );
+  }
 }
 
 
-void CustomPanel::closeEvent(QCloseEvent *event)
+void CustomPanel::updateToggles( int bSave )
 {
-  QWidget::closeEvent( event );
-  printf("CustomPanel::closeEvent \n" );  
-}
-
-void CustomPanel::showEvent(QShowEvent *event)
-{
-  QWidget::setContentsMargins(0,0,0,0);
-  QWidget::showEvent( event );
-
-  printf("CustomPanel::showEvent \n" );    
-}
-
-void CustomPanel::hideEvent(QHideEvent *event)
-{
-  QWidget::hideEvent(event);
-
   int idx1 = m_jsonobj["debug1"].toInt();
   int idx2 = m_jsonobj["debug2"].toInt();
   int idx3 = m_jsonobj["debug3"].toInt();
@@ -146,6 +133,30 @@ void CustomPanel::hideEvent(QHideEvent *event)
   ui.setDebug( ndebug );
 
   send("uICustom", m_msg);
+
+}
+
+
+
+void CustomPanel::closeEvent(QCloseEvent *event)
+{
+  QWidget::closeEvent( event );
+  printf("CustomPanel::closeEvent \n" );  
+}
+
+void CustomPanel::showEvent(QShowEvent *event)
+{
+  QWidget::setContentsMargins(0,0,0,0);
+  QWidget::showEvent( event );
+
+  printf("CustomPanel::showEvent \n" );    
+}
+
+void CustomPanel::hideEvent(QHideEvent *event)
+{
+  QWidget::hideEvent(event);
+
+  updateToggles( false );
 
   writeJson();
   printf("CustomPanel::hideEvent \n" );       
