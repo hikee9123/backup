@@ -46,6 +46,8 @@ private slots:
 
 private:
 
+public:
+  MessageBuilder msg;
 
 private:
   Params params;
