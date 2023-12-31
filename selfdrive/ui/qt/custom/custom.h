@@ -47,8 +47,7 @@ private slots:
 private:
 
 public:
-    cereal::UICustom::UserInterface::Reader m_ui;
-    cereal::UICustom::Debug::Reader m_debug;
+    cereal::UICustom::Reader m_custom;
 
 private:
   Params params;
