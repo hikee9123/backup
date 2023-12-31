@@ -343,16 +343,16 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 
 void OnPaint::ui_main_debug(QPainter &p)
 {
-  //if( m_param.debug.getIdx1() )
- // {
+  if( m_param.debug.getIdx1() )
+  {
     QString text;
-    int  bb_x = 250;
-    int  bb_y = 200;
+    int  bb_x = 260;
+    int  bb_y = 100;
     int  nGap = 30;
     
     text.sprintf("lag ms=%5.3f   %d", m_param.cumLagMs, m_param.debug.getIdx1() );    
     p.drawText( bb_x, bb_y+nGap, text );
- // }
+  }
 }
 
 
