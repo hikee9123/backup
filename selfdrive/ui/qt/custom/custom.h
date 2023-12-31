@@ -128,6 +128,7 @@ private slots:
 
 
 private:
+  Params params;
   CustomPanel *m_pCustom = nullptr;
   QJsonObject &m_jsonobj;  
 };
@@ -180,7 +181,7 @@ public:
 
 private:
   std::map<std::string, JsonControl*> toggles;
-  QJsonObject m_jsonobj;  
+  QJsonObject &m_jsonobj;  
 
 
 
