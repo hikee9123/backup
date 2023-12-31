@@ -30,14 +30,14 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 {
   pm.reset( new PubMaster({"uICustom"}) );
 
-  m_jsondata = readJsonFile( "CustomParam" );
+  m_jsonobj = readJsonFile( "CustomParam" );
 
     QList<QPair<QString, QWidget *>> panels = {
-        {tr("UI"), new UITab(this, m_jsondata)},      
-        {tr("Community"), new CommunityTab(this, m_jsondata)},
+        {tr("UI"), new UITab(this, m_jsonobj)},      
+        {tr("Community"), new CommunityTab(this, m_jsonobj)},
         {tr("Tuning"), new QWidget(this)},
-        {tr("Navigation"), new NavigationTab(this, m_jsondata)},
-        {tr("Debug"), new Debug(this,m_jsondata)},
+        {tr("Navigation"), new NavigationTab(this, m_jsonobj)},
+        {tr("Debug"), new Debug(this,m_jsonobj)},
     };
 
 
@@ -121,7 +121,7 @@ int CustomPanel::send(const char *name, MessageBuilder &msg)
 
 void CustomPanel::writeJson()
 {
-   writeJsonToFile( m_jsondata, "CustomParam" );
+   writeJsonToFile( m_jsonobj, "CustomParam" );
 }
 
 
@@ -186,7 +186,7 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
   };
 
   for (auto &[param, title, desc, icon] : toggle_defs) {
-    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
+    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsonobj);
 
     addItem(toggle);
     toggles[param.toStdString()] = toggle;
@@ -249,7 +249,7 @@ void CommunityTab::updateToggles( int bSave )
 //
 //
 
-NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
+NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
 {
   QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
       for (auto btn : findChildren<ButtonControl *>()) {
@@ -285,7 +285,7 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
 //
 //
 
-UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
+UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
 {
   m_pCustom = parent;
 
@@ -319,7 +319,7 @@ UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m
   };
 
   for (auto &[param, title, desc, icon] : toggle_defs) {
-    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
+    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsonobj);
 
     addItem(toggle);
     toggles[param.toStdString()] = toggle;
@@ -367,7 +367,7 @@ void UITab::updateToggles( int bSave )
     m_pCustom->writeJson();
   }
 
-  int bDebug = m_jsondata["ShowDebugMessage"].toBool();
+  int bDebug = m_jsonobj["ShowDebugMessage"].toBool();
   auto tpms_mode_toggle = toggles["tpms"];
   auto kegman_mode_toggle = toggles["kegman"];
   auto debug_mode_toggle = toggles["debug"];
@@ -378,9 +378,9 @@ void UITab::updateToggles( int bSave )
 
 
 
-  int tpms = m_jsondata["tpms"].toBool();
-  int kegman = m_jsondata["kegman"].toBool();
-  int debug = m_jsondata["debug"].toBool();
+  int tpms = m_jsonobj["tpms"].toBool();
+  int kegman = m_jsonobj["kegman"].toBool();
+  int debug = m_jsonobj["debug"].toBool();
 
 
   m_cmdIdx++;
@@ -400,7 +400,7 @@ void UITab::updateToggles( int bSave )
 //
 //
 
-Debug::Debug(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
+Debug::Debug(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
 {
   m_pCustom = parent;
 
@@ -440,7 +440,7 @@ Debug::Debug(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m
   };
 
   for (auto &[param, title, desc, icon] : toggle_defs) {
-    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsondata);
+    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsonobj);
 
     addItem(toggle);
     toggles[param.toStdString()] = toggle;
@@ -483,11 +483,11 @@ void Debug::updateToggles( int bSave )
     m_pCustom->writeJson();
   }
 
-  int idx1 = m_jsondata["debug1"].toInt();
-  int idx2 = m_jsondata["debug2"].toInt();
-  int idx3 = m_jsondata["debug3"].toInt();
-  int idx4 = m_jsondata["debug4"].toInt();
-  int idx5 = m_jsondata["debug5"].toInt();
+  int idx1 = m_jsonobj["debug1"].toInt();
+  int idx2 = m_jsonobj["debug2"].toInt();
+  int idx3 = m_jsonobj["debug3"].toInt();
+  int idx4 = m_jsonobj["debug4"].toInt();
+  int idx5 = m_jsonobj["debug5"].toInt();
 
 
   m_cmdIdx++;

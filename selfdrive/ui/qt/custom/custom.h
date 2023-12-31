@@ -50,7 +50,7 @@ private:
 private:
   Params params;
 
-  QJsonObject m_jsondata;
+  QJsonObject m_jsonobj;
 
 private:
   std::unique_ptr<PubMaster> pm; 
@@ -101,7 +101,7 @@ private:
 
 private:
   CustomPanel *m_pCustom = nullptr;
-  QJsonObject &m_jsondata;  
+  QJsonObject &m_jsonobj;  
   int  m_cmdIdx = 0;
 };
 
@@ -129,7 +129,7 @@ private slots:
 
 private:
   CustomPanel *m_pCustom = nullptr;
-  QJsonObject &m_jsondata;  
+  QJsonObject &m_jsonobj;  
 };
 
 
@@ -166,7 +166,7 @@ private:
 
 private:
   CustomPanel *m_pCustom = nullptr;
-  QJsonObject &m_jsondata;  
+  QJsonObject &m_jsonobj;  
   int  m_cmdIdx = 0;
 };
 
@@ -180,7 +180,7 @@ public:
 
 private:
   std::map<std::string, JsonControl*> toggles;
-  QJsonObject m_jsondata;  
+  QJsonObject m_jsonobj;  
 
 
 
