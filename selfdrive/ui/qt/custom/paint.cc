@@ -344,7 +344,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 void OnPaint::ui_main_debug(QPainter &p)
 {
   //if( m_param.debug.getIdx1() )
-  {
+ // {
     QString text;
     int  bb_x = 150;
     int  bb_y = 200;
