@@ -120,11 +120,11 @@ void CustomPanel::updateToggles( int bSave )
   auto custom = m_msg.initEvent().initUICustom();  
   auto debug = custom.initDebug();
 
-  int idx1 = m_jsonobj["debug1"].toInt();
-  int idx2 = m_jsonobj["debug2"].toInt();
-  int idx3 = m_jsonobj["debug3"].toInt();
-  int idx4 = m_jsonobj["debug4"].toInt();
-  int idx5 = m_jsonobj["debug5"].toInt();
+  int idx1 = m_jsonobj["debug1"].toBool();
+  int idx2 = m_jsonobj["debug2"].toBool();
+  int idx3 = m_jsonobj["debug3"].toBool();
+  int idx4 = m_jsonobj["debug4"].toBool();
+  int idx5 = m_jsonobj["debug5"].toBool();
 
   debug.setCmdIdx( m_cmdIdx );    
   debug.setIdx1( idx1 );
