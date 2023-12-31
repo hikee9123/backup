@@ -15,7 +15,7 @@ EventName = car.CarEvent.EventName
 class NaviControl():
   def __init__(self,  CP ):
     self.CP = CP
-    self.sm = messaging.SubMaster(['naviCustom','longitudinalPlan','uICustom']) 
+    self.sm = messaging.SubMaster(['naviCustom','longitudinalPlan','uICustom'], ignore_avg_freq=['naviCustom', 'uICustom']) 
     self.btn_cnt = 0
     self.seq_command = 0
     self.target_speed = 0
@@ -232,7 +232,9 @@ class NaviControl():
 
 
   def update(self, c, CS, frame ):
-    self.sm.update()
+    if (frame % 5) == 0:
+      self.sm.update()
+
     self.speeds = self.sm['longitudinalPlan'].speeds
 
     if self.sm.updated["uICustom"]:
@@ -257,7 +259,7 @@ class NaviControl():
 
     speeds = self.speeds
     if len( speeds ):
-      str_log1 = 'speed={}'.format( speeds[-1] )
+      str_log1 = 'speed={:.1f}'.format( speeds[-1] )
     else:
       str_log1 = None
 
