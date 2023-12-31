@@ -96,7 +96,7 @@ class CarStateCustom():
 
     # save the entire LFAHDA_MFC
     # self.lfahda = copy.copy(cp_cruise.vl["LFAHDA_MFC"])
-    if not self.CP.openpilotLongitudinalControl and self.CP.carFingerprint in CAMERA_SCC_CAR:
+    if not self.CP.openpilotLongitudinalControl:
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
       #self.VSetDis = copy.copy(ret.cruiseState.speed) * CV.MS_TO_KPH
       self.VSetDis = cp_cruise.vl["SCC11"]["VSetDis"]   # kph   크루즈 설정 속도. 
