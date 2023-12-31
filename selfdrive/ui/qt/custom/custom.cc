@@ -384,7 +384,7 @@ void UITab::updateToggles( int bSave )
 
 
   m_cmdIdx++;
-  MessageBuilder *msg = &m_pCustom->msg;
+  MessageBuilder *msg = &(m_pCustom->m_msg);
   auto ui = msg->initEvent().initUICustom().initUserInterface();
   ui.setCmdIdx( m_cmdIdx );  
   ui.setShowDebugMessage( bDebug );
