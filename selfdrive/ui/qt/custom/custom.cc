@@ -94,7 +94,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 
 void CustomPanel::offroadTransition( bool offroad  )
 {
-  updateToggles( false );
+  //updateToggles( false );
 }
 
 void CustomPanel::OnTimer() 
