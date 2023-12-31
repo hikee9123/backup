@@ -25,7 +25,7 @@
 #include "selfdrive/ui/qt/custom/custom.h"
 
 
-MessageBuilder m_msg;
+
 
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
@@ -33,7 +33,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
   pm.reset( new PubMaster({"uICustom"}) );
 
   m_jsonobj = readJsonFile( "CustomParam" );
-  m_custom = m_msg.initEvent().initUICustom();
+
 
     QList<QPair<QString, QWidget *>> panels = {
         {tr("UI"), new UITab(this, m_jsonobj)},      
@@ -112,6 +112,40 @@ void CustomPanel::hideEvent(QHideEvent *event)
 {
   QWidget::hideEvent(event);
 
+  int idx1 = m_jsonobj["debug1"].toInt();
+  int idx2 = m_jsonobj["debug2"].toInt();
+  int idx3 = m_jsonobj["debug3"].toInt();
+  int idx4 = m_jsonobj["debug4"].toInt();
+  int idx5 = m_jsonobj["debug5"].toInt();
+
+
+  m_cmdIdx++;
+  MessageBuilder m_msg;
+  auto custom = m_msg.initEvent().initUICustom();  
+
+  auto debug = custom.initDebug();
+  debug.setCmdIdx( m_cmdIdx );    
+  debug.setIdx1( idx1 );
+  debug.setIdx2( idx2);
+  debug.setIdx3( idx3 );
+  debug.setIdx4( idx4 );
+  debug.setIdx5( idx5 );
+
+
+  int bDebug = m_jsonobj["ShowDebugMessage"].toBool();
+  int tpms = m_jsonobj["tpms"].toBool();
+  int kegman = m_jsonobj["kegman"].toBool();
+  int debug = m_jsonobj["debug"].toBool();
+
+
+  auto ui = custom.initUserInterface();
+  ui.setCmdIdx( m_cmdIdx );  
+  ui.setShowDebugMessage( bDebug );
+  ui.setTpms( tpms );
+  ui.setKegman( kegman );
+  ui.setDebug( debug );
+
+  send("uICustom", m_msg);
 
   writeJson();
   printf("CustomPanel::hideEvent \n" );       
@@ -380,15 +414,16 @@ void UITab::updateToggles( int bSave )
   debug_mode_toggle->setEnabled(bDebug);
 
 
-
+/*/
   int tpms = m_jsonobj["tpms"].toBool();
   int kegman = m_jsonobj["kegman"].toBool();
   int debug = m_jsonobj["debug"].toBool();
 
 
   m_cmdIdx++;
-
-  auto ui = m_pCustom->m_custom.initUserInterface();
+  MessageBuilder m_msg;
+  auto custom = m_msg.initEvent().initUICustom();  
+  auto ui = custom.initUserInterface();
   ui.setCmdIdx( m_cmdIdx );  
   ui.setShowDebugMessage( bDebug );
   ui.setTpms( tpms );
@@ -396,6 +431,7 @@ void UITab::updateToggles( int bSave )
   ui.setDebug( debug );
 
   m_pCustom->send("uICustom", m_msg);
+*/
 }
 
 
@@ -487,22 +523,4 @@ void Debug::updateToggles( int bSave )
     m_pCustom->writeJson();
   }
 
-  int idx1 = m_jsonobj["debug1"].toInt();
-  int idx2 = m_jsonobj["debug2"].toInt();
-  int idx3 = m_jsonobj["debug3"].toInt();
-  int idx4 = m_jsonobj["debug4"].toInt();
-  int idx5 = m_jsonobj["debug5"].toInt();
-
-
-  m_cmdIdx++;
-
-  auto debug = m_pCustom->m_custom.initDebug();
-  debug.setCmdIdx( m_cmdIdx );    
-  debug.setIdx1( idx1 );
-  debug.setIdx2( idx2);
-  debug.setIdx3( idx3 );
-  debug.setIdx4( idx4 );
-  debug.setIdx5( idx5 );
-
-  m_pCustom->send("uICustom", m_msg);
 }

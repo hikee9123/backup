@@ -47,11 +47,11 @@ private slots:
 private:
 
 public:
-    cereal::UICustom::Reader m_custom;
+
 
 private:
   Params params;
-
+  int    m_cmdIdx = 0;
   QJsonObject m_jsonobj;
 
 private:
