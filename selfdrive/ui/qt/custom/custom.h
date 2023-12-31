@@ -180,6 +180,7 @@ public:
 
 private:
   std::map<std::string, JsonControl*> toggles;
+  QJsonObject m_jsondata;  
 
 
 
@@ -204,6 +205,5 @@ private:
 
 private:
   CustomPanel *m_pCustom = nullptr;
-  QJsonObject &m_jsondata;  
   int  m_cmdIdx = 0;
 };

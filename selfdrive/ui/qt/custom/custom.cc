@@ -158,7 +158,7 @@ void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& 
 CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
 {
   m_pCustom = parent;
-  
+
 /*
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
@@ -378,9 +378,9 @@ void UITab::updateToggles( int bSave )
 
 
 
-  int tpms = m_jsondata["tpms"].toInit();
-  int kegman = m_jsondata["kegman"].toInit();
-  int debug = m_jsondata["debug"].toInit();
+  int tpms = m_jsondata["tpms"].toBool();
+  int kegman = m_jsondata["kegman"].toBool();
+  int debug = m_jsondata["debug"].toBool();
 
 
   m_cmdIdx++;
