@@ -9,7 +9,7 @@
 #include <QPushButton>
 #include <QStackedWidget>
 #include <QWidget>
-
+#include <QTimer>
 
 
 #include <QFile>
@@ -43,6 +43,7 @@ protected:
 
 private slots:
   void offroadTransition( bool offroad  );
+  void OnTimer();  
 
 private:
   void  updateToggles( int bSave );
@@ -51,6 +52,7 @@ public:
 
 
 private:
+  QTimer *timer = nullptr;
   Params params;
   int    m_cmdIdx = 0;
   QJsonObject m_jsonobj;

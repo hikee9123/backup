@@ -86,34 +86,46 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 
 
     QObject::connect(uiState(), &UIState::offroadTransition, this, &CustomPanel::offroadTransition);
+
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &CustomPanel::OnTimer);
+    timer->start(2000);    
 }
 
 void CustomPanel::offroadTransition( bool offroad  )
 {
- // if( !offroad )
- // {
-    updateToggles( false );
- // }
+  updateToggles( false );
+}
 
-  printf("CustomPanel::offroadTransition %d \n", offroad );       
+void CustomPanel::OnTimer() 
+{
+  UIState *s = uiState();
+  UIScene &scene = s->scene;
 
+  updateToggles( false );
+  if( scene.started )
+  {
+    timer->stop();
+  }
 }
 
 
 void CustomPanel::updateToggles( int bSave )
 {
+  MessageBuilder m_msg;
+
+
+
+  m_cmdIdx++;
+  auto custom = m_msg.initEvent().initUICustom();  
+  auto debug = custom.initDebug();
+
   int idx1 = m_jsonobj["debug1"].toInt();
   int idx2 = m_jsonobj["debug2"].toInt();
   int idx3 = m_jsonobj["debug3"].toInt();
   int idx4 = m_jsonobj["debug4"].toInt();
   int idx5 = m_jsonobj["debug5"].toInt();
 
-
-  m_cmdIdx++;
-  MessageBuilder m_msg;
-  auto custom = m_msg.initEvent().initUICustom();  
-
-  auto debug = custom.initDebug();
   debug.setCmdIdx( m_cmdIdx );    
   debug.setIdx1( idx1 );
   debug.setIdx2( idx2);
@@ -122,13 +134,13 @@ void CustomPanel::updateToggles( int bSave )
   debug.setIdx5( idx5 );
 
 
+  auto ui = custom.initUserInterface();
+
   int bDebug = m_jsonobj["ShowDebugMessage"].toBool();
   int tpms = m_jsonobj["tpms"].toBool();
   int kegman = m_jsonobj["kegman"].toBool();
   int ndebug = m_jsonobj["debug"].toBool();
 
-
-  auto ui = custom.initUserInterface();
   ui.setCmdIdx( m_cmdIdx );  
   ui.setShowDebugMessage( bDebug );
   ui.setTpms( tpms );
@@ -136,23 +148,24 @@ void CustomPanel::updateToggles( int bSave )
   ui.setDebug( ndebug );
 
   send("uICustom", m_msg);
-
 }
 
 
 
 void CustomPanel::closeEvent(QCloseEvent *event)
 {
+  timer->stop();
+  delete timer;
+  timer = nullptr;
+
   QWidget::closeEvent( event );
-  printf("CustomPanel::closeEvent \n" );  
 }
 
 void CustomPanel::showEvent(QShowEvent *event)
 {
   QWidget::setContentsMargins(0,0,0,0);
   QWidget::showEvent( event );
-
-  printf("CustomPanel::showEvent \n" );    
+ 
 }
 
 void CustomPanel::hideEvent(QHideEvent *event)
@@ -162,7 +175,6 @@ void CustomPanel::hideEvent(QHideEvent *event)
   updateToggles( false );
 
   writeJson();
-  printf("CustomPanel::hideEvent \n" );       
 }
 
 int CustomPanel::send(const char *name, MessageBuilder &msg)
@@ -426,26 +438,6 @@ void UITab::updateToggles( int bSave )
   tpms_mode_toggle->setEnabled(bDebug);
   kegman_mode_toggle->setEnabled(bDebug);
   debug_mode_toggle->setEnabled(bDebug);
-
-
-/*/
-  int tpms = m_jsonobj["tpms"].toBool();
-  int kegman = m_jsonobj["kegman"].toBool();
-  int debug = m_jsonobj["debug"].toBool();
-
-
-  m_cmdIdx++;
-  MessageBuilder m_msg;
-  auto custom = m_msg.initEvent().initUICustom();  
-  auto ui = custom.initUserInterface();
-  ui.setCmdIdx( m_cmdIdx );  
-  ui.setShowDebugMessage( bDebug );
-  ui.setTpms( tpms );
-  ui.setKegman( kegman );
-  ui.setDebug( debug );
-
-  m_pCustom->send("uICustom", m_msg);
-*/
 }
 
 
