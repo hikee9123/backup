@@ -123,7 +123,7 @@ class CarStateCustom():
         ret.cruiseState.enabled = True
 
     self.frame += 1
-    #ret.cruiseState.speed = 0     
+
 
     if self.frame % 10 == 0:
       dat = messaging.new_message('carStateCustom')

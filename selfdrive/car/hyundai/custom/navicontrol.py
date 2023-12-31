@@ -6,7 +6,7 @@ from openpilot.common.numpy_fast import interp
 
 import cereal.messaging as messaging
 
-
+import openpilot.selfdrive.custom.loger as  trace1
 
 
 EventName = car.CarEvent.EventName
@@ -15,8 +15,7 @@ EventName = car.CarEvent.EventName
 class NaviControl():
   def __init__(self,  CP ):
     self.CP = CP
-    
-    self.sm = messaging.SubMaster(['naviCustom']) 
+    self.sm = messaging.SubMaster(['naviCustom','longitudinalPlan']) 
     self.btn_cnt = 0
     self.seq_command = 0
     self.target_speed = 0
@@ -164,7 +163,6 @@ class NaviControl():
   def get_navi_speed(self, sm, CS, cruiseState_speed, frame ):
     cruise_set_speed_kph = cruiseState_speed
     v_ego_kph = CS.out.vEgo * CV.MS_TO_KPH
-    self.sm.update()
     if sm.updated["naviCustom"]:
       naviData = sm["naviCustom"].naviData
       self.speedLimit = naviData.camLimitSpeed
@@ -234,6 +232,9 @@ class NaviControl():
 
 
   def update(self, c, CS, frame ):
+    self.sm.update()
+    self.speeds = self.sm['longitudinalPlan'].speeds
+
     # send scc to car if longcontrol enabled and SCC not on bus 0 or ont live
     btn_signal = None
     if not self.button_status( CS  ):
@@ -249,5 +250,13 @@ class NaviControl():
 
       self.set_speed_kph = self.ctrl_speed
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
+
+    speeds = self.speeds
+    if len( speeds ):
+      str_log1 = 'speed={}'.format( speeds[-1] )
+    else:
+      str_log1 = None
+
+    trace1.printf2( 'bs={}  seq={} acc={} {}'.format( btn_signal, self.seq_command, CS.carCustom.acc_active, str_log1 ) )
 
     return btn_signal
