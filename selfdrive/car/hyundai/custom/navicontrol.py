@@ -213,7 +213,7 @@ class NaviControl():
 
   def auto_speed_control( self, c, CS, ctrl_speed ):
     cruise_set_speed = 0
-    if CS.gasPressed:
+    if CS.out.gasPressed:
       self.gasPressed_time = 100
     elif self.gasPressed_time > 0:
       self.gasPressed_time -= 1
@@ -248,7 +248,7 @@ class NaviControl():
       kph_set_vEgo = self.get_navi_speed(  self.sm , CS, cruiseState_speed, frame )
       self.ctrl_speed = min( cruiseState_speed, kph_set_vEgo)
 
-      if CS.carCustom.cruise_set_mode:
+      if CS.carCustom.cruise_set_mode == 2:
         self.ctrl_speed = self.auto_speed_control( c, CS, self.ctrl_speed )
 
 
