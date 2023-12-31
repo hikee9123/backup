@@ -259,7 +259,7 @@ void OnPaint::ui_main_navi( QPainter &p )
     p.drawRoundedRect(rc, 20, 20);
     p.drawText( rc, Qt::AlignCenter, text4);
   }
-  p.drawText( bb_x, nYPos+=nGap, text4 );
+  //p.drawText( bb_x, nYPos+=nGap, text4 );
 }
 
 
