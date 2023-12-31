@@ -26,8 +26,7 @@
 
 
 MessageBuilder m_msg;
-auto debug = m_msg.initEvent().initUICustom().initDebug();
-auto ui = m_msg.initEvent().initUICustom().initUserInterface();
+
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
@@ -388,12 +387,14 @@ void UITab::updateToggles( int bSave )
 
   m_cmdIdx++;
 
-
+  auto ui = m_msg.initEvent().initUICustom().initUserInterface();
   ui.setCmdIdx( m_cmdIdx );  
   ui.setShowDebugMessage( bDebug );
   ui.setTpms( tpms );
   ui.setKegman( kegman );
   ui.setDebug( debug );
+
+  m_ui = ui; 
   m_pCustom->send("uICustom", m_msg);
 }
 
@@ -494,12 +495,17 @@ void Debug::updateToggles( int bSave )
 
 
   m_cmdIdx++;
-
+  auto custom = m_msg.initEvent().initUICustom();
+  auto ui = custom.initUserInterface();
+  auto debug = custom.initDebug();
   debug.setCmdIdx( m_cmdIdx );    
   debug.setIdx1( idx1 );
   debug.setIdx2( idx2);
   debug.setIdx3( idx3 );
   debug.setIdx4( idx4 );
   debug.setIdx5( idx5 );
+  m_debug = debug;
+  ui = m_ui;
+
   m_pCustom->send("uICustom", m_msg);
 }
