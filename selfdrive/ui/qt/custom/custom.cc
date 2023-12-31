@@ -134,8 +134,13 @@ void CustomPanel::updateToggles( int bSave )
   debug.setIdx5( idx5 );
 
 
-  auto ui = custom.initUserInterface();
+  auto comunity = custom.initCommunity();
+  int cruiseMode = m_jsonobj["CruiseMode"].toBool();
+  comunity.setCmdIdx( m_cmdIdx );
+  comunity.setCruiseMode( cruiseMode );
 
+
+  auto ui = custom.initUserInterface();
   int bDebug = m_jsonobj["ShowDebugMessage"].toBool();
   int tpms = m_jsonobj["tpms"].toBool();
   int kegman = m_jsonobj["kegman"].toBool();
@@ -236,13 +241,13 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     }
   });
   addItem(changeCar);
-
+*/
 
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
     {
-      "SelectedCar",
-      tr("Select your car"),
+      "CruiseMode",
+      tr("Cruise mode"),
       "",
       "../assets/offroad/icon_shell.png",
     },    
@@ -254,24 +259,6 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     addItem(toggle);
     toggles[param.toStdString()] = toggle;
   }
-*/
-
-  QObject::connect(uiState(), &UIState::offroadTransition, this, &CommunityTab::offroadTransition);
-}
-
-
-void CommunityTab::offroadTransition( bool offroad  )
-{
-  if( !offroad )
-  {
-    updateToggles( false );
-  }
-}
-
-
-void CommunityTab::closeEvent(QCloseEvent *event) 
-{
-    QWidget::closeEvent(event);
 }
 
 void CommunityTab::showEvent(QShowEvent *event) 
@@ -284,25 +271,9 @@ void CommunityTab::hideEvent(QHideEvent *event)
 {
   QWidget::hideEvent(event);
 
-  updateToggles( true );
 }
 
 
-void CommunityTab::updateToggles( int bSave )
-{
-  /*
-  if( bSave )
-  {
-    m_pCustom->writeJson();   
-  }
-
-  m_cmdIdx++;
-  MessageBuilder &msg = m_msg;
-  auto community = msg.initEvent().initUICustom().initCommunity();
-  community.setCmdIdx( m_cmdIdx );
-  m_pCustom->send("uICustom", msg);
-  */
-}
 
 
 

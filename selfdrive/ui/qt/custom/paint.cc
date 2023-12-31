@@ -155,7 +155,8 @@ void OnPaint::updateState(const UIState &s)
   auto uiCustom = sm2["uICustom"].getUICustom();
   m_param.community  = uiCustom.getCommunity();
   m_param.ui  = uiCustom.getUserInterface();
-  //m_param.debug  = uiCustom.getDebug();
+  m_param.debug  = uiCustom.getDebug();
+  
   is_debug = m_param.ui.getShowDebugMessage();
 
   if( !is_debug ) return;

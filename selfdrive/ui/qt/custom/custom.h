@@ -80,14 +80,8 @@ public:
 
 
 private:
-  Params params;
   std::map<std::string, JsonControl*> toggles;
 
-
-
-
-
-  void updateToggles( int bSave );
 
 protected:
   virtual void showEvent(QShowEvent *event) override;
@@ -95,19 +89,16 @@ protected:
 
 
 protected:  
-  void closeEvent(QCloseEvent *event) override;  
 
 private slots:
-  void offroadTransition( bool offroad  );
 
 private:
-
 
 
 private:
   CustomPanel *m_pCustom = nullptr;
   QJsonObject &m_jsonobj;  
-  int  m_cmdIdx = 0;
+
 };
 
 

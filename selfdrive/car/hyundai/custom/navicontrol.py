@@ -15,7 +15,7 @@ EventName = car.CarEvent.EventName
 class NaviControl():
   def __init__(self,  CP ):
     self.CP = CP
-    self.sm = messaging.SubMaster(['naviCustom','longitudinalPlan']) 
+    self.sm = messaging.SubMaster(['naviCustom','longitudinalPlan','uICustom']) 
     self.btn_cnt = 0
     self.seq_command = 0
     self.target_speed = 0
@@ -235,6 +235,10 @@ class NaviControl():
     self.sm.update()
     self.speeds = self.sm['longitudinalPlan'].speeds
 
+    if self.sm.updated["uICustom"]:
+      cruiseMode = self.sm['uICustom'].community.cruiseMode
+      if CS.carCustom.cruise_set_mode != cruiseMode:
+        CS.carCustom.cruise_set_mode = cruiseMode
     # send scc to car if longcontrol enabled and SCC not on bus 0 or ont live
     btn_signal = None
     if not self.button_status( CS  ):
@@ -257,6 +261,6 @@ class NaviControl():
     else:
       str_log1 = None
 
-    trace1.printf2( 'bs={}  seq={} acc={} {}'.format( btn_signal, self.seq_command, CS.carCustom.acc_active, str_log1 ) )
+    trace1.printf2( 'bs={}  seq={} acc={} mode={} {}'.format( btn_signal, self.seq_command, CS.carCustom.acc_active, CS.carCustom.cruise_set_mode, str_log1 ) )
 
     return btn_signal
