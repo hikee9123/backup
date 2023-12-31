@@ -21,8 +21,6 @@ class NaviControl():
     self.target_speed = 0
     self.set_point = 0
     self.wait_timer2 = 0
-    self.set_speed_kph = 0
- 
 
 
     self.gasPressed_time = 0
@@ -57,11 +55,11 @@ class NaviControl():
 
 
   def button_status(self, CS ):
-    if not CS.carCustom.cruise_set_mode:
+    if CS.customCS.cruise_set_mode == 0:
       return 0
     
     cruise_button = CS.cruise_buttons[-1] 
-    if not CS.carCustom.acc_active or cruise_button != Buttons.NONE or CS.out.brakePressed  or CS.out.gasPressed: 
+    if not CS.customCS.acc_active or cruise_button != Buttons.NONE or CS.out.brakePressed  or CS.out.gasPressed: 
       self.wait_timer2 = 100 
     elif self.wait_timer2: 
       self.wait_timer2 -= 1
@@ -149,14 +147,11 @@ class NaviControl():
 
   def ascc_button_control( self, CS, set_speed ):
     self.set_point = max(30,set_speed)
-    self.curr_speed = CS.out.vEgo * CV.MS_TO_KPH
-    self.VSetDis   = CS.carCustom.VSetDis
+    self.VSetDis   = CS.customCS.VSetDis
 
 
     btn_signal = self.switch( self.seq_command, CS )
     return btn_signal
-
-
 
 
 
@@ -192,12 +187,12 @@ class NaviControl():
 
       return  cruise_set_speed_kph
 
-    elif CS.carCustom.is_highway or speedLimit < 30:
+    elif CS.customCS.is_highway or speedLimit < 30:
       return  cruise_set_speed_kph
     elif v_ego_kph < 80:
       if speedLimit <= 60:
         spdTarget = interp( speedLimitDistance, [150, 600], [ speedLimit, speedLimit + 30 ] )
-      else:      
+      else:
         spdTarget = interp( speedLimitDistance, [200, 800], [ speedLimit, speedLimit + 40 ] )
     elif speedLimitDistance >= 50:
         spdTarget = interp( speedLimitDistance, [300, 900], [ speedLimit, speedLimit + 50 ] )
@@ -218,13 +213,13 @@ class NaviControl():
     elif self.gasPressed_time > 0:
       self.gasPressed_time -= 1
       if self.gasPressed_time <= 0:
-        cruise_set_speed = CS.carCustom.clu_Vanz - 5
-    #elif CS.carCustom.cruise_set_mode == 5:  # comma long control speed.
+        cruise_set_speed = CS.customCS.clu_Vanz - 5
+    #elif CS.customCS.cruise_set_mode == 5:  # comma long control speed.
     #  vFuture = c.hudControl.vFuture * CV.MS_TO_KPH
     #  ctrl_speed = min( vFuture, ctrl_speed )
 
     if cruise_set_speed > 30:
-      CS.carCustom.set_cruise_speed( cruise_set_speed )
+      CS.customCS.set_cruise_speed( cruise_set_speed )
 
     return  ctrl_speed
 
@@ -233,27 +228,28 @@ class NaviControl():
     if (frame % 10) == 0:
       self.sm.update(0)
 
+    str_log2 = None
     self.speeds = self.sm['longitudinalPlan'].speeds
-
     if self.sm.updated["uICustom"]:
       cruiseMode = self.sm['uICustom'].community.cruiseMode
-      if CS.carCustom.cruise_set_mode != cruiseMode:
-        CS.carCustom.cruise_set_mode = cruiseMode
+      if CS.customCS.cruise_set_mode != cruiseMode:
+        CS.customCS.cruise_set_mode = cruiseMode
+
     # send scc to car if longcontrol enabled and SCC not on bus 0 or ont live
     btn_signal = None
     if not self.button_status( CS  ):
       pass
-    elif CS.carCustom.acc_active:
+    elif CS.customCS.acc_active:
       cruiseState_speed = CS.out.cruiseState.speed * CV.MS_TO_KPH      
       kph_set_vEgo = self.get_navi_speed(  self.sm , CS, cruiseState_speed, frame )
       self.ctrl_speed = min( cruiseState_speed, kph_set_vEgo)
 
-      if CS.carCustom.cruise_set_mode == 2:
+      if CS.customCS.cruise_set_mode == 2:
         self.ctrl_speed = self.auto_speed_control( c, CS, self.ctrl_speed )
-
-
-      self.set_speed_kph = self.ctrl_speed
+ 
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
+
+      str_log2 = 'seq={}  TS:{:.1f}={:.1f}={:.1f} - VD:{:.1f}'.format( self.seq_command, self.target_speed,cruiseState_speed,kph_set_vEgo,   self.VSetDis ) 
 
     speeds = self.speeds
     if len( speeds ):
@@ -261,10 +257,7 @@ class NaviControl():
     else:
       str_log1 = None
 
-    trace1.printf2( 'seq={} acc={} mode={} bs={}  {}'.format(  self.seq_command, CS.carCustom.acc_active, CS.carCustom.cruise_set_mode, btn_signal, str_log1 ) )
-
-
-    delta_speed = self.target_speed - self.VSetDis
-    trace1.printf3( 'delta:{:.1f} = TS:{:.1f} - VD:{:.1f}'.format( delta_speed, self.target_speed, self.VSetDis ) )
+    trace1.printf2( 'acc={} mode={} {}'.format(  CS.customCS.acc_active, CS.customCS.cruise_set_mode, str_log1 ) )
+    trace1.printf3( '{}  bs={}'.format( str_log2, btn_signal ) )
 
     return btn_signal

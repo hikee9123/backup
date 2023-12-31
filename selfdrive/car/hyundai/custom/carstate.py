@@ -56,7 +56,7 @@ class CarStateCustom():
     if not self.acc_active:
       return self.cruise_set_speed_kph
 
-    cruise_buttons = self.CS.cruise_buttons[-1]
+    cruise_buttons = self.CS.prev_cruise_buttons   #cruise_buttons[-1]
     if cruise_buttons in (Buttons.RES_ACCEL, Buttons.SET_DECEL):
       self.cruise_buttons_time += 1
     else:
@@ -92,13 +92,12 @@ class CarStateCustom():
 
 
   def update(self, ret, CS,  cp, cp_cruise ):
-    self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]  #kph  현재 차량의 속도.
-
     # save the entire LFAHDA_MFC
     # self.lfahda = copy.copy(cp_cruise.vl["LFAHDA_MFC"])
     if not self.CP.openpilotLongitudinalControl:
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
       #self.VSetDis = copy.copy(ret.cruiseState.speed) * CV.MS_TO_KPH
+      self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]  #kph  현재 차량의 속도.
       self.VSetDis = cp_cruise.vl["SCC11"]["VSetDis"]   # kph   크루즈 설정 속도. 
       ret.cruiseState.speed = self.cruise_speed_button() * CV.KPH_TO_MS
 

@@ -11,7 +11,12 @@ class CarControllerCustom:
     self.CP = CP
     self.NC = NaviControl( CP)
 
+    self.resume_cnt = 0
+
   def create_button_messages(self, CC, CS, can_sends):
     btn_signal = self.NC.update( CC, CS, CC.frame )
     if btn_signal != None:
-      can_sends.append(hyundaican.create_clu11( CC.packer, CC.frame, CS.clu11, btn_signal, self.CP.carFingerprint))
+      can_sends.append(hyundaican.create_clu11( CC.packer, CC.resume_cnt, CS.clu11, btn_signal, self.CP.carFingerprint))
+      self.resume_cnt += 1
+    else:
+      self.resume_cnt = 0

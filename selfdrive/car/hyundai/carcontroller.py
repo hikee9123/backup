@@ -58,7 +58,7 @@ class CarController:
     self.last_button_frame = 0
 
     #custom
-    self.carCtrlCustom = CarControllerCustom(CP)    
+    self.customCC = CarControllerCustom(CP)    
 
   def update(self, CC, CS, now_nanos):
     actuators = CC.actuators
@@ -188,7 +188,7 @@ class CarController:
             self.last_button_frame = self.frame
       else:
         #custom
-        self.carCtrlCustom.create_button_messages( self, CS, can_sends )
+        self.customCC.create_button_messages( self, CS, can_sends )
     else:
       if (self.frame - self.last_button_frame) * DT_CTRL > 0.25:
         # cruise cancel

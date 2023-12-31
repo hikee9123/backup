@@ -216,8 +216,11 @@ void OnPaint::updateState(const UIState &s)
   m_param.enginRpm =  car_state.getEngineRpm();
 
   // 2.
-  auto controls_state = sm1["controlsState"].getControlsState();
-  m_param.cumLagMs = controls_state.getCumLagMs();
+  if (sm1.frame % (UI_FREQ) != 0)   
+  {
+    auto controls_state = sm1["controlsState"].getControlsState();
+    m_param.cumLagMs = controls_state.getCumLagMs();
+  }
 }
 
 
