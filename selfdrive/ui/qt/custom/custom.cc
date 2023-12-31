@@ -25,6 +25,8 @@
 #include "selfdrive/ui/qt/custom/custom.h"
 
 
+MessageBuilder m_msg;
+
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
@@ -384,7 +386,7 @@ void UITab::updateToggles( int bSave )
 
 
   m_cmdIdx++;
-  MessageBuilder *msg = &(m_pCustom->m_msg);
+  MessageBuilder &msg = m_msg;
   auto ui = msg->initEvent().initUICustom().initUserInterface();
   ui.setCmdIdx( m_cmdIdx );  
   ui.setShowDebugMessage( bDebug );
