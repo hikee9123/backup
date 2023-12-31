@@ -105,7 +105,7 @@ void CustomPanel::OnTimer()
   if( scene.started )
   {
     updateToggles( false );
-    if( m_cmdIdx > 5 )
+    if( m_cmdIdx > 10 )
       timer->stop();
   }
 }

@@ -261,6 +261,10 @@ class NaviControl():
     else:
       str_log1 = None
 
-    trace1.printf2( 'bs={}  seq={} acc={} mode={} {}'.format( btn_signal, self.seq_command, CS.carCustom.acc_active, CS.carCustom.cruise_set_mode, str_log1 ) )
+    trace1.printf2( 'seq={} acc={} mode={} bs={}  {}'.format(  self.seq_command, CS.carCustom.acc_active, CS.carCustom.cruise_set_mode, btn_signal, str_log1 ) )
+
+
+    delta_speed = self.target_speed - self.VSetDis
+    trace1.printf3( 'delta:{:.1f} = TS:{:.1f} - VD:{:.1f}'.format( delta_speed, self.target_speed, self.VSetDis ) )
 
     return btn_signal
