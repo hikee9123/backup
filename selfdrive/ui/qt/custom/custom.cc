@@ -236,7 +236,7 @@ void CommunityTab::updateToggles( int bSave )
   }
 
   m_cmdIdx++;
-  MessageBuilder msg;
+  MessageBuilder &msg = m_msg;
   auto community = msg.initEvent().initUICustom().initCommunity();
   community.setCmdIdx( m_cmdIdx );
   m_pCustom->send("uICustom", msg);
@@ -493,7 +493,7 @@ void Debug::updateToggles( int bSave )
 
 
   m_cmdIdx++;
-  MessageBuilder msg;
+  MessageBuilder &msg = m_msg;
   auto debug = msg.initEvent().initUICustom().initDebug();
   debug.setCmdIdx( m_cmdIdx );    
   debug.setIdx1( idx1 );
