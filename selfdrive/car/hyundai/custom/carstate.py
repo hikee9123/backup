@@ -5,7 +5,7 @@ from cereal import messaging
 from panda import ALTERNATIVE_EXPERIENCE
 from openpilot.common.params import Params
 from openpilot.common.conversions import Conversions as CV
-from openpilot.selfdrive.car.hyundai.values import CAMERA_SCC_CAR
+from openpilot.selfdrive.car.hyundai.values import CAMERA_SCC_CAR, Buttons
 
 import openpilot.selfdrive.custom.loger as  trace1
 
@@ -19,9 +19,18 @@ class CarStateCustom():
     self.pm = messaging.PubMaster(['carStateCustom'])
     self.frame = 0
     self.acc_active = 0
+
     self.cruise_set_mode = 0
+    self.clu_Vanz = 0
 
     self.is_highway = False
+
+    # cruise_speed_button
+    self.prev_acc_active = 0
+    self.cruise_set_speed_kph = 0
+    self.cruise_buttons_time = 0
+    self.VSetDis = 0
+    self.prev_cruise_btn = 0
      
 
   def get_can_parser( self, messages, CP ):
@@ -38,6 +47,41 @@ class CarStateCustom():
     return messages
 
 
+  def cruise_speed_button( self ):
+    if self.prev_acc_active != self.acc_active:
+      self.prev_acc_active = self.acc_active
+      self.cruise_set_speed_kph = self.VSetDis
+
+    set_speed_kph = self.cruise_set_speed_kph
+    if not self.acc_active:
+      return self.cruise_set_speed_kph
+
+    cruise_buttons = self.CS.cruise_buttons[-1]
+    if cruise_buttons in (Buttons.RES_ACCEL, Buttons.SET_DECEL):
+      self.cruise_buttons_time += 1
+    else:
+      self.cruise_buttons_time = 0
+
+    # long press should set scc speed with cluster scc number
+    if self.cruise_buttons_time >= 55:
+      self.cruise_set_speed_kph = self.VSetDis
+      return self.cruise_set_speed_kph
+
+
+    if self.prev_cruise_btn == cruise_buttons:
+      return self.cruise_set_speed_kph
+
+    self.prev_cruise_btn = cruise_buttons
+
+    if cruise_buttons in (Buttons.RES_ACCEL, Buttons.SET_DECEL): 
+      set_speed_kph = self.VSetDis
+
+    self.cruise_set_speed_kph = set_speed_kph
+    return  set_speed_kph
+  
+  def set_cruise_speed( self, set_speed ):
+    self.cruise_set_speed_kph = set_speed  
+
   def get_tpms(self, ret, unit, fl, fr, rl, rr):
     factor = 0.72519 if unit == 1 else 0.1 if unit == 2 else 1 # 0:psi, 1:kpa, 2:bar
     ret.unit = unit
@@ -49,14 +93,20 @@ class CarStateCustom():
 
   def update(self, ret, CS,  cp, cp_cruise ):
     self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]  #kph  현재 차량의 속도.
+
     # save the entire LFAHDA_MFC
     # self.lfahda = copy.copy(cp_cruise.vl["LFAHDA_MFC"])
     if not self.CP.openpilotLongitudinalControl and self.CP.carFingerprint in CAMERA_SCC_CAR:
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
+      #self.VSetDis = copy.copy(ret.cruiseState.speed) * CV.MS_TO_KPH
+      self.VSetDis = cp_cruise.vl["SCC11"]["VSetDis"]   # kph   크루즈 설정 속도. 
+      ret.cruiseState.speed = self.cruise_speed_button() * CV.KPH_TO_MS
+
 
     ret.engineRpm = cp.vl["E_EMS11"]["N"] # opkr
     #self.is_highway = False # (cp_cruise.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0)     
     #self.is_highway = self.lfahda["HDA_Icon_State"] != 0.
+
 
     if not self.CP.openpilotLongitudinalControl:
       if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
@@ -73,7 +123,7 @@ class CarStateCustom():
         ret.cruiseState.enabled = True
 
     self.frame += 1
-       
+    #ret.cruiseState.speed = 0     
 
     if self.frame % 10 == 0:
       dat = messaging.new_message('carStateCustom')

@@ -58,6 +58,9 @@ class NaviControl():
 
 
   def button_status(self, CS ):
+    if not CS.carCustom.cruise_set_mode:
+      return 0
+    
     cruise_button = CS.cruise_buttons[-1] 
     if not CS.carCustom.acc_active or cruise_button != Buttons.NONE or CS.out.brakePressed  or CS.out.gasPressed: 
       self.wait_timer2 = 100 
@@ -148,7 +151,7 @@ class NaviControl():
   def ascc_button_control( self, CS, set_speed ):
     self.set_point = max(30,set_speed)
     self.curr_speed = CS.out.vEgo * CV.MS_TO_KPH
-    self.VSetDis   = CS.cruiseState.speed * CV.MS_TO_KPH
+    self.VSetDis   = CS.carCustom.VSetDis
 
 
     btn_signal = self.switch( self.seq_command, CS )
@@ -225,14 +228,12 @@ class NaviControl():
 
 
     if cruise_set_speed > 30:
-      CS.set_cruise_speed( cruise_set_speed )  
+      CS.carCustom.set_cruise_speed( cruise_set_speed )
 
     return  ctrl_speed
 
 
   def update(self, c, CS, frame ):
-          
-
     # send scc to car if longcontrol enabled and SCC not on bus 0 or ont live
     btn_signal = None
     if not self.button_status( CS  ):
