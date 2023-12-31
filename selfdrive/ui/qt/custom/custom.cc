@@ -89,12 +89,12 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &CustomPanel::OnTimer);
-    timer->start(2000);    
+    timer->start(1000);    
 }
 
 void CustomPanel::offroadTransition( bool offroad  )
 {
-  //updateToggles( false );
+   updateToggles( false );
 }
 
 void CustomPanel::OnTimer() 
@@ -102,10 +102,11 @@ void CustomPanel::OnTimer()
   UIState *s = uiState();
   UIScene &scene = s->scene;
 
-  updateToggles( false );
   if( scene.started )
   {
-    timer->stop();
+    updateToggles( false );
+    if( m_cmdIdx > 5 )
+      timer->stop();
   }
 }
 
