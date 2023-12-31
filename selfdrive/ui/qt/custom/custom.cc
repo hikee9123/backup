@@ -90,10 +90,10 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 
 void CustomPanel::offroadTransition( bool offroad  )
 {
-  if( !offroad )
-  {
+ // if( !offroad )
+ // {
     updateToggles( false );
-  }
+ // }
 
   printf("CustomPanel::offroadTransition %d \n", offroad );       
 
