@@ -257,7 +257,7 @@ class NaviControl():
 
     speeds = self.speeds
     if len( speeds ):
-      str_log1 = 'speed={:.1f} kph={}'.format( speeds[-1], speeds[-1]*CV.MS_TO_KPH )
+      str_log1 = 'speed={:.1f} kph={:.0f}'.format( speeds[-1], speeds[-1]*CV.MS_TO_KPH )
     else:
       str_log1 = None
 
