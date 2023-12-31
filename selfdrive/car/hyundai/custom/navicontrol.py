@@ -223,8 +223,6 @@ class NaviControl():
     #  vFuture = c.hudControl.vFuture * CV.MS_TO_KPH
     #  ctrl_speed = min( vFuture, ctrl_speed )
 
-
-
     if cruise_set_speed > 30:
       CS.carCustom.set_cruise_speed( cruise_set_speed )
 
