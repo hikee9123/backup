@@ -94,6 +94,9 @@ void CustomPanel::offroadTransition( bool offroad  )
   {
     updateToggles( false );
   }
+
+  printf("CustomPanel::offroadTransition %d \n", offroad );       
+
 }
 
 
