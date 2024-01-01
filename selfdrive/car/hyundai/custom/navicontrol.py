@@ -52,6 +52,7 @@ class NaviControl():
     self.speedLimitDistance = 0
     self.mapValid = 0
     self.trafficType = 0
+    self.ctrl_speed = 0
 
 
   def button_status(self, CS ):
