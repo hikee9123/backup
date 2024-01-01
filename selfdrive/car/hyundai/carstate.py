@@ -170,7 +170,7 @@ class CarState(CarStateBase):
     self.main_buttons.extend(cp.vl_all["CLU11"]["CF_Clu_CruiseSwMain"])
 
     #custom
-    self.customCS.update( ret, self, cp, cp_cruise )
+    self.customCS.update( ret, self, cp, cp_cruise, cp_cam )
     return ret
 
   def update_canfd(self, cp, cp_cam):
@@ -326,7 +326,7 @@ class CarState(CarStateBase):
         messages.append(("FCA11", 50))
 
     #custom
-    messages += CarStateCustom.get_cam_can_parser( CP )
+    CarStateCustom.get_cam_can_parser( messages, CP )
 
     return CANParser(DBC[CP.carFingerprint]["pt"], messages, 2)
 

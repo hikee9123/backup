@@ -206,7 +206,7 @@ class NaviControl():
     return  cruise_set_speed_kph
 
 
-  def auto_speed_control( self, c, CS, ctrl_speed ):
+  def auto_speed_control( self, CC, CS, ctrl_speed ):
     cruise_set_speed = 0
     if CS.out.gasPressed:
       self.gasPressed_time = 100
@@ -215,7 +215,7 @@ class NaviControl():
       if self.gasPressed_time <= 0:
         cruise_set_speed = CS.customCS.clu_Vanz - 5
     #elif CS.customCS.cruise_set_mode == 5:  # comma long control speed.
-    #  vFuture = c.hudControl.vFuture * CV.MS_TO_KPH
+    #  vFuture = CC.hudControl.vFuture * CV.MS_TO_KPH
     #  ctrl_speed = min( vFuture, ctrl_speed )
 
     if cruise_set_speed > 30:

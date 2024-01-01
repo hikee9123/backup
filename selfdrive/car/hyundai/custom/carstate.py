@@ -40,11 +40,11 @@ class CarStateCustom():
 
 
   @staticmethod
-  def get_cam_can_parser( CP):
-    messages = [
+  def get_cam_can_parser( messages, CP ):
+    messages += [
       ("LFAHDA_MFC", 20),          
     ]
-    return messages
+
 
 
   def cruise_speed_button( self ):
@@ -91,20 +91,18 @@ class CarStateCustom():
     ret.rr = rr * factor
 
 
-  def update(self, ret, CS,  cp, cp_cruise ):
+  def update(self, ret, CS,  cp, cp_cruise, cp_cam ):
     # save the entire LFAHDA_MFC
-    # self.lfahda = copy.copy(cp_cruise.vl["LFAHDA_MFC"])
+    self.lfahda = copy.copy(cp_cam.vl["LFAHDA_MFC"])
     if not self.CP.openpilotLongitudinalControl:
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
-      #self.VSetDis = copy.copy(ret.cruiseState.speed) * CV.MS_TO_KPH
+      self.VSetDis = cp_cruise.vl["SCC11"]["VSetDis"]   # kph   크루즈 설정 속도.
       self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]  #kph  현재 차량의 속도.
-      self.VSetDis = cp_cruise.vl["SCC11"]["VSetDis"]   # kph   크루즈 설정 속도. 
       ret.cruiseState.speed = self.cruise_speed_button() * CV.KPH_TO_MS
 
 
     ret.engineRpm = cp.vl["E_EMS11"]["N"] # opkr
-    #self.is_highway = False # (cp_cruise.vl["LFAHDA_MFC"]["HDA_Icon_State"] != 0)     
-    #self.is_highway = self.lfahda["HDA_Icon_State"] != 0.
+    self.is_highway = self.lfahda["HDA_Icon_State"] != 0.
 
 
     if not self.CP.openpilotLongitudinalControl:
