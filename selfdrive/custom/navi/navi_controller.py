@@ -12,10 +12,7 @@ import fcntl
 import struct
 from threading import Thread
 from cereal import messaging
-from openpilot.common.numpy_fast import clip, interp
 from openpilot.common.realtime import Ratekeeper
-from openpilot.common.params import Params
-from openpilot.common.conversions import Conversions as CV
 import time
 
 CAMERA_SPEED_FACTOR = 1.05
@@ -291,144 +288,7 @@ def main():
       server.last_exception = e
 
 
-class SpeedLimiter:
-  __instance = None
 
-  @classmethod
-  def __getInstance(cls):
-    return cls.__instance
-
-  @classmethod
-  def instance(cls):
-    cls.__instance = cls()
-    cls.instance = cls.__getInstance
-    return cls.__instance
-
-  def __init__(self):
-    self.slowing_down = False
-    self.started_dist = 0
-
-    self.sock = messaging.sub_sock("naviData")
-    self.naviData = None
-
-
-
-  def recv(self):
-    try:
-      dat = messaging.recv_sock(self.sock, wait=False)
-      if dat is not None:
-        self.naviData = dat.naviData
-    except:
-      pass
-
-  def get_active(self):
-    self.recv()
-    if self.naviData is not None:
-      return self.naviData.active
-    return 0
-
-
-
-  def get_max_speed(self, cluster_speed, is_metric):
-
-    log = ""
-    self.recv()
-
-    if self.naviData is None:
-      return 0, 0, 0, False, ""
-
-    try:
-
-      road_limit_speed = self.naviData.roadLimitSpeed
-      is_highway = self.naviData.isHighway
-
-      cam_type = int(self.naviData.camType)
-
-      cam_limit_speed_left_dist = self.naviData.camLimitSpeedLeftDist
-      cam_limit_speed = self.naviData.camLimitSpeed
-
-      section_limit_speed = self.naviData.sectionLimitSpeed
-      section_left_dist = self.naviData.sectionLeftDist
-      section_avg_speed = self.naviData.sectionAvgSpeed
-      section_left_time = self.naviData.sectionLeftTime
-      section_adjust_speed = self.naviData.sectionAdjustSpeed
-
-      camSpeedFactor = clip(self.naviData.camSpeedFactor, 1.0, 1.1)
-
-      if is_highway is not None:
-        if is_highway:
-          MIN_LIMIT = 40
-          MAX_LIMIT = 120
-        else:
-          MIN_LIMIT = 20
-          MAX_LIMIT = 100
-      else:
-        MIN_LIMIT = 20
-        MAX_LIMIT = 120
-
-      if cam_type == 22:  # speed bump
-        MIN_LIMIT = 10
-
-      if cam_limit_speed_left_dist is not None and cam_limit_speed is not None and cam_limit_speed_left_dist > 0:
-
-        v_ego = cluster_speed * (CV.KPH_TO_MS if is_metric else CV.MPH_TO_MS)
-        diff_speed = cluster_speed - (cam_limit_speed * camSpeedFactor)
-        #cam_limit_speed_ms = cam_limit_speed * (CV.KPH_TO_MS if is_metric else CV.MPH_TO_MS)
-
-        starting_dist = v_ego * 30.
-
-        if cam_type == 22:
-          safe_dist = v_ego * 3.
-        else:
-          safe_dist = v_ego * 6.
-
-        if MIN_LIMIT <= cam_limit_speed <= MAX_LIMIT and (self.slowing_down or cam_limit_speed_left_dist < starting_dist):
-          if not self.slowing_down:
-            self.started_dist = cam_limit_speed_left_dist
-            self.slowing_down = True
-            first_started = True
-          else:
-            first_started = False
-
-          td = self.started_dist - safe_dist
-          d = cam_limit_speed_left_dist - safe_dist
-
-          if d > 0. and td > 0. and diff_speed > 0. and (section_left_dist is None or section_left_dist < 10 or cam_type == 2):
-            pp = (d / td) ** 0.6
-          else:
-            pp = 0
-
-          return cam_limit_speed * camSpeedFactor + int(pp * diff_speed), \
-                 cam_limit_speed, cam_limit_speed_left_dist, first_started, log
-
-        self.slowing_down = False
-        return 0, cam_limit_speed, cam_limit_speed_left_dist, False, log
-
-      elif section_left_dist is not None and section_limit_speed is not None and section_left_dist > 0:
-        if MIN_LIMIT <= section_limit_speed <= MAX_LIMIT:
-
-          if not self.slowing_down:
-            self.slowing_down = True
-            first_started = True
-          else:
-            first_started = False
-
-          speed_diff = 0
-          if section_adjust_speed is not None and section_adjust_speed:
-            speed_diff = (section_limit_speed - section_avg_speed) / 2.
-            speed_diff *= interp(section_left_dist, [500, 1000], [0., 1.])
-
-          return section_limit_speed * camSpeedFactor + speed_diff, section_limit_speed, section_left_dist, first_started, log
-
-        self.slowing_down = False
-        return 0, section_limit_speed, section_left_dist, False, log
-
-    except Exception as e:
-      log = "Ex: " + str(e)
-      pass
-
-    self.slowing_down = False
-    return 0, 0, 0, False, log
 
 
 if __name__ == "__main__":
