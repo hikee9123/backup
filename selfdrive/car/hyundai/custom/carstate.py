@@ -31,7 +31,7 @@ class CarStateCustom():
     self.cruise_buttons_time = 0
     self.VSetDis = 0
     self.prev_cruise_btn = 0
-     
+    self.lead_distance = 0
 
   def get_can_parser( self, messages, CP ):
     messages += [
@@ -103,7 +103,7 @@ class CarStateCustom():
 
     ret.engineRpm = cp.vl["E_EMS11"]["N"] # opkr
     self.is_highway = self.lfahda["HDA_Icon_State"] != 0.
-
+    self.lead_distance = cp.vl["SCC11"]["ACC_ObjDist"]
 
     if not self.CP.openpilotLongitudinalControl:
       if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
