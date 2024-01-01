@@ -169,10 +169,10 @@ class NaviControl():
     speedLimit = self.speedLimit
     speedLimitDistance = self.speedLimitDistance
     mapValid = self.mapValid
-    trafficType = self.trafficType
+    #trafficType = self.trafficType
 
     
-    if not mapValid or trafficType == 0:
+    if not mapValid:
       if cruise_set_speed_kph >  self.VSetDis:
         if v_ego_kph < (self.VSetDis-5):
           self.frame_camera = frame
@@ -203,6 +203,10 @@ class NaviControl():
       v_ego_kph = speedLimit
 
     cruise_set_speed_kph = min( spdTarget, v_ego_kph )
+
+    str_log2 = 'seq={} SL:{:.1f} SD:{:.1f} mv:{} TS:{:.1f} - VD:{:.1f}'.format( self.seq_command, speedLimit, speedLimitDistance, mapValid, cruise_set_speed_kph,   self.VSetDis ) 
+    trace1.printf3( '{}'.format( str_log2 ) )
+
     return  cruise_set_speed_kph
 
 
@@ -249,7 +253,6 @@ class NaviControl():
  
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
 
-      str_log2 = 'seq={}  TS:{:.1f}={:.1f}={:.1f} - VD:{:.1f}'.format( self.seq_command, self.target_speed,cruiseState_speed,kph_set_vEgo,   self.VSetDis ) 
 
     speeds = self.speeds
     if len( speeds ):
@@ -258,6 +261,5 @@ class NaviControl():
       str_log1 = None
 
     trace1.printf2( 'acc={} mode={} {}'.format(  CS.customCS.acc_active, CS.customCS.cruise_set_mode, str_log1 ) )
-    trace1.printf3( '{}  bs={}'.format( str_log2, btn_signal ) )
 
     return btn_signal
