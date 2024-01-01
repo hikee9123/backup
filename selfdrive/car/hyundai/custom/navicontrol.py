@@ -233,7 +233,6 @@ class NaviControl():
     if (frame % 10) == 0:
       self.sm.update(0)
 
-    str_log2 = None
     self.speeds = self.sm['longitudinalPlan'].speeds
     if self.sm.updated["uICustom"]:
       cruiseMode = self.sm['uICustom'].community.cruiseMode
