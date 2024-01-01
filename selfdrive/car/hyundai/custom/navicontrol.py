@@ -171,7 +171,7 @@ class NaviControl():
     mapValid = self.mapValid
     #trafficType = self.trafficType
 
-    str_log2 = 'seq={} SL:{:.1f} SD:{:.1f} mv:{} TS:{:.1f} - VD:{:.1f}'.format( self.seq_command, speedLimit, speedLimitDistance, mapValid, cruise_set_speed_kph,   self.VSetDis ) 
+    str_log2 = 'seq={} SL:{:.1f} SD:{:.1f} mv:{} TS:{:.1f} - VD:{:.1f}'.format( self.seq_command, speedLimit, speedLimitDistance, mapValid, self.ctrl_speed,   self.VSetDis ) 
     trace1.printf3( '{}'.format( str_log2 ) )
     
     if not mapValid:
