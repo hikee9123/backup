@@ -188,7 +188,7 @@ class CarController:
             self.last_button_frame = self.frame
       else:
         #custom
-        self.customCC.create_button_messages( self, CS, can_sends )
+        can_sends.extend( self.customCC.create_button_messages( self, CS ) )
     else:
       if (self.frame - self.last_button_frame) * DT_CTRL > 0.25:
         # cruise cancel

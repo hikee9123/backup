@@ -4,6 +4,8 @@ from openpilot.selfdrive.car.hyundai.values import CAMERA_SCC_CAR
 
 def create_clu11(packer, frame, clu11, button, car_fingerprint):
   values = clu11
+  frame = (values["CF_Clu_AliveCnt1"] + 1)
+  
   values["CF_Clu_CruiseSwState"] = button
   values["CF_Clu_AliveCnt1"] = frame % 0x10
   # send buttons to camera on camera-scc based cars
