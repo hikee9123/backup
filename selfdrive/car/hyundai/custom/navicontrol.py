@@ -120,7 +120,7 @@ class NaviControl():
 
   def case_3(self, CS):  # None
       self.btn_cnt += 1
-      if self.btn_cnt > 60: 
+      if self.btn_cnt > 10: 
         self.seq_command = 0
       return None
 
