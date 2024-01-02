@@ -103,7 +103,7 @@ class NaviControl():
       if self.target_speed == self.VSetDis:
         self.btn_cnt = 0
         self.seq_command = 3
-      elif self.btn_cnt > 5:
+      elif self.btn_cnt > 2:
         self.btn_cnt = 0
         self.seq_command = 3
       return Buttons.RES_ACCEL
@@ -114,7 +114,7 @@ class NaviControl():
       if self.target_speed == self.VSetDis:
         self.btn_cnt = 0
         self.seq_command = 3            
-      elif self.btn_cnt > 5:
+      elif self.btn_cnt > 2:
         self.btn_cnt = 0
         self.seq_command = 3
       return Buttons.SET_DECEL
