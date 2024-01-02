@@ -74,9 +74,9 @@ class CarStateCustom():
     self.prev_cruise_btn = cruise_buttons
 
     if cruise_buttons == (Buttons.RES_ACCEL): 
-      set_speed_kph = self.VSetDis + 1
+      set_speed_kph = self.VSetDis + 5
     elif cruise_buttons == (Buttons.SET_DECEL):
-      set_speed_kph = self.VSetDis - 1
+      set_speed_kph = self.VSetDis - 5
 
     if set_speed_kph < 30:
       set_speed_kph = 30
