@@ -114,14 +114,14 @@ class NaviControl():
       if self.target_speed == self.VSetDis:
         self.btn_cnt = 0
         self.seq_command = 3            
-      elif self.btn_cnt > 30:
+      elif self.btn_cnt > 10:
         self.btn_cnt = 0
         self.seq_command = 3
       return Buttons.SET_DECEL
 
   def case_3(self, CS):  # None
       self.btn_cnt += 1
-      if self.btn_cnt > 30: 
+      if self.btn_cnt > 6: 
         self.seq_command = 0
       return None
 
