@@ -54,6 +54,9 @@ class NaviControl():
     self.trafficType = 0
     self.ctrl_speed = 0
 
+    self.waittime_press = 5
+    self.waittime_none = 6
+
 
   def button_status(self, CS ):
     if CS.customCS.cruise_set_mode == 0:
@@ -102,7 +105,7 @@ class NaviControl():
       if self.target_speed == self.VSetDis:
         self.btn_cnt = 0
         self.seq_command = 3
-      elif self.btn_cnt > 2:
+      elif self.btn_cnt > self.waittime_press:
         self.btn_cnt = 0
         self.seq_command = 3
       return Buttons.RES_ACCEL
@@ -113,14 +116,14 @@ class NaviControl():
       if self.target_speed == self.VSetDis:
         self.btn_cnt = 0
         self.seq_command = 3            
-      elif self.btn_cnt > 2:
+      elif self.btn_cnt > self.waittime_press:
         self.btn_cnt = 0
         self.seq_command = 3
       return Buttons.SET_DECEL
 
   def case_3(self, CS):  # None
       self.btn_cnt += 1
-      if self.btn_cnt > 6: 
+      if self.btn_cnt > self.waittime_none: 
         self.seq_command = 0
       return None
 
