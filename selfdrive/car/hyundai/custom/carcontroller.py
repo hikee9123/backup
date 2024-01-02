@@ -13,7 +13,7 @@ class CarControllerCustom:
     self.resume_cnt = 0
 
   def create_button_messages( self, CC, CS ):
-    can_sends = []
+    can_sends = None
     btn_signal = self.NC.update( CC, CS, CC.frame )
     if btn_signal != None:
       can_sends = hyundaican.create_clu11(CC.packer, self.resume_cnt, CS.clu11, btn_signal, self.CP.carFingerprint)
