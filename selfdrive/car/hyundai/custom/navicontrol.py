@@ -83,7 +83,6 @@ class NaviControl():
 
   def case_0(self, CS):
       self.btn_cnt = 0
-      self.set_point = 40
       self.target_speed = self.set_point
       delta_speed = self.target_speed - self.VSetDis
 
