@@ -207,8 +207,20 @@ void OnPaint::updateState(const UIState &s)
   m_param.cpuTemp = maxCpuTemp[0];
 
   // 2.
-  auto radar_state = sm1["radarState"].getRadarState();  // radar
+  radar_state = sm1["radarState"].getRadarState();  // radar
   m_param.lead_radar = radar_state.getLeadOne();
+
+  if (s->worldObjectsVisible()) 
+  {
+    const cereal::ModelDataV2::Reader &model = sm1["modelV2"].getModelV2();
+    //const cereal::RadarState::Reader &radar_state = sm["radarState"].getRadarState();
+      if (sm1.rcv_frame("radarState") > s->scene.started_frame) 
+      {
+        update_leads(s, radar_state, model.getPosition());
+      }    
+  }
+
+
 
   // 2.
   auto car_state = sm1["carState"].getCarState();
@@ -247,6 +259,8 @@ void OnPaint::drawHud(QPainter &p)
      bb_ui_draw_UI( p );
   }
 
+
+  drawRadarInfo( state );
 }
 
 
@@ -548,10 +562,6 @@ void OnPaint::bb_ui_draw_measures_left(QPainter &p, int bb_x, int bb_y, int bb_w
     bb_ry = bb_y + bb_h;
   }
 
-
-    
-
-
   //finally draw the frame
   bb_h += 20;
   bbh_left = bb_h;
@@ -739,3 +749,147 @@ void OnPaint::bb_ui_draw_UI(QPainter &p)
   bb_ui_draw_measures_right(p, bb_dmr_x, bb_dmr_y, bb_dmr_w);
 }
 //BB END: functions added for the display of various itemsapType
+
+
+// apilot
+bool OnPaint::calib_frame_to_full_frame(const UIState *s, float in_x, float in_y, float in_z, QPointF *out) 
+{
+  const float margin = 500.0f;
+  const QRectF clip_region{-margin, -margin, s->fb_w + 2 * margin, s->fb_h + 2 * margin};
+
+  const vec3 pt = (vec3){{in_x, in_y, in_z}};
+  const vec3 Ep = matvecmul3(s->scene.wide_cam ? s->scene.view_from_wide_calib : s->scene.view_from_calib, pt);
+  const vec3 KEp = matvecmul3(s->scene.wide_cam ? ECAM_INTRINSIC_MATRIX : FCAM_INTRINSIC_MATRIX, Ep);
+
+  // Project.
+  QPointF point = s->car_space_transform.map(QPointF{KEp.v[0] / KEp.v[2], KEp.v[1] / KEp.v[2]});
+  if (clip_region.contains(point)) {
+    *out = point;
+    return true;
+  }
+  return false;
+}
+
+int OnPaint::get_path_length_idx(const cereal::XYZTData::Reader &line, const float path_height) 
+{
+  const auto line_x = line.getX();
+  int max_idx = 0;
+  for (int i = 1; i < line_x.size() && line_x[i] <= path_height; ++i) {
+    max_idx = i;
+  }
+  return max_idx;
+}
+
+void OnPaint::update_leads(UIState *s, const cereal::RadarState::Reader &radar_state, const cereal::XYZTData::Reader &line) 
+{
+  lead_vertices_side.clear();
+  for (auto const& rs : { radar_state.getLeadsLeft(), radar_state.getLeadsRight(), radar_state.getLeadsCenter() }) 
+  {
+      for (auto const& l : rs) 
+      {
+          lead_vertex_data vd;
+          QPointF vtmp;
+          z = line.getZ()[get_path_length_idx(line, l.getDRel())];
+          calib_frame_to_full_frame(s, l.getDRel(), -l.getYRel(), z + 0.61, &vtmp);
+          vd.x = vtmp.x();
+          vd.y = vtmp.y();
+          vd.d = l.getDRel();
+          vd.v = l.getVLeadK();
+          vd.y_rel = l.getYRel();
+          vd.v_lat = l.getVLat();
+          lead_vertices_side.push_back(vd);
+      }
+  }
+}
+
+void OnPaint::ui_fill_rect(QPainter* p, const QRect& r, const QColor& color, float radius)
+{
+    QBrush brush(color);
+    p->setBrush(brush);
+    
+    if (radius > 0.0)
+    {
+        QPainterPath path;
+        path.addRoundedRect(r, radius, radius);
+        p->drawPath(path);
+    }
+    else
+    {
+        p->drawRect(r);
+    }
+}
+
+
+void OnPaint::ui_draw_text(QPainter* p, float  x, float  y, const QString& text, float  size, const QColor& color, const Font::Weight weight, 
+                            float  borderWidth, float  shadowOffset, const QColor& borderColor, const QColor& shadowColor)
+{
+    y += 6;
+
+    p->setFont( InterFont(size, weight)); // QFont::Bold));
+    if (borderWidth > 0.0)
+    {
+        p->setPen(QPen(borderColor, borderWidth));
+        for (int i = 0; i < 360; i += 45) {
+            float  angle = i * M_PI / 180.0;
+            float  offsetX = borderWidth * cos(angle);
+            float  offsetY = borderWidth * sin(angle);
+            p->drawText(x + offsetX, y + offsetY, text);
+        }
+    }
+
+    if (shadowOffset != 0.0)
+    {
+        p->setPen(QPen(shadowColor, 0));
+        p->drawText(x + shadowOffset, y + shadowOffset, text);
+    }
+
+    p->setPen(QPen(color, 0));
+    p->drawText(x, y, text);
+}
+
+void OnPaint::drawRadarInfo(const UIState* s) 
+{
+    char str[128];
+
+    int  show_radar_info = 1;
+
+    if ( show_radar_info == 0 ) return;
+
+    int wStr = 40;
+    for (auto const& vrd : lead_vertices_side) 
+    {
+        auto [rx, ry, rd, rv, ry_rel, v_lat] = vrd;
+
+        if (rv < -1.0 || rv > 1.0) 
+        {
+            sprintf(str, "%.0f", rv * 3.6);
+            wStr = 35 * (strlen(str) + 0);
+            ui_fill_rect(s->vg, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, (rv>0.)?COLOR_GREEN:COLOR_RED, 15);
+            ui_draw_text(s, rx, ry, str, 40, Qt::white, BOLD);
+            if ( show_radar_info >= 2) {
+                sprintf(str, "%.1f", ry_rel);
+                ui_draw_text(s, rx, ry - 40, str, 30, Qt::white, BOLD);
+            }
+        }
+#if 0
+        else if (v_lat < -1.0 || v_lat > 1.0) 
+        {
+            sprintf(str, "%.0f", (rv + v_lat) * 3.6);
+            wStr = 35 * (strlen(str) + 0);
+            ui_fill_rect(s->vg, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, COLOR_ORANGE, 15);
+            ui_draw_text(s, rx, ry, str, 40, Qt::white, BOLD);
+            if ( show_radar_info >= 2) 
+            {
+                sprintf(str, "%.1f", ry_rel);
+                ui_draw_text(s, rx, ry - 40, str, 30, Qt::white, BOLD);
+            }
+        }
+#endif
+        else if ( show_radar_info >= 3) 
+        {
+            strcpy(str, "*");
+            ui_draw_text(s, rx, ry, str, 40, Qt::white, BOLD);
+        }
+    }
+
+}
