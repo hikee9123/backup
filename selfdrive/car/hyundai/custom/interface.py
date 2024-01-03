@@ -1,9 +1,7 @@
 from cereal import car
 from panda import Panda
 from openpilot.common.params import Params
-from openpilot.selfdrive.car.hyundai.values import HyundaiFlags, CAR, DBC, CANFD_CAR, CAMERA_SCC_CAR, CANFD_RADAR_SCC_CAR, \
-                                         CANFD_UNSUPPORTED_LONGITUDINAL_CAR, EV_CAR, HYBRID_CAR, LEGACY_SAFETY_MODE_CAR, \
-                                         UNSUPPORTED_LONGITUDINAL_CAR, Buttons
+from openpilot.selfdrive.car.hyundai.values import CANFD_CAR, CAMERA_SCC_CAR, LEGACY_SAFETY_MODE_CAR
 from openpilot.selfdrive.car import get_safety_config
 
 
@@ -12,7 +10,8 @@ from openpilot.selfdrive.car import get_safety_config
 
 def get_params( ret, candidate ):
   params = Params()  
-  disengage_on_accelerator = params.get_bool("DisengageOnAccelerator")  
+  disengage_on_accelerator = params.get_bool("DisengageOnAccelerator")
+  
   # *** panda safety config ***
   if candidate in CANFD_CAR:
     pass
