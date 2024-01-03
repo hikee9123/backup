@@ -820,7 +820,7 @@ void OnPaint::ui_fill_rect(QPainter* p, const QRect& r, const QColor& color, flo
 }
 
 
-void OnPaint::ui_draw_text(QPainter* p, float  x, float  y, const QString& text, float  size, const QColor& color, const Font::Weight weight, 
+void OnPaint::ui_draw_text(QPainter* p, float  x, float  y, const QString& text, float  size, const QColor& color, const QFont::Weight weight, 
                             float  borderWidth, float  shadowOffset, const QColor& borderColor, const QColor& shadowColor)
 {
     y += 6;
