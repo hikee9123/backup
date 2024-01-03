@@ -208,15 +208,15 @@ void OnPaint::updateState(const UIState &s)
 
   // 2.
   m_param.radar_state = sm1["radarState"].getRadarState();  // radar
-  m_param.lead_radar = radar_state.getLeadOne();
+  m_param.lead_radar = m_param.radar_state.getLeadOne();
 
-  if (s->worldObjectsVisible() && show_radar_info ) 
+  if (s.worldObjectsVisible() && show_radar_info ) 
   {
     const cereal::ModelDataV2::Reader &model = sm1["modelV2"].getModelV2();
     //const cereal::RadarState::Reader &radar_state = sm["radarState"].getRadarState();
-      if (sm1.rcv_frame("radarState") > s->scene.started_frame) 
+      if (sm1.rcv_frame("radarState") > s.scene.started_frame) 
       {
-        update_leads(s, m_param.radar_state, model.getPosition());
+        update_leads( &s, m_param.radar_state, model.getPosition());
       }    
   }
 
@@ -789,7 +789,7 @@ void OnPaint::update_leads(UIState *s, const cereal::RadarState::Reader &radar_s
       {
           lead_vertex_data vd;
           QPointF vtmp;
-          z = line.getZ()[get_path_length_idx(line, l.getDRel())];
+          float z = line.getZ()[get_path_length_idx(line, l.getDRel())];
           calib_frame_to_full_frame(s, l.getDRel(), -l.getYRel(), z + 0.61, &vtmp);
           vd.x = vtmp.x();
           vd.y = vtmp.y();
@@ -864,11 +864,11 @@ void OnPaint::drawRadarInfo(const UIState* s)
         {
             sprintf(str, "%.0f", rv * 3.6);
             wStr = 35 * (strlen(str) + 0);
-            ui_fill_rect(s->vg, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, (rv>0.)?COLOR_GREEN:COLOR_RED, 15);
-            ui_draw_text(s, rx, ry, str, 40, Qt::white, BOLD);
+            ui_fill_rect(s->vg, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, (rv>0.)?Qt::green:Qt::red, 15);
+            ui_draw_text(s, rx, ry, str, 40, Qt::white, QFont::Bold);
             if ( show_radar_info >= 2) {
                 sprintf(str, "%.1f", ry_rel);
-                ui_draw_text(s, rx, ry - 40, str, 30, Qt::white, BOLD);
+                ui_draw_text(s, rx, ry - 40, str, 30, Qt::white, QFont::Bold);
             }
         }
 #if 0
@@ -876,19 +876,19 @@ void OnPaint::drawRadarInfo(const UIState* s)
         {
             sprintf(str, "%.0f", (rv + v_lat) * 3.6);
             wStr = 35 * (strlen(str) + 0);
-            ui_fill_rect(s->vg, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, COLOR_ORANGE, 15);
-            ui_draw_text(s, rx, ry, str, 40, Qt::white, BOLD);
+            ui_fill_rect(s->vg, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, QColor(255, 165, 0), 15);
+            ui_draw_text(s, rx, ry, str, 40, Qt::white, QFont::Bold);
             if ( show_radar_info >= 2) 
             {
                 sprintf(str, "%.1f", ry_rel);
-                ui_draw_text(s, rx, ry - 40, str, 30, Qt::white, BOLD);
+                ui_draw_text(s, rx, ry - 40, str, 30, Qt::white, QFont::Bold);
             }
         }
 #endif
         else if ( show_radar_info >= 3) 
         {
             strcpy(str, "*");
-            ui_draw_text(s, rx, ry, str, 40, Qt::white, BOLD);
+            ui_draw_text(s, rx, ry, str, 40, Qt::red, QFont::Bold);
         }
     }
 

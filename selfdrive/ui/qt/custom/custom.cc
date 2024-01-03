@@ -175,7 +175,8 @@ void CustomPanel::showEvent(QShowEvent *event)
   auto carState_custom = (*sm)["carStateCustom"].getCarStateCustom();
   auto carSupport = carState_custom.getSupportedCars();
   for (int i = 0; i<carSupport.size(); i++) {
-    m_cars.append( carSupport[i] );
+    QString car = QString::fromStdString( carSupport[i] );
+    m_cars.append( car );
   }
 
   QWidget::showEvent( event );

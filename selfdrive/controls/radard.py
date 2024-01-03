@@ -13,6 +13,7 @@ from openpilot.system.swaglog import cloudlog
 
 from openpilot.common.kalman.simple_kalman import KF1D
 
+from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
 
 # Default lead acceleration decay set to 50% at 1s
 _LEAD_ACCEL_TAU = 1.5
@@ -58,6 +59,7 @@ class Track:
     self.K_C = kalman_params.C
     self.K_K = kalman_params.K
     self.kf = KF1D([[v_lead], [0.0]], self.K_A, self.K_C, self.K_K)
+    self.vision_prob = 0.0
 
   def update(self, d_rel: float, y_rel: float, v_rel: float, v_lead: float, measured: float):
     # relative values, copy
@@ -133,6 +135,7 @@ def match_vision_to_track(v_ego: float, lead: capnp._DynamicStructReader, tracks
     prob_y = laplacian_pdf(c.yRel, -lead.y[0], lead.yStd[0])
     prob_v = laplacian_pdf(c.vRel + v_ego, lead.v[0], lead.vStd[0])
 
+    c.vision_prob = prob_d * prob_y * prob_v
     # This is isn't exactly right, but good heuristic
     return prob_d * prob_y * prob_v
 
@@ -192,6 +195,53 @@ def get_lead(v_ego: float, ready: bool, tracks: Dict[int, Track], lead_msg: capn
   return lead_dict
 
 
+
+def get_lead_side(v_ego, tracks, md, lane_width):
+
+  ## SCC레이더는 일단 보관하고 리스트에서 삭제...
+  track_scc = tracks.get(0)
+  #if track_scc is not None:
+  #  del tracks[0]
+
+  if len(tracks) == 0:
+    return [[],[],[]]
+  if md is not None and len(md.lateralPlannerSolution.x) == TRAJECTORY_SIZE:
+    md_y = md.lateralPlannerSolution.y
+    md_x = md.lateralPlannerSolution.x
+  else:
+    return [[],[],[]]
+
+  leads_center = {}
+  leads_left = {}
+  leads_right = {}
+  for c in tracks.values():
+    # d_y :  path_y - traks_y 의 diff값
+    # yRel값은 왼쪽이 +값, lead.y[0]값은 왼쪽이 -값
+    d_y = -c.yRel - interp(c.dRel, md_x, md_y)
+    ld = c.get_RadarState(c.vision_prob)
+    if abs(d_y) < lane_width/2:
+      leads_center[c.dRel] = ld
+    elif d_y < 0:
+      leads_left[c.dRel] = ld
+    else:
+      leads_right[c.dRel] = ld
+
+  #ll,lr = [[l[k] for k in sorted(list(l.keys()))] for l in [leads_left,leads_right]]
+  #lc = sorted(leads_center.values(), key=lambda c:c["dRel"])
+  ll = list(leads_left.values())
+  lr = list(leads_right.values())
+
+  if leads_center:
+    dRel_min = min(leads_center.keys())
+    lc = [leads_center[dRel_min]]
+  else:
+    lc = {}
+  #lc = list(leads_center.values())
+  return [ll,lc,lr]
+  #return [leads_left, leads_center, leads_right]
+
+
+
 class RadarD:
   def __init__(self, radar_ts: float, delay: int = 0):
     self.current_time = 0.0
@@ -206,6 +256,7 @@ class RadarD:
     self.radar_state_valid = False
 
     self.ready = False
+    self.showRadarInfo = True
 
   def update(self, sm: messaging.SubMaster, rr: Optional[car.RadarData]):
     self.current_time = 1e-9*max(sm.logMonoTime.values())
@@ -258,6 +309,12 @@ class RadarD:
     if len(leads_v3) > 1:
       self.radar_state.leadOne = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[0], model_v_ego, low_speed_override=True)
       self.radar_state.leadTwo = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[1], model_v_ego, low_speed_override=False)
+
+    if self.showRadarInfo: #self.extended_radar_enabled and self.ready:
+      ll,lc,lr = get_lead_side(self.v_ego, self.tracks, sm['modelV2'], sm['lateralPlan'].laneWidth)
+      self.radar_state.leadsLeft = list(ll)
+      self.radar_state.leadsCenter = list(lc)
+      self.radar_state.leadsRight = list(lr)
 
   def publish(self, pm: messaging.PubMaster, lag_ms: float):
     assert self.radar_state is not None

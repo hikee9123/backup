@@ -161,7 +161,7 @@ class NaviControl():
 
   def get_navi_speed(self, sm, CS, cruiseState_speed, frame ):
     cruise_set_speed_kph = cruiseState_speed
-    v_ego_kph = CS.out.vEgo * CV.MS_TO_KPH
+    v_ego_kph = CS.customCS.clu_Vanz   #CS.out.vEgo * CV.MS_TO_KPH
     if sm.updated["naviCustom"]:
       naviData = sm["naviCustom"].naviData
       self.speedLimit = naviData.camLimitSpeed
@@ -175,7 +175,7 @@ class NaviControl():
     mapValid = self.mapValid
     #trafficType = self.trafficType
 
-    str_log2 = 'seq={} SL:{:.1f} SD:{:.1f} mv:{} TS:{:.1f} - VD:{:.1f}'.format( self.seq_command, speedLimit, speedLimitDistance, mapValid, self.ctrl_speed,   self.VSetDis ) 
+    str_log2 = 'SL:{:.1f} SD:{:.1f} kps:{} TS:{:.1f} - VD:{:.1f}'.format(  speedLimit, speedLimitDistance, v_ego_kph, self.ctrl_speed,   self.VSetDis ) 
     trace1.printf3( '{}'.format( str_log2 ) )
     
     if not mapValid:

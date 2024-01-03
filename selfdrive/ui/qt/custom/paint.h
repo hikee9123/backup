@@ -134,8 +134,13 @@ private:
     void  update_leads(UIState *s, const cereal::RadarState::Reader &radar_state, const cereal::XYZTData::Reader &line);
     bool  calib_frame_to_full_frame(const UIState *s, float in_x, float in_y, float in_z, QPointF *out);
     int   get_path_length_idx(const cereal::XYZTData::Reader &line, const float path_height);
+
     std::vector<lead_vertex_data> lead_vertices_side;
 
+    void drawRadarInfo(const UIState* s);
+
+
 signals:
-  //void    valueChanged();  
+
+
 };
