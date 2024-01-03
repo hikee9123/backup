@@ -172,7 +172,8 @@ void CustomPanel::showEvent(QShowEvent *event)
    
 
   sm->update(0);
-  auto carSupport = (*sm)["carStateCustom"].getSupportedCars();
+  auto carState_custom = sm2["carStateCustom"].getCarStateCustom();
+  auto carSupport = carState_custom.getSupportedCars();
   for (int i = 0; i<carSupport.size(); i++) {
     m_cars.append( carSupport[i] );
   }
