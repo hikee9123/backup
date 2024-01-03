@@ -44,7 +44,7 @@ private:
 
   struct _PARAM_
   {
-    cereal::RadarState::Reader &radar_state;
+    cereal::RadarState::Reader  radar_state;
     cereal::RadarState::LeadData::Reader lead_radar;
     //cereal::CarState::Reader car_state;
 
