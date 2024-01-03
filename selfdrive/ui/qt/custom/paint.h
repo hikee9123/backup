@@ -130,7 +130,7 @@ private:
 // apilot
  private:
     void  ui_fill_rect( QPainter* p, const QRect& r, const QColor& color, float radius);
-    void  ui_draw_text( QPainter* p, float  x, float  y, const QString& text, float  size, const QColor& color, const Font::Weight weight=QFont::Bold, float  borderWidth=3.0, float  shadowOffset=0, const QColor& borderColor=Qt::black, const QColor& shadowColor=Qt::black)
+    void  ui_draw_text( QPainter* p, float  x, float  y, const QString& text, float  size, const QColor& color, const QFont::Weight weight=QFont::Bold, float  borderWidth=3.0, float  shadowOffset=0, const QColor& borderColor=Qt::black, const QColor& shadowColor=Qt::black)
     void  update_leads(UIState *s, const cereal::RadarState::Reader &radar_state, const cereal::XYZTData::Reader &line);
     bool  calib_frame_to_full_frame(const UIState *s, float in_x, float in_y, float in_z, QPointF *out);
     int   get_path_length_idx(const cereal::XYZTData::Reader &line, const float path_height);
