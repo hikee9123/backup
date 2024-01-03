@@ -59,10 +59,11 @@ private:
 
 private:
   std::unique_ptr<PubMaster> pm; 
+  std::unique_ptr<SubMaster> sm;
 
 public:
   int send(const char *name, MessageBuilder &msg);
-
+  QStringList m_cars;
 
 public:
    QJsonObject readJsonFile(const QString& fileName);

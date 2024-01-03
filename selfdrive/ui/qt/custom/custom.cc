@@ -30,10 +30,11 @@
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
-  pm.reset( new PubMaster({"uICustom"}) );
+    pm.reset( new PubMaster({"uICustom"}) );
+    sm.reset( new SubMaster({"carStateCustom"}) );
 
-  m_jsonobj = readJsonFile( "CustomParam" );
 
+    m_jsonobj = readJsonFile( "CustomParam" );
 
     QList<QPair<QString, QWidget *>> panels = {
         {tr("UI"), new UITab(this, m_jsonobj)},      
@@ -115,8 +116,6 @@ void CustomPanel::updateToggles( int bSave )
 {
   MessageBuilder m_msg;
 
-
-
   m_cmdIdx++;
   auto custom = m_msg.initEvent().initUICustom();  
   auto debug = custom.initDebug();
@@ -170,8 +169,15 @@ void CustomPanel::closeEvent(QCloseEvent *event)
 void CustomPanel::showEvent(QShowEvent *event)
 {
   QWidget::setContentsMargins(0,0,0,0);
+   
+
+  sm.update(0);
+  auto carSupport = sm["carStateCustom"].getSupportedCars();
+  for (int i = 0; i<carSupport.size(); i++) {
+    m_cars.append( carSupport[i] );
+  }
+
   QWidget::showEvent( event );
- 
 }
 
 void CustomPanel::hideEvent(QHideEvent *event)
@@ -228,21 +234,21 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
 {
   m_pCustom = parent;
 
-/*
-  QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
-  auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
-                    selected_car.length() ? tr("CHANGE") : tr("SELECT"), "");
 
-  connect(changeCar, &ButtonControl::clicked, [=]() {
-    QStringList items = "HYUNDAI AZERA HYBRID 6TH GEN,HYUNDAI ELANTRA 2017";// = get_list("/data/params/d/SupportedCars");  
-    //QStringList items = QString::fromStdString(params.get("SupportedCars")).split(",");  // UpdaterAvailableBranches
-    QString selection = MultiOptionDialog::getSelection(tr("Select a car"), items, selected_car, this);
-    if (!selection.isEmpty()) {
+  QString selected_car = QString::fromStdString( Params().get("SelectedCar") );
+  auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
+                                      selected_car.length() ? tr("CHANGE") : tr("SELECT"), "");
+
+  QObject::connect( changeCar, &ButtonControl::clicked, [=]() {
+    QStringList items = m_pCustom->m_cars;
+    QString     selection = MultiOptionDialog::getSelection(tr("Select a car"), items, selected_car, this);
+    if ( !selection.isEmpty() ) 
+    {
       Params().put("SelectedCar", selection.toStdString());
     }
   });
-  addItem(changeCar);
-*/
+  addItem( changeCar );
+
 
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
@@ -264,14 +270,17 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
 
 void CommunityTab::showEvent(QShowEvent *event) 
 {
-    QWidget::showEvent(event);
+  auto carSupport = sm["carStateCustom"].getSupportedCars();
+  for (int i = 0; i<carSupport.size(); i++) {
+    m_cars.append( carSupport[i] );
+  }
+  QWidget::showEvent(event);
 }
 
 
 void CommunityTab::hideEvent(QHideEvent *event)
 {
   QWidget::hideEvent(event);
-
 }
 
 
@@ -283,15 +292,57 @@ void CommunityTab::hideEvent(QHideEvent *event)
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
+class MapboxToken : public AbstractControl {
+  Q_OBJECT
+
+public:
+  MapboxToken() : AbstractControl(tr("MapboxToken"), tr("Put your MapboxToken"), "")
+  {
+    btn.setStyleSheet(R"(
+      padding: -10;
+      border-radius: 35px;
+      font-size: 35px;
+      font-weight: 500;
+      color: #E4E4E4;
+      background-color: #393939;
+    )");
+    edit.setStyleSheet(R"(
+      background-color: grey;
+      font-size: 55px;
+      font-weight: 500;
+      height: 120px;
+    )");
+    btn.setFixedSize(200, 100);
+    hlayout->addWidget(&edit);
+    hlayout->addWidget(&btn);
+
+    QObject::connect(&btn, &QPushButton::clicked, [=]() {
+      QString targetvalue = InputDialog::getText(tr("MapboxToken"), this, tr("Put your MapboxToken starting with pk."), false, 1, QString::fromStdString(params.get("MapboxToken")));
+      if (targetvalue.length() > 0 && targetvalue != QString::fromStdString(params.get("MapboxToken"))) {
+        params.put("MapboxToken", targetvalue.toStdString());
+        refresh();
+      }
+    });
+    refresh();   
+  }
+
+private:
+  QPushButton btn;
+  QLineEdit edit;
+  Params params;
+
+  void refresh()
+  {
+    auto strs = QString::fromStdString(params.get("MapboxToken"));
+    edit.setText(QString::fromStdString(strs.toStdString()));
+    btn.setText(tr("SET"));   
+  }
+};
+
+
 
 NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
 {
-  QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
-      for (auto btn : findChildren<ButtonControl *>()) {
-      btn->setEnabled(offroad);
-      }
-  });
-
   m_pCustom = parent;
 
   // param, title, desc, icon
@@ -310,9 +361,21 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
     bool locked = params.getBool((param + "Lock").toStdString());
     toggle->setEnabled(!locked);
 
-    addItem(toggle);
+    addItem( toggle );
     toggles[param.toStdString()] = toggle;
   }
+
+  // QVBoxLayout *layout = new QVBoxLayout(this);
+  // layout->addWidget(new MapboxToken());
+  addItem( new MapboxToken() );
+
+  /*
+  QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
+      for (auto btn : findChildren<ToggleControl *>()) {
+      btn->setEnabled(offroad);
+      }
+  });
+  */  
 }
 
 

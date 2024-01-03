@@ -5,7 +5,7 @@ from cereal import messaging
 from panda import ALTERNATIVE_EXPERIENCE
 from openpilot.common.params import Params
 from openpilot.common.conversions import Conversions as CV
-from openpilot.selfdrive.car.hyundai.values import CAMERA_SCC_CAR, Buttons
+from openpilot.selfdrive.car.hyundai.values import CAR, Buttons
 
 import openpilot.selfdrive.custom.loger as  trace1
 
@@ -32,6 +32,18 @@ class CarStateCustom():
     self.VSetDis = 0
     self.prev_cruise_btn = 0
     self.lead_distance = 0
+
+    self.cars = []
+    self.get_type_of_car( CP )
+
+
+  def get_type_of_car( self, CP ):
+    cars = []
+    for _, member in CAR.__members__.items():
+      cars.append(member.value)
+    cars.sort()
+    self.cars = cars
+
 
   def get_can_parser( self, messages, CP ):
     messages += [
@@ -129,6 +141,7 @@ class CarStateCustom():
 
     if self.frame % 10 == 0:
       dat = messaging.new_message('carStateCustom')
+      self.cars
       carStatus = dat.carStateCustom
       self.get_tpms( carStatus.tpms,
         cp.vl["TPMS11"]["UNIT"],
@@ -138,6 +151,7 @@ class CarStateCustom():
         cp.vl["TPMS11"]["PRESSURE_RR"],
       )
 
+      carStatus.supportedCars = self.cars
       carStatus.electGearStep = cp.vl["ELECT_GEAR"]["Elect_Gear_Step"] # opkr
       global trace1
       carStatus.alertTextMsg1 = str(trace1.global_alertTextMsg1)
