@@ -93,7 +93,9 @@ private:
    NetworkImageWidget *icon_01;
    //QPixmap img_tire_pressure;
    int  is_debug;
-  
+   int  show_radar_info = 3;  // 0:None,1:Display,2:RelPos,3:Stopped Car
+
+
 private:
   void   configFont(QPainter &p, const QString &family, int size, const QString &style);
 

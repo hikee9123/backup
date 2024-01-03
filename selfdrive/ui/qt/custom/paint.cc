@@ -210,7 +210,7 @@ void OnPaint::updateState(const UIState &s)
   radar_state = sm1["radarState"].getRadarState();  // radar
   m_param.lead_radar = radar_state.getLeadOne();
 
-  if (s->worldObjectsVisible()) 
+  if (s->worldObjectsVisible() && show_radar_info ) 
   {
     const cereal::ModelDataV2::Reader &model = sm1["modelV2"].getModelV2();
     //const cereal::RadarState::Reader &radar_state = sm["radarState"].getRadarState();
@@ -851,7 +851,7 @@ void OnPaint::drawRadarInfo(const UIState* s)
 {
     char str[128];
 
-    int  show_radar_info = 1;
+
 
     if ( show_radar_info == 0 ) return;
 
