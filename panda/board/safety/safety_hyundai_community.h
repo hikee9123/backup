@@ -301,9 +301,10 @@ static bool hyundai_community_tx_hook(CANPacket_t *to_send) {
   if ((addr == 0x4F1) && !hyundai_longitudinal) {
     int button = GET_BYTE(to_send, 0) & 0x7U;
 
-    //bool allowed_resume = (button == 1) && controls_allowed;
+    bool allowed_resume = (button == 1) && controls_allowed; // acc
+    bool allowed_set = (button == 2) && controls_allowed;    // dec
     bool allowed_cancel = (button == 4) && cruise_engaged_prev;
-    if ( !allowed_cancel ) {
+    if (!(allowed_resume || allowed_set ||  allowed_cancel)) {
       tx = false;
     }
   }
