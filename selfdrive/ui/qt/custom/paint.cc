@@ -207,7 +207,7 @@ void OnPaint::updateState(const UIState &s)
   m_param.cpuTemp = maxCpuTemp[0];
 
   // 2.
-  radar_state = sm1["radarState"].getRadarState();  // radar
+  m_param.radar_state = sm1["radarState"].getRadarState();  // radar
   m_param.lead_radar = radar_state.getLeadOne();
 
   if (s->worldObjectsVisible() && show_radar_info ) 
@@ -216,7 +216,7 @@ void OnPaint::updateState(const UIState &s)
     //const cereal::RadarState::Reader &radar_state = sm["radarState"].getRadarState();
       if (sm1.rcv_frame("radarState") > s->scene.started_frame) 
       {
-        update_leads(s, radar_state, model.getPosition());
+        update_leads(s, m_param.radar_state, model.getPosition());
       }    
   }
 
