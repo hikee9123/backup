@@ -27,7 +27,7 @@
 
 
 
-
+/*
 CValueControl::CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit/*=1*/) 
               : AbstractControl(title, desc, icon)
 {
@@ -102,6 +102,7 @@ void CValueControl::refresh()
     btnminus.setText("－");
     btnplus.setText("＋");
 }
+*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
