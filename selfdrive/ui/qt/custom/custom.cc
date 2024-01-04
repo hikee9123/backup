@@ -28,6 +28,86 @@
 
 
 
+CValueControl::CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit/*=1*/) 
+              : AbstractControl(title, desc, icon)
+{
+    m_params = params;
+    m_min = min;
+    m_max = max;
+    m_unit = unit;
+
+    label.setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+    label.setStyleSheet("color: #e0e879");
+    hlayout->addWidget(&label);
+
+    btnminus.setStyleSheet(R"(
+      padding: 0;
+      border-radius: 50px;
+      font-size: 35px;
+      font-weight: 500;
+      color: #E4E4E4;
+      background-color: #393939;
+    )");
+    btnplus.setStyleSheet(R"(
+      padding: 0;
+      border-radius: 50px;
+      font-size: 35px;
+      font-weight: 500;
+      color: #E4E4E4;
+      background-color: #393939;
+    )");
+
+    btnminus.setFixedSize(150, 100);
+    btnplus.setFixedSize(150, 100);
+    hlayout->addWidget(&btnminus);
+    hlayout->addWidget(&btnplus);
+
+    QObject::connect(&btnminus, &QPushButton::released, [=]() 
+    {
+        auto str = QString::fromStdString(Params().get(m_params.toStdString()));
+        int value = str.toInt();
+        value = value - m_unit;
+        if (value < m_min) {
+            value = m_min;
+        }
+        else {
+        }
+
+        QString values = QString::number(value);
+        Params().put(m_params.toStdString(), values.toStdString());
+        refresh();
+    });
+
+    QObject::connect(&btnplus, &QPushButton::released, [=]() 
+    {
+        auto str = QString::fromStdString(Params().get(m_params.toStdString()));
+        int value = str.toInt();
+        value = value + m_unit;
+        if (value > m_max) {
+            value = m_max;
+        }
+        else {
+        }
+
+        QString values = QString::number(value);
+        Params().put(m_params.toStdString(), values.toStdString());
+        refresh();
+    });
+    refresh();
+}
+
+void CValueControl::refresh()
+{
+    label.setText(QString::fromStdString(Params().get(m_params.toStdString())));
+    btnminus.setText("－");
+    btnplus.setText("＋");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+
+
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
     pm.reset( new PubMaster({"uICustom"}) );
