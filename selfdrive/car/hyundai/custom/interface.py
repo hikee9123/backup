@@ -12,6 +12,7 @@ def get_params( ret, candidate ):
   params = Params()  
   disengage_on_accelerator = params.get_bool("DisengageOnAccelerator")
   
+  print("Interface  get_params \n")
   # *** panda safety config ***
   if candidate in CANFD_CAR:
     pass

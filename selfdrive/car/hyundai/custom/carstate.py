@@ -36,6 +36,8 @@ class CarStateCustom():
     self.cars = []
     self.get_type_of_car( CP )
 
+    print("CarStateCustom \n")
+
 
   def get_type_of_car( self, CP ):
     cars = []

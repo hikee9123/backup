@@ -57,6 +57,8 @@ class NaviControl():
     self.waittime_press = 5
     self.waittime_none = 6
 
+    print("NaviControl \n")
+
 
   def button_status(self, CS ):
     if CS.customCS.cruise_set_mode == 0:
