@@ -65,13 +65,14 @@ public:
 protected:  
   void closeEvent(QCloseEvent *event) override;  
 
-signals:
-
 protected:
   virtual void showEvent(QShowEvent *event) override;
   virtual void hideEvent(QHideEvent *event) override;
 
-private slots:
+signals:
+
+
+private slots:  // 시그널과 연결되어 특정 이벤트에 응답할 때
   void offroadTransition( bool offroad  );
   void OnTimer();  
 
@@ -121,7 +122,11 @@ protected:
 
 protected:  
 
+signals:
+
 private slots:
+
+
 
 private:
 
@@ -149,6 +154,7 @@ protected:
 
 protected:  
 
+signals:
 
 private slots:
 
@@ -212,8 +218,6 @@ private:
 
 
 
-
-
   void updateToggles( int bSave );
 
 protected:
@@ -223,6 +227,8 @@ protected:
 
 protected:  
   void closeEvent(QCloseEvent *event) override;  
+
+signals:
 
 private slots:
   void offroadTransition( bool offroad  );
