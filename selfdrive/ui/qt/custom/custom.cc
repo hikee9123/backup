@@ -23,11 +23,90 @@
 
 
 
+CValueControl::CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit ) 
+              : AbstractControl(title, desc, icon)
+{
+    m_params = params;
+    m_min = min;
+    m_max = max;
+    m_unit = unit;
+
+    label.setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+    label.setStyleSheet("color: #e0e879");
+    hlayout->addWidget(&label);
+
+    btnminus.setStyleSheet(R"(
+      padding: 0;
+      border-radius: 50px;
+      font-size: 35px;
+      font-weight: 500;
+      color: #E4E4E4;
+      background-color: #393939;
+    )");
+    btnplus.setStyleSheet(R"(
+      padding: 0;
+      border-radius: 50px;
+      font-size: 35px;
+      font-weight: 500;
+      color: #E4E4E4;
+      background-color: #393939;
+    )");
+
+    btnminus.setFixedSize(150, 100);
+    btnplus.setFixedSize(150, 100);
+    hlayout->addWidget(&btnminus);
+    hlayout->addWidget(&btnplus);
+
+    QObject::connect(&btnminus, &QPushButton::released, [=]() 
+    {
+        auto str = QString::fromStdString(Params().get(m_params.toStdString()));
+        int value = str.toInt();
+        value = value - m_unit;
+        if (value < m_min) {
+            value = m_min;
+        }
+        else {
+        }
+
+        QString values = QString::number(value);
+        Params().put(m_params.toStdString(), values.toStdString());
+        refresh();
+    });
+
+    QObject::connect(&btnplus, &QPushButton::released, [=]() 
+    {
+        auto str = QString::fromStdString(Params().get(m_params.toStdString()));
+        int value = str.toInt();
+        value = value + m_unit;
+        if (value > m_max) {
+            value = m_max;
+        }
+        else {
+        }
+
+        QString values = QString::number(value);
+        Params().put(m_params.toStdString(), values.toStdString());
+        refresh();
+    });
+    refresh();
+}
+
+void CValueControl::refresh()
+{
+    label.setText(QString::fromStdString(Params().get(m_params.toStdString())));
+    btnminus.setText("－");
+    btnplus.setText("＋");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+
 
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
   pm.reset( new PubMaster({"uICustom"}) );
-
+  sm.reset( new SubMaster({"carStateCustom"}) );
 
   m_jsonobj = readJsonFile( "CustomParam" );
 
@@ -165,6 +244,16 @@ void CustomPanel::showEvent(QShowEvent *event)
 {
   QWidget::setContentsMargins(0,0,0,0);
   QWidget::showEvent( event );
+
+
+  sm->update(0);
+  auto carState_custom = (*sm)["carStateCustom"].getCarStateCustom();
+  auto carSupport = carState_custom.getSupportedCars();
+  for (int i = 0; i<carSupport.size(); i++) {
+    QString car = QString::fromStdString( carSupport[i] );
+    m_cars.append( car );
+  }
+
 }
 
 void CustomPanel::hideEvent(QHideEvent *event)
@@ -213,13 +302,15 @@ void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& 
     params.put( fileName.toStdString(), jsonData.toStdString() );
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+//
 //
 
 CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
 {
   m_pCustom = parent;
 
-/*
+
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
                     selected_car.length() ? tr("CHANGE") : tr("SELECT"), "");
@@ -233,7 +324,7 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     }
   });
   addItem(changeCar);
-*/
+
 
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
@@ -265,8 +356,58 @@ void CommunityTab::hideEvent(QHideEvent *event)
 }
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////
 //
+//
+
+
+class MapboxToken : public AbstractControl {
+  Q_OBJECT
+
+public:
+  MapboxToken() : AbstractControl("MapboxToken", "Put your MapboxToken", "")
+  {
+    btn.setStyleSheet(R"(
+      padding: -10;
+      border-radius: 35px;
+      font-size: 35px;
+      font-weight: 500;
+      color: #E4E4E4;
+      background-color: #393939;
+    )");
+    edit.setStyleSheet(R"(
+      background-color: grey;
+      font-size: 55px;
+      font-weight: 500;
+      height: 120px;
+    )");
+    btn.setFixedSize(200, 100);
+    hlayout->addWidget(&edit);
+    hlayout->addWidget(&btn);
+
+    QObject::connect(&btn, &QPushButton::clicked, [=]() {
+      QString targetvalue = InputDialog::getText("MapboxToken", this, "Put your MapboxToken starting with pk.", false, 1, QString::fromStdString(params.get("MapboxToken")));
+      if (targetvalue.length() > 0 && targetvalue != QString::fromStdString(params.get("MapboxToken"))) {
+        params.put("MapboxToken", targetvalue.toStdString());
+        refresh();
+      }
+    });
+    refresh();   
+  }
+
+private:
+  QPushButton btn;
+  QLineEdit edit;
+  Params params;
+
+  void refresh()
+  {
+    auto strs = QString::fromStdString(params.get("MapboxToken"));
+    edit.setText(QString::fromStdString(strs.toStdString()));
+    btn.setText("SET");   
+  }
+};
+
 
 
 NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
@@ -294,7 +435,7 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
   }
 
 
-  // addItem( new MapboxToken() );
+   addItem( new MapboxToken() );
 
   /*
   QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
@@ -306,7 +447,8 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
 }
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////
+//
 //
 
 UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
@@ -403,7 +545,8 @@ void UITab::updateToggles( int bSave )
 
 
 
-
+////////////////////////////////////////////////////////////////////////////////////////////
+//
 //
 
 Debug::Debug(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)

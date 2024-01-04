@@ -11,13 +11,90 @@
 #include <QWidget>
 #include <QTimer>
 
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 
-#include "selfdrive/ui/qt/custom/jsonContrl.h"
+#include "selfdrive/ui/qt/widgets/controls.h"
 
 #include "selfdrive/ui/qt/widgets/input.h"
 #include "selfdrive/ui/qt/widgets/scrollview.h"
 #include "selfdrive/ui/qt/offroad/settings.h"
 
+#include "selfdrive/ui/ui.h"
+
+
+
+class JsonControl : public ToggleControl {
+  Q_OBJECT
+
+public:
+  JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, QJsonObject &jsonobj) 
+    : ToggleControl(title, desc, icon, false, parent),m_jsonobj(jsonobj) {
+    key = param;
+    QObject::connect(this, &JsonControl::toggleFlipped, [=](bool state) {
+      QString content("<body><h2 style=\"text-align: center;\">" + title + "</h2><br>"
+                      "<p style=\"text-align: center; margin: 0 128px; font-size: 50px;\">" + getDescription() + "</p></body>");
+      ConfirmationDialog dialog(content, "Enable", "Cancel", true, this);
+
+      bool confirmed = store_confirm;
+      if (!confirm || confirmed || !state || dialog.exec()) {
+        m_jsonobj.insert(key, state);
+      } else {
+        toggle.togglePosition();
+      }
+    });
+  }
+
+  void setConfirmation(bool _confirm, bool _store_confirm) {
+    confirm = _confirm;
+    store_confirm = _store_confirm;
+  }
+
+
+
+  void refresh() {
+    if (m_jsonobj.contains(key)) {
+      bool state =  m_jsonobj[key].toBool();
+      if (state != toggle.on) {
+        toggle.togglePosition();
+      }
+    }
+    
+  }
+
+  void showEvent(QShowEvent *event) override {
+    refresh();
+  }
+
+private:
+  QString key;
+  QJsonObject &m_jsonobj;
+  bool confirm = false;
+  bool store_confirm = false;
+};
+
+
+// new CValueControl("EnableAutoEngage", "EnableAutoEngage", "0:Not used,1:Auto Engage/Cruise OFF,2:Auto Engage/Cruise ON", "../assets/offroad/icon_shell.png", 0, 2, 1);
+class CValueControl : public AbstractControl {
+    Q_OBJECT
+
+public:
+    CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit = 1);
+
+private:
+    QPushButton btnplus;
+    QPushButton btnminus;
+    QLabel label;
+
+    QString m_params;
+    int     m_min;
+    int     m_max;
+    int     m_unit;
+
+    void refresh();
+};
 
 
 class CustomPanel : public QWidget {
@@ -28,13 +105,14 @@ public:
 protected:  
   void closeEvent(QCloseEvent *event) override;  
 
-signals:
-
 protected:
   virtual void showEvent(QShowEvent *event) override;
   virtual void hideEvent(QHideEvent *event) override;
 
-private slots:
+signals:
+
+
+private slots:  // 시그널과 연결되어 특정 이벤트에 응답할 때
   void offroadTransition( bool offroad  );
   void OnTimer();  
 
@@ -52,7 +130,7 @@ private:
 
 private:
   std::unique_ptr<PubMaster> pm; 
-  // std::unique_ptr<SubMaster> sm;
+  std::unique_ptr<SubMaster> sm;
 
 public:
   int send(const char *name, MessageBuilder &msg);
@@ -84,6 +162,8 @@ protected:
 
 protected:  
 
+signals:
+
 private slots:
 
 private:
@@ -112,6 +192,7 @@ protected:
 
 protected:  
 
+signals:
 
 private slots:
 
@@ -175,8 +256,6 @@ private:
 
 
 
-
-
   void updateToggles( int bSave );
 
 protected:
@@ -186,6 +265,8 @@ protected:
 
 protected:  
   void closeEvent(QCloseEvent *event) override;  
+
+signals:
 
 private slots:
   void offroadTransition( bool offroad  );

@@ -793,13 +793,23 @@ void OnPaint::update_leads( const cereal::RadarState::Reader &radar_state, const
           lead_vertex_data vd;
           QPointF vtmp;
           float z = line.getZ()[get_path_length_idx(line, l.getDRel())];
-          calib_frame_to_full_frame( l.getDRel(), -l.getYRel(), z + 0.61, &vtmp);
+          if( !calib_frame_to_full_frame( l.getDRel(), -l.getYRel(), z + 0.61, &vtmp) ) continue;
+
+          int  save = 0;
+          vd.id = l.getRadarTrackId();
           vd.x = vtmp.x();
           vd.y = vtmp.y();
           vd.d = l.getDRel();
           vd.v = l.getVLeadK();
           vd.y_rel = l.getYRel();
           vd.v_lat = l.getVLat();
+
+          if (vd.v < -1.0 || vd.v > 1.0) save = 1;
+          else if( vd.v_lat < -1.0 || vd.v_lat > 1.0 )  save = 1;
+          else if( vd.x > -5.0 || vd.x < 5.0 )  save = 1;
+
+          if( !save ) continue;
+
           lead_vertices_side.push_back(vd);
 
           ncnt++;
@@ -808,50 +818,15 @@ void OnPaint::update_leads( const cereal::RadarState::Reader &radar_state, const
   }
 }
 
-void OnPaint::ui_fill_rect( QPainter &p, const QRect& r, const QColor color, float radius)
+
+void OnPaint::ui_draw_text( QPainter &p, const QRect& rc, const QString& text, float  size, const QColor& crBrush, const QColor& color )
 {
-    QBrush brush(color);
+    p.setFont( InterFont(size, QFont::Bold)); 
 
-    p.setBrush(brush);
-    
-    if (radius > 0.0)
-    {
-        QPainterPath path;
-        path.addRoundedRect(r, radius, radius);
-        p.drawPath(path);
-    }
-    else
-    {
-        p.drawRect(r);
-    }
-}
-
-
-void OnPaint::ui_draw_text( QPainter &p, float  x, float  y, const QString& text, float  size, const QColor& color, const QFont::Weight weight, 
-                            float  borderWidth, float  shadowOffset, const QColor& borderColor, const QColor& shadowColor)
-{
-    y += 6;
-
-    p.setFont( InterFont(size, weight)); // QFont::Bold));
-    if (borderWidth > 0.0)
-    {
-        p.setPen( QPen(borderColor, borderWidth) );
-        for (int i = 0; i < 360; i += 45) {
-            float  angle = i * M_PI / 180.0;
-            float  offsetX = borderWidth * cos(angle);
-            float  offsetY = borderWidth * sin(angle);
-            p.drawText(x + offsetX, y + offsetY, text);
-        }
-    }
-
-    if (shadowOffset != 0.0)
-    {
-        p.setPen(QPen(shadowColor, 0));
-        p.drawText(x + shadowOffset, y + shadowOffset, text);
-    }
-
-    p.setPen( QPen(color, 0) );
-    p.drawText(x, y, text);
+    p.setPen( color );
+    p.setBrush( crBrush );
+    p.drawRoundedRect(rc, 20, 20);
+    p.drawText( rc, Qt::AlignCenter, text);
 }
 
 void OnPaint::drawRadarInfo( QPainter &p ) 
@@ -864,27 +839,21 @@ void OnPaint::drawRadarInfo( QPainter &p )
     int wStr = 40;
     for (auto const& vrd : lead_vertices_side) 
     {
-        auto [rx, ry, rd, rv, ry_rel, v_lat] = vrd;
+        auto [id, rx, ry, rd, rv, ry_rel, v_lat] = vrd;
 
         if (rv < -1.0 || rv > 1.0) 
         {
-            sprintf(str, "%.0f", rv * 3.6);
+            sprintf(str, "%2.0f", rv * 3.6);
             wStr = 35 * (strlen(str) + 0);
             QColor color = (rv>0.) ? Qt::green : Qt::red;
-            ui_fill_rect( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, color, 15);
-            ui_draw_text( p, rx, ry, str, 40, Qt::white, QFont::Bold);
-            if ( show_radar_info >= 2) {
-                sprintf(str, "%.1f", ry_rel);
-                ui_draw_text( p, rx, ry - 40, str, 30, Qt::white, QFont::Bold);
-            }
+            ui_draw_text( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, str, 40, color );
         }
 #if 0
         else if (v_lat < -1.0 || v_lat > 1.0) 
         {
             sprintf(str, "%.0f", (rv + v_lat) * 3.6);
             wStr = 35 * (strlen(str) + 0);
-            ui_fill_rect( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, QColor(255, 165, 0), 15);
-            ui_draw_text( p, rx, ry, str, 40, Qt::white, QFont::Bold);
+            ui_draw_text( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, str, 15, QColor(255, 165, 0) );
             if ( show_radar_info >= 2) 
             {
                 sprintf(str, "%.1f", ry_rel);
@@ -894,9 +863,9 @@ void OnPaint::drawRadarInfo( QPainter &p )
 #endif
         else if ( show_radar_info >= 3) 
         {
-            strcpy(str, "*");
-            ui_draw_text( p, rx, ry, str, 40, Qt::red, QFont::Bold);
+            strcpy( str, "*%d*",id);
+            p.setPen( Qt::red );
+            p.drawText( rx, ry, str);
         }
     }
-
 }
