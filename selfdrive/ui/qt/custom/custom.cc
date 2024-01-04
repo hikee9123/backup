@@ -224,8 +224,6 @@ void CustomPanel::writeJsonToFile(const QJsonObject& jsonObject, const QString& 
     params.put( fileName.toStdString(), jsonData.toStdString() );
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
 //
 
 CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent) , m_jsonobj(jsonobj)
@@ -278,8 +276,7 @@ void CommunityTab::hideEvent(QHideEvent *event)
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
+
 //
 
 /*
@@ -369,8 +366,7 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
+
 //
 
 UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
@@ -467,8 +463,7 @@ void UITab::updateToggles( int bSave )
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
+
 //
 
 Debug::Debug(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
