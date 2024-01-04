@@ -18,7 +18,27 @@
 #include "selfdrive/ui/qt/widgets/scrollview.h"
 #include "selfdrive/ui/qt/offroad/settings.h"
 
+/*
+// new CValueControl("EnableAutoEngage", "EnableAutoEngage", "0:Not used,1:Auto Engage/Cruise OFF,2:Auto Engage/Cruise ON", "../assets/offroad/icon_shell.png", 0, 2, 1);
+class CValueControl : public AbstractControl {
+    Q_OBJECT
 
+public:
+    CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit = 1);
+
+private:
+    QPushButton btnplus;
+    QPushButton btnminus;
+    QLabel label;
+
+    QString m_params;
+    int     m_min;
+    int     m_max;
+    int     m_unit;
+
+    void refresh();
+};
+*/
 
 class CustomPanel : public QWidget {
   Q_OBJECT
@@ -52,6 +72,7 @@ private:
 
 private:
   std::unique_ptr<PubMaster> pm; 
+  // std::unique_ptr<SubMaster> sm;
 
 public:
   int send(const char *name, MessageBuilder &msg);
