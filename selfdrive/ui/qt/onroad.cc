@@ -614,10 +614,10 @@ void AnnotatedCameraWidget::drawLead(QPainter &painter, const cereal::RadarState
   painter.setBrush(redColor(fillAlpha));
   painter.drawPolygon(chevron, std::size(chevron));
 
-  QString  str;
-  str.format("%.1f",d_rel); 
-  painter.setPen( QColor(255, 255, 0) );   
-  painter.drawText(QRect(x - (sz * 1.25), y, 2 * (sz * 1.25), sz * 1.25), Qt::AlignCenter, str);
+  //QString  str;
+  //str.format("%.1f",d_rel); 
+  //painter.setPen( QColor(255, 255, 0) );   
+  //painter.drawText(QRect(x - (sz * 1.25), y, 2 * (sz * 1.25), sz * 1.25), Qt::AlignCenter, str);
   painter.restore();
 }
 
