@@ -8,7 +8,7 @@
 
 
 #include <QTabWidget>
-//#include <QObject>
+#include <QObject>
 
 
 #include "common/params.h"
