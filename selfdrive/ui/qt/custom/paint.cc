@@ -574,12 +574,12 @@ QString OnPaint::gearGap( int gear_step, QColor &color )
 
     color = QColor(0, 180, 255, 220);
     if (gear_step == 0) strGap = "P";
-    else if (gear_step == 1) strGap = "?– ";
-    else if (gear_step == 2) strGap = "?– ?– ";
-    else if (gear_step == 3) strGap = "?– ?– ?– ";
-    else if (gear_step == 4) strGap = "?– ?– ?– ?– ?– ";      
-    else if (gear_step == 5) strGap = "?– ?– ?– ?– ?– ?– ";      
-    else strGap = "?– ?– ?– ?– ?– ?– ?– ";
+    else if (gear_step == 1) strGap = "â– ";
+    else if (gear_step == 2) strGap = "â– â– ";
+    else if (gear_step == 3) strGap = "â– â– â– ";
+    else if (gear_step == 4) strGap = "â– â– â– â– â– ";      
+    else if (gear_step == 5) strGap = "â– â– â– â– â– â– ";      
+    else strGap = "â– â– â– â– â– â– â– ";
 
     return strGap;
 }
@@ -858,7 +858,6 @@ void OnPaint::drawRadarInfo( QPainter &p )
     char str[128];
 
 
-
     if ( show_radar_info == 0 ) return;
 
     int wStr = 40;
@@ -872,7 +871,7 @@ void OnPaint::drawRadarInfo( QPainter &p )
             wStr = 35 * (strlen(str) + 0);
             QColor color = (rv>0.) ? Qt::green : Qt::red;
             ui_fill_rect( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, color, 15);
-            ui_draw_text(s, rx, ry, str, 40, Qt::white, QFont::Bold);
+            ui_draw_text( p, rx, ry, str, 40, Qt::white, QFont::Bold);
             if ( show_radar_info >= 2) {
                 sprintf(str, "%.1f", ry_rel);
                 ui_draw_text(s, rx, ry - 40, str, 30, Qt::white, QFont::Bold);
@@ -884,18 +883,18 @@ void OnPaint::drawRadarInfo( QPainter &p )
             sprintf(str, "%.0f", (rv + v_lat) * 3.6);
             wStr = 35 * (strlen(str) + 0);
             ui_fill_rect( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, QColor(255, 165, 0), 15);
-            ui_draw_text(s, rx, ry, str, 40, Qt::white, QFont::Bold);
+            ui_draw_text( p, rx, ry, str, 40, Qt::white, QFont::Bold);
             if ( show_radar_info >= 2) 
             {
                 sprintf(str, "%.1f", ry_rel);
-                ui_draw_text(s, rx, ry - 40, str, 30, Qt::white, QFont::Bold);
+                ui_draw_text( p, rx, ry - 40, str, 30, Qt::white, QFont::Bold);
             }
         }
 #endif
         else if ( show_radar_info >= 3) 
         {
             strcpy(str, "*");
-            ui_draw_text(s, rx, ry, str, 40, Qt::red, QFont::Bold);
+            ui_draw_text( p, rx, ry, str, 40, Qt::red, QFont::Bold);
         }
     }
 

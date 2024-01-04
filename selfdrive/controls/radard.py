@@ -198,7 +198,7 @@ def get_lead(v_ego: float, ready: bool, tracks: Dict[int, Track], lead_msg: capn
 
 def get_lead_side(v_ego, tracks, md, lane_width):
 
-  ## SCC? ˆ?´?”?Š” ?¼?‹¨ ë³´ê???•˜ê³? ë¦¬ìŠ¤?Š¸?—?„œ ?‚­? œ...
+  ## SCCë ˆì´ë”ëŠ” ì¼ë‹¨ ë³´ê´€í•˜ê³  ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œ...
   track_scc = tracks.get(0)
   #if track_scc is not None:
   #  del tracks[0]
@@ -215,8 +215,8 @@ def get_lead_side(v_ego, tracks, md, lane_width):
   leads_left = {}
   leads_right = {}
   for c in tracks.values():
-    # d_y :  path_y - traks_y ?˜ diffê°?
-    # yRelê°’ì?? ?™¼ìª½ì´ +ê°?, lead.y[0]ê°’ì?? ?™¼ìª½ì´ -ê°?
+    # d_y :  path_y - traks_y ì˜ diffê°’
+    # yRelê°’ì€ ì™¼ìª½ì´ +ê°’, lead.y[0]ê°’ì€ ì™¼ìª½ì´ -ê°’
     d_y = -c.yRel - interp(c.dRel, md_x, md_y)
     ld = c.get_RadarState(c.vision_prob)
     if abs(d_y) < lane_width/2:

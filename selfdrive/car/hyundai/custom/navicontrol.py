@@ -175,7 +175,7 @@ class NaviControl():
     mapValid = self.mapValid
     #trafficType = self.trafficType
 
-    str_log2 = 'SL:{:.1f} SD:{:.1f} kps:{} TS:{:.1f} - VD:{:.1f}'.format(  speedLimit, speedLimitDistance, v_ego_kph, self.ctrl_speed,   self.VSetDis ) 
+    str_log2 = 'SL:{:.0f} SD:{:.0f} kps:{} TS:{:.0f} - VD:{:.0f}'.format(  speedLimit, speedLimitDistance, v_ego_kph, self.ctrl_speed,   self.VSetDis ) 
     trace1.printf3( '{}'.format( str_log2 ) )
     
     if not mapValid:
