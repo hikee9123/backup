@@ -177,6 +177,7 @@ void CustomPanel::OnTimer()
   UIState *s = uiState();
   UIScene &scene = s->scene;
 
+  sm->update(0);
   if( scene.started )
   {
     updateToggles( false );
