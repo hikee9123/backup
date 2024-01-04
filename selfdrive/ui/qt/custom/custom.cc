@@ -8,19 +8,19 @@
 
 
 #include <QTabWidget>
-
+//#include <QObject>
 
 
 #include "common/params.h"
 #include "common/watchdog.h"
 #include "common/util.h"
-#include "system/hardware/hw.h"
-#include "selfdrive/ui/qt/widgets/controls.h"
-#include "selfdrive/ui/qt/widgets/input.h"
-#include "selfdrive/ui/qt/widgets/scrollview.h"
-#include "selfdrive/ui/ui.h"
-#include "selfdrive/ui/qt/util.h"
-#include "selfdrive/ui/qt/qt_window.h"
+
+//#include "selfdrive/ui/qt/widgets/controls.h"
+//#include "selfdrive/ui/qt/widgets/input.h"
+//#include "selfdrive/ui/qt/widgets/scrollview.h"
+
+//#include "selfdrive/ui/qt/util.h"
+//#include "selfdrive/ui/qt/qt_window.h"
 
 #include "selfdrive/ui/qt/custom/custom.h"
 
@@ -370,7 +370,7 @@ void CommunityTab::hideEvent(QHideEvent *event)
 
 /*
 class MapboxToken : public AbstractControl {
-  //Q_OBJECT
+  Q_OBJECT
 
 public:
   MapboxToken() : AbstractControl("MapboxToken", "Put your MapboxToken", "")

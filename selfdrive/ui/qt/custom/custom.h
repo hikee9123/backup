@@ -18,15 +18,17 @@
 #include <QJsonValue>
 #include <QDebug>
 
-#include "cereal/messaging/messaging.h"
-#include "third_party/json11/json11.hpp"
+
 
 #include "selfdrive/ui/qt/util.h"
 #include "selfdrive/ui/qt/widgets/controls.h"
-
+#include "selfdrive/ui/qt/widgets/input.h"
+#include "selfdrive/ui/qt/widgets/scrollview.h"
 #include "selfdrive/ui/qt/offroad/settings.h"
+
 #include "selfdrive/ui/qt/custom/jsonContrl.h"
 
+#include "selfdrive/ui/ui.h"
 
 
 

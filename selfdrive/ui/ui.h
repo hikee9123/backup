@@ -129,8 +129,6 @@ static std::map<cereal::ControlsState::AlertStatus, QColor> alert_colors = {
   {cereal::ControlsState::AlertStatus::CRITICAL, QColor(0xC9, 0x22, 0x31, 0xf1)},
 };
 
-
-
 typedef struct UIScene {
   bool calibration_valid = false;
   bool calibration_wide_valid  = false;
@@ -148,8 +146,6 @@ typedef struct UIScene {
 
   // lead
   QPointF lead_vertices[2];
-
-
 
   // DMoji state
   float driver_pose_vals[3];

@@ -143,7 +143,6 @@ class CarStateCustom():
 
     if self.frame % 10 == 0:
       dat = messaging.new_message('carStateCustom')
-      self.cars
       carStatus = dat.carStateCustom
       self.get_tpms( carStatus.tpms,
         cp.vl["TPMS11"]["UNIT"],

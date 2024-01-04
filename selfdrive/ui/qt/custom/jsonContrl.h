@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QPainter>
 #include <QPushButton>
+#include <QObject>
 
 #include "common/params.h"
 #include "selfdrive/ui/qt/widgets/controls.h"
@@ -15,7 +16,7 @@
 
 // widget to toggle params
 class JsonControl : public ToggleControl {
-//  Q_OBJECT
+  Q_OBJECT
 
 public:
   JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, QJsonObject &jsonobj)
