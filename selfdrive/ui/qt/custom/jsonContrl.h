@@ -23,7 +23,7 @@ public:
       bool confirmed = store_confirm;
       if (!confirm || confirmed || !state || dialog.exec()) {
         m_jsonobj.insert(key, state);
-        setIcon(state);
+       // setIcon(state);
       } else {
         toggle.togglePosition();
       }
@@ -42,7 +42,7 @@ public:
       bool state =  m_jsonobj[key].toBool();
       if (state != toggle.on) {
         toggle.togglePosition();
-        setIcon(state);
+        // setIcon(state);
       }
     }
     
