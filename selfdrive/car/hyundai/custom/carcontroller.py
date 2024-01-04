@@ -11,7 +11,7 @@ class CarControllerCustom:
     self.NC = NaviControl( CP)
 
     self.resume_cnt = 0
-    print("CarControllerCustom \n")
+
 
   def create_button_messages( self, can_sends, CC, CS ):
     btn_signal = self.NC.update( CC, CS, CC.frame )

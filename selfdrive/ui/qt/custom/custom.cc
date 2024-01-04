@@ -246,17 +246,15 @@ void CustomPanel::showEvent(QShowEvent *event)
   QWidget::setContentsMargins(0,0,0,0);
   QWidget::showEvent( event );
 
+  int  nCarCnt = m_cars.size();
+  if( nCarCnt > 0 ) return;
 
   sm->update(0);
   auto carState_custom = (*sm)["carStateCustom"].getCarStateCustom();
   auto carSupport = carState_custom.getSupportedCars();
-
-
   int  nCnt = carSupport.size();
-  int  nCarCnt = m_cars.size();
-  //printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
 
-  if( nCarCnt > 0 ) return;
+  //printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
   for (int i = 0; i<nCnt; i++) {
     QString car = QString::fromStdString( carSupport[i] );
     m_cars.append( car );
@@ -352,8 +350,6 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     }
   });
   addItem(changeCar);
-
-
 }
 
 void CommunityTab::showEvent(QShowEvent *event) 

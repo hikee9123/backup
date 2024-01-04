@@ -57,7 +57,6 @@ class NaviControl():
     self.waittime_press = 5
     self.waittime_none = 6
 
-    print("NaviControl \n")
 
 
   def button_status(self, CS ):
