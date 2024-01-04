@@ -13,7 +13,7 @@
 
 // widget to toggle params
 class JsonControl : public ToggleControl {
- Q_OBJECT
+ // Q_OBJECT
 
 public:
   JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, QJsonObject &jsonobj) : ToggleControl(title, desc, icon, false, parent),m_jsonobj(jsonobj) {
