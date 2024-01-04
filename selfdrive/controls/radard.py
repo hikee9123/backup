@@ -13,7 +13,7 @@ from openpilot.system.swaglog import cloudlog
 
 from openpilot.common.kalman.simple_kalman import KF1D
 
-from selfdrive.controls.lib.lane_planner import TRAJECTORY_SIZE
+from selfdrive.controls.lib.lateral_planner import TRAJECTORY_SIZE
 
 # Default lead acceleration decay set to 50% at 1s
 _LEAD_ACCEL_TAU = 1.5
