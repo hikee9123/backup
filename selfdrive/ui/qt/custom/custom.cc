@@ -253,7 +253,7 @@ void CustomPanel::showEvent(QShowEvent *event)
     QString car = QString::fromStdString( carSupport[i] );
     m_cars.append( car );
 
-    printf("%s \n", car );
+    printf("%s \n", car.toStdString().c_str());
   }
 
 }
