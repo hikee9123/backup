@@ -207,18 +207,19 @@ void OnPaint::updateState(const UIState &s)
   m_param.cpuTemp = maxCpuTemp[0];
 
   // 2.
-  m_param.radar_state = sm1["radarState"].getRadarState();  // radar
-  m_param.lead_radar = m_param.radar_state.getLeadOne();
+  auto radar_state = sm1["radarState"].getRadarState();  // radar
+  m_param.lead_radar = radar_state.getLeadOne();
 
-  if (s.worldObjectsVisible() && show_radar_info ) 
+  if ( show_radar_info && s.worldObjectsVisible() ) 
   {
-    const cereal::ModelDataV2::Reader &model = sm1["modelV2"].getModelV2();
+    //const cereal::ModelDataV2::Reader &model = sm1["modelV2"].getModelV2();
     //const cereal::RadarState::Reader &radar_state = sm["radarState"].getRadarState();
-      if (sm1.rcv_frame("radarState") > s.scene.started_frame) 
-      {
-          cereal::XYZTData::Reader &line = model.getPosition();
-          update_leads( m_param.radar_state, line );
-      }    
+    if (sm1.rcv_frame("radarState") > s.scene.started_frame) 
+    {
+        auto model = sm1["modelV2"].getModelV2();      
+        const cereal::XYZTData::Reader &line = model.getPosition();
+        update_leads( radar_state, line );
+    }    
   }
 
 
