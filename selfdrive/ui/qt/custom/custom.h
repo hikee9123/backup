@@ -18,43 +18,14 @@
 #include <QJsonValue>
 #include <QDebug>
 
-
+#include "cereal/messaging/messaging.h"
+#include "third_party/json11/json11.hpp"
 
 #include "selfdrive/ui/qt/util.h"
 #include "selfdrive/ui/qt/widgets/controls.h"
-#include "selfdrive/ui/qt/widgets/input.h"
-#include "selfdrive/ui/qt/widgets/scrollview.h"
+
 #include "selfdrive/ui/qt/offroad/settings.h"
-
 #include "selfdrive/ui/qt/custom/jsonContrl.h"
-
-#include "selfdrive/ui/ui.h"
-
-
-
-// new CValueControl("EnableAutoEngage", "EnableAutoEngage", "0:Not used,1:Auto Engage/Cruise OFF,2:Auto Engage/Cruise ON", "../assets/offroad/icon_shell.png", 0, 2, 1);
-
-/*
-class CValueControl : public AbstractControl {
-    Q_OBJECT
-
-public:
-    CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit = 1);
-
-private:
-    QPushButton btnplus;
-    QPushButton btnminus;
-    QLabel label;
-
-    QString m_params;
-    int     m_min;
-    int     m_max;
-    int     m_unit;
-
-    void refresh();
-};
-*/
-
 
 class CustomPanel : public QWidget {
   Q_OBJECT
@@ -64,14 +35,13 @@ public:
 protected:  
   void closeEvent(QCloseEvent *event) override;  
 
+signals:
+
 protected:
   virtual void showEvent(QShowEvent *event) override;
   virtual void hideEvent(QHideEvent *event) override;
 
-signals:
-
-
-private slots:  // 시그널과 연결되어 특정 이벤트에 응답할 때
+private slots:
   void offroadTransition( bool offroad  );
   void OnTimer();  
 
@@ -89,11 +59,10 @@ private:
 
 private:
   std::unique_ptr<PubMaster> pm; 
-  std::unique_ptr<SubMaster> sm;
 
 public:
   int send(const char *name, MessageBuilder &msg);
-  QStringList m_cars;
+
 
 public:
    QJsonObject readJsonFile(const QString& fileName);
@@ -121,11 +90,7 @@ protected:
 
 protected:  
 
-signals:
-
 private slots:
-
-
 
 private:
 
@@ -153,7 +118,6 @@ protected:
 
 protected:  
 
-signals:
 
 private slots:
 
@@ -217,6 +181,8 @@ private:
 
 
 
+
+
   void updateToggles( int bSave );
 
 protected:
@@ -226,8 +192,6 @@ protected:
 
 protected:  
   void closeEvent(QCloseEvent *event) override;  
-
-signals:
 
 private slots:
   void offroadTransition( bool offroad  );
