@@ -1,27 +1,19 @@
 #pragma once
+
 #include <string>
 #include <vector>
 
-#include <QButtonGroup>
-#include <QFrame>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QPainter>
-#include <QPushButton>
-#include <QObject>
+#include <QJsonObject>
 
-#include "common/params.h"
 #include "selfdrive/ui/qt/widgets/controls.h"
-
 #include "selfdrive/ui/ui.h"
 
 // widget to toggle params
 class JsonControl : public ToggleControl {
-  // Q_OBJECT
+  Q_OBJECT
 
 public:
-  JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, QJsonObject &jsonobj)
-             : ToggleControl(title, desc, icon, false, parent), m_jsonobj(jsonobj) {
+  JsonControl(const QString &param, const QString &title, const QString &desc, const QString &icon, QWidget *parent, QJsonObject &jsonobj) : ToggleControl(title, desc, icon, false, parent),m_jsonobj(jsonobj) {
     key = param;//.toStdString();
     QObject::connect(this, &JsonControl::toggleFlipped, [=](bool state) {
       QString content("<body><h2 style=\"text-align: center;\">" + title + "</h2><br>"
@@ -30,7 +22,6 @@ public:
 
       bool confirmed = store_confirm;
       if (!confirm || confirmed || !state || dialog.exec()) {
-        //QJsonValue value = QJsonValue::fromVariant(state);
         m_jsonobj.insert(key, state);
         setIcon(state);
       } else {
@@ -44,12 +35,9 @@ public:
     store_confirm = _store_confirm;
   }
 
-  void setActiveIcon(const QString &icon) {
-    active_icon_pixmap = QPixmap(icon).scaledToWidth(80, Qt::SmoothTransformation);
-  }
+
 
   void refresh() {
-    
     if (m_jsonobj.contains(key)) {
       bool state =  m_jsonobj[key].toBool();
       if (state != toggle.on) {
@@ -65,17 +53,8 @@ public:
   }
 
 private:
-  void setIcon(bool state) {
-    if (state && !active_icon_pixmap.isNull()) {
-      icon_label->setPixmap(active_icon_pixmap);
-    } else if (!icon_pixmap.isNull()) {
-      icon_label->setPixmap(icon_pixmap);
-    }
-  }
-
   QString key;
   QJsonObject &m_jsonobj;
-  QPixmap active_icon_pixmap;
   bool confirm = false;
   bool store_confirm = false;
 };
