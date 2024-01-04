@@ -362,14 +362,11 @@ void CommunityTab::hideEvent(QHideEvent *event)
 }
 
 
-
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
+
+/*
 class MapboxToken : public AbstractControl {
   //Q_OBJECT
 
@@ -416,7 +413,7 @@ private:
     btn.setText(tr("SET"));   
   }
 };
-
+*/
 
 
 NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
@@ -445,7 +442,7 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
 
   // QVBoxLayout *layout = new QVBoxLayout(this);
   // layout->addWidget(new MapboxToken());
-  addItem( new MapboxToken() );
+  // addItem( new MapboxToken() );
 
   /*
   QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
