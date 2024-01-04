@@ -863,7 +863,7 @@ void OnPaint::drawRadarInfo( QPainter &p )
 #endif
         else if ( show_radar_info >= 3) 
         {
-            strcpy( str, "*%d*",id);
+            sprintf( str, "%d",id);
             p.setPen( Qt::red );
             p.drawText( rx, ry, str);
         }
