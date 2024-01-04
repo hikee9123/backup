@@ -198,7 +198,7 @@ def get_lead(v_ego: float, ready: bool, tracks: Dict[int, Track], lead_msg: capn
 
 def get_lead_side(v_ego, tracks, md, lane_width):
 
-  ## SCCë ˆì´ë”ëŠ” ì¼ë‹¨ ë³´ê´€í•˜ê³  ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œ...
+  ## SCC? ˆ?´?”?Š” ?¼?‹¨ ë³´ê???•˜ê³? ë¦¬ìŠ¤?Š¸?—?„œ ?‚­? œ...
   track_scc = tracks.get(0)
   #if track_scc is not None:
   #  del tracks[0]
@@ -215,8 +215,8 @@ def get_lead_side(v_ego, tracks, md, lane_width):
   leads_left = {}
   leads_right = {}
   for c in tracks.values():
-    # d_y :  path_y - traks_y ì˜ diffê°’
-    # yRelê°’ì€ ì™¼ìª½ì´ +ê°’, lead.y[0]ê°’ì€ ì™¼ìª½ì´ -ê°’
+    # d_y :  path_y - traks_y ?˜ diffê°?
+    # yRelê°’ì?? ?™¼ìª½ì´ +ê°?, lead.y[0]ê°’ì?? ?™¼ìª½ì´ -ê°?
     d_y = -c.yRel - interp(c.dRel, md_x, md_y)
     ld = c.get_RadarState(c.vision_prob)
     if abs(d_y) < lane_width/2:
@@ -256,7 +256,7 @@ class RadarD:
     self.radar_state_valid = False
 
     self.ready = False
-    self.showRadarInfo = True
+    self.show_radar_info = True
 
   def update(self, sm: messaging.SubMaster, rr: Optional[car.RadarData]):
     self.current_time = 1e-9*max(sm.logMonoTime.values())
@@ -310,7 +310,7 @@ class RadarD:
       self.radar_state.leadOne = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[0], model_v_ego, low_speed_override=True)
       self.radar_state.leadTwo = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[1], model_v_ego, low_speed_override=False)
 
-    if self.showRadarInfo: #self.extended_radar_enabled and self.ready:
+    if self.show_radar_info: #self.extended_radar_enabled and self.ready:
       ll,lc,lr = get_lead_side(self.v_ego, self.tracks, sm['modelV2'], sm['lateralPlan'].laneWidth)
       self.radar_state.leadsLeft = list(ll)
       self.radar_state.leadsCenter = list(lc)
