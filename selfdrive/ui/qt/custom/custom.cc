@@ -28,7 +28,7 @@
 
 
 /*
-CValueControl::CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit/*=1*/) 
+CValueControl::CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit ) 
               : AbstractControl(title, desc, icon)
 {
     m_params = params;
