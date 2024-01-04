@@ -361,54 +361,6 @@ void CommunityTab::hideEvent(QHideEvent *event)
 //
 
 
-class MapboxToken : public AbstractControl {
-  Q_OBJECT
-
-public:
-  MapboxToken() : AbstractControl("MapboxToken", "Put your MapboxToken", "")
-  {
-    btn.setStyleSheet(R"(
-      padding: -10;
-      border-radius: 35px;
-      font-size: 35px;
-      font-weight: 500;
-      color: #E4E4E4;
-      background-color: #393939;
-    )");
-    edit.setStyleSheet(R"(
-      background-color: grey;
-      font-size: 55px;
-      font-weight: 500;
-      height: 120px;
-    )");
-    btn.setFixedSize(200, 100);
-    hlayout->addWidget(&edit);
-    hlayout->addWidget(&btn);
-
-    QObject::connect(&btn, &QPushButton::clicked, [=]() {
-      QString targetvalue = InputDialog::getText("MapboxToken", this, "Put your MapboxToken starting with pk.", false, 1, QString::fromStdString(params.get("MapboxToken")));
-      if (targetvalue.length() > 0 && targetvalue != QString::fromStdString(params.get("MapboxToken"))) {
-        params.put("MapboxToken", targetvalue.toStdString());
-        refresh();
-      }
-    });
-    refresh();   
-  }
-
-private:
-  QPushButton btn;
-  QLineEdit edit;
-  Params params;
-
-  void refresh()
-  {
-    auto strs = QString::fromStdString(params.get("MapboxToken"));
-    edit.setText(QString::fromStdString(strs.toStdString()));
-    btn.setText("SET");   
-  }
-};
-
-
 
 NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_jsonobj(jsonobj)
 {
