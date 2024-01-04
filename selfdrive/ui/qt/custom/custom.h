@@ -12,20 +12,13 @@
 #include <QTimer>
 
 
-#include <QFile>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
-#include <QDebug>
-
-#include "cereal/messaging/messaging.h"
-#include "third_party/json11/json11.hpp"
-
-#include "selfdrive/ui/qt/util.h"
-#include "selfdrive/ui/qt/widgets/controls.h"
-
-#include "selfdrive/ui/qt/offroad/settings.h"
 #include "selfdrive/ui/qt/custom/jsonContrl.h"
+
+#include "selfdrive/ui/qt/widgets/input.h"
+#include "selfdrive/ui/qt/widgets/scrollview.h"
+#include "selfdrive/ui/qt/offroad/settings.h"
+
+
 
 class CustomPanel : public QWidget {
   Q_OBJECT
@@ -62,7 +55,7 @@ private:
 
 public:
   int send(const char *name, MessageBuilder &msg);
-
+  QStringList m_cars;
 
 public:
    QJsonObject readJsonFile(const QString& fileName);

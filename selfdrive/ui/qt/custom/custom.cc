@@ -8,20 +8,16 @@
 
 
 #include <QTabWidget>
-
+#include <QObject>
 
 
 #include "common/params.h"
 #include "common/watchdog.h"
 #include "common/util.h"
-#include "system/hardware/hw.h"
-#include "selfdrive/ui/qt/widgets/controls.h"
-#include "selfdrive/ui/qt/widgets/input.h"
-#include "selfdrive/ui/qt/widgets/scrollview.h"
-#include "selfdrive/ui/ui.h"
-#include "selfdrive/ui/qt/util.h"
-#include "selfdrive/ui/qt/qt_window.h"
 
+
+
+#include "selfdrive/ui/qt/util.h"
 #include "selfdrive/ui/qt/custom/custom.h"
 
 
@@ -33,7 +29,6 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
   pm.reset( new PubMaster({"uICustom"}) );
 
   m_jsonobj = readJsonFile( "CustomParam" );
-
 
     QList<QPair<QString, QWidget *>> panels = {
         {tr("UI"), new UITab(this, m_jsonobj)},      
@@ -114,8 +109,6 @@ void CustomPanel::OnTimer()
 void CustomPanel::updateToggles( int bSave )
 {
   MessageBuilder m_msg;
-
-
 
   m_cmdIdx++;
   auto custom = m_msg.initEvent().initUICustom();  
@@ -271,7 +264,6 @@ void CommunityTab::showEvent(QShowEvent *event)
 void CommunityTab::hideEvent(QHideEvent *event)
 {
   QWidget::hideEvent(event);
-
 }
 
 

@@ -4,6 +4,9 @@
 #include <vector>
 
 #include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 
 #include "selfdrive/ui/qt/widgets/controls.h"
 #include "selfdrive/ui/ui.h"
