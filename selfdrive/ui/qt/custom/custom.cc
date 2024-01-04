@@ -371,10 +371,10 @@ void CommunityTab::hideEvent(QHideEvent *event)
 //
 //
 class MapboxToken : public AbstractControl {
-  Q_OBJECT
+  //Q_OBJECT
 
 public:
-  MapboxToken() : AbstractControl(tr("MapboxToken"), tr("Put your MapboxToken"), "")
+  MapboxToken() : AbstractControl("MapboxToken", "Put your MapboxToken", "")
   {
     btn.setStyleSheet(R"(
       padding: -10;
