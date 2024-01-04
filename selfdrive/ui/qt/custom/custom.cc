@@ -254,7 +254,7 @@ void CustomPanel::showEvent(QShowEvent *event)
 
   int  nCnt = carSupport.size();
   int  nCarCnt = m_cars.size();
-  printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
+  //printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
 
   if( nCarCnt > 0 ) return;
   for (int i = 0; i<nCnt; i++) {
