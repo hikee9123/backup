@@ -875,7 +875,7 @@ void OnPaint::drawRadarInfo( QPainter &p )
             ui_draw_text( p, rx, ry, str, 40, Qt::white, QFont::Bold);
             if ( show_radar_info >= 2) {
                 sprintf(str, "%.1f", ry_rel);
-                ui_draw_text(s, rx, ry - 40, str, 30, Qt::white, QFont::Bold);
+                ui_draw_text( p, rx, ry - 40, str, 30, Qt::white, QFont::Bold);
             }
         }
 #if 0
