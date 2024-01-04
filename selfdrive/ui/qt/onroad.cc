@@ -614,6 +614,10 @@ void AnnotatedCameraWidget::drawLead(QPainter &painter, const cereal::RadarState
   painter.setBrush(redColor(fillAlpha));
   painter.drawPolygon(chevron, std::size(chevron));
 
+  QString  str;
+  str.format("%.1f",d_rel); 
+  painter.setPen( QColor(255, 255, 0) );   
+  painter.drawText(QRect(x - (sz * 1.25), y, 2 * (sz * 1.25), sz * 1.25), Qt::AlignCenter, str);
   painter.restore();
 }
 
@@ -681,7 +685,7 @@ void AnnotatedCameraWidget::paintGL() {
 
     drawLaneLines(painter, s);
 
-    if (s->scene.longitudinal_control) {
+    if (s->scene.longitudinal_control || 1) {
       auto lead_one = radar_state.getLeadOne();
       auto lead_two = radar_state.getLeadTwo();
       if (lead_one.getStatus()) {
