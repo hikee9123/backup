@@ -196,15 +196,11 @@ def get_lead(v_ego: float, ready: bool, tracks: Dict[int, Track], lead_msg: capn
 
 
 
-def get_lead_side(v_ego, tracks, md, lane_width):
-
-  ## SCC레이더는 일단 보관하고 리스트에서 삭제...
-  track_scc = tracks.get(0)
-  #if track_scc is not None:
-  #  del tracks[0]
-
+def get_lead_side( tracks, md ):
+  lane_width = 3.6
   if len(tracks) == 0:
     return [[],[],[]]
+
   if md is not None and len(md.lateralPlannerSolution.x) == TRAJECTORY_SIZE:
     md_y = md.lateralPlannerSolution.y
     md_x = md.lateralPlannerSolution.x
@@ -226,8 +222,7 @@ def get_lead_side(v_ego, tracks, md, lane_width):
     else:
       leads_right[c.dRel] = ld
 
-  #ll,lr = [[l[k] for k in sorted(list(l.keys()))] for l in [leads_left,leads_right]]
-  #lc = sorted(leads_center.values(), key=lambda c:c["dRel"])
+
   ll = list(leads_left.values())
   lr = list(leads_right.values())
 
@@ -236,9 +231,7 @@ def get_lead_side(v_ego, tracks, md, lane_width):
     lc = [leads_center[dRel_min]]
   else:
     lc = {}
-  #lc = list(leads_center.values())
   return [ll,lc,lr]
-  #return [leads_left, leads_center, leads_right]
 
 
 
@@ -311,7 +304,7 @@ class RadarD:
       self.radar_state.leadTwo = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[1], model_v_ego, low_speed_override=False)
 
     if self.show_radar_info: #self.extended_radar_enabled and self.ready:
-      ll,lc,lr = get_lead_side(self.v_ego, self.tracks, sm['modelV2'], sm['lateralPlan'].laneWidth)
+      ll,lc,lr = get_lead_side( self.tracks, sm['modelV2'] )
       self.radar_state.leadsLeft = list(ll)
       self.radar_state.leadsCenter = list(lc)
       self.radar_state.leadsRight = list(lr)
