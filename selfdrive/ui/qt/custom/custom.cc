@@ -251,7 +251,7 @@ void CustomPanel::showEvent(QShowEvent *event)
 {
   QWidget::setContentsMargins(0,0,0,0);
    
-
+  /*
   sm->update(0);
   auto carState_custom = (*sm)["carStateCustom"].getCarStateCustom();
   auto carSupport = carState_custom.getSupportedCars();
@@ -259,6 +259,7 @@ void CustomPanel::showEvent(QShowEvent *event)
     QString car = QString::fromStdString( carSupport[i] );
     m_cars.append( car );
   }
+  */
 
   QWidget::showEvent( event );
 }
@@ -393,7 +394,7 @@ public:
     hlayout->addWidget(&btn);
 
     QObject::connect(&btn, &QPushButton::clicked, [=]() {
-      QString targetvalue = InputDialog::getText(tr("MapboxToken"), this, tr("Put your MapboxToken starting with pk."), false, 1, QString::fromStdString(params.get("MapboxToken")));
+      QString targetvalue = InputDialog::getText("MapboxToken", this, "Put your MapboxToken starting with pk.", false, 1, QString::fromStdString(params.get("MapboxToken")));
       if (targetvalue.length() > 0 && targetvalue != QString::fromStdString(params.get("MapboxToken"))) {
         params.put("MapboxToken", targetvalue.toStdString());
         refresh();
@@ -411,7 +412,7 @@ private:
   {
     auto strs = QString::fromStdString(params.get("MapboxToken"));
     edit.setText(QString::fromStdString(strs.toStdString()));
-    btn.setText(tr("SET"));   
+    btn.setText("SET");   
   }
 };
 */

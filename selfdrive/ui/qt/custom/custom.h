@@ -30,7 +30,7 @@
 
 
 
-// ajouatom:
+
 // new CValueControl("EnableAutoEngage", "EnableAutoEngage", "0:Not used,1:Auto Engage/Cruise OFF,2:Auto Engage/Cruise ON", "../assets/offroad/icon_shell.png", 0, 2, 1);
 
 /*
