@@ -249,7 +249,12 @@ void CustomPanel::showEvent(QShowEvent *event)
   sm->update(0);
   auto carState_custom = (*sm)["carStateCustom"].getCarStateCustom();
   auto carSupport = carState_custom.getSupportedCars();
-  for (int i = 0; i<carSupport.size(); i++) {
+
+
+  int  nCnt = carSupport.size();
+  printf("SupportedCars = %d \n", nCnt );
+
+  for (int i = 0; i<nCnt; i++) {
     QString car = QString::fromStdString( carSupport[i] );
     m_cars.append( car );
 
