@@ -252,6 +252,8 @@ void CustomPanel::showEvent(QShowEvent *event)
   for (int i = 0; i<carSupport.size(); i++) {
     QString car = QString::fromStdString( carSupport[i] );
     m_cars.append( car );
+
+    printf("%s \n", car );
   }
 
 }
@@ -311,21 +313,6 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
   m_pCustom = parent;
 
 
-  QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
-  auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
-                    selected_car.length() ? tr("CHANGE") : tr("SELECT"), "");
-
-  QObject::connect( changeCar, &ButtonControl::clicked, [=]() {
-    QStringList items = m_pCustom->m_cars;
-    QString selection = MultiOptionDialog::getSelection(tr("Select a car"), items, selected_car, this);
-    if ( !selection.isEmpty() ) 
-    {
-      Params().put("SelectedCar", selection.toStdString());
-    }
-  });
-  addItem(changeCar);
-
-
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
     {
@@ -342,6 +329,24 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     addItem(toggle);
     toggles[param.toStdString()] = toggle;
   }
+
+
+
+  QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
+  auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
+                    selected_car.length() ? tr("CHANGE") : tr("SELECT"), "");
+
+  QObject::connect( changeCar, &ButtonControl::clicked, [=]() {
+    QStringList items = m_pCustom->m_cars;
+    QString selection = MultiOptionDialog::getSelection(tr("Select a car"), items, selected_car, this);
+    if ( !selection.isEmpty() ) 
+    {
+      Params().put("SelectedCar", selection.toStdString());
+    }
+  });
+  addItem(changeCar);
+
+
 }
 
 void CommunityTab::showEvent(QShowEvent *event) 

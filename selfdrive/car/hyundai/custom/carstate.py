@@ -43,6 +43,7 @@ class CarStateCustom():
     cars = []
     for _, member in CAR.__members__.items():
       cars.append(member.value)
+      print( '{}'.format( member.value ) )
     cars.sort()
     self.cars = cars
 
