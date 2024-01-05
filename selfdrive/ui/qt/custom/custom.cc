@@ -9,6 +9,7 @@
 
 #include <QTabWidget>
 #include <QObject>
+#include <QJsonArray>
 
 
 #include "common/params.h"
