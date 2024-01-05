@@ -249,17 +249,27 @@ void CustomPanel::showEvent(QShowEvent *event)
   int  nCarCnt = m_cars.size();
   if( nCarCnt > 0 ) return;
 
+
   sm->update(0);
   auto carState_custom = (*sm)["carStateCustom"].getCarStateCustom();
   auto carSupport = carState_custom.getSupportedCars();
   int  nCnt = carSupport.size();
 
-  //printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
-  for (int i = 0; i<nCnt; i++) {
-    QString car = QString::fromStdString( carSupport[i] );
-    m_cars.append( car );
-    //printf("%s \n", car.toStdString().c_str());
+  printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
+  if( nCnt <= 0 )
+  {
+      QStringList items = m_jsonobj["SurportCar"];
+      m_cars  = items;
   }
+  else
+  {
+    for (int i = 0; i<nCnt; i++) {
+      QString car = QString::fromStdString( carSupport[i] );
+      m_cars.append( car );
+      // printf("%s \n", car.toStdString().c_str());        
+    }
+  }
+
 
 }
 
@@ -287,8 +297,6 @@ void CustomPanel::writeJson()
 QJsonObject CustomPanel::readJsonFile(const QString& filePath ) 
 {
     QJsonObject jsonObject;
-
-
     QString json_str = QString::fromStdString(params.get(filePath.toStdString()));
 
     if (json_str.isEmpty()) return jsonObject;
@@ -342,12 +350,21 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
                     selected_car.length() ? tr("CHANGE") : tr("SELECT"), "");
 
   QObject::connect( changeCar, &ButtonControl::clicked, [=]() {
-    QStringList items = m_pCustom->m_cars;
-    QString selection = MultiOptionDialog::getSelection(tr("Select a car"), items, selected_car, this);
-    if ( !selection.isEmpty() ) 
-    {
-      Params().put("SelectedCar", selection.toStdString());
-    }
+      QStringList items = m_pCustom->m_cars;
+
+      /*
+      QJsonArray jsonArray;
+      foreach (const QString &item, items) {
+        jsonArray.append(item);
+      }
+      m_jsonobj["SurportCar"] = jsonArray;
+      */
+      m_jsonobj["SurportCar"] = items;
+      QString selection = MultiOptionDialog::getSelection(tr("Select a car"), items, selected_car, this);
+      if ( !selection.isEmpty() ) 
+      {
+        Params().put("SelectedCar", selection.toStdString());
+      }
   });
   addItem(changeCar);
 }
