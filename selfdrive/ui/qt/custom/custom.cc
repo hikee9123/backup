@@ -258,8 +258,9 @@ void CustomPanel::showEvent(QShowEvent *event)
   printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
   if( nCnt <= 0 )
   {
-      QStringList items = m_jsonobj["SurportCar"];
-      m_cars  = items;
+      QJsonArray jsonArray = m_jsonobj["SurportCar"];
+      //QStringList items = m_jsonobj["SurportCar"];
+      //m_cars  = items;
   }
   else
   {
@@ -352,14 +353,14 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
   QObject::connect( changeCar, &ButtonControl::clicked, [=]() {
       QStringList items = m_pCustom->m_cars;
 
-      /*
+      
       QJsonArray jsonArray;
       foreach (const QString &item, items) {
         jsonArray.append(item);
       }
       m_jsonobj["SurportCar"] = jsonArray;
-      */
-      m_jsonobj["SurportCar"] = items;
+      
+      // m_jsonobj["SurportCar"] = items;
       QString selection = MultiOptionDialog::getSelection(tr("Select a car"), items, selected_car, this);
       if ( !selection.isEmpty() ) 
       {
