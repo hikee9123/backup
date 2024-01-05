@@ -312,8 +312,8 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
 
   QString  str;
   str.sprintf("%.0f", gasVal );
-  p.setFont(InterFont(25));
-  drawText3(p, x, 340, str, QColor(255,255,255,200) );
+  p.setFont(InterFont(30));
+  drawText3(p, x, 335, str, QColor(255,255,255,200) );
 }
 
 
