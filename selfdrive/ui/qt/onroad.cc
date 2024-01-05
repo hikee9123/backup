@@ -619,7 +619,7 @@ void AnnotatedCameraWidget::drawLead(QPainter &painter, const cereal::RadarState
   painter.drawPolygon(chevron, std::size(chevron));
 
   QString  str;
-  str.sprintf("%.0fkm/h",d_rel); 
+  str.sprintf("%.0f",d_rel); 
   painter.setPen( QColor(0, 0, 0) );
   painter.setFont( InterFont(28, QFont::Normal));
   painter.drawText(QRect(x - (sz * 1.25), y, 2 * (sz * 1.25), sz * 1.25), Qt::AlignCenter, str);
