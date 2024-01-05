@@ -258,7 +258,7 @@ void CustomPanel::showEvent(QShowEvent *event)
   printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
   if( nCnt <= 0 )
   {
-      QJsonArray jsonArray = m_jsonobj["SurportCar"];
+      //QJsonArray jsonArray = m_jsonobj["SurportCar"];
       //QStringList items = m_jsonobj["SurportCar"];
       //m_cars  = items;
   }
