@@ -13,7 +13,6 @@ from openpilot.system.swaglog import cloudlog
 
 from openpilot.common.kalman.simple_kalman import KF1D
 
-from selfdrive.controls.lib.lateral_planner import TRAJECTORY_SIZE
 
 # Default lead acceleration decay set to 50% at 1s
 _LEAD_ACCEL_TAU = 1.5
@@ -59,7 +58,6 @@ class Track:
     self.K_C = kalman_params.C
     self.K_K = kalman_params.K
     self.kf = KF1D([[v_lead], [0.0]], self.K_A, self.K_C, self.K_K)
-    self.vision_prob = 0.0
 
   def update(self, d_rel: float, y_rel: float, v_rel: float, v_lead: float, measured: float):
     # relative values, copy
@@ -135,7 +133,6 @@ def match_vision_to_track(v_ego: float, lead: capnp._DynamicStructReader, tracks
     prob_y = laplacian_pdf(c.yRel, -lead.y[0], lead.yStd[0])
     prob_v = laplacian_pdf(c.vRel + v_ego, lead.v[0], lead.vStd[0])
 
-    c.vision_prob = prob_d * prob_y * prob_v
     # This is isn't exactly right, but good heuristic
     return prob_d * prob_y * prob_v
 
@@ -195,9 +192,6 @@ def get_lead(v_ego: float, ready: bool, tracks: Dict[int, Track], lead_msg: capn
   return lead_dict
 
 
-
-
-
 class RadarD:
   def __init__(self, radar_ts: float, delay: int = 0):
     self.current_time = 0.0
@@ -212,7 +206,6 @@ class RadarD:
     self.radar_state_valid = False
 
     self.ready = False
-
 
   def update(self, sm: messaging.SubMaster, rr: Optional[car.RadarData]):
     self.current_time = 1e-9*max(sm.logMonoTime.values())
@@ -265,7 +258,6 @@ class RadarD:
     if len(leads_v3) > 1:
       self.radar_state.leadOne = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[0], model_v_ego, low_speed_override=True)
       self.radar_state.leadTwo = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[1], model_v_ego, low_speed_override=False)
-
 
   def publish(self, pm: messaging.PubMaster, lag_ms: float):
     assert self.radar_state is not None

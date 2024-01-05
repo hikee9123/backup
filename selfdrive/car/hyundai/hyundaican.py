@@ -96,7 +96,6 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
 
 
 def create_clu11(packer, frame, clu11, button, car_fingerprint):
-  #values = clu11
   values = {s: clu11[s] for s in [
     "CF_Clu_CruiseSwState",
     "CF_Clu_CruiseSwMain",
