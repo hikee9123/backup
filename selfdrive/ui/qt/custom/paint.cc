@@ -128,6 +128,18 @@ void OnPaint::drawText3(QPainter &p, int x, int y, const QString &text, QColor c
   p.drawText(real_rect.x(), real_rect.bottom(), text);
 }
 
+
+void OnPaint::ui_draw_text( QPainter &p, const QRect& rc, const QString& text, float  size, const QColor& crBrush, const QColor& color )
+{
+    //p.setFont( InterFont(size, QFont::Bold)); 
+
+    p.setPen( color );
+    p.setBrush( crBrush );
+    p.drawRoundedRect(rc, 20, 20);
+    p.drawText( rc, Qt::AlignCenter, text);
+}
+
+
 int OnPaint::get_time()
 {
   int iRet;
@@ -218,18 +230,6 @@ void OnPaint::updateState(const UIState &s)
   // 2.
   auto radar_state = sm1["radarState"].getRadarState();  // radar
   m_param.lead_radar = radar_state.getLeadOne();
-
-  if ( show_radar_info && s.worldObjectsVisible() ) 
-  {
-    //const cereal::ModelDataV2::Reader &model = sm1["modelV2"].getModelV2();
-    //const cereal::RadarState::Reader &radar_state = sm["radarState"].getRadarState();
-    if (sm1.rcv_frame("radarState") > s.scene.started_frame) 
-    {
-        auto model = sm1["modelV2"].getModelV2();      
-        const cereal::XYZTData::Reader &line = model.getPosition();
-        update_leads( radar_state, line );
-    }    
-  }
 
 
 
@@ -803,120 +803,3 @@ void OnPaint::bb_ui_draw_UI(QPainter &p)
 //BB END: functions added for the display of various itemsapType
 
 
-// apilot
-bool OnPaint::calib_frame_to_full_frame( float in_x, float in_y, float in_z, QPointF *out) 
-{
-  const float margin = 500.0f;
-  const QRectF clip_region{-margin, -margin, state->fb_w + 2 * margin, state->fb_h + 2 * margin};
-
-  const vec3 pt = (vec3){{in_x, in_y, in_z}};
-  const vec3 Ep = matvecmul3(scene->wide_cam ? scene->view_from_wide_calib : scene->view_from_calib, pt);
-  const vec3 KEp = matvecmul3(scene->wide_cam ? ECAM_INTRINSIC_MATRIX : FCAM_INTRINSIC_MATRIX, Ep);
-
-  // Project.
-  QPointF point = state->car_space_transform.map(QPointF{KEp.v[0] / KEp.v[2], KEp.v[1] / KEp.v[2]});
-  if (clip_region.contains(point)) {
-    *out = point;
-    return true;
-  }
-  return false;
-}
-
-int OnPaint::get_path_length_idx(const cereal::XYZTData::Reader &line, const float path_height) 
-{
-  const auto line_x = line.getX();
-  int max_idx = 0;
-  for (int i = 1; i < line_x.size() && line_x[i] <= path_height; ++i) {
-    max_idx = i;
-  }
-  return max_idx;
-}
-
-void OnPaint::update_leads( const cereal::RadarState::Reader &radar_state, const cereal::XYZTData::Reader &line) 
-{
-  lead_vertices_side.clear();
-  int  ncnt = 0;
-  for (auto const& rs : { radar_state.getLeadsLeft(), radar_state.getLeadsRight(), radar_state.getLeadsCenter() }) 
-  {
-      for (auto const& l : rs) 
-      {
-          lead_vertex_data vd;
-          QPointF vtmp;
-          float z = line.getZ()[get_path_length_idx(line, l.getDRel())];
-          if( !calib_frame_to_full_frame( l.getDRel(), -l.getYRel(), z + 0.61, &vtmp) ) continue;
-
-          int  save = 0;
-          vd.id = l.getRadarTrackId();
-          vd.x = vtmp.x();
-          vd.y = vtmp.y();
-          vd.d = l.getDRel();
-          vd.v = l.getVLeadK();
-          vd.y_rel = l.getYRel();
-          vd.v_lat = l.getVLat();
-
-          if (vd.v < -1.0 || vd.v > 1.0) save = 1;
-          //else if( vd.v_lat < -1.0 || vd.v_lat > 1.0 )  save = 1;
-          else if( vd.x > -1.0 || vd.x < 1.0 )  save = 1;
-
-          if( !save ) continue;
-
-          lead_vertices_side.push_back(vd);
-
-          ncnt++;
-          if( ncnt > 30 ) return;
-      }
-  }
-}
-
-
-void OnPaint::ui_draw_text( QPainter &p, const QRect& rc, const QString& text, float  size, const QColor& crBrush, const QColor& color )
-{
-    p.setFont( InterFont(size, QFont::Bold)); 
-
-    p.setPen( color );
-    p.setBrush( crBrush );
-    p.drawRoundedRect(rc, 20, 20);
-    p.drawText( rc, Qt::AlignCenter, text);
-}
-
-void OnPaint::drawRadarInfo( QPainter &p ) 
-{
-    char str[128];
-
-
-    if ( show_radar_info == 0 ) return;
-
-    int wStr = 40;
-    for (auto const& vrd : lead_vertices_side) 
-    {
-        auto [id, rx, ry, rd, rv, ry_rel, v_lat] = vrd;
-
-        if (rv < -1.0 || rv > 1.0) 
-        {
-            sprintf(str, "%2.0f", rv * 3.6);
-            wStr = 35 * (strlen(str) + 0);
-            QColor color = (rv>0.) ? Qt::green : Qt::red;
-            ui_draw_text( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, str, 30, color );
-        }
-#if 0
-        else if (v_lat < -1.0 || v_lat > 1.0) 
-        {
-            sprintf(str, "%.0f", (rv + v_lat) * 3.6);
-            wStr = 35 * (strlen(str) + 0);
-            ui_draw_text( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, str, 15, QColor(255, 165, 0) );
-            if ( show_radar_info >= 2) 
-            {
-                sprintf(str, "%.1f", ry_rel);
-                ui_draw_text( p, rx, ry - 40, str, 30, Qt::white, QFont::Bold);
-            }
-        }
-#endif
-        else if ( show_radar_info >= 3)
-        {
-            sprintf( str, "%.0f",v_lat*3.6);
-            p.setPen( Qt::yellow );
-            p.setFont( InterFont(15, QFont::Normal));
-            p.drawText( rx, ry, str);
-        }
-    }
-}

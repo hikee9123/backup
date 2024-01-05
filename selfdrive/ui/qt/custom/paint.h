@@ -114,7 +114,6 @@ private:
    NetworkImageWidget *icon_01;
    //QPixmap img_tire_pressure;
    int  is_debug;
-   int  show_radar_info = 3;  // 0:None,1:Display,2:RelPos,3:Stopped Car
 
    int    m_nBrakeStatus = 0;
    float  m_gasVal = 0;
@@ -153,13 +152,7 @@ private:
 // apilot
  private:
     void  ui_draw_text( QPainter &p, const QRect& rc, const QString& text, float  size, const QColor& crBrush, const QColor& color=Qt::white ); 
-    void  update_leads( const cereal::RadarState::Reader &radar_state, const cereal::XYZTData::Reader &line);
-    bool  calib_frame_to_full_frame( float in_x, float in_y, float in_z, QPointF *out);
-    int   get_path_length_idx(const cereal::XYZTData::Reader &line, const float path_height);
 
-    std::vector<lead_vertex_data> lead_vertices_side;
-
-    void drawRadarInfo( QPainter &p );
 
 
 signals:

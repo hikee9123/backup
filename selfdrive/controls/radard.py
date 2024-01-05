@@ -196,43 +196,6 @@ def get_lead(v_ego: float, ready: bool, tracks: Dict[int, Track], lead_msg: capn
 
 
 
-def get_lead_side( tracks, md ):
-  lane_width = 3.6
-  if len(tracks) == 0:
-    return [[],[],[]]
-
-  if md is not None and len(md.lateralPlannerSolution.x) == TRAJECTORY_SIZE:
-    md_y = md.lateralPlannerSolution.y
-    md_x = md.lateralPlannerSolution.x
-  else:
-    return [[],[],[]]
-
-  leads_center = {}
-  leads_left = {}
-  leads_right = {}
-  for c in tracks.values():
-    # d_y :  path_y - traks_y 의 diff값
-    # yRel값은 왼쪽이 +값, lead.y[0]값은 왼쪽이 -값
-    d_y = -c.yRel - interp(c.dRel, md_x, md_y)
-    ld = c.get_RadarState(c.vision_prob)
-    if abs(d_y) < lane_width/2:
-      leads_center[c.dRel] = ld
-    elif d_y < 0:
-      leads_left[c.dRel] = ld
-    else:
-      leads_right[c.dRel] = ld
-
-
-  ll = list(leads_left.values())
-  lr = list(leads_right.values())
-
-  if leads_center:
-    dRel_min = min(leads_center.keys())
-    lc = [leads_center[dRel_min]]
-  else:
-    lc = {}
-  return [ll,lc,lr]
-
 
 
 class RadarD:
@@ -249,7 +212,7 @@ class RadarD:
     self.radar_state_valid = False
 
     self.ready = False
-    self.show_radar_info = True
+
 
   def update(self, sm: messaging.SubMaster, rr: Optional[car.RadarData]):
     self.current_time = 1e-9*max(sm.logMonoTime.values())
@@ -303,11 +266,6 @@ class RadarD:
       self.radar_state.leadOne = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[0], model_v_ego, low_speed_override=True)
       self.radar_state.leadTwo = get_lead(self.v_ego, self.ready, self.tracks, leads_v3[1], model_v_ego, low_speed_override=False)
 
-    if self.show_radar_info: #self.extended_radar_enabled and self.ready:
-      ll,lc,lr = get_lead_side( self.tracks, sm['modelV2'] )
-      self.radar_state.leadsLeft = list(ll)
-      self.radar_state.leadsCenter = list(lc)
-      self.radar_state.leadsRight = list(lr)
 
   def publish(self, pm: messaging.PubMaster, lag_ms: float):
     assert self.radar_state is not None
