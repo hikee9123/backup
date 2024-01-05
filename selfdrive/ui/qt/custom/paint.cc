@@ -289,7 +289,7 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
   int  brakePress = m_nBrakeStatus & 0x01;
   int  brakeLights = m_nBrakeStatus & 0x02;
 
-   int  gasVal = m_gasVal * 100;
+   float  gasVal = m_gasVal * 100;
 
   if( brakePress  ) val_color = QColor(255, 0, 0, 255);
   else if( brakeLights ) val_color = QColor(201, 34, 49, 100);
