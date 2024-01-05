@@ -18,7 +18,7 @@
 OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent) 
 {
   m_sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
-    "peripheralState", "pandaStates", "gpsLocationExternal",
+    "peripheralState", "gpsLocationExternal",
     "naviCustom", "carStateCustom", "uICustom", //"carControlCustom",
   });
 
@@ -289,16 +289,16 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
   int  brakePress = m_nBrakeStatus & 0x01;
   int  brakeLights = m_nBrakeStatus & 0x02;
 
-   float  gasVal = m_gasVal * 200;
+   float  gasVal = m_gasVal * 100;
    float  gasLimit = 1;
 
   if( brakePress  ) val_color = QColor(255, 0, 0, 255);
   else if( brakeLights ) val_color = QColor(201, 34, 49, 100);
   else { //if (gasVal > 0) {
-      auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
-      return gasVal > 0 ? interpColor( gasVal, {gasLimit + 5, gasLimit + 15, gasLimit + 25}, {c1, c2, c3}) : c1;
+    auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
+      return gasVal > 0 ? interpColor( gasVal, {gasLimit + 10, gasLimit + 20, gasLimit + 30}, {c1, c2, c3}) : c1;
     };
-    val_color = interp_color(val_color, QColor(0xff, 0xe4, 0xbf), QColor(0xff, 0xbf, 0xbf));
+    val_color = interp_color(QColor(255, 255, 255), QColor(0, 255, 0), QColor(255, 255, 0));
   }
 
 
@@ -311,8 +311,9 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
   drawText3(p, x, 290, speedUnit, QColor(255,255,255,200) );
 
   QString  str;
-  str.sprintf("%.2f", gasVal );
-  drawText3(p, x, 350, str, QColor(255,255,255,200) );
+  str.sprintf("%.0f", gasVal );
+  p.setFont(InterFont(25));
+  drawText3(p, x, 340, str, QColor(255,255,255,200) );
 }
 
 

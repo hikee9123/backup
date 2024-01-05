@@ -28,11 +28,13 @@ int CSidebar::updateState(const UIState &s)
   if( frame_cnt < 2 ) return 0;
   frame_cnt = 0;
 
-  auto pandaStates = sm["pandaStates"].getPandaStates();
-  if (pandaStates.size() > 0) {
-    fBatteryVoltage = pandaStates[0].getVoltage() * 0.001;
-  }
+  auto peripheralState = sm["peripheralState"].getPeripheralState();
+  fBatteryVoltage = peripheralState.getVoltage() * 0.001;
 
+  //auto pandaStates = sm["pandaStates"].getPandaStates();
+  //if (pandaStates.size() > 0) {
+  //  fBatteryVoltage = pandaStates[0].getVoltage() * 0.001 + 0.2;
+  //}
   return 1;
 }
 
@@ -44,9 +46,8 @@ void CSidebar::paintEvent(QPainter &p)
   // atom - battery
   float  batteryPercent = 90.0;
 
-
   
- QColor  color;
+ QColor  color = QColor( 100, 100, 100 );
 
 
   QString beterryValtage;
@@ -54,41 +55,32 @@ void CSidebar::paintEvent(QPainter &p)
 
   if( fBatteryVoltage < 5 ) 
   {
-      color = QColor( 100, 100, 100 );
-      beterryValtage = "-";
-  }
-  else if( scene.started )  // 충전중.
-  {
-      if( fBatteryVoltage > 14.4 )     color = QColor( 0, 128, 255 );
-      else if( fBatteryVoltage > 13.4 ) color = QColor( 0, 255, 0 );
-      else if( fBatteryVoltage > 13.2 ) color = QColor( 255, 255, 0 );
-      else if( fBatteryVoltage > 12.5 ) color = QColor( 255, 128, 64 );
-      else  color = QColor( 255, 0, 0 );
+    beterryValtage = "-";
   }
   else
   {
-      if( fBatteryVoltage > 12.7 )     color = QColor( 0, 128, 255  );
-      else if( fBatteryVoltage > 12.4 ) color = QColor( 0, 255, 0  );
-      else if( fBatteryVoltage > 12.0 ) color = QColor( 255, 255, 0  );
-      else if( fBatteryVoltage > 11.6 ) color = QColor( 255, 128, 64 );
-      else if( fBatteryVoltage > 10.8)  color = QColor( 255, 0, 0 );
-      else if( fBatteryVoltage > 5)   color = QColor( 128, 0, 0 );
-      else  color = QColor( 255, 0, 0 );
+    auto interp_color = [=](QColor c1, QColor c2, QColor c3, QColor c4) {
+      if( scene.started )  // 충전중.
+          return fBatteryVoltage > 0 ? interpColor( fBatteryVoltage, { 11.51, 12.0, 13.0, 14.4 }, {c1, c2, c3, c4}) : c1;
+      else
+          return fBatteryVoltage > 0 ? interpColor( fBatteryVoltage, {11.51, 11.66, 11.96, 12.62}, {c1, c2, c3, c4}) : c1;
+    };
+
+    color = interp_color( QColor( 229, 0, 0 ), QColor( 229, 229, 0 ), QColor(0, 229, 0),  QColor( 0, 229, 229 ));
   }
 
 
-  const QRect  rect = battery_rc;
 
+  const QRect  rect = battery_rc;
   if( fBatteryVoltage > 5 )
   {
     QRect  bq(rect.left() + 6, rect.top() + 5, int((rect.width() - 19) * batteryPercent * 0.01), rect.height() - 11 );
-    QBrush bgBrush = color; //("#149948");
+    QBrush bgBrush = color;
     p.fillRect(bq, bgBrush);
   }
 
 
   p.drawPixmap( rect.x(), rect.y(), beterrry1_img );
-
   p.setPen(Qt::black);
   configFont(p, "Open Sans", 25, "Regular");  
   p.drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, beterryValtage);    
