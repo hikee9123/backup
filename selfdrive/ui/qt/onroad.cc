@@ -431,15 +431,19 @@ void AnnotatedCameraWidget::drawHud(QPainter &p) {
   }
 
   // current speed
-  p.setFont(InterFont(176, QFont::Bold));
-  drawText(p, rect().center().x(), 210, speedStr);
-  p.setFont(InterFont(66));
-  drawText(p, rect().center().x(), 290, speedUnit, 200);
+  //p.setFont(InterFont(176, QFont::Bold));
+  //drawText(p, rect().center().x(), 210, speedStr);
+  //p.setFont(InterFont(66));
+  //drawText(p, rect().center().x(), 290, speedUnit, 200);
 
 
   // #custom
   if( m_pPaint )
-     m_pPaint->drawHud(p);
+  {
+    m_pPaint->drawSpeed(p, rect().center().x(), speedStr, speedUnit );
+    m_pPaint->drawHud(p);
+  }
+     
   
   p.restore();
 }
@@ -614,10 +618,12 @@ void AnnotatedCameraWidget::drawLead(QPainter &painter, const cereal::RadarState
   painter.setBrush(redColor(fillAlpha));
   painter.drawPolygon(chevron, std::size(chevron));
 
-  //QString  str;
-  //str.format("%.1f",d_rel); 
-  //painter.setPen( QColor(255, 255, 0) );   
-  //painter.drawText(QRect(x - (sz * 1.25), y, 2 * (sz * 1.25), sz * 1.25), Qt::AlignCenter, str);
+  QString  str;
+  str.sprintf("%.0fkm/h",d_rel); 
+  painter.setPen( QColor(0, 0, 0) );
+  p.setFont( InterFont(28, QFont::Normal));
+  painter.drawText(QRect(x - (sz * 1.25), y, 2 * (sz * 1.25), sz * 1.25), Qt::AlignCenter, str);
+
   painter.restore();
 }
 

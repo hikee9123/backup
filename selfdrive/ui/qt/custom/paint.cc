@@ -88,6 +88,7 @@ void OnPaint::configFont(QPainter &p, const QString &family, int size, const QSt
 }
 
 
+
 void OnPaint::drawText1(QPainter &p, int x, int y, const QString &text, QColor qColor, int nAlign ) 
 {
   QFontMetrics fm(p.font());
@@ -118,6 +119,14 @@ void OnPaint::drawText2(QPainter &p, int x, int y, int flags, const QString &tex
   p.drawText(QRect(x, y, rect.width()+1, rect.height()), flags, text);
 }
 
+void OnPaint::drawText3(QPainter &p, int x, int y, const QString &text, QColor color) 
+{
+  QRect real_rect = p.fontMetrics().boundingRect(text);
+  real_rect.moveCenter({x, y - real_rect.height() / 2});
+
+  p.setPen( color );
+  p.drawText(real_rect.x(), real_rect.bottom(), text);
+}
 
 int OnPaint::get_time()
 {
@@ -228,6 +237,11 @@ void OnPaint::updateState(const UIState &s)
   auto car_state = sm1["carState"].getCarState();
   m_param.angleSteers = car_state.getSteeringAngleDeg();
   m_param.enginRpm =  car_state.getEngineRpm();
+  m_gasVal = car_state.getGas();
+  bool  brakePress = car_state.getBrakePressed();
+  bool  brakeLights = car_state.getBrakeLightsDEPRECATED();  
+  if( brakePress ) m_nBrakeStatus = 1; else m_nBrakeStatus = 0;
+  if( brakeLights ) m_nBrakeStatus |= 2;
 
   // 2.
   if (sm1.frame % (UI_FREQ) != 0)   
@@ -265,6 +279,35 @@ void OnPaint::drawHud(QPainter &p)
   drawRadarInfo( p );
 }
 
+
+
+
+void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit ) 
+{
+  // x = rect().center().x();
+  QColor  val_color = QColor(0x80, 0xd8, 0xa6, 0xff); // QColor(255, 255, 255, 255);
+  int  brakePress = m_nBrakeStatus & 0x01;
+  int  brakeLights = m_nBrakeStatus & 0x02;
+
+   int  gasVal = m_gasVal * 100;
+
+  if( brakePress  ) val_color = QColor(255, 0, 0, 255);
+  else if( brakeLights ) val_color = QColor(201, 34, 49, 100);
+  else { //if (gasVal > 0) {
+      auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
+      return gasVal > 0 ? interpColor( 0, {gasVal + 5, gasVal + 15, gasVal + 25}, {c1, c2, c3}) : c1;
+    };
+    val_color = interp_color(max_color, QColor(0xff, 0xe4, 0xbf), QColor(0xff, 0xbf, 0xbf));
+  }
+
+
+  // current speed
+  p.setFont(InterFont(176, QFont::Bold));
+  p.setPen( val_color );
+  drawText3(p, x, 210, speedStr, val_color );
+  p.setFont(InterFont(66));
+  drawText3(p, x, 290, speedUnit, QColor(255,255,255,200) );
+}
 
 
 void OnPaint::ui_main_navi( QPainter &p ) 
@@ -805,8 +848,8 @@ void OnPaint::update_leads( const cereal::RadarState::Reader &radar_state, const
           vd.v_lat = l.getVLat();
 
           if (vd.v < -1.0 || vd.v > 1.0) save = 1;
-          else if( vd.v_lat < -1.0 || vd.v_lat > 1.0 )  save = 1;
-          else if( vd.x > -5.0 || vd.x < 5.0 )  save = 1;
+          //else if( vd.v_lat < -1.0 || vd.v_lat > 1.0 )  save = 1;
+          else if( vd.x > -1.0 || vd.x < 1.0 )  save = 1;
 
           if( !save ) continue;
 
@@ -846,7 +889,7 @@ void OnPaint::drawRadarInfo( QPainter &p )
             sprintf(str, "%2.0f", rv * 3.6);
             wStr = 35 * (strlen(str) + 0);
             QColor color = (rv>0.) ? Qt::green : Qt::red;
-            ui_draw_text( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, str, 40, color );
+            ui_draw_text( p, { (int)(rx - wStr / 2), (int)(ry - 35), wStr, 42 }, str, 30, color );
         }
 #if 0
         else if (v_lat < -1.0 || v_lat > 1.0) 
@@ -861,10 +904,11 @@ void OnPaint::drawRadarInfo( QPainter &p )
             }
         }
 #endif
-        else if ( show_radar_info >= 3) 
+        else if ( show_radar_info >= 3)
         {
-            sprintf( str, "%d",id);
-            p.setPen( Qt::red );
+            sprintf( str, "%.0f",v_lat*3.6);
+            p.setPen( Qt::yellow );
+            p.setFont( InterFont(15, QFont::Normal));
             p.drawText( rx, ry, str);
         }
     }

@@ -119,6 +119,7 @@ class CarStateCustom():
 
 
     ret.engineRpm = cp.vl["E_EMS11"]["N"] # opkr
+    ret.brakeLightsDEPRECATED = cp.vl["TCS13"]['BrakeLight']
     self.is_highway = self.lfahda["HDA_Icon_State"] != 0.
     self.lead_distance = cp.vl["SCC11"]["ACC_ObjDist"]
 

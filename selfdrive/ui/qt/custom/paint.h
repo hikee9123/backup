@@ -8,6 +8,27 @@
 #include "selfdrive/ui/qt/custom/widgetNetImg.h"
 
 
+/*
+Qt::white, 
+Qt::black, 
+Qt::red, 
+Qt::darkRed, 
+Qt::green, 
+Qt::darkGreen, 
+Qt::blue, 
+Qt::darkBlue, 
+Qt::cyan, 
+Qt::darkCyan, 
+Qt::magenta, 
+Qt::darkMagenta, 
+Qt::yellow, 
+Qt::darkYellow, 
+Qt::gray, 
+Qt::darkGray, 
+Qt::lightGray
+*/
+
+
 typedef struct {
     int id;
     float x, y, d, v, y_rel, v_lat;
@@ -19,12 +40,14 @@ class OnPaint : public QWidget
 
 public:
   explicit OnPaint(QWidget *parent, int width, int height );
-  void updateState(const UIState &s);
-  void drawHud(QPainter &p);
+  void    updateState(const UIState &s);
+  void    drawHud(QPainter &p);
+  void    drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit );
 
 private:
   void    drawText1(QPainter &p, int x, int y, const QString &text, QColor qColor = QColor(255,255,255,255), int nAlign = Qt::AlignCenter  );
   void    drawText2(QPainter &p, int x, int y, int flags, const QString &text, const QColor color = QColor(255, 255, 255, 220) );
+  void    drawText3(QPainter &p, int x, int y, const QString &text, QColor color);
   int     get_time();
 
 private:
@@ -93,15 +116,17 @@ private:
    int  is_debug;
    int  show_radar_info = 3;  // 0:None,1:Display,2:RelPos,3:Stopped Car
 
+   int    m_nBrakeStatus = 0;
+   float  m_gasVal = 0;
 
 private:
   void   configFont(QPainter &p, const QString &family, int size, const QString &style);
 
 // navi
 private:
-  float  interp( float xv, float xp[], float fp[], int N);
-  int    get_param( const std::string &key );
-  QString gearGap( int gear_step, QColor &color );
+  float     interp( float xv, float xp[], float fp[], int N);
+  int       get_param( const std::string &key );
+  QString   gearGap( int gear_step, QColor &color );
 // tpms
 private:
   QColor   get_tpms_color(int tpms); 
