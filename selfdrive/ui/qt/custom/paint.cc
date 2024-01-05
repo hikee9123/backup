@@ -289,8 +289,8 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
   int  brakePress = m_nBrakeStatus & 0x01;
   int  brakeLights = m_nBrakeStatus & 0x02;
 
-   float  gasVal = m_gasVal * 100;
-   float  gasLimit = 100;
+   float  gasVal = m_gasVal * 200;
+   float  gasLimit = 1;
 
   if( brakePress  ) val_color = QColor(255, 0, 0, 255);
   else if( brakeLights ) val_color = QColor(201, 34, 49, 100);
@@ -312,7 +312,7 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
 
   QString  str;
   str.sprintf("%.2f", gasVal );
-  drawText3(p, x, 310, str, QColor(255,255,255,200) );
+  drawText3(p, x, 350, str, QColor(255,255,255,200) );
 }
 
 
