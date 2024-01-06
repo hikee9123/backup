@@ -48,7 +48,6 @@ private:
   void    drawText1(QPainter &p, int x, int y, const QString &text, QColor qColor = QColor(255,255,255,255), int nAlign = Qt::AlignCenter  );
   void    drawText2(QPainter &p, int x, int y, int flags, const QString &text, const QColor color = QColor(255, 255, 255, 220) );
   void    drawText3(QPainter &p, int x, int y, const QString &text, QColor color);
-  int     get_time();
 
 private:
   void   ui_main_navi( QPainter &p );

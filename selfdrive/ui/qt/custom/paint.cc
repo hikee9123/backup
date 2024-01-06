@@ -140,19 +140,7 @@ void OnPaint::ui_draw_text( QPainter &p, const QRect& rc, const QString& text, f
 }
 
 
-int OnPaint::get_time()
-{
-  int iRet;
-  struct timeval tv;
-  int seconds = 0;
 
-  iRet = gettimeofday(&tv, NULL);
-  if (iRet == 0)
-  {
-     seconds = (int)tv.tv_sec;
-  }
-  return seconds;
-}
 
 int OnPaint::get_param( const std::string &key )
 {
@@ -275,8 +263,6 @@ void OnPaint::drawHud(QPainter &p)
      bb_ui_draw_UI( p );
   }
 
-
-  drawRadarInfo( p );
 }
 
 

@@ -9,6 +9,7 @@
 
 #include <QTabWidget>
 #include <QObject>
+#include <QJsonArray>
 
 
 #include "common/params.h"
@@ -254,13 +255,22 @@ void CustomPanel::showEvent(QShowEvent *event)
   auto carSupport = carState_custom.getSupportedCars();
   int  nCnt = carSupport.size();
 
-  //printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
-  for (int i = 0; i<nCnt; i++) {
-    QString car = QString::fromStdString( carSupport[i] );
-    m_cars.append( car );
-    //printf("%s \n", car.toStdString().c_str());
+  printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
+  if( nCnt <= 0 )
+  {
+      QJsonArray surportCar = m_jsonobj["SurportCars"].toArray();
+      for (const auto& item : surportCar) {
+            m_cars.append(item.toString());
+      }      
   }
-
+  else
+  {  
+    for (int i = 0; i<nCnt; i++) {
+      QString car = QString::fromStdString( carSupport[i] );
+      m_cars.append( car );
+      //printf("%s \n", car.toStdString().c_str());
+    }
+  }
 }
 
 void CustomPanel::hideEvent(QHideEvent *event)
@@ -343,6 +353,14 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
 
   QObject::connect( changeCar, &ButtonControl::clicked, [=]() {
     QStringList items = m_pCustom->m_cars;
+
+
+      QJsonArray jsonArray;
+      foreach (const QString &item, items) {
+        jsonArray.append(item);
+      }
+      m_jsonobj["SurportCars"] = jsonArray;
+
     QString selection = MultiOptionDialog::getSelection(tr("Select a car"), items, selected_car, this);
     if ( !selection.isEmpty() ) 
     {
