@@ -622,6 +622,8 @@ void AnnotatedCameraWidget::drawLead(QPainter &painter, const cereal::RadarState
   painter.setBrush(redColor(fillAlpha));
   painter.drawPolygon(chevron, std::size(chevron));
 
+
+  #custom
   QString  str;
   str.sprintf("%.0f",d_rel); 
   painter.setPen( QColor(0, 0, 0) );

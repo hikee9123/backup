@@ -17,7 +17,7 @@ from openpilot.selfdrive.boardd.set_time import set_time
 from openpilot.system.hardware import HARDWARE, PC
 from openpilot.selfdrive.manager.helpers import unblock_stdout, write_onroad_params
 from openpilot.selfdrive.manager.process import ensure_running
-from openpilot.selfdrive.manager.process_config import managed_processes, set_mapbox
+from openpilot.selfdrive.manager.process_config import managed_processes, set_mapbox    #custom
 from openpilot.selfdrive.athena.registration import register, UNREGISTERED_DONGLE_ID
 from openpilot.common.swaglog import cloudlog, add_file_handler
 from openpilot.system.version import is_dirty, get_commit, get_version, get_origin, get_short_branch, \
