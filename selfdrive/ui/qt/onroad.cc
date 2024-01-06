@@ -440,8 +440,8 @@ void AnnotatedCameraWidget::drawHud(QPainter &p) {
   // #custom
   if( m_pPaint )
   {
-    m_pPaint->drawSpeed(p, rect().center().x(), speedStr, speedUnit );
     m_pPaint->drawHud(p);
+    m_pPaint->drawSpeed(p, rect().center().x(), speedStr, speedUnit );
   }
      
   

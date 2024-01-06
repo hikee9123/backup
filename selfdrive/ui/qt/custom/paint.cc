@@ -246,10 +246,11 @@ void OnPaint::drawHud(QPainter &p)
   
   ui_main_navi( p );
 
+  ui_main_debug( p );
+
   if( m_param.ui.getDebug() )
   {
     ui_draw_debug1( p );
-    ui_main_debug( p );
   }
 
   // 2. tpms
@@ -296,10 +297,10 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
   p.setFont(InterFont(66));
   drawText3(p, x, 290, speedUnit, QColor(255,255,255,200) );
 
-  QString  str;
-  str.sprintf("%.0f", gasVal );
-  p.setFont(InterFont(30));
-  drawText3(p, x, 335, str, QColor(255,255,255,200) );
+ // QString  str;
+ // str.sprintf("%.0f", gasVal );
+ // p.setFont(InterFont(30));
+ // drawText3(p, x, 335, str, QColor(255,255,255,200) );
 }
 
 
@@ -319,6 +320,7 @@ void OnPaint::ui_main_navi( QPainter &p )
     p.setPen( QColor(0, 0, 0, 255) );
     p.setBrush(QColor(255, 255, 255, 100));
     p.drawRoundedRect(rc, 20, 20);
+    p.setFont(InterFont(66, QFont::Bold));
     p.drawText( rc, Qt::AlignCenter, text4);
   }
 }
