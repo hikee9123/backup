@@ -410,6 +410,8 @@ void OnPaint::ui_main_debug(QPainter &p)
   {
     QString text;
     
+    p.setFont(InterFont(38));
+
     text.sprintf("lag ms=%3.0f ", m_param.cumLagMs );    
     p.drawText( bb_x, bb_y+nGap, text );
   }
