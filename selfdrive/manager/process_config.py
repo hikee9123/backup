@@ -53,7 +53,7 @@ def set_mapbox()  -> bool:
     else:
         print("Mapbox token is None. Please check your configuration.")
   
-  print('1.environ (set_mapbox)  mapbox_token ={}'.format(mapbox_token) )
+    print('1.environ (set_mapbox)  mapbox_token ={}'.format(mapbox_token) )
   return True 
 
 
