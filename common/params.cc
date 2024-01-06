@@ -210,6 +210,13 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"Version", PERSISTENT},
     {"VisionRadarToggle", PERSISTENT},
     {"WheeledBody", PERSISTENT},
+
+
+    // #custom
+    {"CustomParam", PERSISTENT},
+    {"UseExternalNaviRoutes", PERSISTENT},
+    {"MapboxToken", PERSISTENT},
+    {"SelectedCar", PERSISTENT},
 };
 
 } // namespace

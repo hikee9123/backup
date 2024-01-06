@@ -41,6 +41,23 @@ def only_onroad(started: bool, params, CP: car.CarParams) -> bool:
 def only_offroad(started, params, CP: car.CarParams) -> bool:
   return not started
 
+#custom
+def UseExternalNaviRoutes()  -> bool:
+  return Params().get_bool('UseExternalNaviRoutes')
+
+def set_mapbox()  -> bool:
+  if UseExternalNaviRoutes():
+    mapbox_token = Params().get("MapboxToken", encoding='utf8')
+    if mapbox_token is not None:
+        os.environ['MAPBOX_TOKEN'] = mapbox_token
+    else:
+        print("Mapbox token is None. Please check your configuration.")
+  
+    print('1.environ (set_mapbox)  mapbox_token ={}'.format(mapbox_token) )
+  return True 
+
+
+
 procs = [
   DaemonProcess("manage_athenad", "selfdrive.athena.manage_athenad", "AthenadPid"),
 
@@ -54,7 +71,7 @@ procs = [
   PythonProcess("dmonitoringmodeld", "selfdrive.modeld.dmonitoringmodeld", driverview, enabled=(not PC or WEBCAM)),
   NativeProcess("encoderd", "system/loggerd", ["./encoderd"], only_onroad),
   NativeProcess("stream_encoderd", "system/loggerd", ["./encoderd", "--stream"], notcar),
-  NativeProcess("loggerd", "system/loggerd", ["./loggerd"], logging),
+  #NativeProcess("loggerd", "system/loggerd", ["./loggerd"], logging),
   NativeProcess("modeld", "selfdrive/modeld", ["./modeld"], only_onroad),
   NativeProcess("mapsd", "selfdrive/navd", ["./mapsd"], only_onroad),
   PythonProcess("navmodeld", "selfdrive.modeld.navmodeld", only_onroad),
@@ -69,7 +86,7 @@ procs = [
   PythonProcess("deleter", "system.loggerd.deleter", always_run),
   PythonProcess("dmonitoringd", "selfdrive.monitoring.dmonitoringd", driverview, enabled=(not PC or WEBCAM)),
   PythonProcess("qcomgpsd", "system.qcomgpsd.qcomgpsd", qcomgps, enabled=TICI),
-  PythonProcess("navd", "selfdrive.navd.navd", only_onroad),
+  PythonProcess("navd", "selfdrive.navd.navd", only_onroad, enabled=not UseExternalNaviRoutes() ),
   PythonProcess("pandad", "selfdrive.boardd.pandad", always_run),
   PythonProcess("paramsd", "selfdrive.locationd.paramsd", only_onroad),
   NativeProcess("ubloxd", "system/ubloxd", ["./ubloxd"], ublox, enabled=TICI),
@@ -79,8 +96,13 @@ procs = [
   PythonProcess("thermald", "selfdrive.thermald.thermald", always_run),
   PythonProcess("tombstoned", "selfdrive.tombstoned", always_run, enabled=not PC),
   PythonProcess("updated", "selfdrive.updated", only_offroad, enabled=not PC),
-  PythonProcess("uploader", "system.loggerd.uploader", always_run),
+  #PythonProcess("uploader", "system.loggerd.uploader", always_run),
   PythonProcess("statsd", "selfdrive.statsd", always_run),
+
+  #custom
+  PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", only_onroad),
+  PythonProcess("navi_route", "selfdrive.custom.navi.navi_route", only_onroad, enabled=UseExternalNaviRoutes() ),
+
 
   # debug procs
   NativeProcess("bridge", "cereal/messaging", ["./bridge"], notcar),

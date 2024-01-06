@@ -17,7 +17,7 @@ from openpilot.selfdrive.boardd.set_time import set_time
 from openpilot.system.hardware import HARDWARE, PC
 from openpilot.selfdrive.manager.helpers import unblock_stdout, write_onroad_params
 from openpilot.selfdrive.manager.process import ensure_running
-from openpilot.selfdrive.manager.process_config import managed_processes
+from openpilot.selfdrive.manager.process_config import managed_processes, set_mapbox
 from openpilot.selfdrive.athena.registration import register, UNREGISTERED_DONGLE_ID
 from openpilot.common.swaglog import cloudlog, add_file_handler
 from openpilot.system.version import is_dirty, get_commit, get_version, get_origin, get_short_branch, \
@@ -31,7 +31,8 @@ def manager_init() -> None:
   set_time(cloudlog)
 
   # save boot log
-  subprocess.call("./bootlog", cwd=os.path.join(BASEDIR, "system/loggerd"))
+  #custom
+  #subprocess.call("./bootlog", cwd=os.path.join(BASEDIR, "system/loggerd"))
 
   params = Params()
   params.clear_all(ParamKeyType.CLEAR_ON_MANAGER_START)
@@ -96,6 +97,11 @@ def manager_init() -> None:
 
   if not is_dirty():
     os.environ['CLEAN'] = '1'
+
+  #custom
+  print('#register= reg_res {}'.format( reg_res) )
+  set_mapbox()
+
 
   # init logging
   sentry.init(sentry.SentryProject.SELFDRIVE)

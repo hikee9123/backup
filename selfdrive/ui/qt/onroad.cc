@@ -43,6 +43,7 @@ OnroadWindow::OnroadWindow(QWidget *parent) : QWidget(parent) {
   split->setSpacing(0);
   split->addWidget(nvg);
 
+  printf( "#register= DUAL_CAMERA_VIEW=%s MAP_RENDER_VIEW=%s\n", getenv("DUAL_CAMERA_VIEW"), getenv("MAP_RENDER_VIEW") );
   if (getenv("DUAL_CAMERA_VIEW")) {
     CameraWidget *arCam = new CameraView("camerad", VISION_STREAM_ROAD, true, this);
     split->insertWidget(0, arCam);
@@ -106,8 +107,10 @@ void OnroadWindow::mousePressEvent(QMouseEvent* e) {
 }
 
 void OnroadWindow::offroadTransition(bool offroad) {
+    printf("#register= offroadTransition  offroad=%d \n", offroad );  
 #ifdef ENABLE_MAPS
   if (!offroad) {
+    printf("#register= offroadTransition  offroad=%d MAPBOX_TOKEN=%s hasPrime=%d\n",offroad, MAPBOX_TOKEN.toStdString().c_str(), uiState()->hasPrime() );  
     if (map == nullptr && (uiState()->hasPrime() || !MAPBOX_TOKEN.isEmpty())) {
       auto m = new MapPanel(get_mapbox_settings());
       map = m;
@@ -131,6 +134,7 @@ void OnroadWindow::offroadTransition(bool offroad) {
 
 void OnroadWindow::primeChanged(bool prime) {
 #ifdef ENABLE_MAPS
+  printf("#register= primeChanged  MAPBOX_TOKEN=%s prime=%d\n",MAPBOX_TOKEN.toStdString().c_str(), prime );
   if (map && (!prime && MAPBOX_TOKEN.isEmpty())) {
     nvg->map_settings_btn->setEnabled(false);
     nvg->map_settings_btn->setVisible(false);
@@ -277,6 +281,10 @@ AnnotatedCameraWidget::AnnotatedCameraWidget(VisionStreamType type, QWidget* par
   main_layout->addWidget(map_settings_btn, 0, Qt::AlignBottom | Qt::AlignRight);
 
   dm_img = loadPixmap("../assets/img_driver_face.png", {img_size + 5, img_size + 5});
+
+
+  // #custom
+  m_pPaint = new OnPaint(this, width(), height());
 }
 
 void AnnotatedCameraWidget::updateState(const UIState &s) {
@@ -331,6 +339,10 @@ void AnnotatedCameraWidget::updateState(const UIState &s) {
   }
 
   update();
+
+  // #custom
+  if( m_pPaint )
+     m_pPaint->updateState(s);  
 }
 
 void AnnotatedCameraWidget::drawHud(QPainter &p) {
@@ -423,11 +435,20 @@ void AnnotatedCameraWidget::drawHud(QPainter &p) {
   }
 
   // current speed
-  p.setFont(InterFont(176, QFont::Bold));
-  drawText(p, rect().center().x(), 210, speedStr);
-  p.setFont(InterFont(66));
-  drawText(p, rect().center().x(), 290, speedUnit, 200);
+  //p.setFont(InterFont(176, QFont::Bold));
+  //drawText(p, rect().center().x(), 210, speedStr);
+  //p.setFont(InterFont(66));
+  //drawText(p, rect().center().x(), 290, speedUnit, 200);
 
+
+  // #custom
+  if( m_pPaint )
+  {
+    m_pPaint->drawHud(p);
+    m_pPaint->drawSpeed(p, rect().center().x(), speedStr, speedUnit );
+  }
+     
+  
   p.restore();
 }
 
@@ -600,6 +621,12 @@ void AnnotatedCameraWidget::drawLead(QPainter &painter, const cereal::RadarState
   QPointF chevron[] = {{x + (sz * 1.25), y + sz}, {x, y}, {x - (sz * 1.25), y + sz}};
   painter.setBrush(redColor(fillAlpha));
   painter.drawPolygon(chevron, std::size(chevron));
+
+  QString  str;
+  str.sprintf("%.0f",d_rel); 
+  painter.setPen( QColor(0, 0, 0) );
+  painter.setFont( InterFont(28, QFont::Normal));
+  painter.drawText(QRect(x - (sz * 1.25), y, 2 * (sz * 1.25), sz * 1.25), Qt::AlignCenter, str);
 
   painter.restore();
 }
