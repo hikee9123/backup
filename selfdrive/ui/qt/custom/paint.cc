@@ -243,10 +243,12 @@ void OnPaint::updateState(const UIState &s)
 void OnPaint::drawHud(QPainter &p)
 {
   if( !is_debug ) return;
-  
-  ui_main_navi( p );
 
   ui_main_debug( p );
+
+
+  ui_main_navi( p );
+
 
   if( m_param.ui.getDebug() )
   {
