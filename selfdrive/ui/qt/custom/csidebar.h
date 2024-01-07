@@ -8,7 +8,7 @@
 #include "selfdrive/ui/ui.h"
 
 
-
+/*
 class DigSetup : public QDialog {
 public:
     DigSetup(QWidget* parent = nullptr) : QDialog(parent) {
@@ -38,7 +38,7 @@ public:
 private:
     QPushButton* closeButton;    
 };
-
+*/
 
 /*
 if( m_dlg == nullptr )
