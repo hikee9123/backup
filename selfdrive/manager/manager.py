@@ -5,6 +5,7 @@ import signal
 import subprocess
 import sys
 import traceback
+import json
 from typing import List, Tuple, Union
 
 from cereal import log
