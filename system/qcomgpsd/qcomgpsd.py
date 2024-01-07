@@ -134,9 +134,20 @@ def downloader_loop(event):
 
 @retry(attempts=5, delay=0.2, ignore_failure=True)
 def inject_assistance():
-  cmd = f"mmcli -m any --timeout 30 --location-inject-assistance-data={ASSIST_DATA_FILE}"
-  subprocess.check_output(cmd, stderr=subprocess.PIPE, shell=True)
-  cloudlog.info("successfully loaded assistance data")
+  try:
+    cmd = f"mmcli -m any --timeout 30 --location-inject-assistance-data={ASSIST_DATA_FILE}"
+    subprocess.check_output(cmd, stderr=subprocess.PIPE, shell=True)
+    cloudlog.info("successfully loaded assistance data")
+    return
+  except subprocess.CalledProcessError as e:
+    cloudlog.event(
+      "qcomgps.assistance_loading_failed",
+      error=True,
+      cmd=e.cmd,
+      output=e.output,
+      returncode=e.returncode
+    )
+  cloudlog.error("failed to load assistance after retry")
 
 @retry(attempts=5, delay=1.0)
 def setup_quectel(diag: ModemDiag) -> bool:
