@@ -114,6 +114,47 @@ def manager_init() -> None:
                        device=HARDWARE.get_device_type())
 
 
+
+
+  setNavDestination( 36.85520956438799,  127.10113048553467, "KNJ", "음봉면 산동리 123-1" )
+
+  destinations = [
+    {
+        "label": "home",
+        "place_name": "Y-CITY",
+        "latitude": 36.795866143196015,
+        "longitude": 127.10831880569458,
+        "place_details": "배방읍 광장로 210",
+        "save_type": "favorite",
+    },
+    {
+        "label": "work",
+        "place_name": "KNJ",
+        "latitude": 36.85520956438799,
+        "longitude": 127.10113048553467,
+        "place_details": "음봉면 산동리 123-1",
+        "save_type": "favorite",
+    },
+    {
+        "label": "recent",
+        "place_name": "고향",
+        "latitude": 37.064122032373774,
+        "longitude": 127.80750423325486,
+        "place_details": "충주시 동막고개길",
+        "save_type": "favorite",
+    },
+    {
+        "label": "recent",
+        "place_name": "서울아산병원",
+        "latitude": 37.5265455,
+        "longitude": 127.1081223,
+        "place_details": "송파구 올림픽로43길 88",
+        "save_type": "favorite",
+    },       
+  ]
+  params.put("NavPastDestinations", json.dumps(destinations) )
+  
+
 def manager_prepare() -> None:
   for p in managed_processes.values():
     p.prepare()
