@@ -8,7 +8,36 @@
 #include "selfdrive/ui/ui.h"
 
 
+class DlgSetup : public QDialog {
+public:
+    DlgSetup(QWidget* parent = nullptr) : QDialog(parent) {
+        setWindowTitle("Navigation");
 
+        //QLabel* label = new QLabel("This is a modeless dialog.");
+        QPushButton* closeButton = new QPushButton("Close");
+        connect(closeButton, &QPushButton::clicked, this, &QDialog::close);
+
+        QVBoxLayout* layout = new QVBoxLayout();
+        //layout->addWidget(label);
+        layout->addWidget(closeButton);
+
+
+        setLayout(layout);
+
+        resize( 1024, 768);
+        setWindowOpacity(0.1);
+        closeButton->move(10, 10);
+        closeButton->resize(100, 50);
+    }
+};
+
+/*
+if( m_dlg == nullptr )
+{
+  m_dlg = new ModelessDialog(this);
+}
+m_dlg->show();
+*/
 
 class CSidebar  {
 public:
