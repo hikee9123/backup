@@ -274,8 +274,8 @@ void SetupWidget::replyFinished(const QString &response, bool success) {
 
   QJsonObject json = doc.object();
 
-  // #custom
-  PrimeType prime_type = PrimeType::LITE;// static_cast<PrimeType>(json["prime_type"].toInt());
+  // #custom  PrimeType::LITE;//
+  PrimeType prime_type =  static_cast<PrimeType>(json["prime_type"].toInt());
   uiState()->setPrimeType(prime_type);
 
   if (!json["is_paired"].toBool()) {
