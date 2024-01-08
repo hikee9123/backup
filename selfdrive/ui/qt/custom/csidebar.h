@@ -35,7 +35,7 @@ public:
         closeButton->resize(100, 50);
     }
 
-   ~ModelessDialog() {
+   ~DigSetup() {
         delete closeButton;
     }
 
