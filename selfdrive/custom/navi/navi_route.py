@@ -225,6 +225,8 @@ class RouteEngine:
       return
 
     step = self.route[self.step_idx]
+    print('step{}={}'.format( self.step_idx, step) )
+    
     geometry = self.route_geometry[self.step_idx]
     along_geometry = distance_along_geometry(geometry, self.last_position)
     distance_to_maneuver_along_geometry = step['distance'] - along_geometry
