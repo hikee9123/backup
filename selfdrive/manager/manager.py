@@ -118,7 +118,7 @@ def manager_init() -> None:
 
 
   #custom
-  setNavDestination( 36.85520956438799,  127.10113048553467, "KNJ", "음봉면 산동리 123-1" )
+  #setNavDestination( 36.85520956438799,  127.10113048553467, "KNJ", "음봉면 산동리 123-1" )
   destinations = [
     {
         "label": "home",
