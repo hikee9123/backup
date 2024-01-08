@@ -48,6 +48,8 @@ class RouteEngine:
 
     self.reroute_counter = 0
 
+    self.distance_old = None
+
   
 
     if "MAPBOX_TOKEN" in os.environ:
@@ -225,7 +227,10 @@ class RouteEngine:
       return
 
     step = self.route[self.step_idx]
-    print('step{}={}'.format( self.step_idx, step) )
+
+    if self.distance_old != step['distance']:
+      self.distance_old = step['distance']
+      print('\nstepno={} {}'.format( self.step_idx, step) )
     
     geometry = self.route_geometry[self.step_idx]
     along_geometry = distance_along_geometry(geometry, self.last_position)
