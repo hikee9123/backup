@@ -205,31 +205,33 @@ class RouteEngine:
 
   def send_instruction(self):
     msg = messaging.new_message('navInstruction', valid=True)
-    msg.valid = False
+    
+    naviData = None
     if self.sm.updated["naviCustom"]:
       naviData = self.sm["naviCustom"].naviData
-
       if naviData.active:
-        msg.valid = True
-      if naviData.camLimitSpeed:
-        msg.navInstruction.speedLimit = naviData.camLimitSpeed / 3.6
-        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna        
+        if naviData.camLimitSpeed:
+          msg.navInstruction.speedLimit = naviData.camLimitSpeed / 3.6
+          msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna        
+        else:
+          msg.navInstruction.speedLimit = naviData.roadLimitSpeed / 3.6
+          msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
       else:
-        msg.navInstruction.speedLimit = naviData.roadLimitSpeed / 3.6
-        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
-
+        naviData = None  
       #msg.navInstruction.maneuverDistance = naviData.camLimitSpeedLeftDist
-    else:
-      naviData = None
+
+      
 
     if self.step_idx is None:
+      if naviData == None:
+        msg.valid = False
       self.pm.send('navInstruction', msg)
       return
 
     step = self.route[self.step_idx]
 
-    if self.distance_old != step['distance']:
-      self.distance_old = step['distance']
+    if self.distance_old != step['location']:
+      self.distance_old = step['location']
       print('\n stepno={} {}'.format( self.step_idx, step) )
     
     geometry = self.route_geometry[self.step_idx]
