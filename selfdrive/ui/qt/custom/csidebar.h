@@ -4,11 +4,15 @@
 
 #include <QFrame>
 #include <QMap>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 #include "selfdrive/ui/ui.h"
 
 
-/*
+
 class DigSetup : public QDialog {
 public:
     DigSetup(QWidget* parent = nullptr) : QDialog(parent) {
@@ -38,7 +42,7 @@ public:
 private:
     QPushButton* closeButton;    
 };
-*/
+
 
 /*
 if( m_dlg == nullptr )
