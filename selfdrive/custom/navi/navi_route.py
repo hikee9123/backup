@@ -230,7 +230,7 @@ class RouteEngine:
 
     if self.distance_old != step['distance']:
       self.distance_old = step['distance']
-      print('\nstepno={} {}'.format( self.step_idx, step) )
+      print('\n stepno={} {}'.format( self.step_idx, step) )
     
     geometry = self.route_geometry[self.step_idx]
     along_geometry = distance_along_geometry(geometry, self.last_position)
