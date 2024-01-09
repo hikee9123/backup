@@ -237,6 +237,18 @@ void OnPaint::updateState(const UIState &s)
     auto controls_state = sm1["controlsState"].getControlsState();
     m_param.cumLagMs = controls_state.getCumLagMs();
   }
+
+
+
+  auto navInstruction = sm1["navInstruction"].getNavInstruction();
+  auto maneuver =  navInstruction.getManeuver();
+
+  m_param.type = maneuver.getType();
+  m_param.Instructio = maneuver.getInstruction();
+  m_param.bearing_after = maneuver.getBearingAfter();
+  m_param.bearing_before = maneuver.getBearingBefore();
+
+
 }
 
 
@@ -265,6 +277,9 @@ void OnPaint::drawHud(QPainter &p)
   {
      bb_ui_draw_UI( p );
   }
+
+ 
+
 
 }
 
@@ -397,6 +412,20 @@ void OnPaint::ui_draw_debug1( QPainter &p )
   p.drawText( QRect(bb_x, 0, bb_w, 42), text1, textOpt );
   p.drawText( QRect(bb_x, bb_y, bb_w, 42), text2, textOpt );
   p.drawText( QRect(bb_x, bb_y+45, bb_w, 42), text3, textOpt );
+
+
+  m_param.type = maneuver.getType();
+  m_param.Instructio = maneuver.getInstruction();
+  m_param.bearing_after = maneuver.getBearingAfter();
+  m_param.bearing_before = maneuver.getBearingBefore();
+
+  text1 = QString::fromStdString(m_param.type);
+  text2 = QString::fromStdString(m_param.Instructio);
+  p.drawText( bb_x, 100,  text1 );
+  p.drawText( bb_x, 150,  text2 );
+
+  text2.sprintf("%d", m_param.bearing_after);  p.drawText( bb_x, 200,  text2 );
+  text2.sprintf("%d", m_param.bearing_before); p.drawText( bb_x, 250,  text2 ); 
 }
 
 

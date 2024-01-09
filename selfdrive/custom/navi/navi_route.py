@@ -230,10 +230,17 @@ class RouteEngine:
 
     step = self.route[self.step_idx]
 
-    #if self.distance_old != step['location']:
-    #  self.distance_old = step['location']
-    #  print('\n stepno={} {}'.format( self.step_idx, step) )
+    maneuver_info = step['maneuver']
+    location = maneuver_info['location']
+    if self.distance_old != location:
+       self.distance_old = location
+       print('\r\n stepno={} {}'.format( self.step_idx, step) )
     
+    msg.navInstruction.maneuver.type = maneuver_info['type']
+    msg.navInstruction.maneuver.instruction = maneuver_info['instruction']
+    msg.navInstruction.maneuver.bearingAfter = maneuver_info['bearing_after']
+    msg.navInstruction.maneuver.bearingBefore = maneuver_info['bearing_before']
+
     geometry = self.route_geometry[self.step_idx]
     along_geometry = distance_along_geometry(geometry, self.last_position)
     distance_to_maneuver_along_geometry = step['distance'] - along_geometry
