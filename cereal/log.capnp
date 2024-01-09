@@ -2107,8 +2107,8 @@ struct NavInstruction {
   struct ManeuverInfo {
     type @0 :Text;
     instruction @1 :Text;
-    bearingAfter @1 :Int16;
-    bearingBefore @1 :Int16;
+    bearingAfter @2 :Int16;
+    bearingBefore @3 :Int16;
   }
 
   struct Lane {
