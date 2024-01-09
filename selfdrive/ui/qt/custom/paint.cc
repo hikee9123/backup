@@ -414,10 +414,10 @@ void OnPaint::ui_draw_debug1( QPainter &p )
   p.drawText( QRect(bb_x, bb_y+45, bb_w, 42), text3, textOpt );
 
 
-  m_param.type = maneuver.getType();
-  m_param.Instructio = maneuver.getInstruction();
-  m_param.bearing_after = maneuver.getBearingAfter();
-  m_param.bearing_before = maneuver.getBearingBefore();
+  // m_param.type = maneuver.getType();
+  // m_param.Instructio = maneuver.getInstruction();
+  // m_param.bearing_after = maneuver.getBearingAfter();
+  // m_param.bearing_before = maneuver.getBearingBefore();
 
   text1 = QString::fromStdString(m_param.type);
   text2 = QString::fromStdString(m_param.Instructio);
