@@ -414,6 +414,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
   p.drawText( QRect(bb_x, bb_y+45, bb_w, 42), text3, textOpt );
 
 
+  /*
   m_param.type = maneuver.getType();
   m_param.Instructio = maneuver.getInstruction();
   m_param.bearing_after = maneuver.getBearingAfter();
@@ -426,6 +427,7 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 
   text2.sprintf("%d", m_param.bearing_after);  p.drawText( bb_x, 200,  text2 );
   text2.sprintf("%d", m_param.bearing_before); p.drawText( bb_x, 250,  text2 ); 
+  */
 }
 
 

@@ -48,7 +48,7 @@ class RouteEngine:
 
     self.reroute_counter = 0
 
-    self.distance_old = None
+    self.distance_old = 0
 
   
 
@@ -153,6 +153,9 @@ class RouteEngine:
     if self.last_bearing is not None:
       params['bearings'] = f"{(self.last_bearing + 360) % 360:.0f},90" + (';'*(len(coords)-1))
 
+
+    #https://api.mapbox.com/isochrone/v1/mapbox/driving/-122.4194,37.7749?contours_minutes=15&polygons=true&access_token=YOUR_MAPBOX_ACCESS_TOKEN
+
     coords_str = ';'.join([f'{lon},{lat}' for lon, lat in coords])
     url = self.mapbox_host + '/directions/v5/mapbox/driving-traffic/' + coords_str
     try:
@@ -230,16 +233,18 @@ class RouteEngine:
 
     step = self.route[self.step_idx]
 
+    """
     maneuver_info = step['maneuver']
     location = maneuver_info['location']
     if self.distance_old != location:
        self.distance_old = location
        print('\r\n stepno={} {}'.format( self.step_idx, step) )
-    
+
     msg.navInstruction.maneuver.type = maneuver_info['type']
     msg.navInstruction.maneuver.instruction = maneuver_info['instruction']
     msg.navInstruction.maneuver.bearingAfter = maneuver_info['bearing_after']
     msg.navInstruction.maneuver.bearingBefore = maneuver_info['bearing_before']
+    """
 
     geometry = self.route_geometry[self.step_idx]
     along_geometry = distance_along_geometry(geometry, self.last_position)
