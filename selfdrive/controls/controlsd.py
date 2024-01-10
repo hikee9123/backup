@@ -134,8 +134,8 @@ class Controls:
     # cleanup old params
     if not self.CP.experimentalLongitudinalAvailable:
       self.params.remove("ExperimentalLongitudinalEnabled")
-    if not self.CP.openpilotLongitudinalControl:
-      self.params.remove("ExperimentalMode")
+    #if not self.CP.openpilotLongitudinalControl:
+    #  self.params.remove("ExperimentalMode")
 
     self.CC = car.CarControl.new_message()
     self.CS_prev = car.CarState.new_message()
@@ -881,7 +881,7 @@ class Controls:
   def params_thread(self, evt):
     while not evt.is_set():
       self.is_metric = self.params.get_bool("IsMetric")
-      self.experimental_mode = self.params.get_bool("ExperimentalMode") and self.CP.openpilotLongitudinalControl
+      self.experimental_mode = self.params.get_bool("ExperimentalMode")  #and self.CP.openpilotLongitudinalControl
       if self.CP.notCar:
         self.joystick_mode = self.params.get_bool("JoystickDebugMode")
       time.sleep(0.1)
