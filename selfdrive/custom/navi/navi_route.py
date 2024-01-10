@@ -154,8 +154,6 @@ class RouteEngine:
       params['bearings'] = f"{(self.last_bearing + 360) % 360:.0f},90" + (';'*(len(coords)-1))
 
 
-    #https://api.mapbox.com/isochrone/v1/mapbox/driving/-122.4194,37.7749?contours_minutes=15&polygons=true&access_token=YOUR_MAPBOX_ACCESS_TOKEN
-
     coords_str = ';'.join([f'{lon},{lat}' for lon, lat in coords])
     url = self.mapbox_host + '/directions/v5/mapbox/driving-traffic/' + coords_str
     try:
