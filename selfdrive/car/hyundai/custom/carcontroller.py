@@ -20,5 +20,7 @@ class CarControllerCustom:
       self.resume_cnt += 1
     else:
       self.resume_cnt = 0
-    
     return can_sends
+
+  def create_hda_mfc( self, packer, CS, CC ):
+    return hyundaican.create_hda_mfc( packer, CS, CC )
