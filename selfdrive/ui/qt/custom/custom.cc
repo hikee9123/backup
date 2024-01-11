@@ -104,8 +104,11 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
 
 void CValueControl::refresh()
 {
+    QString  str;
+
+    str.sprintf("%d", m_value );
     //auto str = m_jsonobj[key].toString();
-    label.sprintf( "%d",m_value );// setText( str );
+    label.setText( str );
     btnminus.setText("－");
     btnplus.setText("＋");
 
