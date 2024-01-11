@@ -416,7 +416,7 @@ void CommunityTab::showEvent(QShowEvent *event)
 
 void CommunityTab::hideEvent(QHideEvent *event)
 {
-  for (auto &[value] : m_valueCtrl) {
+  for (auto value : m_valueCtrl) {
       m_jsonobj[ value->m_params ] = value->getValue();
   }
 
