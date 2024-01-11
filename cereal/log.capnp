@@ -2102,15 +2102,6 @@ struct NavInstruction {
 
   allManeuvers @12 :List(Maneuver);
 
-  maneuver @13 :ManeuverInfo;
-
-  struct ManeuverInfo {
-    type @0 :Text;
-    instruction @1 :Text;
-    bearingAfter @2 :Int16;
-    bearingBefore @3 :Int16;
-  }
-
   struct Lane {
     directions @0 :List(Direction);
     active @1 :Bool;

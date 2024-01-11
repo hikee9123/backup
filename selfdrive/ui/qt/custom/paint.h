@@ -89,12 +89,6 @@ private:
 
     float cumLagMs;
 
-
-    std::string type;
-    std::string Instructio;
-
-    int  bearing_after;
-    int  bearing_before;
   } m_param;
   
   struct _STATUS_
