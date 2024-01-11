@@ -43,7 +43,7 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
     }
     else
     {
-      state  = m_jsonobj[key]; 
+      state  = m_jsonobj[key].toInt(); 
     }
 
 
