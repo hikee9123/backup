@@ -41,7 +41,13 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
     {
       m_jsonobj.insert(key, state);
     }
+    else
+    {
+      state  = m_jsonobj[key]; 
+    }
 
+
+    m_value = state;
     btnminus.setStyleSheet(R"(
       padding: 0;
       border-radius: 50px;
@@ -66,8 +72,8 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
 
     QObject::connect(&btnminus, &QPushButton::released, [=]() 
     {
-        auto str = m_jsonobj[key].toString(); 
-        int value = str.toInt();
+        //auto str = m_jsonobj[key].toString(); 
+        int value = m_value;// str.toInt();
         value = value - m_unit;
         if (value < m_min) {
             value = m_min;
@@ -75,13 +81,14 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
         else {
         }
         m_jsonobj[key] = value;
+        m_value = value;
         refresh();
     });
 
     QObject::connect(&btnplus, &QPushButton::released, [=]() 
     {
-        auto str = m_jsonobj[key].toString();
-        int value = str.toInt();
+        //auto str = m_jsonobj[key].toString();
+        int value = m_value;// str.toInt();
         value = value + m_unit;
         if (value > m_max) {
             value = m_max;
@@ -89,6 +96,7 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
         else {
         }
         m_jsonobj[key] = value;
+        m_value = value;
         refresh();
     });
     refresh();
@@ -96,13 +104,12 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
 
 void CValueControl::refresh()
 {
-    auto str = m_jsonobj[key].toString();
-
-    label.setText( str );
+    //auto str = m_jsonobj[key].toString();
+    label.sprintf( "%d",m_value );// setText( str );
     btnminus.setText("－");
     btnplus.setText("＋");
 
-    m_value = str.toInt();
+    //m_value = str.toInt();
 }
 
 
