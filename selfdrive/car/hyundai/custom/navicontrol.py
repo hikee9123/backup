@@ -57,6 +57,8 @@ class NaviControl():
     self.waittime_press = 5
     self.waittime_none = 6
 
+    self.speed_kps = 0
+
 
 
   def button_status(self, CS ):
@@ -226,8 +228,8 @@ class NaviControl():
         if self.gasPressed_time <= 0:
           cruise_set_speed = CS.customCS.clu_Vanz - 5
 
-    if cruise_set_mode & 3:  # comma long control speed.
-      vFuture = CC.hudControl.vFuture * CV.MS_TO_KPH
+    if cruise_set_mode & 4:  # comma long control speed.
+      vFuture = self.speed_kps
       ctrl_speed = min( vFuture, ctrl_speed )
 
     if cruise_set_speed > 30:
@@ -243,7 +245,10 @@ class NaviControl():
     if (frame % 10) == 0:
       self.sm.update(0)
 
-    self.speeds = self.sm['longitudinalPlan'].speeds
+    speeds = self.sm['longitudinalPlan'].speeds
+    if len( speeds ):
+      self.speed_kps = speeds[-1] * CV.MS_TO_KPH
+
     if self.sm.updated["uICustom"]:
       cruiseMode = self.sm['uICustom'].community.cruiseMode
       if CS.customCS.cruise_set_mode != cruiseMode:
@@ -264,11 +269,10 @@ class NaviControl():
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
 
 
-    speeds = self.speeds
-    if len( speeds ):
-      str_log1 = 'kph={:.0f}'.format(  speeds[-1]*CV.MS_TO_KPH )
-    else:
-      str_log1 = None
+
+
+    str_log1 = 'kph={:.0f}'.format( self.speed_kps )
+
 
     trace1.printf2( 'mode={} highway={} {}'.format(  CS.customCS.cruise_set_mode, CS.customCS.is_highway, str_log1 ) )
 

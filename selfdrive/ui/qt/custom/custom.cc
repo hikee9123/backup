@@ -24,10 +24,10 @@
 
 
 
-CValueControl::CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit ) 
-              : AbstractControl(title, desc, icon)
+CValueControl::CValueControl(const QString& param, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit, QJsonObject &jsonobj  ) 
+              : AbstractControl(title, desc, icon) , m_jsonobj(jsonobj)
 {
-    m_params = params;
+    key = param;
     m_min = min;
     m_max = max;
     m_unit = unit;
@@ -35,6 +35,12 @@ CValueControl::CValueControl(const QString& params, const QString& title, const 
     label.setAlignment(Qt::AlignVCenter | Qt::AlignRight);
     label.setStyleSheet("color: #e0e879");
     hlayout->addWidget(&label);
+
+    int state = min;
+    if ( !m_jsonobj.contains(key) ) 
+    {
+      m_jsonobj.insert(key, state);
+    }
 
     btnminus.setStyleSheet(R"(
       padding: 0;
@@ -60,7 +66,7 @@ CValueControl::CValueControl(const QString& params, const QString& title, const 
 
     QObject::connect(&btnminus, &QPushButton::released, [=]() 
     {
-        auto str = QString::fromStdString(Params().get(m_params.toStdString()));
+        auto str = m_jsonobj[key].toString(); 
         int value = str.toInt();
         value = value - m_unit;
         if (value < m_min) {
@@ -68,15 +74,13 @@ CValueControl::CValueControl(const QString& params, const QString& title, const 
         }
         else {
         }
-
-        QString values = QString::number(value);
-        Params().put(m_params.toStdString(), values.toStdString());
+        m_jsonobj[key] = value;
         refresh();
     });
 
     QObject::connect(&btnplus, &QPushButton::released, [=]() 
     {
-        auto str = QString::fromStdString(Params().get(m_params.toStdString()));
+        auto str = m_jsonobj[key].toString();
         int value = str.toInt();
         value = value + m_unit;
         if (value > m_max) {
@@ -84,9 +88,7 @@ CValueControl::CValueControl(const QString& params, const QString& title, const 
         }
         else {
         }
-
-        QString values = QString::number(value);
-        Params().put(m_params.toStdString(), values.toStdString());
+        m_jsonobj[key] = value;
         refresh();
     });
     refresh();
@@ -94,7 +96,7 @@ CValueControl::CValueControl(const QString& params, const QString& title, const 
 
 void CValueControl::refresh()
 {
-    auto str = QString::fromStdString(Params().get(m_params.toStdString()));
+    auto str = m_jsonobj[key].toString();
 
     label.setText( str );
     btnminus.setText("－");
@@ -113,8 +115,8 @@ int  CValueControl::getValue()
 
 void CValueControl::setValue( int value )
 {
-  QString values = QString::number(value);
-  Params().put(m_params.toStdString(), values.toStdString());
+  m_jsonobj[key] = value;
+
   refresh();
 }
 
@@ -209,10 +211,10 @@ void CustomPanel::OnTimer()
 
 void CustomPanel::updateToggles( int bSave )
 {
-  MessageBuilder m_msg;
+  MessageBuilder msg;
 
   m_cmdIdx++;
-  auto custom = m_msg.initEvent().initUICustom();  
+  auto custom = msg.initEvent().initUICustom();  
   auto debug = custom.initDebug();
 
   int idx1 = m_jsonobj["debug1"].toBool();
@@ -247,7 +249,7 @@ void CustomPanel::updateToggles( int bSave )
   ui.setKegman( kegman );
   ui.setDebug( ndebug );
 
-  send("uICustom", m_msg);
+  send("uICustom", msg);
 }
 
 
@@ -354,21 +356,15 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
       tr("Cruise mode"),
       "0:Not used,1:Auto Speed control",
       "../assets/offroad/icon_shell.png",
-      0,2,1
+      0,15,1
     },    
   };
 
   for (auto &[param, title, desc, icon, min,max,unit] : value_defs) {
-    auto value =  new CValueControl( param, title, desc, icon, min, max, unit );
-
+    auto value =  new CValueControl( param, title, desc, icon, min, max, unit, m_jsonobj);
     addItem(value);
-    m_valueCtrl[param.toStdString()] = value;
-    //m_jsonobj[ param.toStdString() ] = value->getValue();
+    m_valueCtrl[ param.toStdString() ] = value;
   }
-
-  m_jsonobj[ "CruiseMode" ] = m_valueCtrl["CruiseMode"]->getValue();
-  
-
 
 
 
@@ -416,12 +412,6 @@ void CommunityTab::showEvent(QShowEvent *event)
 
 void CommunityTab::hideEvent(QHideEvent *event)
 {
-  //for (auto &value : m_valueCtrl) {
-  //    m_jsonobj[ value->m_params ] = value->getValue();
-  //}
-
-  m_jsonobj["CruiseMode"] = m_valueCtrl["CruiseMode"]->getValue();
-
   QWidget::hideEvent(event);
 }
 
@@ -459,13 +449,6 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
 
    addItem( new MapboxToken() );
 
-  /*
-  QObject::connect(uiState(), &UIState::offroadTransition, [=](bool offroad) {
-      for (auto btn : findChildren<ToggleControl *>()) {
-      btn->setEnabled(offroad);
-      }
-  });
-  */  
 }
 
 

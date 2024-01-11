@@ -81,7 +81,7 @@ class CValueControl : public AbstractControl {
     Q_OBJECT
 
 public:
-    CValueControl(const QString& params, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit = 1);
+    CValueControl(const QString& param, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit, QJsonObject &jsonobj );
 
 private:
     QPushButton btnplus;
@@ -94,10 +94,15 @@ private:
 
     int     m_value;
 
-    void refresh();
+
+    QJsonObject &m_jsonobj;  
+
+
+private:
+  void refresh();
 
 public:
-    QString m_params;
+    QString key;
 
 
  public:
