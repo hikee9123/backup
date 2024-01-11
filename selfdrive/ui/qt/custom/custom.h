@@ -202,7 +202,7 @@ public:
 
 
 private:
-  std::map<std::string, JsonControl*> toggles;
+  std::map<std::string, CValueControl*> m_valueCtrl;
 
 
 protected:

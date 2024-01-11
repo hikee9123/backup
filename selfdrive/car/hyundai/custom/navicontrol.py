@@ -217,18 +217,24 @@ class NaviControl():
 
   def auto_speed_control( self, CC, CS, ctrl_speed ):
     cruise_set_speed = 0
-    if CS.out.gasPressed:
-      self.gasPressed_time = 100
-    elif self.gasPressed_time > 0:
-      self.gasPressed_time -= 1
-      if self.gasPressed_time <= 0:
-        cruise_set_speed = CS.customCS.clu_Vanz - 5
-    #elif CS.customCS.cruise_set_mode == 5:  # comma long control speed.
-    #  vFuture = CC.hudControl.vFuture * CV.MS_TO_KPH
-    #  ctrl_speed = min( vFuture, ctrl_speed )
+    cruise_set_mode = CS.customCS.cruise_set_mode
+    if cruise_set_mode & 2:
+      if CS.out.gasPressed:
+        self.gasPressed_time = 100
+      elif self.gasPressed_time > 0:
+        self.gasPressed_time -= 1
+        if self.gasPressed_time <= 0:
+          cruise_set_speed = CS.customCS.clu_Vanz - 5
+
+    if cruise_set_mode & 3:  # comma long control speed.
+      vFuture = CC.hudControl.vFuture * CV.MS_TO_KPH
+      ctrl_speed = min( vFuture, ctrl_speed )
 
     if cruise_set_speed > 30:
       CS.customCS.set_cruise_speed( cruise_set_speed )
+
+    if ctrl_speed < 30:
+      ctrl_speed = 30
 
     return  ctrl_speed
 
@@ -252,7 +258,7 @@ class NaviControl():
       kph_set_vEgo = self.get_navi_speed(  self.sm , CS, cruiseState_speed, frame )
       self.ctrl_speed = min( cruiseState_speed, kph_set_vEgo)
 
-      if CS.customCS.cruise_set_mode == 2:
+      if CS.customCS.cruise_set_mode:
         self.ctrl_speed = self.auto_speed_control( c, CS, self.ctrl_speed )
  
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
@@ -260,10 +266,10 @@ class NaviControl():
 
     speeds = self.speeds
     if len( speeds ):
-      str_log1 = 'speed={:.1f} kph={:.0f}'.format( speeds[-1], speeds[-1]*CV.MS_TO_KPH )
+      str_log1 = 'kph={:.0f}'.format(  speeds[-1]*CV.MS_TO_KPH )
     else:
       str_log1 = None
 
-    trace1.printf2( 'acc={} mode={} {}'.format(  CS.customCS.acc_active, CS.customCS.cruise_set_mode, str_log1 ) )
+    trace1.printf2( 'mode={} highway={} {}'.format(  CS.customCS.cruise_set_mode, CS.customCS.is_highway, str_log1 ) )
 
     return btn_signal

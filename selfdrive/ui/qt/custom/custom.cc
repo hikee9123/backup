@@ -211,7 +211,7 @@ void CustomPanel::updateToggles( int bSave )
 
 
   auto comunity = custom.initCommunity();
-  int cruiseMode = m_jsonobj["CruiseMode"].toBool();
+  int cruiseMode = m_jsonobj["CruiseMode"].toInt();
   comunity.setCmdIdx( m_cmdIdx );
   comunity.setCruiseMode( cruiseMode );
 
@@ -328,22 +328,24 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
   m_pCustom = parent;
 
 
-  // param, title, desc, icon
-  std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
+  // param, title, desc, icon, min, max, unit
+  std::vector<std::tuple<QString, QString, QString, QString, int, int, int>> value_defs{
     {
       "CruiseMode",
       tr("Cruise mode"),
-      "",
+      "0:Not used,1:Auto Speed control",
       "../assets/offroad/icon_shell.png",
+      0,2,1
     },    
   };
 
-  for (auto &[param, title, desc, icon] : toggle_defs) {
-    auto toggle = new JsonControl(param, title, desc, icon, this, m_jsonobj);
+  for (auto &[param, title, desc, icon, min,max,unit] : value_defs) {
+    auto value =  new CValueControl( param, title, desc, icon, min, max, unit );
 
-    addItem(toggle);
-    toggles[param.toStdString()] = toggle;
+    addItem(value);
+    m_valueCtrl[param.toStdString()] = value;
   }
+
 
 
 
@@ -368,6 +370,19 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     }
   });
   addItem(changeCar);
+
+
+  setStyleSheet(R"(
+    * {
+      color: white;
+      outline: none;
+      font-family: Inter;
+    }
+    Updater {
+      color: white;
+      background-color: black;
+    }
+  )");  
 }
 
 void CommunityTab::showEvent(QShowEvent *event) 
