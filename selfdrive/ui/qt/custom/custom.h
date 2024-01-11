@@ -93,7 +93,12 @@ private:
     int     m_max;
     int     m_unit;
 
+    int     m_value;
+
     void refresh();
+
+ public:
+    int  getValue();   
 };
 
 

@@ -94,11 +94,22 @@ CValueControl::CValueControl(const QString& params, const QString& title, const 
 
 void CValueControl::refresh()
 {
-    label.setText(QString::fromStdString(Params().get(m_params.toStdString())));
+    auto str = QString::fromStdString(Params().get(m_params.toStdString()));
+
+    label.setText( str );
     btnminus.setText("－");
     btnplus.setText("＋");
+
+    m_value = str.toInt();
 }
 
+
+int  CValueControl::getValue()
+{
+  int  ret_code = m_value;
+
+  return  ret_code;
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -342,9 +353,13 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
   for (auto &[param, title, desc, icon, min,max,unit] : value_defs) {
     auto value =  new CValueControl( param, title, desc, icon, min, max, unit );
 
+    m_jsonobj[ param.toStdString() ] = value->getValue();
+
     addItem(value);
     m_valueCtrl[param.toStdString()] = value;
   }
+
+
 
 
 
@@ -393,6 +408,8 @@ void CommunityTab::showEvent(QShowEvent *event)
 
 void CommunityTab::hideEvent(QHideEvent *event)
 {
+  m_jsonobj["CruiseMode"] = m_valueCtrl["CruiseMode"]->getValue();
+
   QWidget::hideEvent(event);
 }
 
