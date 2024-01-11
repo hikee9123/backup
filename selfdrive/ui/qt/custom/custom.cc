@@ -361,10 +361,9 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
   for (auto &[param, title, desc, icon, min,max,unit] : value_defs) {
     auto value =  new CValueControl( param, title, desc, icon, min, max, unit );
 
-    //m_jsonobj[ param.toStdString().c_str() ] = value->getValue();
-
     addItem(value);
     m_valueCtrl[param.toStdString()] = value;
+    m_jsonobj[ param.toStdString() ] = value->getValue();
   }
 
     m_jsonobj[ "CruiseMode" ] = m_valueCtrl["CruiseMode"]->getValue();
