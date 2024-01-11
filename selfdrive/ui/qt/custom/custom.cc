@@ -110,6 +110,14 @@ int  CValueControl::getValue()
 
   return  ret_code;
 }
+
+void CValueControl::setValue( int value )
+{
+  QString values = QString::number(value);
+  Params().put(m_params.toStdString(), values.toStdString());
+  refresh()
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -408,7 +416,11 @@ void CommunityTab::showEvent(QShowEvent *event)
 
 void CommunityTab::hideEvent(QHideEvent *event)
 {
-  m_jsonobj["CruiseMode"] = m_valueCtrl["CruiseMode"]->getValue();
+  for (auto &[value] : m_valueCtrl) {
+      m_jsonobj[ value->m_params ] = value->getValue();
+  }
+
+  //m_jsonobj["CruiseMode"] = m_valueCtrl["CruiseMode"]->getValue();
 
   QWidget::hideEvent(event);
 }

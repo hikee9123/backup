@@ -88,7 +88,6 @@ private:
     QPushButton btnminus;
     QLabel label;
 
-    QString m_params;
     int     m_min;
     int     m_max;
     int     m_unit;
@@ -97,7 +96,12 @@ private:
 
     void refresh();
 
+public:
+    QString m_params;
+
+
  public:
+    void setValue( int value );
     int  getValue();   
 };
 
