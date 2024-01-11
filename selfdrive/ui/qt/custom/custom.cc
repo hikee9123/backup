@@ -115,7 +115,7 @@ void CValueControl::setValue( int value )
 {
   QString values = QString::number(value);
   Params().put(m_params.toStdString(), values.toStdString());
-  refresh()
+  refresh();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
