@@ -357,14 +357,14 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
       "0:Not used,bit1:Gas control,bit2:Comma speed(CruiseGap)",
       "../assets/offroad/icon_shell.png",
       0,15,1
-
+    },
+    {
       "CruiseGap",
       tr("Cruise Gap"),
       "0:Not used,1~4:Gap Comma speed",
       "../assets/offroad/icon_shell.png",
       0,4,1
-
-    },  
+    },    
   };
 
   for (auto &[param, title, desc, icon, min,max,unit] : value_defs) {
