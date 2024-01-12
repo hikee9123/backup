@@ -390,7 +390,7 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     }
 
 
-      update();
+    update();
   });
 
   // SelectedCar
