@@ -379,9 +379,16 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
   QObject::connect( m_valueCtrl["CruiseMode"], &CValueControl::clicked, [=]() {
     int cruiseMode = m_jsonobj["CruiseMode"].toInt();
     if( cruiseMode == 0 )
-      m_valueCtrl[ "CruiseGap" ]->hide();
+    {
+      //m_valueCtrl[ "CruiseGap" ]->hide();      
+      m_valueCtrl[ "CruiseGap" ]->setEnabled(false);
+    }
     else
-      m_valueCtrl[ "CruiseGap" ]->show();
+    {
+      //m_valueCtrl[ "CruiseGap" ]->show();
+      m_valueCtrl[ "CruiseGap" ]->setEnabled(true);
+    }
+
 
       update();
   });
