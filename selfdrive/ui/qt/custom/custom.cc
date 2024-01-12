@@ -354,17 +354,17 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     {
       "CruiseMode",
       tr("Cruise mode"),
-      "0:Not used,1:Gas control,2:Comma speed",
+      "0:Not used,bit1:Gas control,bit2:Comma speed(CruiseGap)",
       "../assets/offroad/icon_shell.png",
       0,15,1
 
       "CruiseGap",
       tr("Cruise Gap"),
-      "0:Not used,1:Auto Speed control",
+      "0:Not used,1~4:Gap Comma speed",
       "../assets/offroad/icon_shell.png",
       0,4,1
 
-    },    
+    },  
   };
 
   for (auto &[param, title, desc, icon, min,max,unit] : value_defs) {
@@ -373,8 +373,14 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     m_valueCtrl[ param.toStdString() ] = value;
   }
 
+  QObject::connect( this, &ButtonControl::clicked, [=]() {
+    if( m_jsonobj["CruiseMode" ] == 0 )
+      m_valueCtrl[ "CruiseGap" ]->hide();
+    else
+      m_valueCtrl[ "CruiseGap" ]->show();
+  });
 
-
+  // SelectedCar
   QString selected_car = QString::fromStdString(Params().get("SelectedCar"));
   auto changeCar = new ButtonControl(selected_car.length() ? selected_car : tr("Select your car"),
                     selected_car.length() ? tr("CHANGE") : tr("SELECT"), "");
