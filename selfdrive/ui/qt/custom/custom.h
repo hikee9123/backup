@@ -91,11 +91,15 @@ private:
     int     m_min;
     int     m_max;
     int     m_unit;
-
     int     m_value;
 
 
     QJsonObject &m_jsonobj;  
+
+signals:
+  void clicked();
+
+public slots:
 
 
 private:

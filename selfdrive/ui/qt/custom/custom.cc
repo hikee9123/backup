@@ -77,9 +77,7 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
         if (value < m_min) 
             value = m_min;
   
-        m_jsonobj[key] = value;
-        m_value = value;
-        refresh();
+        setValue( value );
     });
 
     QObject::connect(&btnplus, &QPushButton::released, [=]() 
@@ -89,9 +87,7 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
         if (value > m_max) 
             value = m_max;
 
-        m_jsonobj[key] = value;
-        m_value = value;
-        refresh();
+        setValue( value );
     });
     refresh();
 }
@@ -115,8 +111,15 @@ int  CValueControl::getValue()
 
 void CValueControl::setValue( int value )
 {
-  m_jsonobj[key] = value;
-  refresh();
+  if( m_value != value )
+  {
+    m_jsonobj[key] = value;
+    m_value = value;
+    refresh();
+
+    emit clicked(); 
+  }
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -277,7 +280,7 @@ void CustomPanel::showEvent(QShowEvent *event)
   auto carSupport = carState_custom.getSupportedCars();
   int  nCnt = carSupport.size();
 
-  printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
+  // printf("SupportedCars = suport = %d  carcnt = %d \n", nCnt, nCarCnt );
   if( nCnt <= 0 )
   {
       QJsonArray surportCar = m_jsonobj["SurportCars"].toArray();
@@ -373,11 +376,14 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     m_valueCtrl[ param.toStdString() ] = value;
   }
 
-  QObject::connect( this, &ButtonControl::clicked, [=]() {
-    if( m_jsonobj["CruiseMode" ] == 0 )
+  QObject::connect( m_valueCtrl["CruiseMode"], &CValueControl::clicked, [=]() {
+    int cruiseMode = m_jsonobj["CruiseMode"].toInt();
+    if( cruiseMode == 0 )
       m_valueCtrl[ "CruiseGap" ]->hide();
     else
       m_valueCtrl[ "CruiseGap" ]->show();
+
+      update();
   });
 
   // SelectedCar
