@@ -29,7 +29,7 @@ def create_hda_mfc( packer, CS, CC ):
   values["HDA_Icon_Wheel"] = 1 if enabled else 0
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
 
-
+# 2 Hz
 def create_avm( packer, CS, CC ):
   values = CS.customCS.avm
 
