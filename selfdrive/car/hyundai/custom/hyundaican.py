@@ -28,3 +28,26 @@ def create_hda_mfc( packer, CS, CC ):
   values["HDA_LdwSysState"] = ldwSysState
   values["HDA_Icon_Wheel"] = 1 if enabled else 0
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
+
+
+def create_avm( packer, CS, CC ):
+  values = CS.customCS.avm
+
+  values["AVM_View"] = 1       #1:off 2:rear 3:front
+  values["AVM_Display_Message"] = 1   # 1:off 61:disp
+  values["AVM_Popup_Msg"] = 0   #0:non 1:disp
+
+  """
+  values["AVM_ParkingAssist_BtnSts"] =  # 7
+  values["AVM_Ready"] =       #2 
+  values["AVM_ParkingAssist_Step"] = #15   
+  values["AVM_FrontBtn_Type"] =     #15
+  values["AVM_Option"] =            # 3
+  values["AVM_HU_FrontViewPointOpt"] =  #3
+  values["AVM_HU_RearView_Option"] =    #1
+  values["AVM_HU_FrontView_Option"] =   #1
+  values["AVM_Version"] =                   #260
+  """  
+
+  # 0.2,128
+  return packer.make_can_msg("AVM_HU_PE_00", 0, values)  
