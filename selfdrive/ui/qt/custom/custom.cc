@@ -380,13 +380,13 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     int cruiseMode = m_jsonobj["CruiseMode"].toInt();
     if( cruiseMode == 0 )
     {
-      m_valueCtrl[ "CruiseGap" ]->hide();      
-      //m_valueCtrl[ "CruiseGap" ]->setEnabled(false);
+      //m_valueCtrl[ "CruiseGap" ]->hide();      
+      m_valueCtrl[ "CruiseGap" ]->setEnabled(false);
     }
     else
     {
-      m_valueCtrl[ "CruiseGap" ]->show();
-      //m_valueCtrl[ "CruiseGap" ]->setEnabled(true);
+      //m_valueCtrl[ "CruiseGap" ]->show();
+       m_valueCtrl[ "CruiseGap" ]->setEnabled(true);
     }
 
 
