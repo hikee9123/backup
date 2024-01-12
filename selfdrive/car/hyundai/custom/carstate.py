@@ -33,6 +33,8 @@ class CarStateCustom():
     self.prev_cruise_btn = 0
     self.lead_distance = 0
 
+    self.gapSet = 0
+
     self.cars = []
     self.get_type_of_car( CP )
 
@@ -122,6 +124,7 @@ class CarStateCustom():
     ret.brakeLightsDEPRECATED = bool( cp.vl["TCS13"]['BrakeLight'] )
     self.is_highway = self.lfahda["HDA_Icon_State"] != 0.
     self.lead_distance = cp.vl["SCC11"]["ACC_ObjDist"]
+    self.gapSet = cp.vl["SCC11"]['TauGapSet']    
 
     if not self.CP.openpilotLongitudinalControl:
       if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):

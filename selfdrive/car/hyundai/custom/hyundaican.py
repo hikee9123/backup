@@ -15,7 +15,7 @@ def create_clu11(packer, frame, clu11, button, car_fingerprint):
 
 
 
-def create_hda_mfc(packer, CS, CC ):
+def create_hda_mfc( packer, CS, CC ):
   values = CS.customCS.lfahda
   enabled = CC.enabled
 

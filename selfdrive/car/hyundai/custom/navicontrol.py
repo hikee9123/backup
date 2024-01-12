@@ -15,7 +15,7 @@ EventName = car.CarEvent.EventName
 class NaviControl():
   def __init__(self,  CP ):
     self.CP = CP
-    self.sm = messaging.SubMaster(['naviCustom','longitudinalPlan','uICustom'], ignore_avg_freq=['naviCustom', 'uICustom']) 
+    self.sm = messaging.SubMaster(['longitudinalPlan','naviCustom','uICustom'], ignore_avg_freq=['naviCustom', 'uICustom']) 
     self.btn_cnt = 0
     self.seq_command = 0
     self.target_speed = 0
@@ -58,6 +58,8 @@ class NaviControl():
     self.waittime_none = 6
 
     self.speed_kps = 0
+
+    self.cruiseGap = 0
 
 
 
@@ -176,11 +178,11 @@ class NaviControl():
     speedLimit = self.speedLimit
     speedLimitDistance = self.speedLimitDistance
     mapValid = self.mapValid
-    #trafficType = self.trafficType
 
+    #trafficType = self.trafficType
     #str_log2 = 'SL:{:.0f} SD:{:.0f} kps:{} TS:{:.0f} - VD:{:.0f}'.format(  speedLimit, speedLimitDistance, v_ego_kph, self.ctrl_speed,   self.VSetDis ) 
     #trace1.printf3( '{}'.format( str_log2 ) )
-    
+
     if not mapValid:
       if cruise_set_speed_kph >  self.VSetDis:
         if v_ego_kph < (self.VSetDis-5):
@@ -212,15 +214,13 @@ class NaviControl():
       v_ego_kph = speedLimit
 
     cruise_set_speed_kph = min( spdTarget, v_ego_kph )
-
-
     return  cruise_set_speed_kph
 
 
   def auto_speed_control( self, CC, CS, ctrl_speed ):
     cruise_set_speed = 0
     cruise_set_mode = CS.customCS.cruise_set_mode
-    if cruise_set_mode & 2:
+    if cruise_set_mode & 1:
       if CS.out.gasPressed:
         self.gasPressed_time = 100
       elif self.gasPressed_time > 0:
@@ -228,7 +228,8 @@ class NaviControl():
         if self.gasPressed_time <= 0:
           cruise_set_speed = CS.customCS.clu_Vanz - 5
 
-    if cruise_set_mode & 4:  # comma long control speed.
+
+    if cruise_set_mode & 2  and (CS.customCS.gapSet == self.cruiseGap):  # comma long control speed.
       vFuture = self.speed_kps
       ctrl_speed = min( vFuture, ctrl_speed )
 
@@ -254,6 +255,10 @@ class NaviControl():
       if CS.customCS.cruise_set_mode != cruiseMode:
         CS.customCS.cruise_set_mode = cruiseMode
 
+      cruiseGap = self.sm['uICustom'].community.cruiseGap
+      if self.cruiseGap != cruiseGap:
+        self.cruiseGap = cruiseGap
+
     # send scc to car if longcontrol enabled and SCC not on bus 0 or ont live
     btn_signal = None
     if not self.button_status( CS  ):
@@ -268,12 +273,7 @@ class NaviControl():
  
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
 
-
-
-
     str_log1 = 'kph={:.0f}'.format( self.speed_kps )
-
-
-    trace1.printf2( 'mode={} highway={} {}'.format(  CS.customCS.cruise_set_mode, CS.customCS.is_highway, str_log1 ) )
+    trace1.printf2( 'mode={} HW={} gap={} {}'.format(  CS.customCS.cruise_set_mode, CS.customCS.is_highway, self.cruiseGap, str_log1 ) )
 
     return btn_signal

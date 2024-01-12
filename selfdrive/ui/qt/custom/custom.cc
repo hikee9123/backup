@@ -32,9 +32,9 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
     m_max = max;
     m_unit = unit;
 
-    label.setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+    label.setAlignment( Qt::AlignVCenter | Qt::AlignRight );
     label.setStyleSheet("color: #e0e879");
-    hlayout->addWidget(&label);
+    hlayout->addWidget( &label );
 
     int state = min;
     if ( !m_jsonobj.contains(key) ) 
@@ -46,8 +46,8 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
       state  = m_jsonobj[key].toInt(); 
     }
 
-
     m_value = state;
+  
     btnminus.setStyleSheet(R"(
       padding: 0;
       border-radius: 50px;
@@ -65,21 +65,18 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
       background-color: #393939;
     )");
 
-    btnminus.setFixedSize(150, 100);
-    btnplus.setFixedSize(150, 100);
-    hlayout->addWidget(&btnminus);
-    hlayout->addWidget(&btnplus);
+    btnminus.setFixedSize( 150, 100 );
+    btnplus.setFixedSize( 150, 100 );
+    hlayout->addWidget( &btnminus );
+    hlayout->addWidget( &btnplus );
 
     QObject::connect(&btnminus, &QPushButton::released, [=]() 
     {
-        //auto str = m_jsonobj[key].toString(); 
-        int value = m_value;// str.toInt();
+        int value = m_value;
         value = value - m_unit;
-        if (value < m_min) {
+        if (value < m_min) 
             value = m_min;
-        }
-        else {
-        }
+  
         m_jsonobj[key] = value;
         m_value = value;
         refresh();
@@ -87,14 +84,11 @@ CValueControl::CValueControl(const QString& param, const QString& title, const Q
 
     QObject::connect(&btnplus, &QPushButton::released, [=]() 
     {
-        //auto str = m_jsonobj[key].toString();
-        int value = m_value;// str.toInt();
+        int value = m_value;
         value = value + m_unit;
-        if (value > m_max) {
+        if (value > m_max) 
             value = m_max;
-        }
-        else {
-        }
+
         m_jsonobj[key] = value;
         m_value = value;
         refresh();
@@ -107,26 +101,21 @@ void CValueControl::refresh()
     QString  str;
 
     str.sprintf("%d", m_value );
-    //auto str = m_jsonobj[key].toString();
     label.setText( str );
     btnminus.setText("－");
     btnplus.setText("＋");
-
-    //m_value = str.toInt();
 }
 
 
 int  CValueControl::getValue()
 {
   int  ret_code = m_value;
-
   return  ret_code;
 }
 
 void CValueControl::setValue( int value )
 {
   m_jsonobj[key] = value;
-
   refresh();
 }
 
@@ -243,8 +232,10 @@ void CustomPanel::updateToggles( int bSave )
 
   auto comunity = custom.initCommunity();
   int cruiseMode = m_jsonobj["CruiseMode"].toInt();
+  int cruiseGap = m_jsonobj["CruiseGap"].toInt();  
   comunity.setCmdIdx( m_cmdIdx );
   comunity.setCruiseMode( cruiseMode );
+  comunity.setCruiseGap( cruiseGap );
 
 
   auto ui = custom.initUserInterface();
@@ -299,7 +290,6 @@ void CustomPanel::showEvent(QShowEvent *event)
     for (int i = 0; i<nCnt; i++) {
       QString car = QString::fromStdString( carSupport[i] );
       m_cars.append( car );
-      //printf("%s \n", car.toStdString().c_str());
     }
   }
 }
@@ -364,9 +354,16 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     {
       "CruiseMode",
       tr("Cruise mode"),
-      "0:Not used,1:Auto Speed control",
+      "0:Not used,1:Gas control,2:Comma speed",
       "../assets/offroad/icon_shell.png",
       0,15,1
+
+      "CruiseGap",
+      tr("Cruise Gap"),
+      "0:Not used,1:Auto Speed control",
+      "../assets/offroad/icon_shell.png",
+      0,4,1
+
     },    
   };
 
