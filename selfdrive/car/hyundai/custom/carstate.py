@@ -49,7 +49,8 @@ class CarStateCustom():
 
   def get_can_parser( self, messages, CP ):
     messages += [
-      ("TPMS11", 5),   
+      ("TPMS11", 5),
+      ("AVM_HU_PE_00", 2),
     ]
 
 
@@ -112,6 +113,7 @@ class CarStateCustom():
 
   def update(self, ret, CS,  cp, cp_cruise, cp_cam ):
     # save the entire LFAHDA_MFC
+    self.avm = copy.copy(cp.vl["AVM_HU_PE_00"])
     self.lfahda = copy.copy(cp_cam.vl["LFAHDA_MFC"])
     if not self.CP.openpilotLongitudinalControl:
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
