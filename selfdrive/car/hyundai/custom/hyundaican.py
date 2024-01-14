@@ -50,9 +50,7 @@ def create_avm( packer, CS, CC ):
   gearShifter = CS.out.gearShifter
   if gearShifter == GearShifter.drive:
     if clu_Vanz > 30:
-      values["AVM_View"] = 1       #1:off 2:rear 3:front
-      values["AVM_Display_Message"] = 1   # 1:off 61:disp
-      values["AVM_Popup_Msg"] = 0   #0:non 1:disp
+      pass
     else:
       values["AVM_View"] = 3       #1:off 2:rear 3:front
       values["AVM_Display_Message"] = 61   # 1:off 61:disp
@@ -68,11 +66,21 @@ def create_avm( packer, CS, CC ):
   values["AVM_ParkingAssist_Step"] = #15   
   values["AVM_FrontBtn_Type"] =     #15
   values["AVM_Option"] =            # 3
-  values["AVM_HU_FrontViewPointOpt"] =  #3
+  values["AVM_HU_FrontViewPointOpt"] =  #3  1(front), 2(rear), 3(off)
   values["AVM_HU_RearView_Option"] =    #1
   values["AVM_HU_FrontView_Option"] =   #1
   values["AVM_Version"] =    {:.0f}               #260
+
+  1 rear view
+    - AVM_HU_FrontViewPointOpt 2(stop) , 1: 주행중(53)
+    - AVM_View  23
+    - AVM_Display_Message 60
+    - AVM_Popup_Msg 1
+
   """  
-  trace1.printf1( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f} op.{:.0f}/{:.0f}/{:.0f}/{:.0f} c.{:.0f}/{:.0f}/{:.0f}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], values["AVM_Ready"],values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"], values["AVM_View"], values["AVM_Display_Message"], values["AVM_Popup_Msg"]  ) )
+  trace1.printf1( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f} op.{:.0f}/{:.0f}/{:.0f}/{:.0f} c.{:.0f}/{:.0f}/{:.0f}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], 
+                                                                                                                     values["AVM_Ready"],
+                                                                                                                     values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"], 
+                                                                                                                     values["AVM_View"], values["AVM_Display_Message"], values["AVM_Popup_Msg"]  ) )
   # 0.2,128
   return packer.make_can_msg("AVM_HU_PE_00", 0, values)  
