@@ -61,7 +61,7 @@ def create_avm( packer, CS, CC ):
       values["AVM_View"] = 5       #1:off 2:rear 3:front  5:left  7:right  9:front   23:rear
       values["AVM_Display_Message"] = 61   # 1:off 61:disp
       values["AVM_Popup_Msg"] = 1   #0:non 1:disp
-      values["AVM_HU_FrontViewPointOpt"] = 3
+      values["AVM_HU_FrontViewPointOpt"] = 2
 
   """
   gearShifter = CS.out.gearShifter
@@ -109,7 +109,9 @@ def create_avm( packer, CS, CC ):
     - 7/15/15  rdy.2  op.3/3/1/1  c.1/1/0  
 
     
-  3 non
+  3 R gear
+    - 7/15/15  rdy.2  op.3/3/1/1  c.2/61/1   
+         AVM_Popup_Msg view button on 0,  off 1
     
   """  
   trace1.printf3( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f} op.{:.0f}/{:.0f}/{:.0f}/{:.0f} c.{:.0f}/{:.0f}/{:.0f}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], 
