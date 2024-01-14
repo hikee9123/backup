@@ -1,6 +1,8 @@
 import crcmod
 from openpilot.selfdrive.car.hyundai.values import CAR, CHECKSUM, CAMERA_SCC_CAR
 
+import openpilot.selfdrive.custom.loger as  trace1
+
 hyundai_checksum = crcmod.mkCrcFun(0x11D, initCrc=0xFD, rev=False, xorOut=0xdf)
 
 def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
@@ -24,6 +26,11 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
     "CF_Lkas_FcwOpt_USM",
     "CF_Lkas_LdwsOpt_USM",
   ]}
+
+  trace1.printf1( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f}/{:.0f}'.format(
+     values["CF_Lkas_SysWarning"], values["CF_Lkas_LdwsActivemode"], values["CF_Lkas_SysWarning"] ), 
+     values["CF_Lkas_FcwOpt_USM"], values["CF_Lkas_LdwsOpt_USM"] )
+
   values["CF_Lkas_LdwsSysState"] = sys_state
   values["CF_Lkas_SysWarning"] = 3 if sys_warning else 0
   #values["CF_Lkas_LdwsLHWarning"] = left_lane_depart

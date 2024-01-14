@@ -171,8 +171,8 @@ class CarController:
         can_sends.append(hyundaican.create_frt_radar_opt(self.packer))
 
       # 2 Hz AVM
-      if self.frame % 50 == 0:
-        can_sends.append( self.customCC.create_avm( self.packer, CS, CC ) )
+      #if self.frame % 50 == 0:
+      #  can_sends.append( self.customCC.create_avm( self.packer, CS, CC ) )
         
 
     new_actuators = actuators.copy()

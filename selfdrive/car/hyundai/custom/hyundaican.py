@@ -45,12 +45,6 @@ def create_hda_mfc( packer, CS, CC ):
 # 2 Hz
 def create_avm( packer, CS, CC ):
   values = CS.customCS.avm
-  trace1.printf1( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f} op.{:.0f}/{:.0f}/{:.0f}/{:.0f} c.{:.0f}/{:.0f}/{:.0f}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], 
-                                                                                                                     values["AVM_Ready"],
-                                                                                                                     values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"], 
-                                                                                                                     values["AVM_View"], values["AVM_Display_Message"], values["AVM_Popup_Msg"]  ) )
-
-
   leftBlinker = CS.out.leftBlinker 
   rightBlinker = CS.out.rightBlinker
   clu_Vanz = CS.customCS.clu_Vanz  #kph  현재 차량의 속도.
