@@ -71,8 +71,8 @@ def create_avm( packer, CS, CC ):
   values["AVM_HU_FrontViewPointOpt"] =  #3
   values["AVM_HU_RearView_Option"] =    #1
   values["AVM_HU_FrontView_Option"] =   #1
-  values["AVM_Version"] =                   #260
+  values["AVM_Version"] =    {:.0f}               #260
   """  
-  trace1.printf1( 'bt.{}/{}/{} rdy.{} op.{}/{}/{}/{} {}/{}/{}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], values["AVM_Ready"],values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"], values["AVM_View"], values["AVM_Display_Message"], values["AVM_Popup_Msg"]  ) )
+  trace1.printf1( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f} op.{:.0f}/{:.0f}/{:.0f}/{:.0f} c.{:.0f}/{:.0f}/{:.0f}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], values["AVM_Ready"],values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"], values["AVM_View"], values["AVM_Display_Message"], values["AVM_Popup_Msg"]  ) )
   # 0.2,128
   return packer.make_can_msg("AVM_HU_PE_00", 0, values)  
