@@ -35,7 +35,8 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
 
   if car_fingerprint in [CAR.AZERA_HEV_6TH_GEN]:
     values["CF_Lkas_SysWarning"] = 4 if sys_warning else 0
-
+    # CF_Lkas_SysWarning  4 keep hand on wheel
+    # CF_Lkas_SysWarning  9 keep hands on wheel (red) + beep
   elif car_fingerprint in (CAR.SONATA, CAR.PALISADE, CAR.KIA_NIRO_EV, CAR.KIA_NIRO_HEV_2021, CAR.SANTA_FE,
                          CAR.IONIQ_EV_2020, CAR.IONIQ_PHEV, CAR.KIA_SELTOS, CAR.ELANTRA_2021, CAR.GENESIS_G70_2020,
                          CAR.ELANTRA_HEV_2021, CAR.SONATA_HYBRID, CAR.KONA_EV, CAR.KONA_HEV, CAR.KONA_EV_2022,
