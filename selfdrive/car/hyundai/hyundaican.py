@@ -28,7 +28,7 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
   ]}
 
   if frame % 20 == 0: 
-    trace1.printf1( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f}/{:.0f}'.format(
+    trace1.printf1( '{:.0f}/{:.0f}/{:.0f} usm.{:.0f}/{:.0f}'.format(
        values["CF_Lkas_SysWarning"], values["CF_Lkas_LdwsActivemode"], values["CF_Lkas_SysWarning"], 
        values["CF_Lkas_FcwOpt_USM"], values["CF_Lkas_LdwsOpt_USM"] ))
 
