@@ -61,7 +61,7 @@ def create_avm( packer, CS, CC ):
       values["AVM_View"] = 5       #1:off 2:rear 3:front  5:left  7:right  9:front   23:rear
       values["AVM_Display_Message"] = 61   # 1:off 61:disp
       values["AVM_Popup_Msg"] = 1   #0:non 1:disp
-      values["AVM_HU_FrontViewPointOpt"] = 2
+      values["AVM_HU_FrontViewPointOpt"] = 1
 
   """
   gearShifter = CS.out.gearShifter
