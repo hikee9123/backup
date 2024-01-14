@@ -40,13 +40,13 @@ def create_hda_mfc( packer, CS, CC ):
 
   values["HDA_LdwSysState"] = ldwSysState
   values["HDA_Icon_Wheel"] = 1 if enabled else 0
-  return packer.make_can_msg("LFAHDA_MFC", 0, values)
+  #return packer.make_can_msg("LFAHDA_MFC", 0, values)
 
 # 2 Hz
 def create_avm( packer, CS, CC ):
   values = CS.customCS.avm
   clu_Vanz = CS.customCS.clu_Vanz  #kph  현재 차량의 속도.
-
+  """
   gearShifter = CS.out.gearShifter
   if gearShifter == GearShifter.drive:
     if clu_Vanz > 30:
@@ -62,7 +62,7 @@ def create_avm( packer, CS, CC ):
       values["AVM_Display_Message"] = 61   # 1:off 61:disp
       values["AVM_Popup_Msg"] = 1   #0:non 1:disp
 
-  """
+  
   values["AVM_ParkingAssist_BtnSts"] =  # 7
   values["AVM_Ready"] =       #2 
   values["AVM_ParkingAssist_Step"] = #15   
@@ -73,6 +73,6 @@ def create_avm( packer, CS, CC ):
   values["AVM_HU_FrontView_Option"] =   #1
   values["AVM_Version"] =                   #260
   """  
-  trace1.printf1( 'bt.{}/{}/{} rdy.{} op.{}/{}/{}/{}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], values["AVM_Ready"],values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"]  ) )
+  trace1.printf1( 'bt.{}/{}/{} rdy.{} op.{}/{}/{}/{} {}/{}/{}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], values["AVM_Ready"],values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"], values["AVM_View"], values["AVM_Display_Message"], values["AVM_Popup_Msg"]  ) )
   # 0.2,128
   return packer.make_can_msg("AVM_HU_PE_00", 0, values)  
