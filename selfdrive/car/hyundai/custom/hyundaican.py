@@ -56,14 +56,14 @@ def create_avm( packer, CS, CC ):
   clu_Vanz = CS.customCS.clu_Vanz  #kph  현재 차량의 속도.
 
 
-
+  """
   if leftBlinker:
       values["AVM_View"] = 5       #1:off 2:rear 3:front  5:left  7:right  9:front   23:rear
       values["AVM_Display_Message"] = 61   # 1:off 61:disp
       values["AVM_Popup_Msg"] = 1   #0:non 1:disp
-      values["AVM_HU_FrontViewPointOpt"] = 1
+      values["AVM_HU_FrontViewPointOpt"] = 3
 
-  """
+  
   gearShifter = CS.out.gearShifter
   if gearShifter == GearShifter.drive:
     if clu_Vanz > 30:
