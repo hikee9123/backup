@@ -45,7 +45,24 @@ def create_hda_mfc( packer, CS, CC ):
 # 2 Hz
 def create_avm( packer, CS, CC ):
   values = CS.customCS.avm
+  trace1.printf1( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f} op.{:.0f}/{:.0f}/{:.0f}/{:.0f} c.{:.0f}/{:.0f}/{:.0f}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], 
+                                                                                                                     values["AVM_Ready"],
+                                                                                                                     values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"], 
+                                                                                                                     values["AVM_View"], values["AVM_Display_Message"], values["AVM_Popup_Msg"]  ) )
+
+
+  leftBlinker = CS.out.leftBlinker 
+  rightBlinker = CS.out.rightBlinker
   clu_Vanz = CS.customCS.clu_Vanz  #kph  현재 차량의 속도.
+
+
+
+  if leftBlinker:
+      values["AVM_View"] = 5       #1:off 2:rear 3:front  5:left  7:right  9:front   23:rear
+      values["AVM_Display_Message"] = 61   # 1:off 61:disp
+      values["AVM_Popup_Msg"] = 1   #0:non 1:disp
+      values["AVM_HU_FrontViewPointOpt"] = 3
+
   """
   gearShifter = CS.out.gearShifter
   if gearShifter == GearShifter.drive:
@@ -77,8 +94,25 @@ def create_avm( packer, CS, CC ):
     - AVM_Display_Message 60
     - AVM_Popup_Msg 1
 
+  2 stop
+     (rear view)  
+    - 7/15/15  rdy.2  op.3/2/1/1  c.23/60/1
+     (front view)  
+    - 7/15/15  rdy.2  op.3/3/1/1  c.9/61/1
+     (front araund view)  
+    - 7/15/15  rdy.2  op.3/3/1/1  c.3/61/1
+     (left araund view)
+    - 7/15/15  rdy.2  op.3/3/1/1  c.5/61/1  
+     (right araund view)
+    - 7/15/15  rdy.2  op.3/3/1/1  c.7/61/1  
+     (no view)
+    - 7/15/15  rdy.2  op.3/3/1/1  c.1/1/0  
+
+    
+  3 non
+    
   """  
-  trace1.printf1( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f} op.{:.0f}/{:.0f}/{:.0f}/{:.0f} c.{:.0f}/{:.0f}/{:.0f}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], 
+  trace1.printf3( 'bt.{:.0f}/{:.0f}/{:.0f} rdy.{:.0f} op.{:.0f}/{:.0f}/{:.0f}/{:.0f} c.{:.0f}/{:.0f}/{:.0f}'.format( values["AVM_ParkingAssist_BtnSts"], values["AVM_FrontBtn_Type"], values["AVM_ParkingAssist_Step"], 
                                                                                                                      values["AVM_Ready"],
                                                                                                                      values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"], 
                                                                                                                      values["AVM_View"], values["AVM_Display_Message"], values["AVM_Popup_Msg"]  ) )
