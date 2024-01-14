@@ -158,7 +158,7 @@ class CarController:
       # 20 Hz LFA MFA message
       if self.frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
         if self.car_fingerprint == CAR.AZERA_HEV_6TH_GEN:
-          self.customCC.create_hda_mfc( self.packer, CS, CC )
+          can_sends.append( self.customCC.create_hda_mfc( self.packer, CS, CC ) )
         else:
           can_sends.append( hyundaican.create_lfahda_mfc( self.packer, CC.enabled ) )
 
