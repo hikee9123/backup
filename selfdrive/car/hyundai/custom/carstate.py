@@ -126,7 +126,7 @@ class CarStateCustom():
     self.lead_distance = cp.vl["SCC11"]["ACC_ObjDist"]
     self.gapSet = cp.vl["SCC11"]['TauGapSet']
     self.VSetDis = cp_cruise.vl["SCC11"]["VSetDis"]   # kph   크루즈 설정 속도.    
-    self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]  #kph  현재 차량의 속도.
+    self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]     # kph  현재 차량의 속도.
     
     if not self.CP.openpilotLongitudinalControl:
       if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
