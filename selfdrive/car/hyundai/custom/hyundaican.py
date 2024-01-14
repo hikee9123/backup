@@ -118,5 +118,5 @@ def create_avm( packer, CS, CC ):
                                                                                                                      values["AVM_Ready"],
                                                                                                                      values["AVM_Option"],values["AVM_HU_FrontViewPointOpt"],values["AVM_HU_RearView_Option"],values["AVM_HU_FrontView_Option"], 
                                                                                                                      values["AVM_View"], values["AVM_Display_Message"], values["AVM_Popup_Msg"]  ) )
-  # 0.2,128
+  # 0,2,128
   return packer.make_can_msg("AVM_HU_PE_00", 0, values)  
