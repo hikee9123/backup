@@ -236,8 +236,6 @@ void OnPaint::updateState(const UIState &s)
     auto controls_state = sm1["controlsState"].getControlsState();
     m_param.cumLagMs = controls_state.getCumLagMs();
   }
-
-
 }
 
 
