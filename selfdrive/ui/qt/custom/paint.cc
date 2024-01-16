@@ -645,7 +645,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   if( m_param.ui.getKegmanCPU() ) 
   {
     nCnt++;
-    if( nCnt > 4 ) break;
+    if( nCnt > 4 ) return;
     if( m_param.cpuTemp > 100 )  m_param.cpuTemp = 0;
 
     QColor val_color = QColor(255, 255, 255, 200);
