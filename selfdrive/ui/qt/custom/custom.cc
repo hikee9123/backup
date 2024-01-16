@@ -251,14 +251,31 @@ void CustomPanel::updateToggles( int bSave )
   auto ui = custom.initUserInterface();
   int bDebug = m_jsonobj["ShowDebugMessage"].toBool();
   int tpms = m_jsonobj["tpms"].toBool();
-  int kegman = m_jsonobj["kegman"].toBool();
   int ndebug = m_jsonobj["debug"].toBool();
+
+  int kegman = m_jsonobj["kegman"].toBool();
+  int kegmanCPU = m_jsonobj["kegmanCPU"].toBool();
+  int kegmanBattery = m_jsonobj["kegmanBattery"].toBool();
+  int kegmanGPU = m_jsonobj["kegmanGPU"].toBool();
+  int kegmanAngle = m_jsonobj["kegmanAngle"].toBool();
+  int kegmanEngine = m_jsonobj["kegmanEngine"].toBool();
+  int kegmanDistance = m_jsonobj["kegmanDistance"].toBool();
+  int kegmanSpeed = m_jsonobj["kegmanSpeed"].toBool();
+
 
   ui.setCmdIdx( m_cmdIdx );  
   ui.setShowDebugMessage( bDebug );
   ui.setTpms( tpms );
-  ui.setKegman( kegman );
   ui.setDebug( ndebug );
+
+  ui.setKegman( kegman );
+  ui.setKegmanCPU( kegmanCPU );
+  ui.setKegmanBattery( kegmanBattery );
+  ui.setKegmanGPU( kegmanGPU );
+  ui.setKegmanAngle( kegmanAngle );
+  ui.setKegmanEngine( kegmanEngine );
+  ui.setKegmanDistance( kegmanDistance );
+  ui.setKegmanSpeed( kegmanSpeed );
 
   send("uICustom", msg);
 }
@@ -491,7 +508,6 @@ UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_
 {
   m_pCustom = parent;
 
-
   // param, title, desc, icon
   std::vector<std::tuple<QString, QString, QString, QString>> toggle_defs{
     {
@@ -515,49 +531,49 @@ UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_
     {
       "kegman",
       "Show kegman",
-      "",
+      "You can choose 4 max from the menu below",
       "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanCPU",
       "CPU temperature",
-      "",
+      "1. Up to 4 menus can be displayed.",
       "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanBattery",
       "battery voltage",
-      "",
+      "2. Up to 4 menus can be displayed.",
       "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanGPU",
       "GPS accuracy",
-      "",
+      "3. Up to 4 menus can be displayed.",
       "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanAngle",
       "steering angle",
-      "",
+      "4. Up to 4 menus can be displayed.",
       "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanEngine",
       "engine status",
-      "",
+      "5. Up to 4 menus can be displayed.",
       "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanDistance",
       "radar relative distance",
-      "",
+      "6. Up to 4 menus can be displayed.",
       "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanSpeed",
       "radar relative speed",
-      "",
+      "7. Up to 4 menus can be displayed.",
       "../assets/offroad/icon_shell.png",
     },
   };
@@ -613,12 +629,28 @@ void UITab::updateToggles( int bSave )
 
   int bDebug = m_jsonobj["ShowDebugMessage"].toBool();
   auto tpms_mode_toggle = toggles["tpms"];
-  auto kegman_mode_toggle = toggles["kegman"];
   auto debug_mode_toggle = toggles["debug"];
+  auto kegman_mode_toggle = toggles["kegman"];
+  auto kegman_cpu = toggles["kegmanCPU"];
+  auto kegman_battery = toggles["kegmanBattery"];
+  auto kegman_gpu = toggles["kegmanGPU"];
+  auto kegman_angle = toggles["kegmanAngle"];
+  auto kegman_engine = toggles["kegmanEngine"];
+  auto kegman_distance = toggles["kegmanDistance"];
+  auto kegman_speed = toggles["kegmanSpeed"];
 
   tpms_mode_toggle->setEnabled(bDebug);
-  kegman_mode_toggle->setEnabled(bDebug);
   debug_mode_toggle->setEnabled(bDebug);
+  kegman_mode_toggle->setEnabled(bDebug);
+  
+  kegman_cpu->setEnabled(bDebug);
+  kegman_battery->setEnabled(bDebug);
+  kegman_gpu->setEnabled(bDebug);
+  kegman_angle->setEnabled(bDebug);
+  kegman_engine->setEnabled(bDebug);
+  kegman_distance->setEnabled(bDebug);
+  kegman_speed->setEnabled(bDebug);
+
 }
 
 

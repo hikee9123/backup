@@ -252,16 +252,6 @@ void OnPaint::drawHud(QPainter &p)
   } 
 
 
-  /*
-      m_param.ui.getkegmanCPU()
-      m_param.ui.getkegmanBattery()
-      m_param.ui.getkegmanGPU()
-      m_param.ui.getkegmanAngle()
-      m_param.ui.getkegmanEngine()
-      m_param.ui.getkegmanDistance()
-      m_param.ui.getkegmanSpeed()
-  */
-
   if( m_param.ui.getKegman() )
   {
      bb_ui_draw_UI( p );
@@ -650,9 +640,13 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
 
   QString val_str;
   QString uom_str;
+  int     nCnt = 0;
+
   //add CPU temperature
-  if( true ) 
+  if( m_param.ui.getKegmanCPU() ) 
   {
+    nCnt++;
+    if( nCnt > 4 ) break;
     if( m_param.cpuTemp > 100 )  m_param.cpuTemp = 0;
 
     QColor val_color = QColor(255, 255, 255, 200);
@@ -671,11 +665,14 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
     bb_ry = bb_y + bb_h;
   }
 
-  
+        
+
    //add battery voltage
    lab_color = QColor(255, 255, 255, 200);
-  if( true )
+  if( m_param.ui.getKegmanBattery() )
   {
+    nCnt++;
+    if( nCnt > 4 ) break;    
     QColor val_color = QColor(255, 255, 255, 200);
 
     if( m_param.batteryVoltage > 14.7 ) val_color = QColor(255, 100, 0, 200);
@@ -693,10 +690,11 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   }
 
 
-
   //add grey panda GPS accuracy
-  if( false )
+  if( m_param.ui.getKegmanGPU() )
   {
+    nCnt++;
+    if( nCnt > 4 ) break;    
     QColor val_color = QColor(255, 255, 255, 200);
     //show red/orange if gps accuracy is low
      val_color = get_color( (int)m_param.gpsAccuracyUblox, 5, 2 );
@@ -718,9 +716,12 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
     bb_ry = bb_y + bb_h;
   }
 
+
   //add  steering angle
-  if( true )
+  if( m_param.ui.getKegmanAngle() )
   {
+    nCnt++;
+    if( nCnt > 4 ) break;    
     QColor val_color = QColor(0, 255, 0, 200);
 
     val_color = angleSteersColor( (int)(m_param.angleSteers) );
@@ -738,9 +739,13 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
     bb_ry = bb_y + bb_h;
   }
 
+
+
   // add engine
-  if( true )
+  if( m_param.ui.getKegmanEngine() )
   {
+    nCnt++;
+    if( nCnt > 4 ) break;    
     float fEngineRpm = m_param.enginRpm;
     int   electGearStep  = m_param.electGearStep;
   
@@ -766,6 +771,87 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
       value_fontSize, label_fontSize, 8, 60 );
     bb_ry = bb_y + bb_h;
   }
+
+
+
+  //add visual radar relative distance
+  if( m_param.ui.getKegmanDistance() )
+  {
+    nCnt++;
+    if( nCnt > 4 ) break;    
+    QColor val_color = QColor(255, 255, 255, 200);
+
+    if ( m_param.lead_radar.getStatus() ) {
+      //show RED if less than 5 meters
+      //show orange if less than 15 meters
+      float d_rel2 = m_param.lead_radar.getDRel();
+      
+      if((int)(d_rel2) < 15) {
+        val_color = QColor(255, 188, 3, 200);
+      }
+      if((int)(d_rel2) < 5) {
+        val_color = QColor(255, 0, 0, 200);
+      }
+      // lead car relative distance is always in meters
+      val_str.sprintf("%d", (int)d_rel2 );
+    } else {
+       val_str = "-";
+    }
+
+    auto lead_cam = (*state->sm)["modelV2"].getModelV2().getLeadsV3()[0];  // camera
+    if (lead_cam.getProb() > 0.1) {
+      float d_rel1 = lead_cam.getX()[0];
+      uom_str.sprintf("%d", (int)d_rel1 );
+    }
+    else
+    {
+      uom_str = "m";
+    }
+
+    bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "REL DIST",
+        bb_rx, bb_ry, bb_uom_dx,
+        val_color, lab_color, uom_color,
+        value_fontSize, label_fontSize, uom_fontSize );
+    bb_ry = bb_y + bb_h;
+  }
+
+  //add visual radar relative speed
+  if( m_param.ui.getKegmanSpeed()  )
+  {
+    nCnt++;
+    if( nCnt > 4 ) break;    
+    QColor val_color = QColor(255, 255, 255, 200);
+    if ( m_param.lead_radar.getStatus() ) {
+      float v_rel = m_param.lead_radar.getVRel();  
+
+      if((int)(v_rel) < 0) {
+        val_color = QColor(255, 188, 3, 200);
+      }
+      if((int)(v_rel) < -5) {
+        val_color = QColor(255, 0, 0, 200);
+      }
+      // lead car relative speed is always in meters
+      if (scene->is_metric) {
+        val_str.sprintf("%d", (int)(v_rel * 3.6 + 0.5) );
+      } else {
+        val_str.sprintf("%d", (int)(v_rel * 2.2374144 + 0.5));
+      }
+    } else {
+       val_str = "-";
+    }
+    if (scene->is_metric) {
+      uom_str = "km/h";
+    } else {
+      uom_str = "mph";
+    }
+    bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "REL SPEED",
+        bb_rx, bb_ry, bb_uom_dx,
+        val_color, lab_color, uom_color,
+        value_fontSize, label_fontSize, uom_fontSize );
+    bb_ry = bb_y + bb_h;
+  }
+
+
 
   //finally draw the frame
   bb_h += 20;
