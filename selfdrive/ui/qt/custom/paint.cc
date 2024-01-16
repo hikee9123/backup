@@ -671,7 +671,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   if( m_param.ui.getKegmanBattery() )
   {
     nCnt++;
-    if( nCnt > 4 ) break;    
+    if( nCnt > 4 ) return;    
     QColor val_color = QColor(255, 255, 255, 200);
 
     if( m_param.batteryVoltage > 14.7 ) val_color = QColor(255, 100, 0, 200);
@@ -693,7 +693,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   if( m_param.ui.getKegmanGPU() )
   {
     nCnt++;
-    if( nCnt > 4 ) break;    
+    if( nCnt > 4 ) return;    
     QColor val_color = QColor(255, 255, 255, 200);
     //show red/orange if gps accuracy is low
      val_color = get_color( (int)m_param.gpsAccuracyUblox, 5, 2 );
@@ -720,7 +720,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   if( m_param.ui.getKegmanAngle() )
   {
     nCnt++;
-    if( nCnt > 4 ) break;    
+    if( nCnt > 4 ) return;    
     QColor val_color = QColor(0, 255, 0, 200);
 
     val_color = angleSteersColor( (int)(m_param.angleSteers) );
@@ -744,7 +744,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   if( m_param.ui.getKegmanEngine() )
   {
     nCnt++;
-    if( nCnt > 4 ) break;    
+    if( nCnt > 4 ) return;    
     float fEngineRpm = m_param.enginRpm;
     int   electGearStep  = m_param.electGearStep;
   
@@ -777,7 +777,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   if( m_param.ui.getKegmanDistance() )
   {
     nCnt++;
-    if( nCnt > 4 ) break;    
+    if( nCnt > 4 ) return;    
     QColor val_color = QColor(255, 255, 255, 200);
 
     if ( m_param.lead_radar.getStatus() ) {
@@ -818,7 +818,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   if( m_param.ui.getKegmanSpeed()  )
   {
     nCnt++;
-    if( nCnt > 4 ) break;    
+    if( nCnt > 4 ) return;    
     QColor val_color = QColor(255, 255, 255, 200);
     if ( m_param.lead_radar.getStatus() ) {
       float v_rel = m_param.lead_radar.getVRel();  
