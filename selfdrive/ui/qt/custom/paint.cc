@@ -36,12 +36,9 @@ OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent)
   top_layout->addWidget(icon_01 = new NetworkImageWidget, 0, Qt::AlignTop);
 
   main_layout->addLayout(top_layout);
-  //connect(this, &OnPaint::valueChanged, [=] { update(); });
 
   is_debug = 0;//Params().getBool("ShowDebugMessage");
   //img_tire_pressure = QPixmap("qt/custom/images/img_tire_pressure.png");
-
-
 }
 
 
@@ -131,14 +128,11 @@ void OnPaint::drawText3(QPainter &p, int x, int y, const QString &text, QColor c
 
 void OnPaint::ui_draw_text( QPainter &p, const QRect& rc, const QString& text, float  size, const QColor& crBrush, const QColor& color )
 {
-    //p.setFont( InterFont(size, QFont::Bold)); 
-
     p.setPen( color );
     p.setBrush( crBrush );
     p.drawRoundedRect(rc, 20, 20);
     p.drawText( rc, Qt::AlignCenter, text);
 }
-
 
 
 
@@ -245,9 +239,7 @@ void OnPaint::drawHud(QPainter &p)
 
   ui_main_debug( p );
 
-
   ui_main_navi( p );
-
 
   if( m_param.ui.getDebug() )
   {
@@ -265,8 +257,6 @@ void OnPaint::drawHud(QPainter &p)
      bb_ui_draw_UI( p );
   }
 }
-
-
 
 
 void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit ) 
@@ -287,7 +277,6 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
     };
     val_color = interp_color(QColor(255, 255, 255), QColor(0, 255, 0), QColor(255, 255, 0));
   }
-
 
 
   // current speed
