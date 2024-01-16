@@ -191,8 +191,15 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
     timer->start(1000);    
 }
 
+
 void CustomPanel::offroadTransition( bool offroad  )
 {
+  if( !timer->isActive() )
+  {
+    timer->start(1000);
+  }
+
+
    updateToggles( false );
 }
 

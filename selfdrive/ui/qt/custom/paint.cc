@@ -205,7 +205,6 @@ void OnPaint::updateState(const UIState &s)
   alert.alertTextMsg1 = carState_custom.getAlertTextMsg1();
   alert.alertTextMsg2 = carState_custom.getAlertTextMsg2();
   alert.alertTextMsg3 = carState_custom.getAlertTextMsg3();    
-
   m_param.electGearStep  = carState_custom.getElectGearStep();
 
 
@@ -402,7 +401,6 @@ void OnPaint::ui_draw_debug1( QPainter &p )
   p.drawText( QRect(bb_x, 0, bb_w, 42), text1, textOpt );
   p.drawText( QRect(bb_x, bb_y, bb_w, 42), text2, textOpt );
   p.drawText( QRect(bb_x, bb_y+45, bb_w, 42), text3, textOpt );
-
 }
 
 
