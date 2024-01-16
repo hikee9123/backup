@@ -135,7 +135,6 @@ void OnPaint::ui_draw_text( QPainter &p, const QRect& rc, const QString& text, f
 }
 
 
-
 int OnPaint::get_param( const std::string &key )
 {
     auto str = QString::fromStdString(Params().get( key ));
