@@ -150,7 +150,7 @@ void OnPaint::updateState(const UIState &s)
   SubMaster &sm1 = *(s.sm);  
   SubMaster &sm2 = *(m_sm);
 
-  if (sm1.frame % (UI_FREQ) != 0) 
+  if ( (sm1.frame % UI_FREQ) != 0 ) 
       sm2.update(0);
 
   // 1.
@@ -210,7 +210,6 @@ void OnPaint::updateState(const UIState &s)
   // 2.
   auto radar_state = sm1["radarState"].getRadarState();  // radar
   m_param.lead_radar = radar_state.getLeadOne();
-
 
 
   // 2.
