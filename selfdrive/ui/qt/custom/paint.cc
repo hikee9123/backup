@@ -264,10 +264,6 @@ void OnPaint::drawHud(QPainter &p)
   {
      bb_ui_draw_UI( p );
   }
-
- 
-
-
 }
 
 
