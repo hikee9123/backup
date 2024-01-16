@@ -251,6 +251,17 @@ void OnPaint::drawHud(QPainter &p)
     bb_draw_tpms( p, 75, 800);
   } 
 
+
+  /*
+      m_param.ui.getkegmanCPU()
+      m_param.ui.getkegmanBattery()
+      m_param.ui.getkegmanGPU()
+      m_param.ui.getkegmanAngle()
+      m_param.ui.getkegmanEngine()
+      m_param.ui.getkegmanDistance()
+      m_param.ui.getkegmanSpeed()
+  */
+
   if( m_param.ui.getKegman() )
   {
      bb_ui_draw_UI( p );
@@ -727,7 +738,7 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
     bb_ry = bb_y + bb_h;
   }
 
-
+  // add engine
   if( true )
   {
     float fEngineRpm = m_param.enginRpm;

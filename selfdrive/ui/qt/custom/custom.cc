@@ -387,12 +387,10 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     int cruiseMode = m_jsonobj["CruiseMode"].toInt();
     if( cruiseMode == 0 )
     {
-      //m_valueCtrl[ "CruiseGap" ]->hide();      
       m_valueCtrl[ "CruiseGap" ]->setEnabled(false);
     }
     else
     {
-      //m_valueCtrl[ "CruiseGap" ]->show();
        m_valueCtrl[ "CruiseGap" ]->setEnabled(true);
     }
 
@@ -509,14 +507,56 @@ UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_
       "../assets/offroad/icon_shell.png",
     },
     {
+      "debug",
+      "Show debug",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },    
+    {
       "kegman",
       "Show kegman",
       "",
       "../assets/offroad/icon_shell.png",
     },
     {
-      "debug",
-      "Show debug",
+      "kegmanCPU",
+      "CPU temperature",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "kegmanBattery",
+      "battery voltage",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "kegmanGPU",
+      "GPS accuracy",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "kegmanAngle",
+      "steering angle",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "kegmanEngine",
+      "engine status",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "kegmanDistance",
+      "radar relative distance",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },
+    {
+      "kegmanSpeed",
+      "radar relative speed",
       "",
       "../assets/offroad/icon_shell.png",
     },

@@ -187,6 +187,17 @@ void TogglesPanel::updateToggles() {
       experimental_mode_toggle->setDescription("<b>" + long_desc + "</b><br><br>" + e2e_description);
     }
 
+    const bool experimentalmode = params.getBool("ExperimentalMode");
+    if( experimentalmode )
+    {
+      long_personality_setting->setEnabled(true);
+      experimental_mode_toggle->setDescription(e2e_description);
+    }
+    else
+    {
+      long_personality_setting->setEnabled(false);
+    }
+
     experimental_mode_toggle->refresh();
   } else {
     experimental_mode_toggle->setDescription(e2e_description);
