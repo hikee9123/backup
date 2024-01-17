@@ -235,7 +235,7 @@ void CustomPanel::OnTimer()
     if( PowerOff && (m_time > (PowerOff*60)) && (m_powerflag==0) )
     {
          m_powerflag = 1;
-         params.putBool("DoReboot", true);
+         params.putBool("DoShutdown", true);
     }
   }
 }
