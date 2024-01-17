@@ -26,6 +26,7 @@ class CarStateCustom():
     self.is_highway = False
 
     # cruise_speed_button
+    self.old_acc_active = 0
     self.prev_acc_active = 0
     self.cruise_set_speed_kph = 0
     self.cruise_buttons_time = 0
@@ -64,6 +65,7 @@ class CarStateCustom():
 
   def cruise_speed_button( self ):
     if self.prev_acc_active != self.acc_active:
+      self.old_acc_active = self.prev_acc_active
       self.prev_acc_active = self.acc_active
       self.cruise_set_speed_kph = self.VSetDis
 
@@ -91,7 +93,7 @@ class CarStateCustom():
     if cruise_buttons == (Buttons.RES_ACCEL): 
       set_speed_kph = self.VSetDis + 1
     elif cruise_buttons == (Buttons.SET_DECEL):
-      if self.CS.out.gasPressed:
+      if self.CS.out.gasPressed or not self.old_acc_active:
         set_speed_kph = self.clu_Vanz
       else:
         set_speed_kph = self.VSetDis - 1

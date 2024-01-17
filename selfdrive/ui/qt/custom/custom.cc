@@ -194,6 +194,7 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 
 void CustomPanel::offroadTransition( bool offroad  )
 {
+  printf("CustomPanel::offroadTransition %d \n",offroad );
   if( !timer->isActive() )
   {
     timer->start(1000);
@@ -535,43 +536,43 @@ UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_
     },
     {
       "kegmanCPU",
-      "1. CPU temperature",
+      "- CPU temperature",
       "1. Up to 4 menus can be displayed.",
       //"../assets/offroad/icon_shell.png",
     },
     {
       "kegmanBattery",
-      "2. battery voltage",
+      "- battery voltage",
       "2. Up to 4 menus can be displayed.",
       //"../assets/offroad/icon_shell.png",
     },
     {
       "kegmanGPU",
-      "3. GPS accuracy",
+      "- GPS accuracy",
       "3. Up to 4 menus can be displayed.",
       //"../assets/offroad/icon_shell.png",
     },
     {
       "kegmanAngle",
-      "4. steering angle",
+      "- steering angle",
       "4. Up to 4 menus can be displayed.",
      // "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanEngine",
-      "5. engine status",
+      "- engine status",
       "5. Up to 4 menus can be displayed.",
       //"../assets/offroad/icon_shell.png",
     },
     {
       "kegmanDistance",
-      "6. radar relative distance",
+      "- radar relative distance",
       "6. Up to 4 menus can be displayed.",
      // "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanSpeed",
-      "7. radar relative speed",
+      "- radar relative speed",
       "7. Up to 4 menus can be displayed.",
       //"../assets/offroad/icon_shell.png",
     },
@@ -641,14 +642,18 @@ void UITab::updateToggles( int bSave )
   tpms_mode_toggle->setEnabled(bDebug);
   debug_mode_toggle->setEnabled(bDebug);
   kegman_mode_toggle->setEnabled(bDebug);
-  
-  kegman_cpu->setEnabled(bDebug);
-  kegman_battery->setEnabled(bDebug);
-  kegman_gpu->setEnabled(bDebug);
-  kegman_angle->setEnabled(bDebug);
-  kegman_engine->setEnabled(bDebug);
-  kegman_distance->setEnabled(bDebug);
-  kegman_speed->setEnabled(bDebug);
+
+  int kegman = bDebug;
+  if( bDebug )
+    kegman = m_jsonobj["kegman"].toBool();
+
+  kegman_cpu->setEnabled(kegman);
+  kegman_battery->setEnabled(kegman);
+  kegman_gpu->setEnabled(kegman);
+  kegman_angle->setEnabled(kegman);
+  kegman_engine->setEnabled(kegman);
+  kegman_distance->setEnabled(kegman);
+  kegman_speed->setEnabled(kegman);
 
 }
 

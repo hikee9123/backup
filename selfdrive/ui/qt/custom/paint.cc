@@ -295,10 +295,9 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
 void OnPaint::ui_main_navi( QPainter &p ) 
 {
   QString text4;
-
-  int bb_x = 50;
-  int bb_y = 430;
-  int bb_w = 190;
+  int     bb_x = 50;
+  int     bb_y = 430;
+  int     bb_w = 190;
 
 
   if( m_nda.camLimitSpeedLeftDist > 0)
@@ -377,7 +376,8 @@ void OnPaint::ui_draw_debug1( QPainter &p )
 
 
   QTextOption  textOpt =  QTextOption( Qt::AlignLeft );
-  configFont( p, "Open Sans",  40, "Regular");
+  p.setFont(InterFont(40));
+  //configFont( p, "Open Sans",  40, "Regular");
 
 
   p.drawText( QRect(bb_x, 0, bb_w, 42), text1, textOpt );
@@ -419,10 +419,12 @@ int OnPaint::bb_ui_draw_measure(QPainter &p,  const QString &bb_value, const QSt
 
 
   //print value
-  configFont( p, "Open Sans",  bb_valueFontSize*2, "SemiBold");
+  p.setFont(InterFont(bb_valueFontSize*2));
+  //configFont( p, "Open Sans",  bb_valueFontSize*2, "SemiBold");
   drawText1( p, bb_x-dx/2, bb_y+ (int)(bb_valueFontSize*2.5)+5,  bb_value, bb_valueColor );
   //print label
-  configFont( p, "Open Sans",  bb_valueFontSize*1, "Regular");
+  p.setFont(InterFont(bb_valueFontSize));
+  //configFont( p, "Open Sans",  bb_valueFontSize*1, "Regular");
   drawText1( p, bb_x, bb_y + (int)(bb_valueFontSize*2.5)+5 + (int)(bb_labelFontSize*2.5)+5,  bb_label, bb_labelColor);
 
   //print uom
@@ -430,8 +432,8 @@ int OnPaint::bb_ui_draw_measure(QPainter &p,  const QString &bb_value, const QSt
 
     int rx =bb_x + bb_uom_dx + bb_valueFontSize -3;
     int ry = bb_y + bb_uom_dy + (int)(bb_valueFontSize*2.5/2)+25;
-    configFont( p, "Open Sans",  bb_uomFontSize*2, "Regular");
-
+    //configFont( p, "Open Sans",  bb_uomFontSize*2, "Regular");
+    p.setFont(InterFont(bb_uomFontSize));
     p.save();
     p.translate( rx, ry);
     p.rotate( -90 );
