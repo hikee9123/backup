@@ -119,7 +119,6 @@ void CValueControl::setValue( int value )
 
     emit clicked(); 
   }
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,13 +194,11 @@ void CustomPanel::offroadTransition( bool offroad  )
 {
   int isActive = timer->isActive();
 
-  printf("CustomPanel::offroadTransition %d  %d \n",offroad, isActive );
+  printf("CustomPanel::offroadTransition offroad=%d  isActive=%d \n", offroad, isActive );
   if( !isActive )
   {
     timer->start(1000);
   }
-
-
    updateToggles( false );
 }
 
@@ -209,18 +206,35 @@ void CustomPanel::OnTimer()
 {
   UIState *s = uiState();
   UIScene &scene = s->scene;
+  SubMaster &sm = *(s->sm);  
+
+
+  if ( (sm.frame % UI_FREQ) != 0 ) 
+  {
+    m_time++;
+  }
 
   sm->update(0);
   if( scene.started )
   {
+    m_time = 0;
+    m_powerflag = 0;
     updateToggles( false );
     if( m_cmdIdx > 10 )
       timer->stop();
   }
+  else
+  {
+    int PowerOff = m_jsonobj["PowerOff"].toInt();
+    if( m_time > (PowerOff*60) && (m_powerflag==0) )
+    {
+         m_powerflag = 1;
+         params.putBool("DoReboot", true);
+    }
+  }
 }
 
-// params.putBool("DoReboot", true);
-
+// 
 void CustomPanel::updateToggles( int bSave )
 {
   MessageBuilder msg;
@@ -352,7 +366,7 @@ QJsonObject CustomPanel::readJsonFile(const QString& filePath )
 
     QString json_str = QString::fromStdString(params.get(filePath.toStdString()));
 
-    if (json_str.isEmpty()) return jsonObject;
+    if ( json_str.isEmpty() ) return jsonObject;
 
     QJsonDocument doc = QJsonDocument::fromJson(json_str.toUtf8());
     if (doc.isNull()) {
@@ -394,7 +408,14 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
       "0:Not used,1~4:Gap Comma speed",
       "../assets/offroad/icon_shell.png",
       0,4,1
-    },    
+    },
+    {
+      "PowerOff",
+      tr("Power Off Time"),
+      "0:Not used,1~:Power Offset Time(sec)",
+      "../assets/offroad/icon_shell.png",
+      0,60,1
+    },
   };
 
   for (auto &[param, title, desc, icon, min,max,unit] : value_defs) {

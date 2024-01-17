@@ -198,10 +198,13 @@ public:
 
 
 private:
+  QJsonObject m_jsonobj;
   QTimer *timer = nullptr;
   Params params;
   int    m_cmdIdx = 0;
-  QJsonObject m_jsonobj;
+  int    m_powerflag = 1;
+  int    m_time = 0;
+
 
 private:
   std::unique_ptr<PubMaster> pm; 
