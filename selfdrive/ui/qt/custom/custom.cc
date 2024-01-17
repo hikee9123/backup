@@ -206,7 +206,7 @@ void CustomPanel::OnTimer()
 {
   UIState   *s = uiState();
   UIScene   &scene = s->scene;
-  //SubMaster &sm = *(s->sm);  
+  SubMaster &sm2 = *(s->sm);  
 
 
 
@@ -216,9 +216,9 @@ void CustomPanel::OnTimer()
     m_time = 0;
 
     updateToggles( false );
-   // const auto car_state = sm["carState"].getCarState();
-   // int parkingBrake = car_state.getParkingBrake();
-   // if( parkingBrake )
+    const auto car_state = sm2["carState"].getCarState();
+    float vEgo = car_state.getVEgo();
+    if( vEgo > 10 )
        m_powerflag = 0; 
 
     //if( m_cmdIdx > 10 )
@@ -232,7 +232,7 @@ void CustomPanel::OnTimer()
     }
 
     int PowerOff = m_jsonobj["PowerOff"].toInt();
-    if( m_time > (PowerOff*60) && (m_powerflag==0) )
+    if( PowerOff && (m_time > (PowerOff*60)) && (m_powerflag==0) )
     {
          m_powerflag = 1;
          params.putBool("DoReboot", true);
