@@ -45,6 +45,7 @@ public:
         toggle.togglePosition();
       }
     });
+    
   }
 
   void setConfirmation(bool _confirm, bool _store_confirm) {
