@@ -496,7 +496,6 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
 
 
    addItem( new MapboxToken() );
-
 }
 
 
