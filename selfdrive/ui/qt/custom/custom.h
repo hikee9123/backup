@@ -69,6 +69,12 @@ public:
     refresh();
   }
 
+  void setEnabled(bool enabled) 
+  {
+    ToggleControl::setEnabled(enabled);
+    QFrame::setEnabled(  enabled );
+  }  
+
 private:
   QString key;
   QJsonObject &m_jsonobj;
