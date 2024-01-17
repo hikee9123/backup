@@ -67,7 +67,7 @@ class NaviControl():
       return 0
     
     cruise_button = CS.cruise_buttons[-1] 
-    if not CS.customCS.acc_active or cruise_button != Buttons.NONE or CS.out.brakePressed  or CS.out.gasPressed: 
+    if not CS.customCS.acc_active or cruise_button != Buttons.NONE or CS.out.brakePressed: #  or CS.out.gasPressed: 
       self.wait_timer2 = 100 
     elif self.wait_timer2: 
       self.wait_timer2 -= 1
