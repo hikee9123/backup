@@ -156,7 +156,7 @@ static void update_sockets(UIState *s) {
 
 static void update_state(UIState *s) {
   SubMaster &sm = *(s->sm);
-  UIScene &scene = s->scene;
+  UIScene   &scene = s->scene;
 
   if (sm.updated("liveCalibration")) {
     auto live_calib = sm["liveCalibration"].getLiveCalibration();

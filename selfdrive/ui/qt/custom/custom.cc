@@ -204,27 +204,33 @@ void CustomPanel::offroadTransition( bool offroad  )
 
 void CustomPanel::OnTimer() 
 {
-  UIState *s = uiState();
-  UIScene &scene = s->scene;
+  UIState   *s = uiState();
+  UIScene   &scene = s->scene;
   SubMaster &sm = *(s->sm);  
 
 
-  if ( (sm.frame % UI_FREQ) != 0 ) 
-  {
-    m_time++;
-  }
 
   sm->update(0);
   if( scene.started )
   {
     m_time = 0;
-    m_powerflag = 0;
+
     updateToggles( false );
-    if( m_cmdIdx > 10 )
-      timer->stop();
+    const auto car_state = sm["carState"].getCarState();
+    int parkingBrake = car_state.getParkingBrake();
+    if( parkingBrake )
+       m_powerflag = 0; 
+
+    //if( m_cmdIdx > 10 )
+    //  timer->stop();
   }
   else
   {
+    if ( (sm.frame % UI_FREQ) != 0 ) 
+    {
+      m_time++;
+    }
+
     int PowerOff = m_jsonobj["PowerOff"].toInt();
     if( m_time > (PowerOff*60) && (m_powerflag==0) )
     {
