@@ -206,7 +206,7 @@ void CustomPanel::OnTimer()
 {
   UIState   *s = uiState();
   UIScene   &scene = s->scene;
-  SubMaster &sm = *(s->sm);  
+  //SubMaster &sm = *(s->sm);  
 
 
 
@@ -216,9 +216,9 @@ void CustomPanel::OnTimer()
     m_time = 0;
 
     updateToggles( false );
-    const auto car_state = sm["carState"].getCarState();
-    int parkingBrake = car_state.getParkingBrake();
-    if( parkingBrake )
+   // const auto car_state = sm["carState"].getCarState();
+   // int parkingBrake = car_state.getParkingBrake();
+   // if( parkingBrake )
        m_powerflag = 0; 
 
     //if( m_cmdIdx > 10 )
@@ -226,7 +226,7 @@ void CustomPanel::OnTimer()
   }
   else
   {
-    if ( (sm.frame % UI_FREQ) != 0 ) 
+    if ( (sm->frame % UI_FREQ) != 0 ) 
     {
       m_time++;
     }
