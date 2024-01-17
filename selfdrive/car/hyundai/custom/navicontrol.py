@@ -25,7 +25,6 @@ class NaviControl():
 
     self.gasPressed_time = 0
 
-
     self.frame_camera = 0
     self.VSetDis = 30
     self.frame_VSetDis = 30
@@ -84,7 +83,6 @@ class NaviControl():
       return self.case_func( CS )
 
 
-
   def case_default(self, CS):
       self.seq_command = 0
       return None
@@ -99,10 +97,15 @@ class NaviControl():
       if standstill:
         self.last_lead_distance = 0
         self.seq_command = 5
+      elif CS.out.gasPressed:
+        delta = CS.customCS.clu_Vanz - self.VSetDis
+        if delta > 5:
+           self.set_point = CS.customCS.clu_Vanz
+           self.seq_command = 2    # set
       elif delta_speed >= 1:
-        self.seq_command = 1
+        self.seq_command = 1  # acc
       elif delta_speed <= -1:
-        self.seq_command = 2
+        self.seq_command = 2    # dec
       return None
 
   def case_1(self, CS):  # acc
@@ -114,7 +117,6 @@ class NaviControl():
         self.btn_cnt = 0
         self.seq_command = 3
       return Buttons.RES_ACCEL
-
 
   def case_2(self, CS):  # dec
       self.btn_cnt += 1
@@ -227,7 +229,6 @@ class NaviControl():
         self.gasPressed_time -= 1
         if self.gasPressed_time <= 0:
           cruise_set_speed = CS.customCS.clu_Vanz - 5
-
 
     if cruise_set_mode & 2  and (CS.customCS.gapSet == self.cruiseGap):  # comma long control speed.
       vFuture = self.speed_kps
