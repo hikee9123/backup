@@ -126,7 +126,6 @@ void CValueControl::setValue( int value )
 //
 //
 
-
 CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent) 
 {
   pm.reset( new PubMaster({"uICustom"}) );
@@ -194,8 +193,10 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 
 void CustomPanel::offroadTransition( bool offroad  )
 {
-  printf("CustomPanel::offroadTransition %d \n",offroad );
-  if( !timer->isActive() )
+  int isActive = timer->isActive();
+
+  printf("CustomPanel::offroadTransition %d  %d \n",offroad, isActive );
+  if( !isActive )
   {
     timer->start(1000);
   }
@@ -218,6 +219,7 @@ void CustomPanel::OnTimer()
   }
 }
 
+// params.putBool("DoReboot", true);
 
 void CustomPanel::updateToggles( int bSave )
 {

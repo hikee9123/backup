@@ -139,7 +139,6 @@ int OnPaint::get_param( const std::string &key )
 {
     auto str = QString::fromStdString(Params().get( key ));
     int value = str.toInt();
-
     return value;
 }
 
@@ -249,7 +248,6 @@ void OnPaint::drawHud(QPainter &p)
   {
     bb_draw_tpms( p, 75, 800);
   } 
-
 
   if( m_param.ui.getKegman() )
   {
