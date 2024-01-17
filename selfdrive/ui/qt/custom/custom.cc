@@ -526,7 +526,7 @@ UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_
       "Show debug",
       "",
       "../assets/offroad/icon_shell.png",
-    },    
+    },
     {
       "kegman",
       "Show kegman",
