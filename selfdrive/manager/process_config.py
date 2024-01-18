@@ -44,11 +44,11 @@ def only_offroad(started, params, CP: car.CarParams) -> bool:
 #custom
 def ExternalNaviType()  -> bool:
   #externalNaviType = int(self.params.get('ExternalNaviType'))
-  externalNaviType = params.get_bool("ExternalNaviType")
+  externalNaviType = Params().get_bool("ExternalNaviType")
   return externalNaviType
 
 def UseExternalNaviRoutes()  -> bool:
-  return params.get_bool("UseExternalNaviRoutes")
+  return Params().get_bool("UseExternalNaviRoutes")
 
 def set_mapbox()  -> bool:
   if UseExternalNaviRoutes():
