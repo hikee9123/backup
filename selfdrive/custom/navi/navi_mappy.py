@@ -51,7 +51,6 @@ class FindRemoteIP:
             ret = bool(ready[0])
             if ret:
                 data, self.remote_addr = sock.recvfrom(2048)
-                print(f"udp_recv={data}")                
                 json_obj = json.loads(data.decode())
                 print(f"json={json_obj}")  
  
