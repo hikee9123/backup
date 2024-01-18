@@ -100,6 +100,7 @@ procs = [
   PythonProcess("statsd", "selfdrive.statsd", always_run),
 
   #custom
+  PythonProcess("navi_mappy", "selfdrive.custom.navi.navi_mappy", always_run ),  
   PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", only_onroad),
   PythonProcess("navi_route", "selfdrive.custom.navi.navi_route", only_onroad, enabled=UseExternalNaviRoutes() ),
 
