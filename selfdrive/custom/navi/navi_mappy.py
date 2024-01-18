@@ -105,7 +105,7 @@ def main():
             sock.setblocking(False)
             test_dist = 0            
             while True:
-                if server.udp_recv(sock) and self.remote_addr:
+                if server.udp_recv(sock) and server.remote_addr:
                     dat = messaging.new_message('naviCustom')
                     dat.naviCustom.naviData = {
                     "active": server.mapValid,
