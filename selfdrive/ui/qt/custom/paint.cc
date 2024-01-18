@@ -431,7 +431,7 @@ int OnPaint::bb_ui_draw_measure(QPainter &p,  const QString &bb_value, const QSt
     int rx =bb_x + bb_uom_dx + bb_valueFontSize -3;
     int ry = bb_y + bb_uom_dy + (int)(bb_valueFontSize*2.5/2)+25;
     //configFont( p, "Open Sans",  bb_uomFontSize*2, "Regular");
-    p.setFont(InterFont(bb_uomFontSize));
+    p.setFont(InterFont(bb_uomFontSize*2));
     p.save();
     p.translate( rx, ry);
     p.rotate( -90 );
