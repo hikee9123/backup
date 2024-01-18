@@ -512,6 +512,13 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
       "",
       "../assets/offroad/icon_openpilot.png",
     },
+    {
+      "ExternalNaviType",
+      tr("Use external navi type"),
+      "0.mappy  1.NDA",
+      "../assets/offroad/icon_openpilot.png",
+    },
+    
   };
 
   for (auto &[param, title, desc, icon] : toggle_defs) {

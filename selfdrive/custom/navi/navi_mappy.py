@@ -59,37 +59,32 @@ class FindRemoteIP:
                     try:
                         echo = json.dumps(json_obj["echo"])
                         sock.sendto(echo.encode(), self.remote_addr ) # (self.remote_addr[0], Port.BROADCAST_PORT))
-                        ret = False
                     except:
                         pass
 
                 if 'speedLimit' in json_obj:
-                        try:
-                            self.speedLimit = json.dumps(json_obj["speedLimit"])
-                            ret = False
-                        except:
-                            pass
+                    try:
+                        self.speedLimit = json.dumps(json_obj["speedLimit"])
+                    except:
+                        pass
 
                 if 'speedLimitDistance' in json_obj:
-                        try:
-                            self.speedLimitDistance = json.dumps(json_obj["speedLimitDistance"])
-                            ret = False
-                        except:
-                            pass
+                    try:
+                        self.speedLimitDistance = json.dumps(json_obj["speedLimitDistance"])
+                    except:
+                        pass
 
                 if 'mapValid' in json_obj:
-                        try:
-                            self.mapValid = json.dumps(json_obj["mapValid"])
-                            ret = False
-                        except:
-                            pass
+                    try:
+                        self.mapValid = json.dumps(json_obj["mapValid"])
+                    except:
+                        pass
 
                 if 'trafficType' in json_obj:
-                        try:
-                            self.trafficType = json.dumps(json_obj["trafficType"])
-                            ret = False
-                        except:
-                            pass                        
+                    try:
+                        self.trafficType = json.dumps(json_obj["trafficType"])
+                    except:
+                        pass                        
 
         except:
             try:
@@ -111,32 +106,32 @@ def main():
             sock.setblocking(False)
             test_dist = 0            
             while True:
-                server.udp_recv(sock)
+                if server.udp_recv(sock) and self.remote_addr:
+                    dat = messaging.new_message('naviCustom')
+                    dat.naviCustom.naviData = {
+                    "active": server.mapValid,
+                    "roadLimitSpeed": 0,
+                    "isHighway": False,
+                    "camType": server.trafficType,
+                    "camLimitSpeedLeftDist": server.speedLimitDistance,
+                    "camLimitSpeed": server.speedLimit,
+                    "sectionLimitSpeed": 0,
+                    "sectionLeftDist": 0,
+                    "sectionAvgSpeed": 0,
+                    "sectionLeftTime": 0,
+                    "sectionAdjustSpeed": False,
+                    "camSpeedFactor": 0.1,
+                    "currentRoadName": "",
+                    "isNda2": False,
+                    "cntIdx": test_dist,
+                    }
 
-                dat = messaging.new_message('naviCustom')
-                dat.naviCustom.naviData = {
-                "active": server.mapValid,
-                "roadLimitSpeed": 0,
-                "isHighway": False,
-                "camType": server.trafficType,
-                "camLimitSpeedLeftDist": server.speedLimitDistance,
-                "camLimitSpeed": server.speedLimit,
-                "sectionLimitSpeed": 0,
-                "sectionLeftDist": 0,
-                "sectionAvgSpeed": 0,
-                "sectionLeftTime": 0,
-                "sectionAdjustSpeed": False,
-                "camSpeedFactor": 0.1,
-                "currentRoadName": "",
-                "isNda2": server.mapValid,
-                "cntIdx": test_dist,
-                }
+                    pm.send('naviCustom', dat )
 
-                pm.send('naviCustom', dat )
-
-                test_dist += 1
-                if test_dist >= 10:
-                    test_dist = 0
+                    test_dist += 1
+                    if test_dist >= 10:
+                        test_dist = 0
+                time.sleep( 0.5 )
 
         except Exception as e:
             print(f"An error occurred: {e}")
