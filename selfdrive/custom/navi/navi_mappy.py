@@ -4,6 +4,7 @@ import time
 import threading
 import select
 import json
+import cereal.messaging as messaging
 
 from threading import Thread
 
@@ -18,6 +19,11 @@ class FindRemoteIP:
         self.active = 0
         self.remote_addr = None
         self.last_exception = None
+
+        self.speedLimit = 0
+        self.speedLimitDistance = 0
+        self.mapValid = 0
+        self.trafficType  = 0
 
         self.lock = threading.Lock()
 
@@ -49,13 +55,6 @@ class FindRemoteIP:
                 json_obj = json.loads(data.decode())
                 print(f"json={json_obj}")  
  
-                if 'cmd' in json_obj:
-                    try:
-                        #os.system(json_obj['cmd'])
-                        ret = False
-                    except:
-                        pass
-
                 if 'echo' in json_obj:
                     try:
                         echo = json.dumps(json_obj["echo"])
@@ -64,6 +63,33 @@ class FindRemoteIP:
                     except:
                         pass
 
+                if 'speedLimit' in json_obj:
+                        try:
+                            self.speedLimit = json.dumps(json_obj["speedLimit"])
+                            ret = False
+                        except:
+                            pass
+
+                if 'speedLimitDistance' in json_obj:
+                        try:
+                            self.speedLimitDistance = json.dumps(json_obj["speedLimitDistance"])
+                            ret = False
+                        except:
+                            pass
+
+                if 'mapValid' in json_obj:
+                        try:
+                            self.mapValid = json.dumps(json_obj["mapValid"])
+                            ret = False
+                        except:
+                            pass
+
+                if 'trafficType' in json_obj:
+                        try:
+                            self.trafficType = json.dumps(json_obj["trafficType"])
+                            ret = False
+                        except:
+                            pass                        
 
         except:
             try:
@@ -73,16 +99,44 @@ class FindRemoteIP:
                 self.lock.release()
 
         return ret
+    
 
 
 def main():
+    pm = messaging.PubMaster(['naviCustom'])     
     server = FindRemoteIP() 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         try:
             sock.bind(('0.0.0.0', Port.RECEIVE_PORT))
             sock.setblocking(False)
+            test_dist = 0            
             while True:
                 server.udp_recv(sock)
+
+                dat = messaging.new_message('naviCustom')
+                dat.naviCustom.naviData = {
+                "active": server.mapValid,
+                "roadLimitSpeed": 0,
+                "isHighway": False,
+                "camType": server.trafficType,
+                "camLimitSpeedLeftDist": server.speedLimitDistance,
+                "camLimitSpeed": server.speedLimit,
+                "sectionLimitSpeed": 0,
+                "sectionLeftDist": 0,
+                "sectionAvgSpeed": 0,
+                "sectionLeftTime": 0,
+                "sectionAdjustSpeed": False,
+                "camSpeedFactor": 0.1,
+                "currentRoadName": "",
+                "isNda2": server.mapValid,
+                "cntIdx": test_dist,
+                }
+
+                pm.send('naviCustom', dat )
+
+                test_dist += 1
+                if test_dist >= 10:
+                    test_dist = 0
 
         except Exception as e:
             print(f"An error occurred: {e}")
