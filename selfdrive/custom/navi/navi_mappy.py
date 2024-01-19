@@ -24,6 +24,9 @@ class FindRemoteIP:
         self.speedLimitDistance = 0
         self.mapValid = 0
         self.trafficType  = 0
+        self.safetySign1 = 0
+        self.turnInfo = 0
+        self.distanceToTurn = 0
 
         self.lock = threading.Lock()
 
@@ -43,6 +46,14 @@ class FindRemoteIP:
             print('Received message from {}: {}'.format( self.remote_addr, data.decode()))
             server_socket.sendto( 'echo'.encode(), self.remote_addr )
   
+    def get_value(self, key):
+        value = 0
+        try:
+            value = json.dumps( key )
+        except Exception as e:
+            print(f"key error occurred: {e}")
+    
+        return value
 
     def udp_recv(self, sock):
         ret = False
@@ -62,28 +73,25 @@ class FindRemoteIP:
                         pass
 
                 if 'speedLimit' in json_obj:
-                    try:
-                        self.speedLimit = json.dumps(json_obj["speedLimit"])
-                    except:
-                        pass
+                    self.speedLimit = self.get_value(json_obj["speedLimit"])
 
                 if 'speedLimitDistance' in json_obj:
-                    try:
-                        self.speedLimitDistance = json.dumps(json_obj["speedLimitDistance"])
-                    except:
-                        pass
+                    self.speedLimitDistance = self.get_value(json_obj["speedLimitDistance"])
 
                 if 'mapValid' in json_obj:
-                    try:
-                        self.mapValid = json.dumps(json_obj["mapValid"])
-                    except:
-                        pass
+                    self.mapValid = self.get_value(json_obj["mapValid"])
 
                 if 'trafficType' in json_obj:
-                    try:
-                        self.trafficType = json.dumps(json_obj["trafficType"])
-                    except:
-                        pass
+                    self.trafficType = self.get_value(json_obj["trafficType"])
+
+                if 'safetySign1' in json_obj:
+                    self.safetySign1 = self.get_value(json_obj["safetySign1"])
+             
+                if 'turnInfo' in json_obj:
+                    self.turnInfo = self.get_value(json_obj["turnInfo"])
+
+                if 'distanceToTurn' in json_obj:
+                    self.distanceToTurn = self.get_value(json_obj["distanceToTurn"])  
 
         except:
             try:
