@@ -83,7 +83,7 @@ class FindRemoteIP:
                     try:
                         self.trafficType = json.dumps(json_obj["trafficType"])
                     except:
-                        pass                        
+                        pass
 
         except:
             try:
