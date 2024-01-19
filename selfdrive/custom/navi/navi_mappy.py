@@ -27,6 +27,7 @@ class FindRemoteIP:
         self.turnInfo = 0
         self.distanceToTurn = 0
         self.ts = 0
+        self.idx = 0;
 
         self.lock = threading.Lock()
 
@@ -94,7 +95,9 @@ class FindRemoteIP:
                     self.distanceToTurn = self.get_value(json_obj["distanceToTurn"])
 
                 if 'ts' in json_obj:
-                    self.ts = self.get_value(json_obj["ts"])  
+                    self.ts = self.get_value(json_obj["ts"])
+                if 'id' in json_obj:
+                    self.idx = self.get_value(json_obj["id"])                        
 
         except:
             try:
