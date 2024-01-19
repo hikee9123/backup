@@ -185,7 +185,7 @@ private:
 
     if( strMapboxToken.length() )
     {
-       setTitle( strMapboxToken );
+       setTitle( "Mapbox token" );
        setDescription( strMapboxToken );
        btn.setText("CHANGE");  
     }
