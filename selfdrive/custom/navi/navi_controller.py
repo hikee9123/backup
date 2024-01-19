@@ -100,7 +100,45 @@ class NaviServer:
       return None
 
   def broadcast_thread(self):
+      broadcast_address = None
+      recv_timeout = False
 
+      with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+          sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+          sock.settimeout(1.0)  # 1초의 타임아웃 설정
+          while self.program_run:
+              try:
+                  if broadcast_address is not None and self.remote_addr is None:
+                      broadcast_address = '255.255.255.255'
+
+                      message = 'EON:ROAD_LIMIT_SERVICE:v1'
+                      address = (broadcast_address, Port.BROADCAST_PORT)
+                      rt = sock.sendto(message.encode('utf-8'), address )
+                      print(f"Send : {rt} = {message} {address}") 
+
+              except Exception as e:
+                  print(f"Send error occurred: {e}")
+
+              try:
+                  data, self.remote_addr = sock.recvfrom(2048)
+                  print(f"recv: {data} {self.remote_addr}")
+              except socket.timeout:
+                  if self.remote_addr is None:
+                      print("recv timeout")
+
+                  recv_timeout = True
+              except Exception as e:
+                  print(f"recv error occurred: {e}") 
+
+              self.frame += 1
+
+              if recv_timeout == False:
+                time.sleep(1.)
+              else:
+                  recv_timeout = False
+
+  """
+  def broadcast_thread(self):
     broadcast_address = None
     frame = 0
 
@@ -131,6 +169,7 @@ class NaviServer:
 
       except:
         pass
+  """
 
   def send_sdp(self, sock):
     try:
