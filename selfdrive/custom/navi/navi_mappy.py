@@ -86,12 +86,6 @@ class MappyServer:
                 json_obj = json.loads(data.decode())
                 print(f"json={json_obj}")  
  
-                if 'echo' in json_obj:
-                    try:
-                        echo = json.dumps(json_obj["echo"])
-                        sock.sendto(echo.encode(), self.remote_addr ) # (self.remote_addr[0], Port.BROADCAST_PORT))
-                    except:
-                        pass
 
                 if 'speedLimit' in json_obj:
                     self.speedLimit = self.get_value(json_obj["speedLimit"])
