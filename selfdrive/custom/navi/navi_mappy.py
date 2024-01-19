@@ -55,9 +55,9 @@ class MappyServer:
         print(f"host name: {host_name}, IP address: {ip_address}")
         print('UDP Server is listening on {}:{}'.format(*server_address))
         while True:
-            data, self.remote_addr = server_socket.recvfrom(1024)
-            print('Received message from {}: {}'.format( self.remote_addr, data.decode()))
-            server_socket.sendto( 'echo'.encode(), self.remote_addr )                
+            data, remote_addr = server_socket.recvfrom(1024)
+            print('Received message from {}: {}'.format( remote_addr, data.decode()))
+            server_socket.sendto( f'echo_{host_name}'.encode(), remote_addr )                
 
 
 
