@@ -49,12 +49,18 @@ class MappyServer:
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         server_address = ('0.0.0.0', Port.BROADCAST_PORT)  # 서버 주소와 포트 번호
         server_socket.bind( server_address )
-  
+
+        host_name = socket.gethostname()
+        ip_address = socket.gethostbyname(host_name)
+        print(f"host name: {host_name}, IP address: {ip_address}")
         print('UDP Server is listening on {}:{}'.format(*server_address))
         while True:
             data, self.remote_addr = server_socket.recvfrom(1024)
             print('Received message from {}: {}'.format( self.remote_addr, data.decode()))
-            server_socket.sendto( 'echo'.encode(), self.remote_addr )
+            server_socket.sendto( 'echo'.encode(), self.remote_addr )                
+
+
+
   
     def get_value(self, key):
         value = 0
@@ -206,9 +212,9 @@ def main():
             while True:
                 if server.udp_recv(sock) and server.remote_addr:
                    server.update()
-                else:
-                   print(f'wait connect port={Port.RECEIVE_PORT}  remote_addr={server.remote_addr}')
-                   time.sleep( 0.5 )
+                #else:
+                   #print(f'wait connect port={Port.RECEIVE_PORT}  remote_addr={server.remote_addr}')
+                   #time.sleep( 0.5 )
 
                 time.sleep( 0.5 )
 
