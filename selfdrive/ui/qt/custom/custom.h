@@ -183,7 +183,7 @@ private:
   {
     QString strMapboxToken = QString::fromStdString(params.get("MapboxToken"));
 
-    if( selected_car.length() )
+    if( strMapboxToken.length() )
     {
        setTitle( strMapboxToken );
        setDescription( strMapboxToken );
