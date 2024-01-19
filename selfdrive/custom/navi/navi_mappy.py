@@ -27,8 +27,9 @@ class FindRemoteIP:
         self.turnInfo = 0
         self.distanceToTurn = 0
         self.ts = 0
-        self.idx = 0;
+        self.idx = 0
 
+        self.pm = messaging.PubMaster(['naviCustom'])    
         self.lock = threading.Lock()
 
         broadcast = Thread(target=self.udp_server_find_remote_ip, args=[])
@@ -96,6 +97,7 @@ class FindRemoteIP:
 
                 if 'ts' in json_obj:
                     self.ts = self.get_value(json_obj["ts"])
+
                 if 'id' in json_obj:
                     self.idx = self.get_value(json_obj["id"])                        
 
@@ -107,46 +109,52 @@ class FindRemoteIP:
 
         return ret
     
+    def update(self):
+
+
+
+        dat = messaging.new_message('naviCustom')
+        dat.naviCustom.naviData = {
+            "active": self.mapValid,
+            "roadLimitSpeed": 0,
+            "isHighway": False,
+            "camType": self.trafficType,
+            "camLimitSpeedLeftDist": self.speedLimitDistance,
+            "camLimitSpeed": self.speedLimit,
+            "sectionLimitSpeed": 0,
+            "sectionLeftDist": 0,
+            "sectionAvgSpeed": 0,
+            "sectionLeftTime": 0,
+            "sectionAdjustSpeed": False,
+            "camSpeedFactor": self.safetySign1,
+            "currentRoadName": "",
+            "isNda2": False,
+            "cntIdx": self.idx,
+        }
+        self.pm.send('naviCustom', dat )
+
+
+            
+
+
+    
 
 def main():
-    pm = messaging.PubMaster(['naviCustom'])     
+
     server = FindRemoteIP() 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         try:
             sock.bind(('0.0.0.0', Port.RECEIVE_PORT))
             sock.setblocking(False)
-            test_dist = 0            
             while True:
                 if server.udp_recv(sock) and server.remote_addr:
-                    dat = messaging.new_message('naviCustom')
-                    dat.naviCustom.naviData = {
-                        "active": server.mapValid,
-                        "roadLimitSpeed": 0,
-                        "isHighway": False,
-                        "camType": server.trafficType,
-                        "camLimitSpeedLeftDist": server.speedLimitDistance,
-                        "camLimitSpeed": server.speedLimit,
-                        "sectionLimitSpeed": 0,
-                        "sectionLeftDist": 0,
-                        "sectionAvgSpeed": 0,
-                        "sectionLeftTime": 0,
-                        "sectionAdjustSpeed": False,
-                        "camSpeedFactor": server.safetySign1,
-                        "currentRoadName": "",
-                        "isNda2": False,
-                        "cntIdx": test_dist,
-                    }
+                    server.update()
 
-                    pm.send('naviCustom', dat )
-
-                    test_dist += 1
-                    if test_dist >= 10:
-                        test_dist = 0
                 time.sleep( 0.5 )
 
         except Exception as e:
             print(f"An error occurred: {e}")
-            server.last_exception = e
+            server.last_exception = e                
 
 
 if __name__ == "__main__":
