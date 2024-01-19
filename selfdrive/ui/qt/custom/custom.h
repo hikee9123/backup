@@ -140,7 +140,7 @@ public:
     edit.setStyleSheet(R"(
       background-color: grey;
       font-size: 55px;
-      font-weight: 500;
+      font-weight: 1000;
       height: 120px;
     )");
     btn.setFixedSize(200, 100);

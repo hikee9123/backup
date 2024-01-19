@@ -42,9 +42,9 @@ def only_offroad(started, params, CP: car.CarParams) -> bool:
   return not started
 
 #custom
-def ExternalNaviType()  -> bool:
-  #externalNaviType = int(self.params.get('ExternalNaviType'))
-  externalNaviType = Params().get_bool("ExternalNaviType")
+def ExternalNaviType()  -> int:
+  externalNaviType = int(Params().get('ExternalNaviType'))
+  #externalNaviType = Params().get_bool("ExternalNaviType")
   return externalNaviType
 
 def UseExternalNaviRoutes()  -> bool:
@@ -105,8 +105,8 @@ procs = [
   PythonProcess("statsd", "selfdrive.statsd", always_run),
 
   #custom
-  PythonProcess("navi_mappy", "selfdrive.custom.navi.navi_mappy", always_run, enabled = not ExternalNaviType() ),  
-  PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", only_onroad, enabled = ExternalNaviType() ),
+  PythonProcess("navi_mappy", "selfdrive.custom.navi.navi_mappy", always_run, enabled = (ExternalNaviType()==0) ),     # mappy
+  PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", only_onroad, enabled = ExternalNaviType() ), # NDA
   PythonProcess("navi_route", "selfdrive.custom.navi.navi_route", only_onroad, enabled= UseExternalNaviRoutes() ),
 
 

@@ -13,7 +13,7 @@ class Port:
   RECEIVE_PORT = 2843
 
 
-class FindRemoteIP:
+class MappyServer:
     def __init__(self):
         self.active = 0
         self.remote_addr = None
@@ -28,8 +28,16 @@ class FindRemoteIP:
         self.distanceToTurn = 0
         self.ts = 0
         self.idx = 0
+        self.idx_old = 0
 
-        self.pm = messaging.PubMaster(['naviCustom'])    
+        self.dHideTimeSec = 0
+        self.dArrivalTimeSec =  0
+        self.dArrivalDistance =  0
+        self.dEventSec = 0
+        self.current_time_seconds = 0        
+
+        self.pm = messaging.PubMaster(['naviCustom']) 
+        self.sm = messaging.SubMaster(['carState'])    
         self.lock = threading.Lock()
 
         broadcast = Thread(target=self.udp_server_find_remote_ip, args=[])
@@ -51,7 +59,12 @@ class FindRemoteIP:
     def get_value(self, key):
         value = 0
         try:
-            value = json.dumps( key )
+            if key == 'True':
+                value = 1
+            elif key == 'False':
+                value = 0
+            else:
+                value = float(key)
         except Exception as e:
             print(f"key error occurred: {e}")
     
@@ -109,9 +122,57 @@ class FindRemoteIP:
 
         return ret
     
+    def arrival_time( self, fDistance,  fSpeed_ms ):
+        if fSpeed_ms:
+            farrivalTime = fDistance / fSpeed_ms
+        else:
+            farrivalTime = fDistance
+    
+        return farrivalTime
+
+
+    def update_event( self, speedms ):
+        dEventDistance = self.speedLimitDistance
+
+        if dEventDistance > 10:
+            dArrivalSec = self.arrival_time( dEventDistance, speedms )
+
+            self.dHideTimeSec = self.ts + dArrivalSec
+            self.dArrivalTimeSec =  dArrivalSec
+            self.dArrivalDistance =  dEventDistance
+        else:
+            self.dHideTimeSec =  self.ts + 5
+
+
+        
     def update(self):
+        self.sm.update(0)
+        dSpeed_ms = self.sm["carState"].vEgo
 
+        self.update_event( dSpeed_ms )
+        dEventLastSec = self.ts - self.dEventSec 
 
+        if dSpeed_ms > 2:
+            dEventLastSec = self.current_time_seconds - self.dEventSec
+            dArrivalTimeSec = self.dHideTimeSec - self.current_time_seconds
+            dArrivalDistance =  dArrivalTimeSec * dSpeed_ms      
+            if dSpeed_ms < 10:
+                self.dEventHideSec = 20
+            elif dSpeed_ms < 20:
+                self.dEventHideSec = 10
+            else:
+                self.dEventHideSec = 7
+
+            if dEventLastSec > self.dEventHideSec:
+                self.mapValid = 0
+            elif dArrivalTimeSec < 1.5:
+                self.mapValid = 0
+        else:
+            self.dHideTimeSec =  self.current_time_seconds + 5
+
+        if self.idx_old != self.idx:
+            self.idx_old = self.idx
+            self.dEventSec = self.ts
 
         dat = messaging.new_message('naviCustom')
         dat.naviCustom.naviData = {
@@ -141,7 +202,7 @@ class FindRemoteIP:
 
 def main():
 
-    server = FindRemoteIP() 
+    server = MappyServer() 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         try:
             sock.bind(('0.0.0.0', Port.RECEIVE_PORT))

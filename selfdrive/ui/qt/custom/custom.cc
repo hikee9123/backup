@@ -512,14 +512,16 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
       "",
       "../assets/offroad/icon_openpilot.png",
     },
+    /*
     {
       "ExternalNaviType",
       tr("Use external navi type"),
       "0.mappy  1.NDA",
       "../assets/offroad/icon_openpilot.png",
     },
-    
+    */
   };
+
 
   for (auto &[param, title, desc, icon] : toggle_defs) {
     auto toggle = new ParamControl(param, title, desc, icon, this);
@@ -531,6 +533,16 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
     toggles[param.toStdString()] = toggle;
   }
 
+
+  auto toggle1 = new CValueControl(
+    "ExternalNaviType", 
+    tr("Use external navi type"), 
+    "0.mappy  1.NDA", 
+    "../assets/offroad/icon_openpilot.png",
+    0,5,1,  
+    m_jsonobj);
+
+  addItem(toggle1);
 
    addItem( new MapboxToken() );
 }
