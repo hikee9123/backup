@@ -163,10 +163,10 @@ class MappyServer:
             else:
                 self.dEventHideSec = 7
 
-            if dEventLastSec > self.dEventHideSec:
-                self.speedLimit = 0
-            elif dArrivalTimeSec < 1.5:
-                self.speedLimit = 0
+            #if dEventLastSec > self.dEventHideSec:
+            #    self.speedLimit = 0
+            #elif dArrivalTimeSec < 1.5:
+            #    self.speedLimit = 0
         else:
             self.dHideTimeSec =  self.current_time_seconds + 5
 
