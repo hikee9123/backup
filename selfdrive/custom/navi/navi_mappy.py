@@ -15,7 +15,6 @@ class Port:
 
 class FindRemoteIP:
     def __init__(self):
-        self.json_road_limit = None
         self.active = 0
         self.remote_addr = None
         self.last_exception = None
@@ -27,6 +26,7 @@ class FindRemoteIP:
         self.safetySign1 = 0
         self.turnInfo = 0
         self.distanceToTurn = 0
+        self.ts = 0
 
         self.lock = threading.Lock()
 
@@ -91,12 +91,14 @@ class FindRemoteIP:
                     self.turnInfo = self.get_value(json_obj["turnInfo"])
 
                 if 'distanceToTurn' in json_obj:
-                    self.distanceToTurn = self.get_value(json_obj["distanceToTurn"])  
+                    self.distanceToTurn = self.get_value(json_obj["distanceToTurn"])
+
+                if 'ts' in json_obj:
+                    self.ts = self.get_value(json_obj["ts"])  
 
         except:
             try:
                 self.lock.acquire()
-                self.json_road_limit = None
             finally:
                 self.lock.release()
 
@@ -127,7 +129,7 @@ def main():
                     "sectionAvgSpeed": 0,
                     "sectionLeftTime": 0,
                     "sectionAdjustSpeed": False,
-                    "camSpeedFactor": 0.1,
+                    "camSpeedFactor": server.safetySign1,
                     "currentRoadName": "",
                     "isNda2": False,
                     "cntIdx": test_dist,
