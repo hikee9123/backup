@@ -26,7 +26,5 @@ class CarControllerCustom:
     return hyundaican.create_hda_mfc( packer, CS, CC )
   
 
-  def create_avm( self, packer, CS, CC ):
-    return hyundaican.create_avm( packer, CS, CC )
 
   

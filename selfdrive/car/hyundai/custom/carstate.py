@@ -51,7 +51,6 @@ class CarStateCustom():
   def get_can_parser( self, messages, CP ):
     messages += [
       ("TPMS11", 5),
-      ("AVM_HU_PE_00", 2),
     ]
 
 
@@ -118,15 +117,17 @@ class CarStateCustom():
 
   def update(self, ret, CS,  cp, cp_cruise, cp_cam ):
     # save the entire LFAHDA_MFC
-    self.avm = copy.copy(cp.vl["AVM_HU_PE_00"])
     self.lfahda = copy.copy(cp_cam.vl["LFAHDA_MFC"])
     if not self.CP.openpilotLongitudinalControl:
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
       ret.cruiseState.speed = self.cruise_speed_button() * CV.KPH_TO_MS
 
 
+
     ret.engineRpm = cp.vl["E_EMS11"]["N"] # opkr
     ret.brakeLightsDEPRECATED = bool( cp.vl["TCS13"]['BrakeLight'] )
+
+    self.brakePos = cp.vl["E_EMS11"]["Brake_Pedal_Pos"] 
     self.is_highway = self.lfahda["HDA_Icon_State"] != 0.
     self.lead_distance = cp.vl["SCC11"]["ACC_ObjDist"]
     self.gapSet = cp.vl["SCC11"]['TauGapSet']
@@ -150,6 +151,8 @@ class CarStateCustom():
     self.frame += 1
 
 
+    trace1.printf1( 'break={} '.format( self.brakePos  ) )
+
     if self.frame % 20 == 0:
       dat = messaging.new_message('carStateCustom')
       carStatus = dat.carStateCustom
@@ -161,6 +164,7 @@ class CarStateCustom():
         cp.vl["TPMS11"]["PRESSURE_RR"],
       )
 
+      carStatus.breakPos = self.brakePos
       carStatus.supportedCars = self.cars
       carStatus.electGearStep = cp.vl["ELECT_GEAR"]["Elect_Gear_Step"] # opkr
       global trace1
