@@ -123,6 +123,28 @@ public:
 
 
 
+// ajouatom:
+class CValueControl2 : public AbstractControl {
+    Q_OBJECT
+
+public:
+    CValueControl2(const QString& key, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit = 1);
+
+private:
+    QPushButton btnplus;
+    QPushButton btnminus;
+    QLabel label;
+    Params params;
+
+    QString m_key;
+    int     m_min;
+    int     m_max;
+    int     m_unit;
+
+    void refresh();
+};
+
+
 class MapboxToken : public AbstractControl {
   Q_OBJECT
 
@@ -137,18 +159,13 @@ public:
       color: #E4E4E4;
       background-color: #393939;
     )");
-    edit.setStyleSheet(R"(
-      background-color: grey;
-      font-size: 55px;
-      font-weight: 1000;
-      height: 120px;
-    )");
+
     btn.setFixedSize(200, 100);
-    hlayout->addWidget(&edit);
+    //hlayout->addWidget(&edit);
     hlayout->addWidget(&btn);
 
     QObject::connect(&btn, &QPushButton::clicked, [=]() {
-      QString targetvalue = InputDialog::getText("MapboxToken", this, "Put your MapboxToken starting with pk.", false, 1, QString::fromStdString(params.get("MapboxToken")));
+      QString targetvalue = InputDialog::getText("MapboxToken", this, "Put your MapboxToken starting with sk.", false, 1, QString::fromStdString(params.get("MapboxToken")));
       if (targetvalue.length() > 0 && targetvalue != QString::fromStdString(params.get("MapboxToken"))) {
         params.put("MapboxToken", targetvalue.toStdString());
         refresh();
@@ -159,14 +176,30 @@ public:
 
 private:
   QPushButton btn;
-  QLineEdit edit;
+
   Params params;
 
   void refresh()
   {
-    auto strs = QString::fromStdString(params.get("MapboxToken"));
-    edit.setText(QString::fromStdString(strs.toStdString()));
-    btn.setText("SET");   
+    QString strMapboxToken = QString::fromStdString(params.get("MapboxToken"));
+
+    if( selected_car.length() )
+    {
+       setTitle( strMapboxToken );
+       setDescription( strMapboxToken );
+       btn.setText("CHANGE");  
+    }
+    else
+    {
+       setTitle( "input your Mapbox token" );
+       setDescription( "Put your MapboxToken starting with sk." );
+       btn.setText("SET");  
+    }
+
+
+    //edit.setText(QString::fromStdString(strs.toStdString()));
+    //QString  strToken = QString::fromStdString(strs.toStdString())
+    //setTitle( strMapboxToken );
   }
 };
 
@@ -308,7 +341,7 @@ protected:
   void closeEvent(QCloseEvent *event) override;  
 
 private slots:
-  void offroadTransition( bool offroad  );
+  //void offroadTransition( bool offroad  );
 
 private:
 
@@ -347,7 +380,7 @@ protected:
 signals:
 
 private slots:
-  void offroadTransition( bool offroad  );
+  //void offroadTransition( bool offroad  );
 
 private:
 

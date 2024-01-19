@@ -121,6 +121,81 @@ void CValueControl::setValue( int value )
   }
 }
 
+
+
+CValueControl2::CValueControl2(const QString& key, const QString& title, const QString& desc, const QString& icon, int min, int max, int unit/*=1*/) 
+    : AbstractControl(title, desc, icon)
+{
+
+    m_key = key;
+    m_min = min;
+    m_max = max;
+    m_unit = unit;
+
+    label.setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+    label.setStyleSheet("color: #e0e879");
+    hlayout->addWidget(&label);
+
+    btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+    btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+    btnminus.setFixedSize(150, 100);
+    btnplus.setFixedSize(150, 100);
+    hlayout->addWidget(&btnminus);
+    hlayout->addWidget(&btnplus);
+
+    QObject::connect(&btnminus, &QPushButton::released, [=]() {
+        auto str = QString::fromStdString(params.get(m_key.toStdString()));
+        int value = str.toInt();
+        value = value - m_unit;
+        if (value < m_min) {
+            value = m_min;
+        }
+        else {
+        }
+
+
+        QString values = QString::number(value);
+        params.put(m_key.toStdString(), values.toStdString());
+        refresh();
+    });
+
+    QObject::connect(&btnplus, &QPushButton::released, [=]() {
+        auto str = QString::fromStdString(params.get(m_key.toStdString()));
+        int value = str.toInt();
+        value = value + m_unit;
+        if (value > m_max) {
+            value = m_max;
+        }
+        else {
+        }
+
+        QString values = QString::number(value);
+        params.put(m_key.toStdString(), values.toStdString());
+        refresh();
+    });
+    refresh();
+}
+
+void CValueControl2::refresh()
+{
+    label.setText(QString::fromStdString(params.get(m_key.toStdString())));
+    btnminus.setText("－");
+    btnplus.setText("＋");
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //
@@ -512,14 +587,14 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
       "",
       "../assets/offroad/icon_openpilot.png",
     },
-    
+    /*
     {
       "ExternalNaviType",
       tr("Use external navi type"),
       "0.mappy  1.NDA",
       "../assets/offroad/icon_openpilot.png",
     },
-    
+    */
   };
 
 
@@ -533,17 +608,17 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
     toggles[param.toStdString()] = toggle;
   }
 
-  /*
-  auto toggle1 = new CValueControl(
+
+  auto toggle1 = new CValueControl2(
     "ExternalNaviType", 
-    tr("Use external navi type"), 
+    tr(" - Use external navi type"), 
     "0.mappy  1.NDA", 
-    "../assets/offroad/icon_openpilot.png",
-    0,5,1,  
-    m_jsonobj);
+    "",
+    //"../assets/offroad/icon_openpilot.png",
+    0,5 );
 
   addItem(toggle1);
-  */
+
 
    addItem( new MapboxToken() );
 }
@@ -585,49 +660,49 @@ UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_
     },
     {
       "kegmanCPU",
-      "- CPU temperature",
+      " - CPU temperature",
       "1. Up to 4 menus can be displayed.",
       "",
       //"../assets/offroad/icon_shell.png",
     },
     {
       "kegmanBattery",
-      "- battery voltage",
+      " - battery voltage",
       "2. Up to 4 menus can be displayed.",
       "",
       //"../assets/offroad/icon_shell.png",
     },
     {
       "kegmanGPU",
-      "- GPS accuracy",
+      " - GPS accuracy",
       "3. Up to 4 menus can be displayed.",
       "",
       //"../assets/offroad/icon_shell.png",
     },
     {
       "kegmanAngle",
-      "- steering angle",
+      " - steering angle",
       "4. Up to 4 menus can be displayed.",
       "",
      // "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanEngine",
-      "- engine status",
+      " - engine status",
       "5. Up to 4 menus can be displayed.",
       "",
       //"../assets/offroad/icon_shell.png",
     },
     {
       "kegmanDistance",
-      "- radar relative distance",
+      " - radar relative distance",
       "6. Up to 4 menus can be displayed.",
       "",
      // "../assets/offroad/icon_shell.png",
     },
     {
       "kegmanSpeed",
-      "- radar relative speed",
+      " - radar relative speed",
       "7. Up to 4 menus can be displayed.",
       "",
       //"../assets/offroad/icon_shell.png",
@@ -641,19 +716,12 @@ UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_
     toggles[param.toStdString()] = toggle;
   }
 
-  QObject::connect(uiState(), &UIState::offroadTransition, this, &UITab::offroadTransition);
+
   connect(toggles["ShowDebugMessage"], &ToggleControl::toggleFlipped, [=]() {
     updateToggles( false );
   });    
 }
 
-void UITab::offroadTransition( bool offroad  )
-{
-  if( !offroad )
-  {
-    updateToggles( false );
-  }
-}
 
 
 void UITab::closeEvent(QCloseEvent *event) 
@@ -764,17 +832,9 @@ Debug::Debug(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_
     addItem(toggle);
     toggles[param.toStdString()] = toggle;
   }
-
-  QObject::connect(uiState(), &UIState::offroadTransition, this, &Debug::offroadTransition);  
+ 
 }
 
-void Debug::offroadTransition( bool offroad  )
-{
-  if( !offroad )
-  {
-    updateToggles( false );
-  }
-}
 
 
 void Debug::closeEvent(QCloseEvent *event) 
