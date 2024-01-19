@@ -195,10 +195,6 @@ class MappyServer:
         self.pm.send('naviCustom', dat )
 
 
-            
-
-
-    
 
 def main():
 
