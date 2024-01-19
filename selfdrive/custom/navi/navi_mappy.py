@@ -108,7 +108,6 @@ class FindRemoteIP:
         return ret
     
 
-
 def main():
     pm = messaging.PubMaster(['naviCustom'])     
     server = FindRemoteIP() 
@@ -121,21 +120,21 @@ def main():
                 if server.udp_recv(sock) and server.remote_addr:
                     dat = messaging.new_message('naviCustom')
                     dat.naviCustom.naviData = {
-                    "active": server.mapValid,
-                    "roadLimitSpeed": 0,
-                    "isHighway": False,
-                    "camType": server.trafficType,
-                    "camLimitSpeedLeftDist": server.speedLimitDistance,
-                    "camLimitSpeed": server.speedLimit,
-                    "sectionLimitSpeed": 0,
-                    "sectionLeftDist": 0,
-                    "sectionAvgSpeed": 0,
-                    "sectionLeftTime": 0,
-                    "sectionAdjustSpeed": False,
-                    "camSpeedFactor": server.safetySign1,
-                    "currentRoadName": "",
-                    "isNda2": False,
-                    "cntIdx": test_dist,
+                        "active": server.mapValid,
+                        "roadLimitSpeed": 0,
+                        "isHighway": False,
+                        "camType": server.trafficType,
+                        "camLimitSpeedLeftDist": server.speedLimitDistance,
+                        "camLimitSpeed": server.speedLimit,
+                        "sectionLimitSpeed": 0,
+                        "sectionLeftDist": 0,
+                        "sectionAvgSpeed": 0,
+                        "sectionLeftTime": 0,
+                        "sectionAdjustSpeed": False,
+                        "camSpeedFactor": server.safetySign1,
+                        "currentRoadName": "",
+                        "isNda2": False,
+                        "cntIdx": test_dist,
                     }
 
                     pm.send('naviCustom', dat )
