@@ -43,7 +43,7 @@ def only_offroad(started, params, CP: car.CarParams) -> bool:
 
 #custom
 def ExternalNaviType()  -> int:
-  externalNaviType = int(Params().get('ExternalNaviType'))
+  externalNaviType = int(Params().get('ExternalNaviType'), encoding='utf8')
   #externalNaviType = Params().get_bool("ExternalNaviType")
   return externalNaviType
 
