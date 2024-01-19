@@ -25,7 +25,7 @@ class NaviControl():
 
     self.gasPressed_time = 0
 
-    self.frame_camera = 0
+
     self.VSetDis = 30
     self.frame_VSetDis = 30
 
@@ -91,16 +91,16 @@ class NaviControl():
       self.btn_cnt = 0
       self.target_speed = self.set_point
       delta_speed = self.target_speed - self.VSetDis
-
+      clu_Vanz = CS.customCS.clu_Vanz
       standstill = CS.out.cruiseState.standstill
 
       if standstill:
         self.last_lead_distance = 0
         self.seq_command = 5
       elif CS.out.gasPressed:
-        delta = CS.customCS.clu_Vanz - self.VSetDis
+        delta = clu_Vanz - self.VSetDis
         if delta > 5:
-           self.set_point = CS.customCS.clu_Vanz
+           CS.customCS.set_cruise_speed( clu_Vanz )
            self.seq_command = 2    # set
       elif delta_speed >= 1:
         self.seq_command = 1  # acc
@@ -186,18 +186,6 @@ class NaviControl():
     #trace1.printf3( '{}'.format( str_log2 ) )
 
     if not mapValid:
-      if cruise_set_speed_kph >  self.VSetDis:
-        if v_ego_kph < (self.VSetDis-5):
-          self.frame_camera = frame
-          self.frame_VSetDis = self.VSetDis
-          cruise_set_speed_kph = self.VSetDis
-        else:
-          frame_delta = abs(frame - self.frame_camera)
-          cruise_set_speed_kph = interp( frame_delta, [0, 2000], [ self.frame_VSetDis, cruise_set_speed_kph ] )
-      else:
-        self.frame_camera = frame
-        self.frame_VSetDis = self.VSetDis
-
       return  cruise_set_speed_kph
 
     elif CS.customCS.is_highway or speedLimit < 30:
@@ -274,7 +262,7 @@ class NaviControl():
  
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
 
-    str_log1 = 'kph={:.0f}'.format( self.speed_kps )
-    trace1.printf2( 'mode={} HW={} {}'.format(  CS.customCS.cruise_set_mode, CS.customCS.is_highway, str_log1 ) )
+    
+    trace1.printf2( 'mode={} HW={}'.format(  CS.customCS.cruise_set_mode, CS.customCS.is_highway ) )
 
     return btn_signal

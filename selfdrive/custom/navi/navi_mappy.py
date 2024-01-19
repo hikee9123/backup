@@ -205,7 +205,10 @@ def main():
             sock.setblocking(False)
             while True:
                 if server.udp_recv(sock) and server.remote_addr:
-                    server.update()
+                   server.update()
+                else:
+                   print(f'wait connect port={Port.RECEIVE_PORT}  remote_addr={server.remote_addr}')
+                   time.sleep( 0.5 )
 
                 time.sleep( 0.5 )
 
