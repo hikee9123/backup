@@ -16,6 +16,7 @@ class Port:
 class MappyServer:
     def __init__(self):
         self.active = False
+        self.remote_addr = None
         self.last_updated_active = 0
 
 
@@ -57,9 +58,9 @@ class MappyServer:
         print(f"host name: {host_name}, IP address: {ip_address}")
         print('UDP Server is listening on {}:{}'.format(*server_address))
         while True:
-            data, remote_addr = server_socket.recvfrom(1024)
-            print('Received message from {}: {}'.format( remote_addr, data.decode()))
-            server_socket.sendto( f'echo_{host_name}'.encode(), remote_addr )                
+            data, self.remote_addr = server_socket.recvfrom(1024)
+            print('Received message from {}: {}'.format( self.remote_addr, data.decode()))
+            server_socket.sendto( f'echo_{host_name}'.encode(), self.remote_addr )                
 
 
 
@@ -86,7 +87,7 @@ class MappyServer:
             if not ret:
                 return ret
 
-            data, remote_addr = sock.recvfrom(2048)
+            data, _remote_addr = sock.recvfrom(2048)
             json_obj = json.loads(data.decode())
             print(f"json={json_obj}")  
 
