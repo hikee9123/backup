@@ -273,7 +273,7 @@ void CustomPanel::offroadTransition( bool offroad  )
   if( !isActive  )
   {
     timer->start(1000);
-    print("timer start \n");
+    printf("timer start \n");
   }
    updateToggles( false );
 }
