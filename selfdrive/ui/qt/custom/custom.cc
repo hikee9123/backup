@@ -296,8 +296,8 @@ void CustomPanel::OnTimer()
     if( vEgo > 10 )
        m_powerflag = 0; 
 
-    //if( m_cmdIdx > 10 )
-    //  timer->stop();
+    if( m_cmdIdx > 10 )
+      timer->stop();
   }
   else
   {
