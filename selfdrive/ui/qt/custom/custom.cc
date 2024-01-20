@@ -270,7 +270,7 @@ void CustomPanel::offroadTransition( bool offroad  )
   int isActive = timer->isActive();
 
   printf("CustomPanel::offroadTransition offroad=%d  isActive=%d \n", offroad, isActive );
-  if( !isActive and offroad )
+  if( !isActive && offroad )
   {
     timer->start(1000);
   }
