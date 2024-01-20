@@ -17,7 +17,7 @@ class MappyServer:
     def __init__(self):
         self.active = False
         self.last_updated_active = 0
-        self.remote_addr = None
+
 
 
         self.speedLimit = 0
@@ -86,7 +86,7 @@ class MappyServer:
             if not ret:
                 return ret
 
-            data, self.remote_addr = sock.recvfrom(2048)
+            data, remote_addr = sock.recvfrom(2048)
             json_obj = json.loads(data.decode())
             print(f"json={json_obj}")  
 
@@ -154,9 +154,8 @@ class MappyServer:
     def check(self):
         now = time.monotonic()
         if now - self.last_updated_active > 6.:
-            self.active = 0
-            self.remote_addr = None
-        
+          self.active = 0
+          
     def update(self):
         self.sm.update(0)
         dSpeed_ms = self.sm["carState"].vEgo
@@ -226,7 +225,7 @@ def main():
                 time.sleep( 0.5 )
 
         except Exception as e:
-            print(f"An error occurred: {e}")
+            print(f"socket.socket error occurred: {e}")
 
 
 if __name__ == "__main__":
