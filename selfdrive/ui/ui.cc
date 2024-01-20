@@ -156,7 +156,7 @@ static void update_sockets(UIState *s) {
 
 static void update_state(UIState *s) {
   SubMaster &sm = *(s->sm);
-  UIScene   &scene = s->scene;
+  UIScene &scene = s->scene;
 
   if (sm.updated("liveCalibration")) {
     auto live_calib = sm["liveCalibration"].getLiveCalibration();
@@ -258,8 +258,6 @@ UIState::UIState(QObject *parent) : QObject(parent) {
   if (!prime_value.empty()) {
     prime_type = static_cast<PrimeType>(std::atoi(prime_value.c_str()));
   }
-
-  printf("#register= prime_value=%s prime_type=%d \n",prime_value.c_str(),  prime_type);
 
   // update timer
   timer = new QTimer(this);

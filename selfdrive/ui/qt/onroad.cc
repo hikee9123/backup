@@ -107,7 +107,6 @@ void OnroadWindow::mousePressEvent(QMouseEvent* e) {
 }
 
 void OnroadWindow::offroadTransition(bool offroad) {
-    printf("#register= offroadTransition  offroad=%d \n", offroad );  
 #ifdef ENABLE_MAPS
   if (!offroad) {
     printf("#register= offroadTransition  offroad=%d MAPBOX_TOKEN=%s hasPrime=%d\n",offroad, MAPBOX_TOKEN.toStdString().c_str(), uiState()->hasPrime() );  
@@ -134,7 +133,6 @@ void OnroadWindow::offroadTransition(bool offroad) {
 
 void OnroadWindow::primeChanged(bool prime) {
 #ifdef ENABLE_MAPS
-  printf("#register= primeChanged  MAPBOX_TOKEN=%s prime=%d\n",MAPBOX_TOKEN.toStdString().c_str(), prime );
   if (map && (!prime && MAPBOX_TOKEN.isEmpty())) {
     nvg->map_settings_btn->setEnabled(false);
     nvg->map_settings_btn->setVisible(false);
