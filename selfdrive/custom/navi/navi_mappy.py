@@ -15,9 +15,10 @@ class Port:
 
 class MappyServer:
     def __init__(self):
-        self.active = 0
+        self.active = False
+        self.last_updated_active = 0
         self.remote_addr = None
-        self.last_exception = None
+
 
         self.speedLimit = 0
         self.speedLimitDistance = 0
@@ -34,7 +35,8 @@ class MappyServer:
         self.dArrivalTimeSec =  0
         self.dArrivalDistance =  0
         self.dEventSec = 0
-        self.current_time_seconds = 0        
+        self.current_time_seconds = 0
+
 
         self.pm = messaging.PubMaster(['naviCustom']) 
         self.sm = messaging.SubMaster(['carState'])    
@@ -81,40 +83,45 @@ class MappyServer:
         try:
             ready = select.select([sock], [], [], 1.)
             ret = bool(ready[0])
-            if ret:
-                data, self.remote_addr = sock.recvfrom(2048)
-                json_obj = json.loads(data.decode())
-                print(f"json={json_obj}")  
- 
+            if not ret:
+                return ret
 
-                if 'speedLimit' in json_obj:
-                    self.speedLimit = self.get_value(json_obj["speedLimit"])
+            data, self.remote_addr = sock.recvfrom(2048)
+            json_obj = json.loads(data.decode())
+            print(f"json={json_obj}")  
 
-                if 'speedLimitDistance' in json_obj:
-                    self.speedLimitDistance = self.get_value(json_obj["speedLimitDistance"])
 
-                if 'mapValid' in json_obj:
-                    self.mapValid = self.get_value(json_obj["mapValid"])
+            if 'speedLimit' in json_obj:
+                self.active = True
+                self.last_updated_active = time.monotonic()
+                self.speedLimit = self.get_value(json_obj["speedLimit"])
 
-                if 'trafficType' in json_obj:
-                    self.trafficType = self.get_value(json_obj["trafficType"])
+            if 'speedLimitDistance' in json_obj:
+                self.speedLimitDistance = self.get_value(json_obj["speedLimitDistance"])
 
-                if 'safetySign1' in json_obj:
-                    self.safetySign1 = self.get_value(json_obj["safetySign1"])
-             
-                if 'turnInfo' in json_obj:
-                    self.turnInfo = self.get_value(json_obj["turnInfo"])
+            if 'mapValid' in json_obj:
+                self.mapValid = self.get_value(json_obj["mapValid"])
 
-                if 'distanceToTurn' in json_obj:
-                    self.distanceToTurn = self.get_value(json_obj["distanceToTurn"])
+            if 'trafficType' in json_obj:
+                self.trafficType = self.get_value(json_obj["trafficType"])
 
-                if 'ts' in json_obj:
-                    self.ts = self.get_value(json_obj["ts"])
+            if 'safetySign1' in json_obj:
+                self.safetySign1 = self.get_value(json_obj["safetySign1"])
 
-                if 'id' in json_obj:
-                    self.idx = self.get_value(json_obj["id"])                        
+            if 'turnInfo' in json_obj:
+                self.turnInfo = self.get_value(json_obj["turnInfo"])
 
-        except:
+            if 'distanceToTurn' in json_obj:
+                self.distanceToTurn = self.get_value(json_obj["distanceToTurn"])
+
+            if 'ts' in json_obj:
+                self.ts = self.get_value(json_obj["ts"])
+
+            if 'id' in json_obj:
+                self.idx = self.get_value(json_obj["id"])                        
+
+        except Exception as e:
+            print(f"udp_recv error occurred: {e}")
             try:
                 self.lock.acquire()
             finally:
@@ -144,6 +151,11 @@ class MappyServer:
             self.dHideTimeSec =  self.ts + 5
 
 
+    def check(self):
+        now = time.monotonic()
+        if now - self.last_updated_active > 6.:
+            self.active = 0
+            self.remote_addr = None
         
     def update(self):
         self.sm.update(0)
@@ -176,7 +188,7 @@ class MappyServer:
 
         dat = messaging.new_message('naviCustom')
         dat.naviCustom.naviData = {
-            "active": True,
+            "active": self.active,
             "roadLimitSpeed": 0,
             "isHighway": False,
             "camType": self.trafficType,
@@ -210,11 +222,11 @@ def main():
                    #print(f'wait connect port={Port.RECEIVE_PORT}  remote_addr={server.remote_addr}')
                    #time.sleep( 0.5 )
 
+                server.check()
                 time.sleep( 0.5 )
 
         except Exception as e:
             print(f"An error occurred: {e}")
-            server.last_exception = e                
 
 
 if __name__ == "__main__":
