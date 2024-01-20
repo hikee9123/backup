@@ -5,7 +5,6 @@ import signal
 import subprocess
 import sys
 import traceback
-import json    #custom
 from typing import List, Tuple, Union
 
 from cereal import log
@@ -20,7 +19,6 @@ from openpilot.selfdrive.manager.helpers import unblock_stdout, write_onroad_par
 from openpilot.selfdrive.manager.process import ensure_running
 from openpilot.selfdrive.manager.process_config import managed_processes, set_mapbox    #custom
 from openpilot.selfdrive.athena.registration import register, UNREGISTERED_DONGLE_ID
-from openpilot.selfdrive.athena.athenad import setNavDestination
 from openpilot.common.swaglog import cloudlog, add_file_handler
 from openpilot.system.version import is_dirty, get_commit, get_version, get_origin, get_short_branch, \
                            get_normalized_origin, terms_version, training_version, \
@@ -116,7 +114,7 @@ def manager_init() -> None:
                        device=HARDWARE.get_device_type())
 
 
-
+  """
   #custom
   #setNavDestination( 36.85520956438799,  127.10113048553467, "KNJ", "음봉면 산동리 123-1" )
   destinations = [
@@ -154,6 +152,7 @@ def manager_init() -> None:
     },
   ]
   params.put("NavPastDestinations", json.dumps(destinations) )
+  """
 
 
 def manager_prepare() -> None:
