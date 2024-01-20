@@ -267,11 +267,13 @@ CustomPanel::CustomPanel(SettingsWindow *parent) : QWidget(parent)
 
 void CustomPanel::offroadTransition( bool offroad  )
 {
-  int isActive = timer->isActive();
+  sm->update(0);
 
+  int isActive = timer->isActive();
   printf("CustomPanel::offroadTransition offroad=%d  isActive=%d \n", offroad, isActive );
   if( !isActive  )
   {
+    m_cmdIdx = 0;
     timer->start(1000);
     printf("timer start \n");
   }
