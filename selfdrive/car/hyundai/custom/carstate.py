@@ -151,7 +151,6 @@ class CarStateCustom():
     self.frame += 1
 
 
-    trace1.printf1( 'break={} '.format( self.brakePos  ) )
 
     if self.frame % 20 == 0:
       dat = messaging.new_message('carStateCustom')
@@ -172,3 +171,5 @@ class CarStateCustom():
       carStatus.alertTextMsg2 = str(trace1.global_alertTextMsg2)
       carStatus.alertTextMsg3 = str(trace1.global_alertTextMsg3)       
       self.pm.send('carStateCustom', dat )          
+
+      trace1.printf1( 'break={} '.format( self.brakePos  ) )
