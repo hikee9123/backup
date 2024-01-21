@@ -191,6 +191,7 @@ class MappyServer:
             self.dEventSec = self.ts
 
         if self.speedLimitDistance <= 20:
+           self.speedLimitDistance = 0
            self.speedLimit = 0
            self.active = 0
 
