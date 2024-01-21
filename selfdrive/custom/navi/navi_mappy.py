@@ -188,7 +188,7 @@ class MappyServer:
 
         dat = messaging.new_message('naviCustom')
         dat.naviCustom.naviData = {
-            "active": self.active,
+            "active": True, # self.active,
             "roadLimitSpeed": 0,
             "isHighway": False,
             "camType": self.trafficType,
