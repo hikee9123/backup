@@ -181,9 +181,7 @@ class NaviControl():
     speedLimitDistance = self.speedLimitDistance
     mapValid = self.mapValid
 
-    #trafficType = self.trafficType
-    #str_log2 = 'SL:{:.0f} SD:{:.0f} kps:{} TS:{:.0f} - VD:{:.0f}'.format(  speedLimit, speedLimitDistance, v_ego_kph, self.ctrl_speed,   self.VSetDis ) 
-    #trace1.printf3( '{}'.format( str_log2 ) )
+  
 
     if not mapValid:
       return  cruise_set_speed_kph
@@ -263,6 +261,6 @@ class NaviControl():
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
 
     
-    trace1.printf2( 'mode={}'.format(  CS.customCS.cruise_set_mode ) )
+    trace1.printf1( 'MD={}'.format(  CS.customCS.cruise_set_mode ) )
 
     return btn_signal
