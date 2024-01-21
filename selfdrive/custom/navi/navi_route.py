@@ -207,20 +207,16 @@ class RouteEngine:
   def send_instruction(self):
     msg = messaging.new_message('navInstruction', valid=True)
     
-    naviData = None
-    if self.sm.updated["naviCustom"]:
-      naviData = self.sm["naviCustom"].naviData
-      if naviData.active:
-        if naviData.camLimitSpeed:
-          msg.navInstruction.speedLimit = naviData.camLimitSpeed / 3.6
-          msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna        
-        elif naviData.roadLimitSpeed:
-          msg.navInstruction.speedLimit = naviData.roadLimitSpeed / 3.6
-          msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
-      else:
-        naviData = None
+    naviData = self.sm["naviCustom"].naviData
+    if naviData.active:
+      if naviData.camLimitSpeed:
+        msg.navInstruction.speedLimit = naviData.camLimitSpeed / 3.6
+        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.vienna        
+      elif naviData.roadLimitSpeed:
+        msg.navInstruction.speedLimit = naviData.roadLimitSpeed / 3.6
+        msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
     else:
-      print('self.sm.updated nont \n')  
+      naviData = None
       #msg.navInstruction.maneuverDistance = naviData.camLimitSpeedLeftDist
 
       
