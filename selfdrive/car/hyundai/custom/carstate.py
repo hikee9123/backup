@@ -171,7 +171,7 @@ class CarStateCustom():
       carStatus.alertTextMsg1 = str(trace1.global_alertTextMsg1)
       carStatus.alertTextMsg2 = str(trace1.global_alertTextMsg2)
       carStatus.alertTextMsg3 = str(trace1.global_alertTextMsg3)       
-      self.pm.send('carStateCustom', dat )          
+      self.pm.send('carStateCustom', dat )
 
-      trace1.printf3( 'break={} NCl={} NG={} NC={}'.format( self.brakePos, cp.vl["Navi_HU"]["SpeedLim_Nav_Clu"], cp.vl["Navi_HU"]["SpeedLim_Nav_General"], cp.vl["Navi_HU"]["SpeedLim_Nav_Cam"]  ) )
+      trace1.printf3( 'break={} HI={} HU={} '.format( self.brakePos, cp.vl["LFAHDA_MFC"]["HDA_Icon_State"], cp.vl["LFAHDA_MFC"]["HDA_USM"]  ) )
 

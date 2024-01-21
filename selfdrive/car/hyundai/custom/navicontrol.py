@@ -263,6 +263,6 @@ class NaviControl():
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
 
     
-    trace1.printf2( 'mode={} HW={}'.format(  CS.customCS.cruise_set_mode, CS.customCS.is_highway ) )
+    trace1.printf2( 'mode={}'.format(  CS.customCS.cruise_set_mode ) )
 
     return btn_signal
