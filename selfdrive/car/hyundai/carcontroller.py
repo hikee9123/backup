@@ -52,6 +52,7 @@ class CarController:
     self.packer = CANPacker(dbc_name)
     self.angle_limit_counter = 0
     self.frame = 0
+    self.lkas11_cnt = 0
 
     self.accel_last = 0
     self.apply_steer_last = 0
@@ -90,7 +91,10 @@ class CarController:
     # HUD messages
     sys_warning, sys_state, left_lane_warning, right_lane_warning = process_hud_alert(CC.enabled, self.car_fingerprint,
                                                                                       hud_control)
-
+    if frame == 0: # initialize counts from last received count signals
+      self.lkas11_cnt = CS.lkas11["CF_Lkas_MsgCount"] + 1
+    self.lkas11_cnt %= 0x10
+    
     can_sends = []
 
     # *** common hyundai stuff ***
@@ -139,7 +143,7 @@ class CarController:
         # button presses
         can_sends.extend(self.create_button_messages(CC, CS, use_clu11=False))
     else:
-      can_sends.append(hyundaican.create_lkas11(self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
+      can_sends.append(hyundaican.create_lkas11(self.packer, self.lkas11_cnt, self.car_fingerprint, apply_steer, apply_steer_req,
                                                 torque_fault, CS.lkas11, sys_warning, sys_state, CC.enabled,
                                                 hud_control.leftLaneVisible, hud_control.rightLaneVisible,
                                                 left_lane_warning, right_lane_warning))
@@ -173,6 +177,7 @@ class CarController:
     new_actuators.steerOutputCan = apply_steer
     new_actuators.accel = accel
 
+    self.lkas11_cnt += 1
     self.frame += 1
     return new_actuators, can_sends
 
