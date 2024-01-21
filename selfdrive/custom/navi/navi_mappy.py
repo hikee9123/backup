@@ -15,7 +15,7 @@ class Port:
 
 class MappyServer:
     def __init__(self):
-        self.active = False
+        self.active = 0
         self.remote_addr = None
         self.last_updated_active = 0
 
@@ -93,7 +93,7 @@ class MappyServer:
 
 
             if 'speedLimit' in json_obj:
-                self.active = True
+                self.active = 1
                 self.last_updated_active = time.monotonic()
                 self.speedLimit = self.get_value(json_obj["speedLimit"])
 
@@ -155,7 +155,7 @@ class MappyServer:
     def check(self):
         now = time.monotonic()
         if now - self.last_updated_active > 6.:
-          self.active = False
+          self.active = 0
           
     def update(self):
         self.sm.update(0)
@@ -188,7 +188,7 @@ class MappyServer:
 
         dat = messaging.new_message('naviCustom')
         naviData = dat.naviCustom.naviData
-        naviData.active = 1
+        naviData.active = self.active
         naviData.camType = self.safetySign1 
 
         #dat.naviCustom.naviData = {
