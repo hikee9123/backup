@@ -175,10 +175,10 @@ class MappyServer:
             else:
                 self.dEventHideSec = 7
 
-            #if dEventLastSec > self.dEventHideSec:
-            #    self.speedLimit = 0
-            #elif dArrivalTimeSec < 1.5:
-            #    self.speedLimit = 0
+            if dEventLastSec > self.dEventHideSec:
+                self.speedLimit = 0
+            elif dArrivalTimeSec < 1.5:
+                self.speedLimit = 0
         else:
             self.dHideTimeSec =  self.current_time_seconds + 5
 
@@ -186,12 +186,15 @@ class MappyServer:
             self.idx_old = self.idx
             self.dEventSec = self.ts
 
+        if self.speedLimitDistance <= 10:
+           self.speedLimit = 0
+
         dat = messaging.new_message('naviCustom',valid=True)
         naviData = dat.naviCustom.naviData
         naviData.active = self.active
         naviData.camType = self.safetySign1 
         naviData.camLimitSpeed = self.speedLimit 
-        naviData.camLimitSpeedLeftDist = 100 #self.speedLimitDistance
+        naviData.camLimitSpeedLeftDist = self.speedLimitDistance
         naviData.cntIdx = self.idx
 
         #dat.naviCustom.naviData = {
@@ -213,7 +216,7 @@ class MappyServer:
         #}
         self.pm.send('naviCustom', dat )
 
-        print(f'naviCustom={dat}')
+        #print(f'naviCustom={dat}')
 
 
 
