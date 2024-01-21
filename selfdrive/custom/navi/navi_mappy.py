@@ -214,21 +214,17 @@ def main():
 
     server = MappyServer() 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-        try:
-            sock.bind(('0.0.0.0', Port.RECEIVE_PORT))
-            sock.setblocking(False)
-            while True:
-                if server.udp_recv(sock) and server.remote_addr:
-                   server.update()
-                #else:
-                   #print(f'wait connect port={Port.RECEIVE_PORT}  remote_addr={server.remote_addr}')
-                   #time.sleep( 0.5 )
+        sock.bind(('0.0.0.0', Port.RECEIVE_PORT))
+        sock.setblocking(False)
+        while True:
+            if server.udp_recv(sock) and server.remote_addr:
+                server.update()
+            #else:
+                #print(f'wait connect port={Port.RECEIVE_PORT}  remote_addr={server.remote_addr}')
+                #time.sleep( 0.5 )
 
-                server.check()
-                time.sleep( 0.5 )
-
-        except Exception as e:
-            print(f"socket.socket error occurred: {e}")
+            server.check()
+            time.sleep( 0.5 )
 
 
 if __name__ == "__main__":
