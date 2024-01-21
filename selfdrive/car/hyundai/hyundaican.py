@@ -16,7 +16,7 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
   #values["CF_Lkas_LdwsRHWarning"] = right_lane_depart
   values["CR_Lkas_StrToqReq"] = apply_steer
   values["CF_Lkas_ActToi"] = steer_req
-  #values["CF_Lkas_ToiFlt"] = torque_fault  # seems to allow actuation on CR_Lkas_StrToqReq
+  values["CF_Lkas_ToiFlt"] = torque_fault  # seems to allow actuation on CR_Lkas_StrToqReq
   values["CF_Lkas_MsgCount"] = frame % 0x10
 
   if car_fingerprint in [CAR.AZERA_HEV_6TH_GEN]:
