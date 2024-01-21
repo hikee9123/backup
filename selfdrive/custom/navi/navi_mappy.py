@@ -99,6 +99,10 @@ class MappyServer:
 
             if 'speedLimitDistance' in json_obj:
                 self.speedLimitDistance = self.get_value(json_obj["speedLimitDistance"])
+                self.speedLimitDistance -= 30
+                if self.speedLimitDistance < 0:
+                    self.speedLimitDistance = 0
+
 
             if 'mapValid' in json_obj:
                 self.mapValid = self.get_value(json_obj["mapValid"])
@@ -186,7 +190,7 @@ class MappyServer:
             self.idx_old = self.idx
             self.dEventSec = self.ts
 
-        if self.speedLimitDistance <= 10:
+        if self.speedLimitDistance <= 20:
            self.speedLimit = 0
            self.active = 0
 

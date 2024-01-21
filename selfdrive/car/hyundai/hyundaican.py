@@ -9,6 +9,8 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
                   torque_fault, lkas11, sys_warning, sys_state, enabled,
                   left_lane, right_lane,
                   left_lane_depart, right_lane_depart):
+  values = lkas11
+  """
   values = {s: lkas11[s] for s in [
     "CF_Lkas_LdwsActivemode",
     "CF_Lkas_LdwsSysState",
@@ -26,6 +28,8 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
     "CF_Lkas_FcwOpt_USM",
     "CF_Lkas_LdwsOpt_USM",
   ]}
+
+  """
 
   if frame % 20 == 0: 
     trace1.printf1( '{:.0f}/{:.0f}/{:.0f} usm.{:.0f}/{:.0f}'.format(

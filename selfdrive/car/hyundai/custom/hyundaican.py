@@ -21,15 +21,7 @@ def create_clu11(packer, frame, clu11, button, car_fingerprint):
 
 # 20 Hz 
 def create_hda_mfc( packer, CS, CC ):
-  lfahda = CS.customCS.lfahda
-  values = {s: lfahda[s] for s in [
-    "HDA_USM",
-    "HDA_Active",
-    "HDA_Icon_State",
-    "HDA_LdwSysState",
-    "HDA_Icon_Wheel",
-    "HDA_VSetReq",
-  ]}  
+  values = CS.customCS.lfahda
   enabled = CC.enabled
 
   ldwSysState = 0

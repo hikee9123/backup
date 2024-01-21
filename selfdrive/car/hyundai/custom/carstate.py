@@ -51,6 +51,7 @@ class CarStateCustom():
   def get_can_parser( self, messages, CP ):
     messages += [
       ("TPMS11", 5),
+      ("Navi_HU", 0)
     ]
 
 
@@ -172,4 +173,5 @@ class CarStateCustom():
       carStatus.alertTextMsg3 = str(trace1.global_alertTextMsg3)       
       self.pm.send('carStateCustom', dat )          
 
-      trace1.printf1( 'break={} '.format( self.brakePos  ) )
+      trace1.printf3( 'break={} NCl={} NG={} NC={}'.format( self.brakePos, cp.vl["Navi_HU"]["SpeedLim_Nav_Clu"], cp.vl["Navi_HU"]["SpeedLim_Nav_General"], cp.vl["Navi_HU"]["SpeedLim_Nav_Cam"]  ) )
+
