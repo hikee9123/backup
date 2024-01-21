@@ -187,8 +187,12 @@ class MappyServer:
             self.dEventSec = self.ts
 
         dat = messaging.new_message('naviCustom')
-        dat.naviCustom.naviData = {
-            "active": True, # self.active,
+        naviData = dat.naviCustom.naviData
+        naviData.active = True
+        naviData.camType = self.safetySign1 
+
+        #dat.naviCustom.naviData = {
+            #"active": True, # self.active,
             #"roadLimitSpeed": 0,
             #"isHighway": False,
             #"camType": self.safetySign1,  #self.trafficType,
@@ -203,7 +207,7 @@ class MappyServer:
             #"currentRoadName": "",
             #"isNda2": False,
             #"cntIdx": self.idx,
-        }
+        #}
         self.pm.send('naviCustom', dat )
 
         print(f'naviCustom={dat}')
