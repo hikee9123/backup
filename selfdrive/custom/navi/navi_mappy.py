@@ -191,7 +191,7 @@ class MappyServer:
         naviData.active = self.active
         naviData.camType = self.safetySign1 
         naviData.camLimitSpeed = self.speedLimit 
-        naviData.camLimitSpeedLeftDist = self.speedLimitDistance
+        naviData.camLimitSpeedLeftDist = 100 #self.speedLimitDistance
         naviData.cntIdx = self.idx
 
         #dat.naviCustom.naviData = {
