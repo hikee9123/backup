@@ -129,7 +129,7 @@ class CarStateCustom():
 
     self.brakePos = cp.vl["E_EMS11"]["Brake_Pedal_Pos"] 
     self.is_highway = self.lfahda["HDA_Icon_State"] != 0.
-    self.lead_distance = 0 # cp.vl["SCC11"]["ACC_ObjDist"]
+    self.lead_distance = cp.vl["SCC11"]["ACC_ObjDist"]
     self.gapSet = cp.vl["SCC11"]['TauGapSet']
     self.VSetDis = cp_cruise.vl["SCC11"]["VSetDis"]   # kph   크루즈 설정 속도.    
     self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]     # kph  현재 차량의 속도.
