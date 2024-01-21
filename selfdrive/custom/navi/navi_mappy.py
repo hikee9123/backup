@@ -188,7 +188,7 @@ class MappyServer:
 
         dat = messaging.new_message('naviCustom')
         naviData = dat.naviCustom.naviData
-        naviData.active = True
+        naviData.active = 1
         naviData.camType = self.safetySign1 
 
         #dat.naviCustom.naviData = {
