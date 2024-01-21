@@ -45,8 +45,13 @@ def only_offroad(started, params, CP: car.CarParams) -> bool:
 
 #custom
 def ExternalNaviType()  -> int:
-  externalNaviType = Params().get('ExternalNaviType', encoding='utf8')
-  #externalNaviType = Params().get_bool("ExternalNaviType")
+  try:
+    externalNaviType = Params().get('ExternalNaviType', encoding='utf8')
+    #externalNaviType = Params().get_bool("ExternalNaviType")
+  except Exception as e:
+    print(f"ExternalNaviType error occurred: {e}")
+    externalNaviType = 0
+
   return int(externalNaviType)
 
 def UseExternalNaviRoutes()  -> bool:
