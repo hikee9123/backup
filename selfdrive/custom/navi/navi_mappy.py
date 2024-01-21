@@ -89,7 +89,7 @@ class MappyServer:
 
             data, self.remote_addr = sock.recvfrom(2048)
             json_obj = json.loads(data.decode())
-            print(f"json={json_obj}")  
+            #print(f"json={json_obj}")  
 
 
             if 'speedLimit' in json_obj:
