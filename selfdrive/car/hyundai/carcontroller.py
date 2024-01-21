@@ -156,11 +156,11 @@ class CarController:
                                                         CC.cruiseControl.override, use_fca))
 
       # 20 Hz LFA MFA message
-      if self.frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
-        if self.car_fingerprint == CAR.AZERA_HEV_6TH_GEN:
-          can_sends.append( self.customCC.create_hda_mfc( self.packer, CS, CC ) )
-        else:
-          can_sends.append( hyundaican.create_lfahda_mfc( self.packer, CC.enabled ) )
+      #if self.frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
+      #  if self.car_fingerprint == CAR.AZERA_HEV_6TH_GEN:
+      #    can_sends.append( self.customCC.create_hda_mfc( self.packer, CS, CC ) )
+      #  else:
+      #   can_sends.append( hyundaican.create_lfahda_mfc( self.packer, CC.enabled ) )
 
       # 5 Hz ACC options
       if self.frame % 20 == 0 and self.CP.openpilotLongitudinalControl:
