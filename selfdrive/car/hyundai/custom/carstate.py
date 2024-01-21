@@ -51,6 +51,7 @@ class CarStateCustom():
   def get_can_parser( self, messages, CP ):
     messages += [
       ("TPMS11", 5),
+      ("SCC11", 50),
     ]
 
 
