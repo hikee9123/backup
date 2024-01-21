@@ -155,7 +155,7 @@ class MappyServer:
     def check(self):
         now = time.monotonic()
         if now - self.last_updated_active > 6.:
-          self.active = 0
+          self.active = False
           
     def update(self):
         self.sm.update(0)
