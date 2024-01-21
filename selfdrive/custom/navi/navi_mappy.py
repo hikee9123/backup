@@ -188,6 +188,7 @@ class MappyServer:
 
         if self.speedLimitDistance <= 10:
            self.speedLimit = 0
+           self.active = 0
 
         dat = messaging.new_message('naviCustom',valid=True)
         naviData = dat.naviCustom.naviData
@@ -196,6 +197,7 @@ class MappyServer:
         naviData.camLimitSpeed = self.speedLimit 
         naviData.camLimitSpeedLeftDist = self.speedLimitDistance
         naviData.cntIdx = self.idx
+        naviData.roadLimitSpeed = 0
 
         #dat.naviCustom.naviData = {
             #"active": True, # self.active,
