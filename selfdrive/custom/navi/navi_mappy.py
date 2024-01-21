@@ -87,7 +87,7 @@ class MappyServer:
             if not ret:
                 return ret
 
-            data, _remote_addr = sock.recvfrom(2048)
+            data, self.remote_addr = sock.recvfrom(2048)
             json_obj = json.loads(data.decode())
             print(f"json={json_obj}")  
 
