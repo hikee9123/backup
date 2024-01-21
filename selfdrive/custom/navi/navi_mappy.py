@@ -186,10 +186,13 @@ class MappyServer:
             self.idx_old = self.idx
             self.dEventSec = self.ts
 
-        dat = messaging.new_message('naviCustom')
+        dat = messaging.new_message('naviCustom',valid=True)
         naviData = dat.naviCustom.naviData
         naviData.active = self.active
         naviData.camType = self.safetySign1 
+        naviData.camLimitSpeed = self.speedLimit 
+        naviData.camLimitSpeedLeftDist = self.speedLimitDistance
+        naviData.cntIdx = self.idx
 
         #dat.naviCustom.naviData = {
             #"active": True, # self.active,
