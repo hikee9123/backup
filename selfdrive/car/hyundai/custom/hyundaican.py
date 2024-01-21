@@ -30,6 +30,8 @@ def create_hda_mfc( packer, CS, CC ):
   if CC.hudControl.rightLaneVisible:
      ldwSysState += 2
 
+  # HDA_USM  2 normal   3 이상동작.
+  # LFA_Icon_State   0 no_hda  1 white_hda  2 green_hda
   values["HDA_LdwSysState"] = ldwSysState
   values["HDA_Icon_Wheel"] = 1 if enabled else 0
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
