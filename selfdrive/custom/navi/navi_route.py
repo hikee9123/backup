@@ -218,7 +218,9 @@ class RouteEngine:
           msg.navInstruction.speedLimit = naviData.roadLimitSpeed / 3.6
           msg.navInstruction.speedLimitSign = log.NavInstruction.SpeedLimitSign.mutcd
       else:
-        naviData = None  
+        naviData = None
+    else:
+      print('self.sm.updated nont \n')  
       #msg.navInstruction.maneuverDistance = naviData.camLimitSpeedLeftDist
 
       
