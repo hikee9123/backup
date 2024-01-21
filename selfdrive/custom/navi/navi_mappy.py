@@ -199,7 +199,7 @@ class MappyServer:
             #"sectionAvgSpeed": 0,
             #"sectionLeftTime": 0,
             #"sectionAdjustSpeed": False,
-            "camSpeedFactor": self.safetySign1,
+            #"camSpeedFactor": self.safetySign1,
             #"currentRoadName": "",
             #"isNda2": False,
             "cntIdx": self.idx,
