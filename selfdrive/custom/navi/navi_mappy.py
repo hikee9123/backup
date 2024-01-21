@@ -189,11 +189,11 @@ class MappyServer:
         dat = messaging.new_message('naviCustom')
         dat.naviCustom.naviData = {
             "active": True, # self.active,
-            "roadLimitSpeed": 0,
-            "isHighway": False,
-            "camType": self.safetySign1,  #self.trafficType,
-            "camLimitSpeedLeftDist": self.speedLimitDistance,
-            "camLimitSpeed": self.speedLimit,
+            #"roadLimitSpeed": 0,
+            #"isHighway": False,
+            #"camType": self.safetySign1,  #self.trafficType,
+            #"camLimitSpeedLeftDist": self.speedLimitDistance,
+            #"camLimitSpeed": self.speedLimit,
             #"sectionLimitSpeed": self.safetySign1,
             #"sectionLeftDist": 0,
             #"sectionAvgSpeed": 0,
@@ -202,7 +202,7 @@ class MappyServer:
             #"camSpeedFactor": self.safetySign1,
             #"currentRoadName": "",
             #"isNda2": False,
-            "cntIdx": self.idx,
+            #"cntIdx": self.idx,
         }
         self.pm.send('naviCustom', dat )
 
