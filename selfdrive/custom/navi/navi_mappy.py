@@ -206,6 +206,8 @@ class MappyServer:
         }
         self.pm.send('naviCustom', dat )
 
+        print(f'naviCustom={dat}')
+
 
 
 def main():
