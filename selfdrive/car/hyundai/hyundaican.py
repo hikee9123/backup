@@ -25,7 +25,7 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
     "CF_Lkas_LdwsOpt_USM",
   ]}
 
-  #frame = (values["CF_Lkas_MsgCount"] + 1)
+  frame = (values["CF_Lkas_MsgCount"] + 1)
   values["CF_Lkas_LdwsSysState"] = sys_state
   values["CF_Lkas_SysWarning"] = 3 if sys_warning else 0
   values["CF_Lkas_LdwsLHWarning"] = left_lane_depart
