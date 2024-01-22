@@ -1,9 +1,11 @@
 import os
+import json    #custom
 
 from cereal import car
 from openpilot.common.params import Params
 from openpilot.system.hardware import PC, TICI
 from openpilot.selfdrive.manager.process import PythonProcess, NativeProcess, DaemonProcess
+from openpilot.selfdrive.athena.athenad import setNavDestination
 
 WEBCAM = os.getenv("USE_WEBCAM") is not None
 
@@ -41,6 +43,73 @@ def only_onroad(started: bool, params, CP: car.CarParams) -> bool:
 def only_offroad(started, params, CP: car.CarParams) -> bool:
   return not started
 
+#custom
+def ExternalNaviType()  -> int:
+  externalNaviType = 0
+  try:
+    externalNaviType = int( Params().get('ExternalNaviType', encoding='utf8') )
+    #externalNaviType = Params().get_bool("ExternalNaviType")
+  except Exception as e:
+    print(f"ExternalNaviType error occurred: {e}")
+    externalNaviType = 0
+
+  return externalNaviType
+
+def UseExternalNaviRoutes()  -> bool:
+  return Params().get_bool("UseExternalNaviRoutes")
+
+def set_mapbox()  -> bool:
+  if UseExternalNaviRoutes():
+    mapbox_token = Params().get("MapboxToken", encoding='utf8')
+    if mapbox_token is not None:
+        os.environ['MAPBOX_TOKEN'] = mapbox_token
+    else:
+        print("Mapbox token is None. Please check your configuration.")
+  
+    print('1.environ (set_mapbox)  mapbox_token ={}'.format(mapbox_token) )
+
+
+    #custom
+    #setNavDestination( 36.85520956438799,  127.10113048553467, "KNJ", "음봉면 산동리 123-1" )
+    destinations = [
+      {
+          "label": "home",
+          "place_name": "Y-CITY",
+          "latitude": 36.795866143196015,
+          "longitude": 127.10831880569458,
+          "place_details": "배방읍 광장로 210",
+          "save_type": "favorite",
+      },
+      {
+          "label": "work",
+          "place_name": "KNJ",
+          "latitude": 36.85520956438799,
+          "longitude": 127.10113048553467,
+          "place_details": "음봉면 산동리 123-1",
+          "save_type": "favorite",
+      },
+      {
+          "label": "recent",
+          "place_name": "고향",
+          "latitude": 37.064122032373774,
+          "longitude": 127.80750423325486,
+          "place_details": "충주시 동막고개길",
+          "save_type": "favorite",
+      },
+      {
+          "label": "recent",
+          "place_name": "서울아산병원",
+          "latitude": 37.5265455,
+          "longitude": 127.1081223,
+          "place_details": "송파구 올림픽로43길 88",
+          "save_type": "favorite",
+      },
+    ]
+    Params().put("NavPastDestinations", json.dumps(destinations) )    
+  return True 
+
+
+
 procs = [
   DaemonProcess("manage_athenad", "selfdrive.athena.manage_athenad", "AthenadPid"),
 
@@ -54,7 +123,7 @@ procs = [
   PythonProcess("dmonitoringmodeld", "selfdrive.modeld.dmonitoringmodeld", driverview, enabled=(not PC or WEBCAM)),
   NativeProcess("encoderd", "system/loggerd", ["./encoderd"], only_onroad),
   NativeProcess("stream_encoderd", "system/loggerd", ["./encoderd", "--stream"], notcar),
-  NativeProcess("loggerd", "system/loggerd", ["./loggerd"], logging),
+  #NativeProcess("loggerd", "system/loggerd", ["./loggerd"], logging),
   NativeProcess("modeld", "selfdrive/modeld", ["./modeld"], only_onroad),
   NativeProcess("mapsd", "selfdrive/navd", ["./mapsd"], only_onroad),
   PythonProcess("navmodeld", "selfdrive.modeld.navmodeld", only_onroad),
@@ -69,7 +138,7 @@ procs = [
   PythonProcess("deleter", "system.loggerd.deleter", always_run),
   PythonProcess("dmonitoringd", "selfdrive.monitoring.dmonitoringd", driverview, enabled=(not PC or WEBCAM)),
   PythonProcess("qcomgpsd", "system.qcomgpsd.qcomgpsd", qcomgps, enabled=TICI),
-  PythonProcess("navd", "selfdrive.navd.navd", only_onroad),
+  PythonProcess("navd", "selfdrive.navd.navd", only_onroad, enabled=not UseExternalNaviRoutes() ),
   PythonProcess("pandad", "selfdrive.boardd.pandad", always_run),
   PythonProcess("paramsd", "selfdrive.locationd.paramsd", only_onroad),
   NativeProcess("ubloxd", "system/ubloxd", ["./ubloxd"], ublox, enabled=TICI),
@@ -79,8 +148,14 @@ procs = [
   PythonProcess("thermald", "selfdrive.thermald.thermald", always_run),
   PythonProcess("tombstoned", "selfdrive.tombstoned", always_run, enabled=not PC),
   PythonProcess("updated", "selfdrive.updated", only_offroad, enabled=not PC),
-  PythonProcess("uploader", "system.loggerd.uploader", always_run),
+  #PythonProcess("uploader", "system.loggerd.uploader", always_run),
   PythonProcess("statsd", "selfdrive.statsd", always_run),
+
+  #custom
+  PythonProcess("navi_mappy", "selfdrive.custom.navi.navi_mappy", only_onroad, enabled =  (ExternalNaviType()==0) ),     # mappy
+  PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", only_onroad, enabled = (ExternalNaviType()==1) ), # NDA
+  PythonProcess("navi_route", "selfdrive.custom.navi.navi_route", only_onroad, enabled= UseExternalNaviRoutes() ),
+
 
   # debug procs
   NativeProcess("bridge", "cereal/messaging", ["./bridge"], notcar),

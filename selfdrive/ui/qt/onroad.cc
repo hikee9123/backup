@@ -276,6 +276,10 @@ AnnotatedCameraWidget::AnnotatedCameraWidget(VisionStreamType type, QWidget* par
   main_layout->addWidget(map_settings_btn, 0, Qt::AlignBottom | Qt::AlignRight);
 
   dm_img = loadPixmap("../assets/img_driver_face.png", {img_size + 5, img_size + 5});
+
+
+  // #custom
+  m_pPaint = new OnPaint(this, width(), height());
 }
 
 void AnnotatedCameraWidget::updateState(const UIState &s) {
@@ -328,6 +332,11 @@ void AnnotatedCameraWidget::updateState(const UIState &s) {
     map_settings_btn->setVisible(!hideBottomIcons);
     main_layout->setAlignment(map_settings_btn, (rightHandDM ? Qt::AlignLeft : Qt::AlignRight) | Qt::AlignBottom);
   }
+
+
+  // #custom
+  if( m_pPaint )
+     m_pPaint->updateState(s);  
 }
 
 void AnnotatedCameraWidget::drawHud(QPainter &p) {
@@ -420,10 +429,19 @@ void AnnotatedCameraWidget::drawHud(QPainter &p) {
   }
 
   // current speed
-  p.setFont(InterFont(176, QFont::Bold));
-  drawText(p, rect().center().x(), 210, speedStr);
-  p.setFont(InterFont(66));
-  drawText(p, rect().center().x(), 290, speedUnit, 200);
+  //p.setFont(InterFont(176, QFont::Bold));
+  //drawText(p, rect().center().x(), 210, speedStr);
+  //p.setFont(InterFont(66));
+  //drawText(p, rect().center().x(), 290, speedUnit, 200);
+
+
+  // #custom
+  if( m_pPaint )
+  {
+    m_pPaint->drawHud(p);
+    m_pPaint->drawSpeed(p, rect().center().x(), speedStr, speedUnit );
+  }
+     
 
   p.restore();
 }
@@ -597,6 +615,14 @@ void AnnotatedCameraWidget::drawLead(QPainter &painter, const cereal::RadarState
   QPointF chevron[] = {{x + (sz * 1.25), y + sz}, {x, y}, {x - (sz * 1.25), y + sz}};
   painter.setBrush(redColor(fillAlpha));
   painter.drawPolygon(chevron, std::size(chevron));
+
+
+  // #custom
+  QString  str;
+  str.sprintf("%.0f",d_rel); 
+  painter.setPen( QColor(0, 0, 0) );
+  painter.setFont( InterFont(28, QFont::Normal));
+  painter.drawText(QRect(x - (sz * 1.25), y, 2 * (sz * 1.25), sz * 1.25), Qt::AlignCenter, str);
 
   painter.restore();
 }
