@@ -91,12 +91,12 @@ class CarController:
     # HUD messages
     sys_warning, sys_state, left_lane_warning, right_lane_warning = process_hud_alert(CC.enabled, self.car_fingerprint,
                                                                                       hud_control)
-    if frame == 0: # initialize counts from last received count signals
-      self.lkas11_cnt = CS.lkas11["CF_Lkas_MsgCount"] + 1
-    self.lkas11_cnt %= 0x10
 
     can_sends = []
 
+    if self.frame == 0: # initialize counts from last received count signals
+      self.lkas11_cnt = CS.lkas11["CF_Lkas_MsgCount"] + 1
+    self.lkas11_cnt %= 0x10
     # *** common hyundai stuff ***
 
     # tester present - w/ no response (keeps relevant ECU disabled)
@@ -193,7 +193,7 @@ class CarController:
           can_sends.extend([hyundaican.create_clu11(self.packer, self.frame, CS.clu11, Buttons.RES_ACCEL, self.CP.carFingerprint)] * 25)
           if (self.frame - self.last_button_frame) * DT_CTRL >= 0.15:
             self.last_button_frame = self.frame
-    else:
+      else:
         #custom 
         self.customCC.create_button_messages( can_sends, self, CS )
     else:
