@@ -160,8 +160,8 @@ class CarController:
                                                         CC.cruiseControl.override, use_fca))
 
       # 20 Hz LFA MFA message
-      if self.frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
-        can_sends.append( self.customCC.create_hda_mfc( self.packer, CS, CC ) )
+      #if self.frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
+      #  can_sends.append( self.customCC.create_hda_mfc( self.packer, CS, CC ) )
         #can_sends.append(hyundaican.create_lfahda_mfc(self.packer, CC.enabled))
 
       # 5 Hz ACC options
