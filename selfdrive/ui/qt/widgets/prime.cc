@@ -272,8 +272,8 @@ void SetupWidget::replyFinished(const QString &response, bool success) {
 
 
   // #custom  PrimeType::LITE;//
-  QString mapbox_token = QString::fromStdString(Params().get("MapboxToken"));
-  if( !mapbox_token.empty() )
+  //QString mapbox_token = QString::fromStdString(Params().get("MapboxToken"));
+  //if( !mapbox_token.empty() )
   {
     json["prime"] = true;
     json["prime_type"] = 2;  // PrimeType::LITE;
