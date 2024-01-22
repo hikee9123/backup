@@ -171,7 +171,7 @@ class CarState(CarStateBase):
     self.main_buttons.extend(cp.vl_all["CLU11"]["CF_Clu_CruiseSwMain"])
 
     #custom
-    #self.customCS.update( ret, self, cp, cp_cruise, cp_cam )
+    self.customCS.update( ret, self, cp, cp_cruise, cp_cam )
     return ret
 
   def update_canfd(self, cp, cp_cam):
