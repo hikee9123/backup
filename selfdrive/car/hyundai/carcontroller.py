@@ -8,7 +8,7 @@ from openpilot.selfdrive.car.hyundai import hyundaicanfd, hyundaican
 from openpilot.selfdrive.car.hyundai.hyundaicanfd import CanBus
 from openpilot.selfdrive.car.hyundai.values import HyundaiFlags, Buttons, CarControllerParams, CANFD_CAR, CAR
 from openpilot.selfdrive.car.hyundai.custom.carcontroller import CarControllerCustom   #custom
-
+from openpilot.selfdrive.car.hyundai.custom.hyundaican import create_lkas11,  create_hda_mfc
 
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 LongCtrlState = car.CarControl.Actuators.LongControlState
@@ -59,7 +59,6 @@ class CarController:
     self.last_button_frame = 0
 
     #custom
-    self.lkas11_cnt = 0
     self.customCC = CarControllerCustom(CP)    
 
   def update(self, CC, CS, now_nanos):
@@ -94,9 +93,6 @@ class CarController:
 
     can_sends = []
 
-    if self.frame == 0: # initialize counts from last received count signals
-      self.lkas11_cnt = CS.lkas11["CF_Lkas_MsgCount"] + 1
-    self.lkas11_cnt %= 0x10
     # *** common hyundai stuff ***
 
     # tester present - w/ no response (keeps relevant ECU disabled)
@@ -143,13 +139,19 @@ class CarController:
         # button presses
         can_sends.extend(self.create_button_messages(CC, CS, use_clu11=False))
     else:
-      can_sends.append(hyundaican.create_lkas11(self.packer, self.lkas11_cnt, self.car_fingerprint, apply_steer, apply_steer_req,
-                                                torque_fault, CS.lkas11, sys_warning, sys_state, CC.enabled,
-                                                hud_control.leftLaneVisible, hud_control.rightLaneVisible,
-                                                left_lane_warning, right_lane_warning))
+      can_sends.append( self.customCC.make_lkas11( self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
+                                                torque_fault, CS, sys_warning, sys_state, CC,
+                                                hud_control, 
+                                                left_lane_warning, right_lane_warning) )
+
+      #can_sends.append(hyundaican.create_lkas11(self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
+      #                                          torque_fault, CS.lkas11, sys_warning, sys_state, CC.enabled,
+      #                                          hud_control.leftLaneVisible, hud_control.rightLaneVisible,
+      #                                          left_lane_warning, right_lane_warning))
 
       if not self.CP.openpilotLongitudinalControl:
-        can_sends.extend(self.create_button_messages(CC, CS, use_clu11=True))
+        can_sends.extend( self.customCC.create_button_messages(CC, CS, use_clu11=True) ) #custom
+        #can_sends.extend(self.create_button_messages(CC, CS, use_clu11=True))
 
       if self.frame % 2 == 0 and self.CP.openpilotLongitudinalControl:
         # TODO: unclear if this is needed
@@ -177,7 +179,7 @@ class CarController:
     new_actuators.steerOutputCan = apply_steer
     new_actuators.accel = accel
 
-    self.lkas11_cnt += 1
+
     self.frame += 1
     return new_actuators, can_sends
 
@@ -193,9 +195,6 @@ class CarController:
           can_sends.extend([hyundaican.create_clu11(self.packer, self.frame, CS.clu11, Buttons.RES_ACCEL, self.CP.carFingerprint)] * 25)
           if (self.frame - self.last_button_frame) * DT_CTRL >= 0.15:
             self.last_button_frame = self.frame
-      else:
-        #custom 
-        self.customCC.create_button_messages( can_sends, self, CS )
     else:
       if (self.frame - self.last_button_frame) * DT_CTRL > 0.25:
         # cruise cancel

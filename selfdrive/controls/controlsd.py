@@ -698,7 +698,7 @@ class Controls:
 
     speeds = self.sm['longitudinalPlan'].speeds
     if len(speeds):
-      CC.cruiseControl.resume = self.enabled and CS.cruiseState.standstill and speeds[-1] > 0.1
+      CC.cruiseControl.resume = self.enabled and CS.cruiseState.standstill and speeds[-1] > 1
 
     hudControl = CC.hudControl
     hudControl.setSpeed = float(self.v_cruise_helper.v_cruise_cluster_kph * CV.KPH_TO_MS)
@@ -706,8 +706,13 @@ class Controls:
     hudControl.lanesVisible = self.enabled
     hudControl.leadVisible = self.sm['longitudinalPlan'].hasLead
 
-    hudControl.rightLaneVisible = True
-    hudControl.leftLaneVisible = True
+
+    right_lane_visible = self.sm['lateralPlan'].rProbDEPRECATED > 0.5
+    left_lane_visible = self.sm['lateralPlan'].lProbDEPRECATED > 0.5
+    hudControl.rightLaneVisible = bool(right_lane_visible)
+    hudControl.leftLaneVisible = bool(left_lane_visible)
+    #hudControl.rightLaneVisible = True
+    #hudControl.leftLaneVisible = True
 
     recent_blinker = (self.sm.frame - self.last_blinker_frame) * DT_CTRL < 5.0  # 5s blinker cooldown
     ldw_allowed = self.is_ldw_enabled and CS.vEgo > LDW_MIN_SPEED and not recent_blinker \

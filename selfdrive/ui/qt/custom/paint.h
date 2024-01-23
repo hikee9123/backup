@@ -78,6 +78,7 @@ private:
     float cpuTemp; 
 
     int   electGearStep;
+    int   breakPos;
 
     float  angleSteers;
     int   enginRpm = 0;

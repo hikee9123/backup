@@ -59,11 +59,11 @@ class NaviControl():
     self.speed_kps = 0
 
     self.cruiseGap = 0
-
+    self.cruise_set_mode = 0
 
 
   def button_status(self, CS ):
-    if CS.customCS.cruise_set_mode == 0:
+    if self.cruise_set_mode == 0:
       return 0
     
     cruise_button = CS.cruise_buttons[-1] 
@@ -86,7 +86,7 @@ class NaviControl():
   def case_default(self, CS):
       self.seq_command = 0
       return None
-
+ 
   def case_0(self, CS):
       self.btn_cnt = 0
       self.target_speed = self.set_point
@@ -206,22 +206,12 @@ class NaviControl():
 
 
   def auto_speed_control( self, CC, CS, ctrl_speed ):
-    cruise_set_speed = 0
-    cruise_set_mode = CS.customCS.cruise_set_mode
-    if cruise_set_mode & 1:
-      if CS.out.gasPressed:
-        self.gasPressed_time = 100
-      elif self.gasPressed_time > 0:
-        self.gasPressed_time -= 1
-        if self.gasPressed_time <= 0:
-          cruise_set_speed = CS.customCS.clu_Vanz - 5
+    cruise_set_mode = self.cruise_set_mode
 
-    if cruise_set_mode & 2  and (CS.customCS.gapSet == self.cruiseGap):  # comma long control speed.
+    if cruise_set_mode & 2  and (self.cruiseGap == CS.customCS.gapSet):  # comma long control speed.
       vFuture = self.speed_kps
       ctrl_speed = min( vFuture, ctrl_speed )
 
-    if cruise_set_speed > 30:
-      CS.customCS.set_cruise_speed( cruise_set_speed )
 
     if ctrl_speed < 30:
       ctrl_speed = 30
@@ -239,8 +229,8 @@ class NaviControl():
 
     if self.sm.updated["uICustom"]:
       cruiseMode = self.sm['uICustom'].community.cruiseMode
-      if CS.customCS.cruise_set_mode != cruiseMode:
-        CS.customCS.cruise_set_mode = cruiseMode
+      if self.cruise_set_mode != cruiseMode:
+        self.cruise_set_mode = cruiseMode
 
       cruiseGap = self.sm['uICustom'].community.cruiseGap
       if self.cruiseGap != cruiseGap:
@@ -255,12 +245,12 @@ class NaviControl():
       kph_set_vEgo = self.get_navi_speed(  self.sm , CS, cruiseState_speed, frame )
       self.ctrl_speed = min( cruiseState_speed, kph_set_vEgo)
 
-      if CS.customCS.cruise_set_mode:
+      if self.cruise_set_mode:
         self.ctrl_speed = self.auto_speed_control( c, CS, self.ctrl_speed )
  
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
 
     
-    trace1.printf1( 'MD={}'.format(  CS.customCS.cruise_set_mode ) )
+    trace1.printf1( 'MD={} {}'.format(  self.cruise_set_mode, CS.customCS.control_mode ) )
 
     return btn_signal

@@ -27,6 +27,9 @@ class LateralPlanner:
 
     self.debug_mode = debug
 
+    self.lll_prob = 0
+    self.rll_prob = 0    
+
   def update(self, sm):
     v_ego_car = sm['carState'].vEgo
 
@@ -47,6 +50,12 @@ class LateralPlanner:
       self.r_lane_change_prob = desire_state[log.LateralPlan.Desire.laneChangeRight]
     lane_change_prob = self.l_lane_change_prob + self.r_lane_change_prob
     self.DH.update(sm['carState'], sm['carControl'].latActive, lane_change_prob)
+
+    lane_lines = md.laneLines
+    if len(lane_lines) == 4 and len(lane_lines[0].t) == TRAJECTORY_SIZE:
+      self.lll_prob = md.laneLineProbs[1]
+      self.rll_prob = md.laneLineProbs[2]
+
 
   def publish(self, sm, pm):
     plan_send = messaging.new_message('lateralPlan')
@@ -70,5 +79,8 @@ class LateralPlanner:
     lateralPlan.useLaneLines = False
     lateralPlan.laneChangeState = self.DH.lane_change_state
     lateralPlan.laneChangeDirection = self.DH.lane_change_direction
+
+    lateralPlan.lProbDEPRECATED = float(self.lll_prob)
+    lateralPlan.rProbDEPRECATED = float(self.rll_prob)
 
     pm.send('lateralPlan', plan_send)

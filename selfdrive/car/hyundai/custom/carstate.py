@@ -20,10 +20,13 @@ class CarStateCustom():
     self.frame = 0
     self.acc_active = 0
 
-    self.cruise_set_mode = 0
+
+    self.control_mode = 0
+
     self.clu_Vanz = 0
 
     self.is_highway = False
+
 
     # cruise_speed_button
     self.old_acc_active = 0
@@ -60,7 +63,20 @@ class CarStateCustom():
       ("LFAHDA_MFC", 20),          
     ]
 
+  def cruise_control_mode( self ):
+    if self.CS.out.cruiseState.available:   
+       return
+    
+    cruise_buttons = self.CS.prev_cruise_buttons
+    if cruise_buttons == (Buttons.RES_ACCEL): 
+      self.control_mode += 1
+    elif cruise_buttons == (Buttons.SET_DECEL):
+      self.control_mode -= 1
 
+    if self.control_mode < 0:
+      self.control_mode = 0
+    elif self.control_mode > 5:
+      self.control_mode = 5
 
   def cruise_speed_button( self ):
     if self.prev_acc_active != self.acc_active:
@@ -116,6 +132,7 @@ class CarStateCustom():
 
 
   def update(self, ret, CS,  cp, cp_cruise, cp_cam ):
+    self.cruise_control_mode()
     # save the entire LFAHDA_MFC
     self.lfahda = copy.copy(cp_cam.vl["LFAHDA_MFC"])
     if not self.CP.openpilotLongitudinalControl:
@@ -169,9 +186,9 @@ class CarStateCustom():
       global trace1
       carStatus.alertTextMsg1 = str(trace1.global_alertTextMsg1)
       carStatus.alertTextMsg2 = str(trace1.global_alertTextMsg2)
-      carStatus.alertTextMsg3 = str(trace1.global_alertTextMsg3)       
+      carStatus.alertTextMsg3 = str(trace1.global_alertTextMsg3)
       self.pm.send('carStateCustom', dat )
 
       trace1.printf2( 'break={:.0f} HI={:.0f} HU={:.0f} '.format( self.brakePos, self.lfahda["HDA_Icon_State"], self.lfahda["HDA_USM"]  ) )
-      trace1.printf3( 'LS={:.0f}  '.format( cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] ) )
+      trace1.printf3( 'LS={:.0f}  LF={} LA{}'.format( cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"], cp_cam.vl["LKAS11"]["CF_Lkas_ToiFlt"], cp_cam.vl["LKAS11"]["CF_Lkas_ActToi"] ) )
 

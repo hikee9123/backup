@@ -1,11 +1,39 @@
 import crcmod
-
 from cereal import car
-from openpilot.selfdrive.car.hyundai.values import CAMERA_SCC_CAR
+from openpilot.selfdrive.car.hyundai.values import CAR, CHECKSUM, CAMERA_SCC_CAR
 
-import openpilot.selfdrive.custom.loger as  trace1
+
 
 GearShifter = car.CarState.GearShifter
+hyundai_checksum = crcmod.mkCrcFun(0x11D, initCrc=0xFD, rev=False, xorOut=0xdf)
+
+def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
+                  torque_fault, lkas11, sys_warning, sys_state, enabled,
+                  left_lane, right_lane,
+                  left_lane_depart, right_lane_depart):
+  
+  values = lkas11
+  values["CF_Lkas_MsgCount"] = frame % 0x10
+
+  dat = packer.make_can_msg("LKAS11", 0, values)[2]
+
+  if car_fingerprint in CHECKSUM["crc8"]:
+    # CRC Checksum as seen on 2019 Hyundai Santa Fe
+    dat = dat[:6] + dat[7:8]
+    checksum = hyundai_checksum(dat)
+  elif car_fingerprint in CHECKSUM["6B"]:
+    # Checksum of first 6 Bytes, as seen on 2018 Kia Sorento
+    checksum = sum(dat[:6]) % 256
+  else:
+    # Checksum of first 6 Bytes and last Byte as seen on 2018 Kia Stinger
+    checksum = (sum(dat[:6]) + dat[7]) % 256
+
+  values["CF_Lkas_Chksum"] = checksum
+
+  return packer.make_can_msg("LKAS11", 0, values)
+
+
+
 
 def create_clu11(packer, frame, clu11, button, car_fingerprint):
   values = clu11

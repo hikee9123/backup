@@ -198,6 +198,7 @@ void OnPaint::updateState(const UIState &s)
   alert.alertTextMsg2 = carState_custom.getAlertTextMsg2();
   alert.alertTextMsg3 = carState_custom.getAlertTextMsg3();    
   m_param.electGearStep  = carState_custom.getElectGearStep();
+  m_param.breakPos = carState_custom.getBreakPos();
 
 
   // 2.
@@ -266,13 +267,21 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
    float  gasVal = m_gasVal * 100;
    float  gasLimit = 1;
 
-  if( brakePress  ) val_color = QColor(255, 0, 0, 255);
-  else if( brakeLights ) val_color = QColor(201, 34, 49, 100);
-  else { //if (gasVal > 0) {
+  //if( brakePress  ) val_color = QColor(255, 0, 0, 255);
+  if( brakeLights ) val_color = QColor(201, 34, 49, 100);
+  else if (gasVal > 0) {
     auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
       return gasVal > 0 ? interpColor( gasVal, {gasLimit + 10, gasLimit + 20, gasLimit + 30}, {c1, c2, c3}) : c1;
     };
-    val_color = interp_color(QColor(255, 255, 255), QColor(0, 255, 0), QColor(255, 255, 0));
+    val_color = interp_color(QColor(255, 255, 255), QColor(0, 100, 0), QColor(255, 255, 0));
+  }
+  else
+  {
+    auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
+      return gasVal > 0 ? interpColor( breakPos, {0, 20, 100}, {c1, c2, c3}) : c1;
+    };
+
+    val_color = interp_color(QColor(255, 255, 255), QColor(255, 100, 0), QColor(255, 0, 0));
   }
 
 
