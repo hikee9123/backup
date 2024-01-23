@@ -197,6 +197,8 @@ class CarStateCustom():
 
       lkas11 = CS.lkas11
 
+      trace1.printf1( 'MD={}'.format( self.control_mode ) )
+
       log1 = f'MDPS={self.mdps12["CF_Mdps_ToiActive"]}/{self.mdps12["CF_Mdps_ToiUnavail"]}/{self.mdps12["CF_Mdps_ToiUnavail"]}'
       trace1.printf2( 'break={:.0f} HI={:.0f} HU={:.0f} {}'.format( self.brakePos, self.lfahda["HDA_Icon_State"], self.lfahda["HDA_USM"], log1  ) )
       trace1.printf3( 'LM={:.0f}/{:.0f}/{:.0f} LS={:.0f}/{:.0f} LA={:.0f} LF={:.0f} '.format( 
