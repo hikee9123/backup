@@ -198,8 +198,8 @@ class CarStateCustom():
       lkas11 = CS.lkas11
 
       log1 = f'MDPS={self.mdps12["CF_Mdps_ToiActive"]}/{self.mdps12["CF_Mdps_ToiUnavail"]}/{self.mdps12["CF_Mdps_ToiUnavail"]}'
-      trace1.printf2( 'break={:.0f} HI={:.0f} HU={:.0f} MDPS={}'.format( self.brakePos, self.lfahda["HDA_Icon_State"], self.lfahda["HDA_USM"], log1  ) )
-      trace1.printf3( 'LM={:.0f}/{:.0f}/{:.0f} LS={:.0f}/{:.0f} LA={} LF={} '.format( 
+      trace1.printf2( 'break={:.0f} HI={:.0f} HU={:.0f} {}'.format( self.brakePos, self.lfahda["HDA_Icon_State"], self.lfahda["HDA_USM"], log1  ) )
+      trace1.printf3( 'LM={:.0f}/{:.0f}/{:.0f} LS={:.0f}/{:.0f} LA={:.0f} LF={:.0f} '.format( 
         lkas11["CF_Lkas_LdwsActivemode"],lkas11["CF_Lkas_LdwsOpt_USM"],lkas11["CF_Lkas_FcwOpt_USM"], 
         lkas11["CF_Lkas_LdwsSysState"], lkas11["CF_Lkas_SysWarning"], 
         lkas11["CF_Lkas_ActToi"], lkas11["CF_Lkas_ToiFlt"] ) )
