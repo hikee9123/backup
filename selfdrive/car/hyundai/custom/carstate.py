@@ -146,8 +146,6 @@ class CarStateCustom():
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
       ret.cruiseState.speed = self.cruise_speed_button() * CV.KPH_TO_MS
 
-
-
     ret.engineRpm = cp.vl["E_EMS11"]["N"] # opkr
     ret.brakeLightsDEPRECATED = bool( cp.vl["TCS13"]['BrakeLight'] )
 
@@ -158,7 +156,10 @@ class CarStateCustom():
     self.VSetDis = cp_cruise.vl["SCC11"]["VSetDis"]   # kph   크루즈 설정 속도.    
     self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]     # kph  현재 차량의 속도.
     
-    if not self.CP.openpilotLongitudinalControl:
+    if CS.customCS.control_mode == 4:
+      ret.cruiseState.available = False
+      ret.cruiseState.enabled = False
+    elif not self.CP.openpilotLongitudinalControl:
       if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
         pass
       elif ret.doorOpen:
