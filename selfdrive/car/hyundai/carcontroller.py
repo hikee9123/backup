@@ -162,7 +162,7 @@ class CarController:
                                                         CC.cruiseControl.override, use_fca))
 
       #custom
-      self.customCC.custom_sends( can_sends, self.frame, CS, CC )
+      self.customCC.custom_sends( can_sends, self.packer, self.frame, CS, CC )
       # 20 Hz LFA MFA message
       #if self.frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
         #can_sends.append(hyundaican.create_lfahda_mfc(self.packer, CC.enabled))
