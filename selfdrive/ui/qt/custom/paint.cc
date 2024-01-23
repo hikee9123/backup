@@ -267,8 +267,8 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
    float  gasVal = m_gasVal * 100;
    float  gasLimit = 1;
 
-  if( brakePress  ) val_color = QColor(255, 0, 0, 255);
-  else if( brakeLights ) val_color = QColor(201, 34, 49, 100);
+  //;if( brakePress  ) val_color = QColor(255, 0, 0, 255);
+  if( brakeLights ) val_color = QColor(201, 34, 49, 100);
   else if (gasVal > 0) {
     auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
       return gasVal > 0 ? interpColor( gasVal, {gasLimit + 10, gasLimit + 20, gasLimit + 30}, {c1, c2, c3}) : c1;
