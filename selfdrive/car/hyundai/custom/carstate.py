@@ -189,6 +189,11 @@ class CarStateCustom():
       carStatus.alertTextMsg3 = str(trace1.global_alertTextMsg3)
       self.pm.send('carStateCustom', dat )
 
+
+      lkas11 = CS.lkas11
       trace1.printf2( 'break={:.0f} HI={:.0f} HU={:.0f} '.format( self.brakePos, self.lfahda["HDA_Icon_State"], self.lfahda["HDA_USM"]  ) )
-      trace1.printf3( 'LS={:.0f}  LF={} LA{}'.format( cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"], cp_cam.vl["LKAS11"]["CF_Lkas_ToiFlt"], cp_cam.vl["LKAS11"]["CF_Lkas_ActToi"] ) )
+      trace1.printf3( 'LM={:.0f}/{:.0f}/{:.0f} LS={:.0f}/{:.0f} LA={} LF={} '.format( 
+        lkas11["CF_Lkas_LdwsActivemode"],lkas11["CF_Lkas_LdwsOpt_USM"],lkas11["CF_Lkas_FcwOpt_USM"], 
+        lkas11["CF_Lkas_LdwsSysState"], lkas11["CF_Lkas_SysWarning"], 
+        lkas11["CF_Lkas_ActToi"], lkas11["CF_Lkas_ToiFlt"] ) )
 
