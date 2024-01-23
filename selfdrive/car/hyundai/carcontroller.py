@@ -8,7 +8,7 @@ from openpilot.selfdrive.car.hyundai import hyundaicanfd, hyundaican
 from openpilot.selfdrive.car.hyundai.hyundaicanfd import CanBus
 from openpilot.selfdrive.car.hyundai.values import HyundaiFlags, Buttons, CarControllerParams, CANFD_CAR, CAR
 from openpilot.selfdrive.car.hyundai.custom.carcontroller import CarControllerCustom   #custom
-from openpilot.selfdrive.car.hyundai.custom.hyundaican import create_lkas11,  create_hda_mfc
+#from openpilot.selfdrive.car.hyundai.custom.hyundaican import create_lkas11,  create_hda_mfc
 
 VisualAlert = car.CarControl.HUDControl.VisualAlert
 LongCtrlState = car.CarControl.Actuators.LongControlState
