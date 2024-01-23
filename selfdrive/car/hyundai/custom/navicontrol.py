@@ -250,7 +250,4 @@ class NaviControl():
  
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
 
-    
-    trace1.printf1( 'MD={} {}'.format(  self.cruise_set_mode, CS.customCS.control_mode ) )
-
     return btn_signal
