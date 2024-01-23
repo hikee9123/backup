@@ -20,6 +20,7 @@ class CarStateCustom():
     self.frame = 0
     self.acc_active = 0
 
+    self.cruise_buttons_old = 0
 
     self.control_mode = 0
 
@@ -68,6 +69,10 @@ class CarStateCustom():
        return
     
     cruise_buttons = self.CS.prev_cruise_buttons
+    if cruise_buttons == self.cruise_buttons_old:
+       return
+      
+    self.cruise_buttons_old = cruise_buttons
     if cruise_buttons == (Buttons.RES_ACCEL): 
       self.control_mode += 1
     elif cruise_buttons == (Buttons.SET_DECEL):
@@ -76,7 +81,7 @@ class CarStateCustom():
     if self.control_mode < 0:
       self.control_mode = 0
     elif self.control_mode > 5:
-      self.control_mode = 5
+      self.control_mode = 0
 
   def cruise_speed_button( self ):
     if self.prev_acc_active != self.acc_active:
