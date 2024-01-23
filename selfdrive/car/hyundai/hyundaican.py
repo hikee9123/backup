@@ -33,11 +33,7 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
   values["CF_Lkas_ActToi"] = steer_req
   values["CF_Lkas_ToiFlt"] = torque_fault  # seems to allow actuation on CR_Lkas_StrToqReq
   values["CF_Lkas_MsgCount"] = frame % 0x10
-  if car_fingerprint == CAR.AZERA_HEV_6TH_GEN:
-    values["CF_Lkas_SysWarning"] = 4 if sys_warning else 0
-    # CF_Lkas_SysWarning  4 keep hand on wheel
-    # CF_Lkas_SysWarning  9 keep hands on wheel (red) + beep
-  elif car_fingerprint in (CAR.SONATA, CAR.PALISADE, CAR.KIA_NIRO_EV, CAR.KIA_NIRO_HEV_2021, CAR.SANTA_FE,
+  if car_fingerprint in (CAR.SONATA, CAR.PALISADE, CAR.KIA_NIRO_EV, CAR.KIA_NIRO_HEV_2021, CAR.SANTA_FE,
                          CAR.IONIQ_EV_2020, CAR.IONIQ_PHEV, CAR.KIA_SELTOS, CAR.ELANTRA_2021, CAR.GENESIS_G70_2020,
                          CAR.ELANTRA_HEV_2021, CAR.SONATA_HYBRID, CAR.KONA_EV, CAR.KONA_HEV, CAR.KONA_EV_2022,
                          CAR.SANTA_FE_2022, CAR.KIA_K5_2021, CAR.IONIQ_HEV_2022, CAR.SANTA_FE_HEV_2022,
@@ -80,6 +76,11 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
     # This field is actually LdwsActivemode
     # Genesis and Optima fault when forwarding while engaged
     values["CF_Lkas_LdwsActivemode"] = 2
+
+  elif car_fingerprint == CAR.AZERA_HEV_6TH_GEN:
+    values["CF_Lkas_SysWarning"] = 4 if sys_warning else 0
+    # CF_Lkas_SysWarning  4 keep hand on wheel
+    # CF_Lkas_SysWarning  9 keep hands on wheel (red) + beep    
 
   dat = packer.make_can_msg("LKAS11", 0, values)[2]
 

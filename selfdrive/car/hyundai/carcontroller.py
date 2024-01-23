@@ -139,7 +139,7 @@ class CarController:
         # button presses
         can_sends.extend(self.create_button_messages(CC, CS, use_clu11=False))
     else:
-      can_sends.append( self.customCC.make_lkas11( self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
+      can_sends.append( self.customCC.custom_lkas11( self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
                                                 torque_fault, CS, sys_warning, sys_state, CC,
                                                 hud_control, 
                                                 left_lane_warning, right_lane_warning) )
@@ -161,9 +161,10 @@ class CarController:
                                                         hud_control.leadVisible, set_speed_in_units, stopping,
                                                         CC.cruiseControl.override, use_fca))
 
+      #custom
+      self.customCC.custom_sends( can_sends, self.frame, CS, CC )
       # 20 Hz LFA MFA message
       #if self.frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
-      #  can_sends.append( self.customCC.create_hda_mfc( self.packer, CS, CC ) )
         #can_sends.append(hyundaican.create_lfahda_mfc(self.packer, CC.enabled))
 
       # 5 Hz ACC options

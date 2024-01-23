@@ -7,7 +7,8 @@ from openpilot.selfdrive.car.hyundai.values import CAR, CHECKSUM, CAMERA_SCC_CAR
 GearShifter = car.CarState.GearShifter
 hyundai_checksum = crcmod.mkCrcFun(0x11D, initCrc=0xFD, rev=False, xorOut=0xdf)
 
-def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
+# 100 Hz
+def hyundai_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
                   torque_fault, lkas11, sys_warning, sys_state, enabled,
                   left_lane, right_lane,
                   left_lane_depart, right_lane_depart):
@@ -31,8 +32,6 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
   values["CF_Lkas_Chksum"] = checksum
 
   return packer.make_can_msg("LKAS11", 0, values)
-
-
 
 
 def create_clu11(packer, frame, clu11, button, car_fingerprint):
@@ -63,3 +62,17 @@ def create_hda_mfc( packer, CS, CC ):
   values["HDA_LdwSysState"] = ldwSysState
   values["HDA_Icon_Wheel"] = 1 if enabled else 0
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
+
+# 50 Hz
+def create_mdps12(packer, frame, mdps12):
+  values = mdps12
+  values["CF_Mdps_ToiActive"] = 0
+  values["CF_Mdps_ToiUnavail"] = 1
+  values["CF_Mdps_MsgCount2"] = frame % 0x100
+
+
+  dat = packer.make_can_msg("MDPS12", 2, values)[2]
+  checksum = sum(dat) % 256
+  values["CF_Mdps_Chksum2"] = checksum
+
+  return packer.make_can_msg("MDPS12", 2, values)   # 0

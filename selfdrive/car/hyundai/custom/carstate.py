@@ -134,7 +134,9 @@ class CarStateCustom():
   def update(self, ret, CS,  cp, cp_cruise, cp_cam ):
     self.cruise_control_mode()
     # save the entire LFAHDA_MFC
+
     self.lfahda = copy.copy(cp_cam.vl["LFAHDA_MFC"])
+    self.mdps12 = copy.copy(cp.vl["MDPS12"])
     if not self.CP.openpilotLongitudinalControl:
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
       ret.cruiseState.speed = self.cruise_speed_button() * CV.KPH_TO_MS
@@ -192,8 +194,11 @@ class CarStateCustom():
       self.pm.send('carStateCustom', dat )
 
 
+
       lkas11 = CS.lkas11
-      trace1.printf2( 'break={:.0f} HI={:.0f} HU={:.0f} '.format( self.brakePos, self.lfahda["HDA_Icon_State"], self.lfahda["HDA_USM"]  ) )
+
+      log1 = f'MDPS={self.mdps12["CF_Mdps_ToiActive"]}/{self.mdps12["CF_Mdps_ToiUnavail"]}/{self.mdps12["CF_Mdps_ToiUnavail"]}'
+      trace1.printf2( 'break={:.0f} HI={:.0f} HU={:.0f} MDPS={}'.format( self.brakePos, self.lfahda["HDA_Icon_State"], self.lfahda["HDA_USM"], log1  ) )
       trace1.printf3( 'LM={:.0f}/{:.0f}/{:.0f} LS={:.0f}/{:.0f} LA={} LF={} '.format( 
         lkas11["CF_Lkas_LdwsActivemode"],lkas11["CF_Lkas_LdwsOpt_USM"],lkas11["CF_Lkas_FcwOpt_USM"], 
         lkas11["CF_Lkas_LdwsSysState"], lkas11["CF_Lkas_SysWarning"], 
