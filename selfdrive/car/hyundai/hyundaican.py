@@ -76,11 +76,16 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
     # This field is actually LdwsActivemode
     # Genesis and Optima fault when forwarding while engaged
     values["CF_Lkas_LdwsActivemode"] = 2
+    
 
   elif car_fingerprint == CAR.AZERA_HEV_6TH_GEN:
     values["CF_Lkas_SysWarning"] = 4 if sys_warning else 0
     # CF_Lkas_SysWarning  4 keep hand on wheel
-    # CF_Lkas_SysWarning  9 keep hands on wheel (red) + beep    
+    # CF_Lkas_SysWarning  9 keep hands on wheel (red) + beep
+
+    #values["CF_Lkas_LdwsActivemode"] = 0    normal:0
+    #values["CF_Lkas_LdwsOpt_USM"] = 3       normal:3
+    #values["CF_Lkas_FcwOpt_USM"] = 2 if enabled else 1     normal:0
 
   dat = packer.make_can_msg("LKAS11", 0, values)[2]
 
