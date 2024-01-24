@@ -43,7 +43,7 @@ class CarControllerCustom:
       return
 
     # 100 Hz
-    can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error
+    #can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error
 
     # 20 Hz LFA MFA message
     if frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
