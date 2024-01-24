@@ -65,9 +65,6 @@ class CarStateCustom():
     ]
 
   def cruise_control_mode( self ):
-    if self.CS.out.cruiseState.available:   
-       return
-    
     cruise_buttons = self.CS.prev_cruise_buttons
     if cruise_buttons == self.cruise_buttons_old:
        return
@@ -137,9 +134,12 @@ class CarStateCustom():
 
 
   def update(self, ret, CS,  cp, cp_cruise, cp_cam ):
-    self.cruise_control_mode()
-    # save the entire LFAHDA_MFC
+    mainMode_ACC = cp_cruise.vl["SCC11"]["MainMode_ACC"] == 1
 
+    if not mainMode_ACC:
+      self.cruise_control_mode()
+
+    # save the entire LFAHDA_MFC
     self.lfahda = copy.copy(cp_cam.vl["LFAHDA_MFC"])
     self.mdps12 = copy.copy(cp.vl["MDPS12"])
     if not self.CP.openpilotLongitudinalControl:
