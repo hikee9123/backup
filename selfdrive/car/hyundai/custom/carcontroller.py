@@ -68,5 +68,4 @@ class CarControllerCustom:
       else:
         self.resume_cnt = 0
 
-
     return can_sends

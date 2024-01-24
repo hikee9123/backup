@@ -21,13 +21,9 @@ class CarStateCustom():
     self.acc_active = 0
 
     self.cruise_buttons_old = 0
-
     self.control_mode = 0
-
     self.clu_Vanz = 0
-
     self.is_highway = False
-
 
     # cruise_speed_button
     self.old_acc_active = 0
