@@ -149,7 +149,6 @@ class CarController:
                                                 hud_control, 
                                                 left_lane_warning, right_lane_warning) )
 
-
       if not self.CP.openpilotLongitudinalControl:
         can_sends.extend( self.customCC.create_button_messages(CC, CS, self.frame ) ) #custom
         #can_sends.extend(self.create_button_messages(CC, CS, use_clu11=True))
