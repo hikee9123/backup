@@ -260,28 +260,27 @@ void OnPaint::drawHud(QPainter &p)
 void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit ) 
 {
   // x = rect().center().x();
-  QColor  val_color = QColor(255, 255, 255, 255); // QColor(0x80, 0xd8, 0xa6, 0xff); // QColor(255, 255, 255, 255);
-  int  brakePress = m_nBrakeStatus & 0x01;
-  int  brakeLights = m_nBrakeStatus & 0x02;
-
+   QColor  val_color = QColor(255, 255, 255, 255); // QColor(0x80, 0xd8, 0xa6, 0xff); // QColor(255, 255, 255, 255);
+   //int  brakePress = m_nBrakeStatus & 0x01;
+   int  brakeLights = m_nBrakeStatus & 0x02;
    float  gasVal = m_gasVal * 100;
-   float  gasLimit = 1;
 
-  if( brakePress  ) val_color = QColor(255, 0, 0, 255);
-  if( brakeLights ) val_color = QColor(201, 34, 49, 100);
-  else if (gasVal > 0) {
-    auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
-      return gasVal > 0 ? interpColor( gasVal, {gasLimit + 10, gasLimit + 20, gasLimit + 30}, {c1, c2, c3}) : c1;
-    };
-    val_color = interp_color(QColor(255, 255, 255), QColor(0, 100, 0), QColor(255, 255, 0));
-  }
-  else
+
+  //if( brakePress  ) val_color = QColor(255, 0, 0, 255);
+  if( m_param.breakPos > 0) 
   {
     auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
       return m_param.breakPos > 0 ? interpColor( m_param.breakPos, {0, 20, 100}, {c1, c2, c3}) : c1;
     };
 
     val_color = interp_color(QColor(255, 255, 255), QColor(255, 100, 0), QColor(255, 0, 0));
+  }
+  else if( brakeLights ) val_color = QColor(201, 34, 49, 100);
+  else if (gasVal > 0) {
+    auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
+      return gasVal > 0 ? interpColor( gasVal, { 10, 20, 30}, {c1, c2, c3}) : c1;
+    };
+    val_color = interp_color(QColor(255, 255, 255), QColor(0, 100, 0), QColor(255, 255, 0));
   }
 
 

@@ -43,7 +43,7 @@ class CarControllerCustom:
     if CS.customCS.control_mode == 4:
       return
 
-    # 50 Hz
+    # 100 Hz
     can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error
 
     # 20 Hz LFA MFA message
