@@ -2,6 +2,7 @@
 import datetime
 import os
 import signal
+import subprocess
 import sys
 import traceback
 from typing import List, Tuple, Union
@@ -9,6 +10,7 @@ from typing import List, Tuple, Union
 from cereal import log
 import cereal.messaging as messaging
 import openpilot.selfdrive.sentry as sentry
+from openpilot.common.basedir import BASEDIR
 from openpilot.common.params import Params, ParamKeyType
 from openpilot.common.text_window import TextWindow
 from openpilot.selfdrive.boardd.set_time import set_time
@@ -32,6 +34,8 @@ def manager_init() -> None:
   #custom
   #subprocess.call("./bootlog", cwd=os.path.join(BASEDIR, "system/loggerd"))
 
+  
+
   params = Params()
   params.clear_all(ParamKeyType.CLEAR_ON_MANAGER_START)
   params.clear_all(ParamKeyType.CLEAR_ON_ONROAD_TRANSITION)
@@ -53,6 +57,9 @@ def manager_init() -> None:
 
   if params.get_bool("RecordFrontLock"):
     params.put_bool("RecordFront", True)
+
+  if params.get_bool( "EnableLogging" ):
+    subprocess.call("./bootlog", cwd=os.path.join(BASEDIR, "system/loggerd"))
 
   # set unset params
   for k, v in default_params:

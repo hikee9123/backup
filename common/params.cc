@@ -214,6 +214,8 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"ExternalNaviType", PERSISTENT},
     {"MapboxToken", PERSISTENT},
     {"SelectedCar", PERSISTENT},
+    {"EnableLogging", PERSISTENT},
+    
 };
 
 } // namespace

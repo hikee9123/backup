@@ -519,6 +519,8 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
        m_valueCtrl[ "CruiseGap" ]->setEnabled(true);
     }
 
+    addItem(  new ParamControl("EnableLogging", "Enable Logging", "Recording logs", "../assets/offroad/icon_shell.png", this) );
+
 
     update();
   });
