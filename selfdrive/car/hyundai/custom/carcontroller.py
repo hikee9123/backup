@@ -51,18 +51,18 @@ class CarControllerCustom:
       #can_sends.append(hyundaican.create_lfahda_mfc(self.packer, CC.enabled))
 
 
-  def create_button_messages(self, CC: car.CarControl, CS: car.CarState, frame: int):
+  def create_button_messages(self, packer, CC: car.CarControl, CS: car.CarState, frame: int):
     can_sends = []    
     if CS.customCS.control_mode == 4:
       return  can_sends
 
     if CC.cruiseControl.cancel:
-      can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.CANCEL, self.CP.carFingerprint))
+      can_sends.append(create_clu11( packer, frame, CS.clu11, Buttons.CANCEL, self.CP.carFingerprint))
     elif CS.customCS.acc_active:
       #custom 
       btn_signal = self.NC.update( CC, CS, frame )
       if btn_signal != None:
-        can_sends.extend( [create_clu11(CC.packer, self.resume_cnt, CS.clu11, btn_signal, self.CP.carFingerprint)] * 2 )
+        can_sends.extend( [create_clu11( packer, self.resume_cnt, CS.clu11, btn_signal, self.CP.carFingerprint)] * 2 )
         self.resume_cnt += 1
       else:
         self.resume_cnt = 0
