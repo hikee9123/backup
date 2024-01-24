@@ -13,7 +13,6 @@ class CarControllerCustom:
     self.NC = NaviControl( CP)
 
     self.resume_cnt = 0
-    self.hyundai_lkass = 1
 
 
   def custom_lkas11(self, packer, frame, car_fingerprint, apply_steer, steer_req,
