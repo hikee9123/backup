@@ -139,15 +139,16 @@ class CarController:
         # button presses
         can_sends.extend(self.create_button_messages(CC, CS, use_clu11=False))
     else:
+      #can_sends.append(hyundaican.create_lkas11(self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
+      #                                          torque_fault, CS.lkas11, sys_warning, sys_state, CC.enabled,
+      #                                          hud_control.leftLaneVisible, hud_control.rightLaneVisible,
+      #                                          left_lane_warning, right_lane_warning))
+            
       can_sends.append( self.customCC.custom_lkas11( self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
                                                 torque_fault, CS, sys_warning, sys_state, CC,
                                                 hud_control, 
                                                 left_lane_warning, right_lane_warning) )
 
-      #can_sends.append(hyundaican.create_lkas11(self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
-      #                                          torque_fault, CS.lkas11, sys_warning, sys_state, CC.enabled,
-      #                                          hud_control.leftLaneVisible, hud_control.rightLaneVisible,
-      #                                          left_lane_warning, right_lane_warning))
 
       if not self.CP.openpilotLongitudinalControl:
         can_sends.extend( self.customCC.create_button_messages(CC, CS, self.frame ) ) #custom
