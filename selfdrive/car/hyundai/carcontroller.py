@@ -180,7 +180,6 @@ class CarController:
     new_actuators.steerOutputCan = apply_steer
     new_actuators.accel = accel
 
-
     self.frame += 1
     return new_actuators, can_sends
 

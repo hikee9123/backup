@@ -706,7 +706,7 @@ class Controls:
     hudControl.lanesVisible = self.enabled
     hudControl.leadVisible = self.sm['longitudinalPlan'].hasLead
 
-
+    #custom
     right_lane_visible = self.sm['lateralPlan'].rProbDEPRECATED > 0.5
     left_lane_visible = self.sm['lateralPlan'].lProbDEPRECATED > 0.5
     hudControl.rightLaneVisible = bool(right_lane_visible)

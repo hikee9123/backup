@@ -27,6 +27,7 @@ class LateralPlanner:
 
     self.debug_mode = debug
 
+    #custom
     self.lll_prob = 0
     self.rll_prob = 0    
 
@@ -51,6 +52,7 @@ class LateralPlanner:
     lane_change_prob = self.l_lane_change_prob + self.r_lane_change_prob
     self.DH.update(sm['carState'], sm['carControl'].latActive, lane_change_prob)
 
+    #custom
     lane_lines = md.laneLines
     if len(lane_lines) == 4 and len(lane_lines[0].t) == TRAJECTORY_SIZE:
       self.lll_prob = md.laneLineProbs[1]
@@ -80,6 +82,7 @@ class LateralPlanner:
     lateralPlan.laneChangeState = self.DH.lane_change_state
     lateralPlan.laneChangeDirection = self.DH.lane_change_direction
 
+    #custom
     lateralPlan.lProbDEPRECATED = float(self.lll_prob)
     lateralPlan.rProbDEPRECATED = float(self.rll_prob)
 
