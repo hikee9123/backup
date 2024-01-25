@@ -66,7 +66,7 @@ class CarControllerCustom:
                                       left_lane_depart, right_lane_depart) )
 
       # 100 Hz
-      #can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error    
+      can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error    
 
       if not self.CP.openpilotLongitudinalControl:
         can_sends.extend( self.create_button_messages( packer, CC, CS, frame ) ) #custom
