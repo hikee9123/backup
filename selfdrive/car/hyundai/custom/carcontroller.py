@@ -13,20 +13,41 @@ class CarControllerCustom:
     self.car_fingerprint = CP.carFingerprint    
     self.NC = NaviControl( CP)
     self.resume_cnt = 0
+    self.time_left = 0
+    self.time_right = 0
 
 
 
   def process_hud_alert(self, enabled, hud_control):
     sys_warning = (hud_control.visualAlert in (VisualAlert.steerRequired, VisualAlert.ldw))
 
+    left = hud_control.leftLaneVisible 
+    right = hud_control.rightLaneVisible
+
+    if left:
+      self.time_left = 20
+    elif self.time_left:
+      self.time_left -= 1
+
+    if self.time_left:
+      left = True
+
+    if right:
+      self.time_right = 20
+    elif self.time_right:
+      self.time_right -= 1
+
+    if self.time_right:
+      right = True
+
     # initialize to no line visible
     # TODO: this is not accurate for all cars
     sys_state = 1
-    if hud_control.leftLaneVisible and hud_control.rightLaneVisible or sys_warning:  # HUD alert only display when LKAS status is active
+    if left and right or sys_warning:  # HUD alert only display when LKAS status is active
       sys_state = 3 if enabled or sys_warning else 4
-    elif hud_control.leftLaneVisible:
+    elif left:
       sys_state = 5
-    elif hud_control.rightLaneVisible:
+    elif right:
       sys_state = 6
 
     # initialize to no warnings
