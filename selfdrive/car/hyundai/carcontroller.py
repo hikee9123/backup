@@ -143,15 +143,14 @@ class CarController:
       #                                          torque_fault, CS.lkas11, sys_warning, sys_state, CC.enabled,
       #                                          hud_control.leftLaneVisible, hud_control.rightLaneVisible,
       #                                          left_lane_warning, right_lane_warning))
-            
-      can_sends.append( self.customCC.custom_lkas11( self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
-                                                torque_fault, CS, sys_warning, sys_state, CC,
-                                                hud_control, 
-                                                left_lane_warning, right_lane_warning) )
 
-      if not self.CP.openpilotLongitudinalControl:
-        can_sends.extend( self.customCC.create_button_messages(self.packer, CC, CS, self.frame ) ) #custom
-        #can_sends.extend(self.create_button_messages(CC, CS, use_clu11=True))
+      self.customCC.custom_lkas11( can_sends, self.packer, self.frame, self.car_fingerprint, apply_steer, apply_steer_req,
+                                    torque_fault, CS, sys_warning, sys_state, CC,
+                                    hud_control, 
+                                    left_lane_warning, right_lane_warning)
+
+      #if not self.CP.openpilotLongitudinalControl:
+      #  can_sends.extend(self.create_button_messages(CC, CS, use_clu11=True))
 
       if self.frame % 2 == 0 and self.CP.openpilotLongitudinalControl:
         # TODO: unclear if this is needed

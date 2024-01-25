@@ -15,40 +15,51 @@ class CarControllerCustom:
     self.resume_cnt = 0
 
 
-  def custom_lkas11(self, packer, frame, car_fingerprint, apply_steer, steer_req,
+
+
+
+
+  def custom_lkas11(self, can_sends, packer, frame, car_fingerprint, apply_steer, steer_req,
                     torque_fault, CS, sys_warning, sys_state, CC,
                     hud_control,
                     left_lane_depart, right_lane_depart):
     
     left_lane = hud_control.leftLaneVisible, 
     right_lane = hud_control.rightLaneVisible
-
     control_mode = CS.customCS.control_mode
 
     if control_mode == 4:
-      can_lkas = hyundai_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
+      can_sends.append( hyundai_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
                                       torque_fault, CS.lkas11, sys_warning, sys_state, CC.enabled,
                                       left_lane, right_lane,
-                                      left_lane_depart, right_lane_depart)
+                                      left_lane_depart, right_lane_depart) )
     else:
-      can_lkas = create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
+      can_sends.append( create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
                                       torque_fault, CS.lkas11, sys_warning, sys_state, CC.enabled,
                                       left_lane, right_lane,
-                                      left_lane_depart, right_lane_depart)
-    return can_lkas
+                                      left_lane_depart, right_lane_depart) )
+
+      # 100 Hz
+      can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error    
+
+      if not self.CP.openpilotLongitudinalControl:
+        can_sends.extend( self.create_button_messages( packer, CC, CS, frame ) ) #custom
+
   
+
+
+
+
 
   def custom_sends(self, can_sends, packer, frame, CS,  CC ):
     if CS.customCS.control_mode == 4:
       return
 
-    # 100 Hz
-    can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error
-
     # 20 Hz LFA MFA message
     if frame % 5 == 0 and self.CP.flags & HyundaiFlags.SEND_LFA.value:
        can_sends.append( create_hda_mfc( packer, CS, CC ) )
-      #can_sends.append(hyundaican.create_lfahda_mfc(self.packer, CC.enabled))
+
+
 
 
   def create_button_messages(self, packer, CC: car.CarControl, CS: car.CarState, frame: int):
