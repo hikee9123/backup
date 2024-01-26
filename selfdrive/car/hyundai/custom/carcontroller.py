@@ -25,7 +25,7 @@ class CarControllerCustom:
     right = hud_control.rightLaneVisible
 
     if left:
-      self.time_left = 20
+      self.time_left = 50
     elif self.time_left:
       self.time_left -= 1
 
@@ -33,7 +33,7 @@ class CarControllerCustom:
       left = True
 
     if right:
-      self.time_right = 20
+      self.time_right = 50
     elif self.time_right:
       self.time_right -= 1
 
