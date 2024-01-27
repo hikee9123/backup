@@ -274,8 +274,8 @@ void CustomPanel::offroadTransition( bool offroad  )
   if( !isActive  )
   {
     m_cmdIdx = 0;
-    timer->start(1000);
-    printf("timer start \n");
+    //timer->start(1000);
+    //printf("timer start \n");
   }
    updateToggles( false );
 }
@@ -299,8 +299,8 @@ void CustomPanel::OnTimer()
     if( vEgo > 10 )
        m_powerflag = 0; 
 
-    if( m_cmdIdx > 10 )
-      timer->stop();
+    //if( m_cmdIdx > 10 )
+    //  timer->stop();
   }
   else
   {
