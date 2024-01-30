@@ -286,7 +286,7 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
     auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
       return gasVal > 0 ? interpColor( gasVal, { 10, 20, 30}, {c1, c2, c3}) : c1;
     };
-    val_color = interp_color(QColor(255, 255, 255), QColor(0, 100, 0), QColor(255, 255, 0));
+    val_color = interp_color(QColor(255, 255, 255), QColor(100, 50, 0), QColor(255, 255, 0));
   }
 
 
