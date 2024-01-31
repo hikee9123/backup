@@ -270,23 +270,23 @@ void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit 
   if( m_param.breakPos > 0) 
   {
     auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
-      return m_param.breakPos > 0 ? interpColor( m_param.breakPos, {0, 20, 100}, {c1, c2, c3}) : c1;
+      return m_param.breakPos > 0 ? interpColor( m_param.breakPos, {0, 50, 100}, {c1, c2, c3}) : c1;
     };
     if( brakeLights )
     {
-       val_color = interp_color(QColor(201, 34, 49, 100), QColor(200, 100, 0, 255), QColor(255, 0, 0));
+       val_color = interp_color(QColor(201, 34, 49, 100), QColor(255, 34, 0), QColor(255, 0, 0));
     }
     else
     {
-       val_color = interp_color(QColor(255, 255, 255), QColor(200, 100, 0), QColor(255, 0, 0));
+       val_color = interp_color(QColor(255, 255, 255), QColor(200, 100, 50), QColor(255, 0, 0));
     }
   }
   else if( brakeLights ) val_color = QColor(201, 34, 49, 100);
   else if (gasVal > 0) {
-    auto interp_color = [=](QColor c1, QColor c2, QColor c3) {
-      return gasVal > 0 ? interpColor( gasVal, { 10, 20, 30}, {c1, c2, c3}) : c1;
+    auto interp_color = [=](QColor c1, QColor c2) {
+      return gasVal > 0 ? interpColor( gasVal, { 5,  60}, {c1, c2}) : c1;
     };
-    val_color = interp_color(QColor(255, 255, 255), QColor(100, 50, 0), QColor(255, 255, 0));
+    val_color = interp_color(QColor(255, 255, 255), QColor(255, 255, 0));
   }
 
 
@@ -754,40 +754,6 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
   }
 
 
-
-  // add engine
-  if( m_param.ui.getKegmanEngine() )
-  {
-    nCnt++;
-    if( nCnt > 4 ) return;    
-    float fEngineRpm = m_param.enginRpm;
-    int   electGearStep  = m_param.electGearStep;
-  
-    uom_color = QColor(255, 255, 255, 200);
-    QColor val_color = QColor(255, 255, 255, 200);
-
-    if (  fEngineRpm <= 0 )
-    {
-      val_str.sprintf("EV"); 
-      val_color = QColor(0, 255, 0, 200);
-    }
-    else 
-    {
-      val_str.sprintf("%.0f", fEngineRpm); 
-      if( fEngineRpm > 2000 ) val_color = QColor(255, 188, 3, 200);
-      else if( fEngineRpm > 3000 ) val_color = QColor(255, 0, 0, 200);
-    }
-    
-    uom_str = gearGap( electGearStep, uom_color );
-    bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "ENGINE",
-      bb_rx, bb_ry, bb_uom_dx,
-      val_color, lab_color, uom_color,
-      value_fontSize, label_fontSize, 8, 60 );
-    bb_ry = bb_y + bb_h;
-  }
-
-
-
   //add visual radar relative distance
   if( m_param.ui.getKegmanDistance() )
   {
@@ -865,6 +831,40 @@ void OnPaint::bb_ui_draw_measures_right( QPainter &p, int bb_x, int bb_y, int bb
         value_fontSize, label_fontSize, uom_fontSize );
     bb_ry = bb_y + bb_h;
   }
+
+
+  // add engine
+  if( m_param.ui.getKegmanEngine() )
+  {
+    nCnt++;
+    if( nCnt > 4 ) return;    
+    float fEngineRpm = m_param.enginRpm;
+    int   electGearStep  = m_param.electGearStep;
+  
+    uom_color = QColor(255, 255, 255, 200);
+    QColor val_color = QColor(255, 255, 255, 200);
+
+    if (  fEngineRpm <= 0 )
+    {
+      val_str.sprintf("EV"); 
+      val_color = QColor(0, 255, 0, 200);
+    }
+    else 
+    {
+      val_str.sprintf("%.0f", fEngineRpm); 
+      if( fEngineRpm > 2000 ) val_color = QColor(255, 188, 3, 200);
+      else if( fEngineRpm > 3000 ) val_color = QColor(255, 0, 0, 200);
+    }
+    
+    uom_str = gearGap( electGearStep, uom_color );
+    bb_h +=bb_ui_draw_measure(p,  val_str, uom_str, "ENGINE",
+      bb_rx, bb_ry, bb_uom_dx,
+      val_color, lab_color, uom_color,
+      value_fontSize, label_fontSize, 8, 60 );
+    bb_ry = bb_y + bb_h;
+  }
+
+
 
 
 
