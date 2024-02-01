@@ -140,7 +140,10 @@ class CarStateCustom():
     self.mdps12 = copy.copy(cp.vl["MDPS12"])
     if not self.CP.openpilotLongitudinalControl:
       self.acc_active = (cp_cruise.vl["SCC12"]['ACCMode'] != 0)
-      ret.cruiseState.speed = self.cruise_speed_button() * CV.KPH_TO_MS
+      if self.acc_active:
+        ret.cruiseState.speed = self.cruise_speed_button() * CV.KPH_TO_MS
+      else:
+        ret.cruiseState.speed = 0
 
     ret.engineRpm = cp.vl["E_EMS11"]["N"] # opkr
     ret.brakeLightsDEPRECATED = bool( cp.vl["TCS13"]['BrakeLight'] )
@@ -170,6 +173,8 @@ class CarStateCustom():
         ret.cruiseState.enabled = True
 
     self.frame += 1
+
+
 
 
 
