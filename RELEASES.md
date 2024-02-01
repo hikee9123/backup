@@ -1,10 +1,14 @@
-Version 0.9.6 (20XX-XX-XX)
+Version 0.9.6 (2024-02-XX)
 ========================
 * New driving model
   * Vision model trained on more data
   * Improved driving performance
+  * Directly outputs curvature for lateral control
+* New driver monitoring model
+  * Trained on larger dataset
 * AGNOS 9
 * comma body streaming and controls over WebRTC
+* Improved fuzzy fingerprinting for many makes and models
 * Hyundai Staria 2023 support thanks to sunnyhaibin!
 * Kia Niro Plug-in Hybrid 2022 support thanks to sunnyhaibin!
 * Toyota RAV4 2023-24 support
@@ -369,7 +373,7 @@ Version 0.8.3 (2021-04-01)
  * New model
    * Trained on new diverse dataset from 2000+ users from 30+ countries
    * Trained with improved segnet from the comma-pencil community project
-   * 🥬 Dramatically improved end-to-end lateral performance 🥬
+   * �� Dramatically improved end-to-end lateral performance ��
  * Toggle added to disable the use of lanelines
  * NEOS update: update packages and support for new UI
  * New offroad UI based on Qt
