@@ -99,6 +99,7 @@ class NaviServer:
     except:
       return None
 
+  """
   def broadcast_thread(self):
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
       try:        
@@ -118,10 +119,12 @@ class NaviServer:
           self.frame += 1
           time.sleep(5.)
       except Exception as e:
-        print(f"socket error occurred: {e}")
-
-
+        print(f"socket error occurred: {e}")  
   """
+
+
+
+
   def broadcast_thread(self):
     broadcast_address = None
     frame = 0
@@ -153,7 +156,7 @@ class NaviServer:
 
       except:
         pass
-  """
+
 
   def send_sdp(self, sock):
     try:
