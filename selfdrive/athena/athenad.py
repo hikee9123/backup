@@ -699,6 +699,7 @@ def ws_recv(ws: WebSocket, end_event: threading.Event) -> None:
   while not end_event.is_set():
     try:
       opcode, data = ws.recv_data(control_frame=True)
+      print( f'opcode={opcode} data={data}' )
       if opcode in (ABNF.OPCODE_TEXT, ABNF.OPCODE_BINARY):
         if opcode == ABNF.OPCODE_TEXT:
           data = data.decode("utf-8")
@@ -721,6 +722,7 @@ def ws_send(ws: WebSocket, end_event: threading.Event) -> None:
     try:
       try:
         data = send_queue.get_nowait()
+        print( f'ws_send data={data}' )
       except queue.Empty:
         data = low_priority_send_queue.get(timeout=1)
       for i in range(0, len(data), WS_FRAME_SIZE):
