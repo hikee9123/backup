@@ -77,16 +77,17 @@ struct UICustom @0xda96579883444c35 {
     {
        cmdIdx @0 :Int16;      
        showDebugMessage @1 :Int16;
-       tpms @2 :Int16;
-       debug @3 :Int16;
-       kegman @4 :Int16;
-       kegmanCPU @5 :Int16;
-       kegmanBattery @6 :Int16;
-       kegmanGPU @7 :Int16;
-       kegmanAngle @8 :Int16;
-       kegmanEngine @9 :Int16;
-       kegmanDistance @10 :Int16;
-       kegmanSpeed @11 :Int16;    
+       showCarTracking @2 :Int16;
+       tpms @3 :Int16;
+       debug @4 :Int16;
+       kegman @5 :Int16;
+       kegmanCPU @6 :Int16;
+       kegmanBattery @7 :Int16;
+       kegmanGPU @8 :Int16;
+       kegmanAngle @9 :Int16;
+       kegmanEngine @10 :Int16;
+       kegmanDistance @11 :Int16;
+       kegmanSpeed @12 :Int16;    
     }
 
     struct Debug

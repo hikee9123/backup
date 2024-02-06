@@ -157,8 +157,8 @@ void OnPaint::updateState(const UIState &s)
   m_param.community  = uiCustom.getCommunity();
   m_param.ui  = uiCustom.getUserInterface();
   m_param.debug  = uiCustom.getDebug();
-  
   is_debug = m_param.ui.getShowDebugMessage();
+  is_carTracking = m_param.ui.getShowCarTracking();
 
   if( !is_debug ) return;
 
@@ -256,6 +256,11 @@ void OnPaint::drawHud(QPainter &p)
   }
 }
 
+
+int  OnPaint::showCarTracking()
+{
+    return  is_carTracking;
+}
 
 void OnPaint::drawSpeed(QPainter &p, int x, QString speedStr, QString speedUnit ) 
 {

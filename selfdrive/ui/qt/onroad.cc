@@ -684,7 +684,14 @@ void AnnotatedCameraWidget::paintGL() {
     update_model(s, model, sm["uiPlan"].getUiPlan());
     drawLaneLines(painter, s);
 
-    if (s->scene.longitudinal_control && sm.rcv_frame("radarState") > s->scene.started_frame) {
+    // #custom
+    int  longitudinal_control = s->scene.longitudinal_control;
+    if( m_pPaint && m_pPaint->showCarTracking() )
+    { 
+        longitudinal_control |= 1;
+    }
+
+    if (longitudinal_control && sm.rcv_frame("radarState") > s->scene.started_frame) {
       auto radar_state = sm["radarState"].getRadarState();
       update_leads(s, radar_state, model.getPosition());
       auto lead_one = radar_state.getLeadOne();

@@ -351,6 +351,8 @@ void CustomPanel::updateToggles( int bSave )
 
   auto ui = custom.initUserInterface();
   int bDebug = m_jsonobj["ShowDebugMessage"].toBool();
+  int bCarTracking = m_jsonobj["ShowCarTracking"].toBool();
+    
   int tpms = m_jsonobj["tpms"].toBool();
   int ndebug = m_jsonobj["debug"].toBool();
 
@@ -366,6 +368,7 @@ void CustomPanel::updateToggles( int bSave )
 
   ui.setCmdIdx( m_cmdIdx );  
   ui.setShowDebugMessage( bDebug );
+  ui.setShowCarTracking( bCarTracking );
   ui.setTpms( tpms );
   ui.setDebug( ndebug );
 
@@ -645,6 +648,12 @@ UITab::UITab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidget(parent), m_
       "",
       "../assets/offroad/icon_shell.png",
     },
+    {
+      "ShowCarTracking",
+      "Show Car Tracking",
+      "",
+      "../assets/offroad/icon_shell.png",
+    },    
     {
       "tpms",
       "Show tpms",

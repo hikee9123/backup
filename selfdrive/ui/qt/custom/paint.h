@@ -114,6 +114,7 @@ private:
    NetworkImageWidget *icon_01;
    //QPixmap img_tire_pressure;
    int  is_debug;
+   int  is_carTracking;
 
    int    m_nBrakeStatus = 0;
    float  m_gasVal = 0;
@@ -154,6 +155,8 @@ private:
     void  ui_draw_text( QPainter &p, const QRect& rc, const QString& text, float  size, const QColor& crBrush, const QColor& color=Qt::white ); 
 
 
+public:
+    int  showCarTracking();
 
 signals:
 
