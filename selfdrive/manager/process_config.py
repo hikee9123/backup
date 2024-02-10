@@ -76,8 +76,8 @@ def set_mapbox()  -> bool:
       {
           "label": "home",
           "place_name": "Y-CITY",
-          "latitude": 36.795866143196015,
-          "longitude": 127.10831880569458,
+          "latitude": 36.7973763270954,
+          "longitude": 127.10827665676986,
           "place_details": "배방읍 광장로 210",
           "save_type": "favorite",
       },
