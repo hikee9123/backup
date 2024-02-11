@@ -272,10 +272,10 @@ void OnPaint::drawHud(QPainter &p)
     // features의 크기만큼 반복하여 수직 선을 그립니다.
     for (int i = 1; i < features.size(); ++i)
     {
-        //int x = i;  // 간격을 이용하여 x좌표 계산
+        int x = i;  // 간격을 이용하여 x좌표 계산
 
 
-       p.drawLine((i - 1), bottom + features[i - 1]*100, i, bottom - features[i]*100);
+       p.drawLine( (x - 1)*10, bottom + features[i - 1]*20, x*10, bottom - features[i]*20);
 
     }
  }
