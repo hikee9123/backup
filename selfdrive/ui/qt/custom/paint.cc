@@ -275,7 +275,7 @@ void OnPaint::drawHud(QPainter &p)
         int x = i;  // 간격을 이용하여 x좌표 계산
 
 
-       p.drawLine( (x - 1)*5, bottom + features[i - 1]*100, x*5, bottom + features[i]*100);
+       p.drawLine( (x - 1)*5, bottom + features[i - 1]*200, x*5, bottom + features[i]*200);
        //p.drawLine(  x*5, bottom + features[i]*20 );
 
 
