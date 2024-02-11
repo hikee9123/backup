@@ -262,14 +262,14 @@ void OnPaint::drawHud(QPainter &p)
 
  void OnPaint::ui_graph( QPainter &p )
  {
-    int bottom = 100;
+    int bottom = 500;
     //int interval = 2;  // 간격을 설정합니다.
 
     SubMaster &sm2 = *(m_sm);
     auto navModel = sm2["navModel"].getNavModel();
     auto features = navModel.getFeatures();
 
-    float  scale = 200;
+    float  scale = 500;
 
     // features의 크기만큼 반복하여 수직 선을 그립니다.
     for (int i = 1; i < features.size(); ++i)
