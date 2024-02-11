@@ -269,13 +269,15 @@ void OnPaint::drawHud(QPainter &p)
     auto navModel = sm2["navModel"].getNavModel();
     auto features = navModel.getFeatures();
 
+    float  scale = 200;
+
     // features의 크기만큼 반복하여 수직 선을 그립니다.
     for (int i = 1; i < features.size(); ++i)
     {
         int x = i;  // 간격을 이용하여 x좌표 계산
 
 
-       p.drawLine( (x - 1)*5, bottom + features[i - 1]*200, x*5, bottom + features[i]*200);
+       p.drawLine( (x - 1)*5, bottom + features[i - 1]*scale, x*5, bottom + features[i]*scale);
        //p.drawLine(  x*5, bottom + features[i]*20 );
 
 
