@@ -134,7 +134,8 @@ private:
   void     bb_draw_tpms(QPainter &p, int x, int y );
   void     ui_draw_debug1( QPainter &p );
   void     ui_main_debug(QPainter &p);
-
+  void     ui_graph( QPainter &p );
+ 
 // kegmen
 private:
   int  bb_ui_draw_measure(QPainter &p,  const QString &bb_value, const QString &bb_uom, const QString &bb_label,

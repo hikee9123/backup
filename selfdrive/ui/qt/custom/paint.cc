@@ -19,7 +19,7 @@ OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent)
 {
   m_sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
     "peripheralState", "gpsLocationExternal",
-    "naviCustom", "carStateCustom", "uICustom", //"carControlCustom",
+    "naviCustom", "carStateCustom", "uICustom", "navModel", //"carControlCustom",
   });
 
 
@@ -239,6 +239,9 @@ void OnPaint::drawHud(QPainter &p)
 
   ui_main_navi( p );
 
+  ui_graph( p );
+
+
   if( m_param.ui.getDebug() )
   {
     ui_draw_debug1( p );
@@ -255,6 +258,27 @@ void OnPaint::drawHud(QPainter &p)
      bb_ui_draw_UI( p );
   }
 }
+
+
+ void OnPaint::ui_graph( QPainter &p )
+ {
+    int bottom = 100;
+    //int interval = 2;  // 간격을 설정합니다.
+
+    SubMaster &sm2 = *(m_sm);
+    auto navModel = sm2["navModel"].getNavModel();
+    auto features = navModel.getFeatures();
+
+    // features의 크기만큼 반복하여 수직 선을 그립니다.
+    for (int i = 1; i < features.size(); ++i)
+    {
+        //int x = i;  // 간격을 이용하여 x좌표 계산
+
+
+       p.drawLine((i - 1), bottom + features[i - 1]*100, i, bottom - features[i]*100);
+        p.drawLine(x, bottom, x, y);
+    }
+ }
 
 
 int  OnPaint::showCarTracking()
