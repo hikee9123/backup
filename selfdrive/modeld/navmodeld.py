@@ -75,8 +75,6 @@ def get_navmodel_packet(model_output: np.ndarray, valid: bool, frame_id: int, lo
   msg.navModel.position.y = [p.y for p in model_result.plan.mean]
   msg.navModel.position.xStd = [math.exp(p.x) for p in model_result.plan.std]
   msg.navModel.position.yStd = [math.exp(p.y) for p in model_result.plan.std]
-
-  # print( 'navModel={}'.format( msg ))
   return msg
 
 
