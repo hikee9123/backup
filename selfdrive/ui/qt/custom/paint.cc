@@ -276,7 +276,7 @@ void OnPaint::drawHud(QPainter &p)
 
 
        p.drawLine((i - 1), bottom + features[i - 1]*100, i, bottom - features[i]*100);
-        p.drawLine(x, bottom, x, y);
+
     }
  }
 
