@@ -262,7 +262,7 @@ void OnPaint::drawHud(QPainter &p)
 
  void OnPaint::ui_graph( QPainter &p )
  {
-    int bottom = 500;
+    int bottom = 300;
     //int interval = 2;  // 간격을 설정합니다.
 
     SubMaster &sm2 = *(m_sm);
