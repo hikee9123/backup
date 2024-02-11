@@ -239,7 +239,7 @@ void OnPaint::drawHud(QPainter &p)
 
   ui_main_navi( p );
 
-  ui_graph( p );
+  //ui_graph( p );
 
 
   if( m_param.ui.getDebug() )
