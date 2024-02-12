@@ -91,6 +91,7 @@ private:
     float gpsAccuracyUblox;
 
     float cumLagMs;
+    float desiredCurvature;
 
   } m_param;
   

@@ -230,8 +230,11 @@ void OnPaint::updateState(const UIState &s)
   }
   
   auto modelV2 = sm1["modelV2"].getModelV2();
-  auto confidence = modelV2.getConfidence();
-  m_param.confidence = confidence;
+  m_param.confidence = modelV2.getConfidence();
+   
+  auto action = modelV2.getAction()
+  m_param.desiredCurvature = action.getDesiredCurvature();
+
 }
 
 
@@ -448,7 +451,7 @@ void OnPaint::ui_main_debug(QPainter &p)
     
     p.setFont(InterFont(38));
     p.setPen( QColor(255, 255, 255, 255) );
-    text.sprintf("l=%hu  %3.0f ", m_param.confidence, m_param.cumLagMs  );    
+    text.sprintf("l=%hu  %3.0f  %3.0f ", m_param.confidence,  m_param.desiredCurvature, m_param.cumLagMs  );    
     p.drawText( bb_x, bb_y+nGap, text );
   }
 }
