@@ -14,8 +14,10 @@ def hyundai_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
                   left_lane_depart, right_lane_depart):
   
   values = lkas11
-  #values["CF_Lkas_MsgCount"] = frame % 0x10
+  values["CF_Lkas_LdwsSysState"] = sys_state
 
+  values["CF_Lkas_MsgCount"] = frame % 0x10
+  
   dat = packer.make_can_msg("LKAS11", 0, values)[2]
 
   if car_fingerprint in CHECKSUM["crc8"]:
@@ -29,7 +31,7 @@ def hyundai_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
     # Checksum of first 6 Bytes and last Byte as seen on 2018 Kia Stinger
     checksum = (sum(dat[:6]) + dat[7]) % 256
 
-  #values["CF_Lkas_Chksum"] = checksum
+  values["CF_Lkas_Chksum"] = checksum
 
   return packer.make_can_msg("LKAS11", 0, values)
 
