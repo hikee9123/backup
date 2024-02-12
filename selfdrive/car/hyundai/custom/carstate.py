@@ -36,6 +36,8 @@ class CarStateCustom():
 
     self.gapSet = 0
 
+    self.timer_engaged = 0
+
     self.cars = []
     self.get_type_of_car( CP )
 
@@ -161,16 +163,28 @@ class CarStateCustom():
     elif not self.CP.openpilotLongitudinalControl:
       if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
         pass
+      elif ret.parkingBrake:
+        self.timer_engaged = 50
+        self.oldCruiseStateEnabled = False
       elif ret.doorOpen:
+        self.timer_engaged = 50
         self.oldCruiseStateEnabled = False
       elif ret.seatbeltUnlatched:
+        self.timer_engaged = 50
         self.oldCruiseStateEnabled = False
       elif ret.gearShifter != car.CarState.GearShifter.drive:
+        self.timer_engaged = 50
         self.oldCruiseStateEnabled = False
       elif not ret.cruiseState.available:
+        self.timer_engaged = 0
         self.oldCruiseStateEnabled = True
       elif self.oldCruiseStateEnabled:
         ret.cruiseState.enabled = True
+      elif self.timer_engaged <= 0:
+        self.oldCruiseStateEnabled = True
+
+    if self.timer_engaged:
+      self.timer_engaged -= 1
 
     self.frame += 1
 
