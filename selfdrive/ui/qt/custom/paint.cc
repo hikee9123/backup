@@ -233,9 +233,10 @@ void OnPaint::updateState(const UIState &s)
   }
   
 
-  auto pandaStates = sm["pandaStates"].getPandaStates();
+  auto pandaStates = sm1["pandaStates"].getPandaStates();
   if (pandaStates.size() > 0) {
     m_param.controlsAllowed = pandaStates[0].getControlsAllowed();// PandaType();
+  }
 }
 
 
