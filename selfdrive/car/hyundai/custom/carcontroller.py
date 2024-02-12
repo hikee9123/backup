@@ -92,7 +92,7 @@ class CarControllerCustom:
           # 100 Hz
           can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error
 
-        can_sends.extend( self.create_button_messages( packer, CC, CS, frame ) ) #custom
+        self.create_button_messages( packer, can_sends, CC, CS, frame )  #custom
 
   
 
@@ -107,10 +107,9 @@ class CarControllerCustom:
 
 
 
-  def create_button_messages(self, packer, CC: car.CarControl, CS: car.CarState, frame: int):
-    can_sends = []    
+  def create_button_messages(self, packer, can_sends, CC: car.CarControl, CS: car.CarState, frame: int):
     if CS.customCS.control_mode == 4:
-      return  can_sends
+      return
 
     if CC.cruiseControl.cancel:
       can_sends.append(create_clu11( packer, frame, CS.clu11, Buttons.CANCEL, self.CP.carFingerprint))
@@ -122,5 +121,3 @@ class CarControllerCustom:
         self.resume_cnt += 1
       else:
         self.resume_cnt = 0
-
-    return can_sends
