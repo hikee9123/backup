@@ -227,6 +227,9 @@ void OnPaint::updateState(const UIState &s)
   {
     auto controls_state = sm1["controlsState"].getControlsState();
     m_param.cumLagMs = controls_state.getCumLagMs();
+    m_param.enabled = controls_state.getEnabled();
+
+
   }
   
 
@@ -446,7 +449,7 @@ void OnPaint::ui_main_debug(QPainter &p)
     
     p.setFont(InterFont(38));
     p.setPen( QColor(255, 255, 255, 255) );
-    text.sprintf("PS=%d   lag=%3.0f ", m_param.controlsAllowed,  m_param.cumLagMs  );    
+    text.sprintf("PS=%d %d  lag=%3.0f ", m_param.controlsAllowed, m_param.enabled,  m_param.cumLagMs  );    
     p.drawText( bb_x, bb_y+nGap, text );
   }
 }

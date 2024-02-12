@@ -92,7 +92,7 @@ private:
 
     float cumLagMs;
 
-
+    int   enabled;
     int   controlsAllowed;
 
   } m_param;
