@@ -228,6 +228,10 @@ void OnPaint::updateState(const UIState &s)
     auto controls_state = sm1["controlsState"].getControlsState();
     m_param.cumLagMs = controls_state.getCumLagMs();
   }
+
+
+
+  m_param.confidence = sm1["modelV2"].getConfidence();
 }
 
 
@@ -416,9 +420,12 @@ void OnPaint::ui_main_debug(QPainter &p)
     
     p.setFont(InterFont(38));
     p.setPen( QColor(255, 255, 255, 255) );
-    text.sprintf("lag=%3.0f ", m_param.cumLagMs );    
+    text.sprintf("lag=%3.0f %d", m_param.cumLagMs, m_param.confidence );
     p.drawText( bb_x, bb_y+nGap, text );
   }
+
+
+
 }
 
 
