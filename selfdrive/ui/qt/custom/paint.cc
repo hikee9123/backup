@@ -448,7 +448,7 @@ void OnPaint::ui_main_debug(QPainter &p)
     
     p.setFont(InterFont(38));
     p.setPen( QColor(255, 255, 255, 255) );
-    text.sprintf("lag=%3.0f %d", m_param.cumLagMs, m_param.confidence  );    
+    text.sprintf("lag=%3.0f %hu", m_param.cumLagMs, m_param.confidence  );    
     p.drawText( bb_x, bb_y+nGap, text );
   }
 }
