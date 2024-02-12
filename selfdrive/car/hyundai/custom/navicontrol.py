@@ -250,4 +250,8 @@ class NaviControl():
  
       btn_signal = self.ascc_button_control( CS, self.ctrl_speed )
 
+
+
+    trace1.printf2( 'LS={:.0f}'.format( CS.lkas11["CF_Lkas_LdwsSysState"] ) )      
+    
     return btn_signal
