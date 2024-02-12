@@ -177,7 +177,7 @@ class CarController:
     new_actuators.accel = accel
 
     self.frame += 1
-    return new_actuators, can_sends
+    return new_actuators, can_sends, CS.customCS.control_mode
 
   def create_button_messages(self, CC: car.CarControl, CS: car.CarState, use_clu11: bool):
     can_sends = []
