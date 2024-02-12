@@ -231,7 +231,7 @@ void OnPaint::updateState(const UIState &s)
 
 
 
-  m_param.confidence = sm1["modelV2"].getConfidence();
+  m_param.confidence = 0;//sm1["modelV2"].getConfidence();
 }
 
 
