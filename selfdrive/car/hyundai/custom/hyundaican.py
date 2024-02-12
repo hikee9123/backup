@@ -14,7 +14,7 @@ def hyundai_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
                   left_lane_depart, right_lane_depart):
   
   values = lkas11
-  values["CF_Lkas_MsgCount"] = frame % 0x10
+  #values["CF_Lkas_MsgCount"] = frame % 0x10
 
   dat = packer.make_can_msg("LKAS11", 0, values)[2]
 
