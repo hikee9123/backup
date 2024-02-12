@@ -204,4 +204,5 @@ class CarStateCustom():
       #log
       trace1.printf1( 'MD={:.0f}'.format( self.control_mode ) )
 
+      trace1.printf2( 'LS={:.0f}'.format( CS.lkas11["CF_Lkas_LdwsSysState"] ) )   
 
