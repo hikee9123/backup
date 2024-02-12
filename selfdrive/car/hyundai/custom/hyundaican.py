@@ -14,7 +14,7 @@ def hyundai_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
                   left_lane_depart, right_lane_depart):
   
   values = lkas11
-  values["CF_Lkas_LdwsSysState"] = sys_state
+  #values["CF_Lkas_LdwsSysState"] = sys_state
 
   values["CF_Lkas_MsgCount"] = frame % 0x10
   
