@@ -19,7 +19,7 @@ OnPaint::OnPaint(QWidget *parent, int width, int height ) : QWidget(parent)
 {
   m_sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
     "peripheralState", "gpsLocationExternal",
-    "naviCustom", "carStateCustom", "uICustom", "navModel", //"carControlCustom",
+    "naviCustom", "carStateCustom", "uICustom",  //"carControlCustom",
   });
 
 
@@ -267,9 +267,10 @@ void OnPaint::drawHud(QPainter &p)
 
  void OnPaint::ui_graph( QPainter &p )
  {
+    /*
     int bottom = 300;
     //int interval = 2;  // 간격을 설정합니다.
-
+    
     SubMaster &sm2 = *(m_sm);
     auto navModel = sm2["navModel"].getNavModel();
     auto features = navModel.getFeatures();
@@ -280,13 +281,9 @@ void OnPaint::drawHud(QPainter &p)
     for (int i = 1; i < features.size(); ++i)
     {
         int x = i;  // 간격을 이용하여 x좌표 계산
-
-
        p.drawLine( (x - 1)*5, bottom + features[i - 1]*scale, x*5, bottom + features[i]*scale);
-       //p.drawLine(  x*5, bottom + features[i]*20 );
-
-
     }
+    */
  }
 
 

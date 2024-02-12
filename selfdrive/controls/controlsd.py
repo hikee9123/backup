@@ -473,7 +473,6 @@ class Controls:
     if self.enabled and any(not ps.controlsAllowed for ps in self.sm['pandaStates']
            if ps.safetyModel not in IGNORED_SAFETY_MODES):
       self.mismatch_counter += 1
-      #print('enable={} {}'.format( self.enabled,  ps.controlsAllowed ) )
 
     self.distance_traveled += CS.vEgo * DT_CTRL
 
@@ -753,7 +752,6 @@ class Controls:
     current_alert = self.AM.process_alerts(self.sm.frame, clear_event_types)
     if current_alert:
       hudControl.visualAlert = current_alert.visual_alert
-
 
     if not self.CP.passive and self.initialized:
       # send car controls over can
