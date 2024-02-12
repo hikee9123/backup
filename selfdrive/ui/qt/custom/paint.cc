@@ -229,12 +229,10 @@ void OnPaint::updateState(const UIState &s)
     m_param.cumLagMs = controls_state.getCumLagMs();
   }
   
-  auto modelV2 = sm1["modelV2"].getModelV2();
-  m_param.confidence = modelV2.getConfidence();
-   
-  auto action = modelV2.getAction();
-  m_param.desiredCurvature = action.getDesiredCurvature();
 
+  auto pandaStates = sm["pandaStates"].getPandaStates();
+  if (pandaStates.size() > 0) {
+    m_param.controlsAllowed = pandaStates[0].getControlsAllowed();// PandaType();
 }
 
 
@@ -451,7 +449,7 @@ void OnPaint::ui_main_debug(QPainter &p)
     
     p.setFont(InterFont(38));
     p.setPen( QColor(255, 255, 255, 255) );
-    text.sprintf("l=%hu  %3.3f  %3.0f ", m_param.confidence,  m_param.desiredCurvature, m_param.cumLagMs  );    
+    text.sprintf("lag= %d   %3.0f ", m_param.controlsAllowed,  m_param.cumLagMs  );    
     p.drawText( bb_x, bb_y+nGap, text );
   }
 }

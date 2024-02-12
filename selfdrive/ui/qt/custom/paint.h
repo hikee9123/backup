@@ -74,7 +74,7 @@ private:
     cereal::UICustom::UserInterface::Reader ui;
     cereal::UICustom::Debug::Reader debug;
 
-   cereal::ModelDataV2::ConfidenceClass confidence;
+
 
     int   cpuPerc;
     float cpuTemp; 
@@ -91,7 +91,9 @@ private:
     float gpsAccuracyUblox;
 
     float cumLagMs;
-    float desiredCurvature;
+
+
+    int   controlsAllowed;
 
   } m_param;
   
