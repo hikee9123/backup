@@ -232,7 +232,7 @@ void OnPaint::updateState(const UIState &s)
   auto modelV2 = sm1["modelV2"].getModelV2();
   m_param.confidence = modelV2.getConfidence();
    
-  auto action = modelV2.getAction()
+  auto action = modelV2.getAction();
   m_param.desiredCurvature = action.getDesiredCurvature();
 
 }
