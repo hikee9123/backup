@@ -89,7 +89,7 @@ private:
     float gpsAccuracyUblox;
 
     float cumLagMs;
-
+    int   confidence;
   } m_param;
   
   struct _STATUS_
