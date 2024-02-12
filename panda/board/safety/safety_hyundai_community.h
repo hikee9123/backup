@@ -213,7 +213,7 @@ static void hyundai_community_rx_hook( const CANPacket_t *to_push) {
       {
         //if( heartbeat_engaged_mismatches ) {}
         //else 
-        if( !controls_allowed && !heartbeat_engaged ) 
+        if( heartbeat_engaged == 0 ) 
              cruise_engaged = 0; 
       }
       
