@@ -229,7 +229,8 @@ void OnPaint::updateState(const UIState &s)
     m_param.cumLagMs = controls_state.getCumLagMs();
   }
   
-  m_param.confidence = sm1["modelV2"].getConfidence();
+  auto confidence = sm1["modelV2"].getConfidence();
+  m_param.confidence = confidence:
 }
 
 
