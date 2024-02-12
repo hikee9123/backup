@@ -211,8 +211,9 @@ static void hyundai_community_rx_hook( const CANPacket_t *to_push) {
       int cruise_engaged = GET_BYTES(to_push, 0, 4) & 0x1U; // ACC main_on signal
       if( cruise_engaged )
       {
-        if( heartbeat_engaged_mismatches ) {}
-        else if( !controls_allowed && !heartbeat_engaged ) 
+        //if( heartbeat_engaged_mismatches ) {}
+        //else 
+        if( !controls_allowed && !heartbeat_engaged ) 
              cruise_engaged = 0; 
       }
       
