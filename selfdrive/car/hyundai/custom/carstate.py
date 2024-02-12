@@ -164,24 +164,25 @@ class CarStateCustom():
       if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
         pass
       elif ret.parkingBrake:
-        self.timer_engaged = 50
+        self.timer_engaged = 100
         self.oldCruiseStateEnabled = False
       elif ret.doorOpen:
-        self.timer_engaged = 50
+        self.timer_engaged = 100
         self.oldCruiseStateEnabled = False
       elif ret.seatbeltUnlatched:
-        self.timer_engaged = 50
+        self.timer_engaged = 100
         self.oldCruiseStateEnabled = False
       elif ret.gearShifter != car.CarState.GearShifter.drive:
-        self.timer_engaged = 50
+        self.timer_engaged = 100
         self.oldCruiseStateEnabled = False
       elif not ret.cruiseState.available:
         self.timer_engaged = 0
         self.oldCruiseStateEnabled = True
       elif self.oldCruiseStateEnabled:
         ret.cruiseState.enabled = True
-      #elif self.timer_engaged <= 0:
-      #  self.oldCruiseStateEnabled = True
+      elif self.timer_engaged <= 0:
+        self.oldCruiseStateEnabled = True
+        CS.cruise_buttons.append( Buttons.CANCEL )
 
     if self.timer_engaged:
       self.timer_engaged -= 1
