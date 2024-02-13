@@ -214,19 +214,12 @@ static void hyundai_community_rx_hook( const CANPacket_t *to_push) {
         if( heartbeat_engaged_mismatches ) {}
         else if( !controls_allowed )
         {
-          if( !heartbeat_engaged )
-          {
-            cruise_engaged = 0;
-          }
-          else //if( !controls_allowed )
-          {
-            //controls_allowed = cruise_engaged;
-            cruise_engaged_prev = 0;
-            hyundai_last_button_interaction = 0U;
-          }            
+          if( !heartbeat_engaged ) cruise_engaged = 0;
+          else if( cruise_engaged_prev )  cruise_engaged_prev = 0;
+          else  hyundai_last_button_interaction = 0U;
         } 
       }
-      
+
       hyundai_common_cruise_state_check(cruise_engaged);
     }
 
