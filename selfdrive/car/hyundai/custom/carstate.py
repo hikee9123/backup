@@ -180,7 +180,7 @@ class CarStateCustom():
         self.oldCruiseStateEnabled = True
       elif self.oldCruiseStateEnabled:
         ret.cruiseState.enabled = True
-      elif (self.timer_engaged <= 0) and (self.clu_Vanz > 10):
+      elif (self.timer_engaged <= 0) and (self.clu_Vanz > 10) and (abs(ret.steeringAngleDeg) < 5):
         self.oldCruiseStateEnabled = True
         CS.cruise_buttons.append( Buttons.SET_DECEL )
 
