@@ -180,10 +180,9 @@ class CarStateCustom():
         self.oldCruiseStateEnabled = True
       elif self.oldCruiseStateEnabled:
         ret.cruiseState.enabled = True
-      elif self.timer_engaged <= 0:
-        if self.clu_Vanz > 10:
-          self.oldCruiseStateEnabled = True
-          CS.cruise_buttons.append( Buttons.SET_DECEL )
+      elif (self.timer_engaged <= 0) and (self.clu_Vanz > 10):
+        self.oldCruiseStateEnabled = True
+        CS.cruise_buttons.append( Buttons.SET_DECEL )
 
     if self.timer_engaged:
       self.timer_engaged -= 1
