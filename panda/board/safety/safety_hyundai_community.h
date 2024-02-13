@@ -218,8 +218,9 @@ static void hyundai_community_rx_hook( const CANPacket_t *to_push) {
           {
             cruise_engaged = 0;
           }
-          else if( !controls_allowed )
+          else //if( !controls_allowed )
           {
+            controls_allowed = cruise_engaged;
             hyundai_last_button_interaction = 0U;
           }            
         } 
