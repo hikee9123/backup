@@ -497,6 +497,20 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
       0,4,1
     },
     {
+      "AutoEngage",
+      tr("Auto engage refers to the automatic activation of a system, commonly seen in autonomous driving, without manual intervention, based on detected conditions."),
+      "0:manual, 1:auto",
+      "../assets/offroad/icon_shell.png",
+      0,1,1
+    },
+    {
+      "AutoLaneChange",
+      tr("Auto lane change refers to the automatic activation of a system, commonly seen in autonomous driving, without manual intervention, based on detected conditions."),
+      "0:Manual, 1:Auto",
+      "../assets/offroad/icon_shell.png",
+      0,1,1
+    }, 
+    {
       "PowerOff",
       tr("Power Off Time"),
       "0:Not used,1~:Power Offset Time(sec)",
@@ -620,7 +634,7 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
   auto toggle1 = new CValueControl2(
     "ExternalNaviType", 
     tr(" - Use external navi type"), 
-    "1.mappy  2.NDA", 
+    "0.comma  1.mappy  2.NDA", 
     "",
     //"../assets/offroad/icon_openpilot.png",
     0,5 );
