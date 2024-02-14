@@ -6,7 +6,6 @@ import time
 import datetime
 import unittest
 import subprocess
-from parameterized import parameterized
 
 import cereal.messaging as messaging
 from openpilot.system.qcomgpsd.qcomgpsd import at_cmd, wait_for_modem
@@ -58,8 +57,8 @@ class TestRawgpsd(unittest.TestCase):
     os.system("sudo systemctl restart ModemManager")
     assert self._wait_for_output(30)
 
-  @parameterized.expand([(b,) for b in (True, False)])
-  def test_startup_time(self, internet):
+  def test_startup_time(self):
+    for internet in (True, False):
       if not internet:
         os.system("sudo systemctl stop systemd-resolved")
       with self.subTest(internet=internet):
@@ -67,10 +66,10 @@ class TestRawgpsd(unittest.TestCase):
         assert self._wait_for_output(7)
         managed_processes['qcomgpsd'].stop()
 
-  @parameterized.expand([(t,) for t in (0.1, 1, 5)])
-  def test_turns_off_gnss(self, runtime):
+  def test_turns_off_gnss(self):
+    for s in (0.1, 1, 5):
       managed_processes['qcomgpsd'].start()
-    time.sleep(runtime)
+      time.sleep(s)
       managed_processes['qcomgpsd'].stop()
 
       ls = subprocess.check_output("mmcli -m any --location-status --output-json", shell=True, encoding='utf-8')

@@ -17,6 +17,7 @@ CAMERA_FILENAMES = ['fcamera.hevc', 'video.hevc']
 DCAMERA_FILENAMES = ['dcamera.hevc']
 ECAMERA_FILENAMES = ['ecamera.hevc']
 
+
 class Route:
   def __init__(self, name, data_dir=None):
     self._name = RouteName(name)
@@ -159,6 +160,7 @@ class Route:
       raise ValueError(f'Could not find segments for route {self.name.canonical_name} in data directory {data_dir}')
     return sorted(segments, key=lambda seg: seg.name.segment_num)
 
+
 class Segment:
   def __init__(self, name, log_path, qlog_path, camera_path, dcamera_path, ecamera_path, qcamera_path):
     self._name = SegmentName(name)
@@ -172,6 +174,7 @@ class Segment:
   @property
   def name(self):
     return self._name
+
 
 class RouteName:
   def __init__(self, name_str: str):
@@ -193,6 +196,7 @@ class RouteName:
   def time_str(self) -> str: return self._time_str
 
   def __str__(self) -> str: return self._canonical_name
+
 
 class SegmentName:
   # TODO: add constructor that takes dongle_id, time_str, segment_num and then create instances
@@ -271,3 +275,6 @@ class SegmentRange:
 
   def __str__(self):
     return f"{self.dongle_id}/{self.timestamp}" + (f"/{self._slice}" if self._slice else "") + (f"/{self.selector}" if self.selector else "")
+
+  def __repr__(self):
+    return self.__str__()
