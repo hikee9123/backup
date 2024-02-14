@@ -176,7 +176,7 @@ class CarStateCustom():
         self.timer_engaged = 100
         self.oldCruiseStateEnabled = False
       elif not ret.cruiseState.available:
-        self.slow_engage = 1
+        self.slow_engage = 0
         self.timer_engaged = 0
         self.oldCruiseStateEnabled = True
       elif self.oldCruiseStateEnabled:
