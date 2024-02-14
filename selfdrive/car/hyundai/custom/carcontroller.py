@@ -84,6 +84,15 @@ class CarControllerCustom:
         # 100 Hz
         can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error
     else:
+      if CS.customCS.slow_engage < 1:
+        CS.customCS.slow_engage += 0.01
+        slow_engage = max(0, CS.customCS.slow_engage )
+        if slow_engage < 1:
+          apply_torque = apply_steer * slow_engage
+          apply_steer = int(round(float(apply_torque)))
+
+
+        
       can_sends.append( create_lkas11(packer, frame, self.car_fingerprint, apply_steer, steer_req,
                                       torque_fault, CS.lkas11, sys_warning, sys_state, enable,
                                       left_lane, right_lane,

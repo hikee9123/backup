@@ -35,8 +35,8 @@ class CarStateCustom():
     self.lead_distance = 0
 
     self.gapSet = 0
-
     self.timer_engaged = 0
+    self.slow_engage = 1
 
     self.cars = []
     self.get_type_of_car( CP )
@@ -176,6 +176,7 @@ class CarStateCustom():
         self.timer_engaged = 100
         self.oldCruiseStateEnabled = False
       elif not ret.cruiseState.available:
+        self.slow_engage = 1
         self.timer_engaged = 0
         self.oldCruiseStateEnabled = True
       elif self.oldCruiseStateEnabled:
@@ -183,6 +184,7 @@ class CarStateCustom():
       elif (self.clu_Vanz < 10) or (abs(ret.steeringAngleDeg) > 3):
         self.timer_engaged = 50
       elif (self.timer_engaged <= 0):
+        self.slow_engage = 0
         self.oldCruiseStateEnabled = True
         CS.cruise_buttons.append( Buttons.CANCEL )
 
