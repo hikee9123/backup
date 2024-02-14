@@ -45,19 +45,19 @@ def only_offroad(started, params, CP: car.CarParams) -> bool:
   return not started
 
 #custom
-def ExternalNaviType()  -> int:
-  externalNaviType = 0
-  try:
-    externalNaviType = int( Params().get('ExternalNaviType', encoding='utf8') )
-    #externalNaviType = Params().get_bool("ExternalNaviType")
-  except Exception as e:
-    print(f"ExternalNaviType error occurred: {e}")
-    externalNaviType = 0
-
-  return externalNaviType
-
 def UseExternalNaviRoutes()  -> bool:
   return Params().get_bool("UseExternalNaviRoutes")
+
+def ExternalNaviType()  -> int:
+  externalNaviType = 0  
+  if UseExternalNaviRoutes():
+    try:
+      externalNaviType = int( Params().get('ExternalNaviType', encoding='utf8') )
+    except Exception as e:
+      print(f"ExternalNaviType error occurred: {e}")
+      externalNaviType = 0
+
+  return externalNaviType
 
 def set_mapbox()  -> bool:
   if UseExternalNaviRoutes():
@@ -153,8 +153,8 @@ procs = [
   PythonProcess("statsd", "selfdrive.statsd", always_run),
 
   #custom
-  PythonProcess("navi_mappy", "selfdrive.custom.navi.navi_mappy", only_onroad, enabled =  (ExternalNaviType()==0) ),     # mappy
-  PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", only_onroad, enabled = (ExternalNaviType()==1) ), # NDA
+  PythonProcess("navi_mappy", "selfdrive.custom.navi.navi_mappy", only_onroad, enabled =  (ExternalNaviType()==1) ),     # mappy
+  PythonProcess("navi_controller", "selfdrive.custom.navi.navi_controller", only_onroad, enabled = (ExternalNaviType()==2) ), # NDA
   PythonProcess("navi_route", "selfdrive.custom.navi.navi_route", only_onroad, enabled= UseExternalNaviRoutes() ),
 
 

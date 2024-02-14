@@ -620,7 +620,7 @@ NavigationTab::NavigationTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWi
   auto toggle1 = new CValueControl2(
     "ExternalNaviType", 
     tr(" - Use external navi type"), 
-    "0.mappy  1.NDA", 
+    "1.mappy  2.NDA", 
     "",
     //"../assets/offroad/icon_openpilot.png",
     0,5 );
