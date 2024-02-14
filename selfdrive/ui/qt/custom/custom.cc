@@ -310,7 +310,7 @@ void CustomPanel::OnTimer()
     }
 
     int PowerOff = m_jsonobj["PowerOff"].toInt();
-    if( PowerOff && (m_time > (PowerOff*60)) && (m_powerflag==0) )
+    if( PowerOff && (m_time > (PowerOff*10)) && (m_powerflag==0) )
     {
          m_powerflag = 1;
          params.putBool("DoShutdown", true);
@@ -498,22 +498,22 @@ CommunityTab::CommunityTab(CustomPanel *parent, QJsonObject &jsonobj) : ListWidg
     },
     {
       "AutoEngage",
-      tr("Auto engage refers to the automatic activation of a system, commonly seen in autonomous driving, without manual intervention, based on detected conditions."),
-      "0:manual, 1:auto",
+      tr("auto engage"),
+      "Auto engage refers to the automatic activation of a system, commonly seen in autonomous driving, without manual intervention, based on detected conditions. 0:manual, 1:auto",
       "../assets/offroad/icon_shell.png",
       0,1,1
     },
     {
       "AutoLaneChange",
-      tr("Auto lane change refers to the automatic activation of a system, commonly seen in autonomous driving, without manual intervention, based on detected conditions."),
-      "0:Manual, 1:Auto",
+      tr("auto lane change"),
+      "Auto lane change refers to the automatic activation of a system, commonly seen in autonomous driving, without manual intervention, based on detected conditions. 0:manual, 1:auto",
       "../assets/offroad/icon_shell.png",
       0,1,1
     }, 
     {
       "PowerOff",
       tr("Power Off Time"),
-      "0:Not used,1~:Power Offset Time(sec)",
+      "0:Not used,1~:Power Offset Time( *10 sec)",
       "../assets/offroad/icon_shell.png",
       0,60,1
     },
