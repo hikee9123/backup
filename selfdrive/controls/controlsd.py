@@ -447,9 +447,10 @@ class Controls:
         self.set_initial_state()
         self.params.put_bool_nonblocking("ControlsReady", True)
 
-        if not all_valid and timed_out:
           cloudlog.event(
-            "controlsd.init_timeout",
+          "controlsd.initialized",
+          dt=self.sm.frame*DT_CTRL,
+          timeout=timed_out,
             canValid=CS.canValid,
             invalid=[s for s, valid in self.sm.valid.items() if not valid],
             not_alive=[s for s, alive in self.sm.alive.items() if not alive],
