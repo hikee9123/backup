@@ -447,7 +447,7 @@ class Controls:
         self.set_initial_state()
         self.params.put_bool_nonblocking("ControlsReady", True)
 
-          cloudlog.event(
+        cloudlog.event(
           "controlsd.initialized",
           dt=self.sm.frame*DT_CTRL,
           timeout=timed_out,
@@ -456,7 +456,7 @@ class Controls:
             not_alive=[s for s, alive in self.sm.alive.items() if not alive],
             not_freq_ok=[s for s, freq_ok in self.sm.freq_ok.items() if not freq_ok],
             error=True,
-          )
+        )
 
     # Check for CAN timeout
     if not can_strs:
