@@ -311,14 +311,14 @@ class CarInterface(CarInterfaceBase):
       if candidate in LEGACY_SAFETY_MODE_CAR:
         # these cars require a special panda safety mode due to missing counters and checksums in the messages
         ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.hyundaiLegacy)]
+      elif interface.get_params( ret, candidate ):  #custom
+        pass
       else:
         ret.safetyConfigs = [get_safety_config(car.CarParams.SafetyModel.hyundai, 0)]
 
+
       if candidate in CAMERA_SCC_CAR:
         ret.safetyConfigs[0].safetyParam |= Panda.FLAG_HYUNDAI_CAMERA_SCC
-
-    #custom
-    interface.get_params( ret, candidate )
 
 
     if ret.openpilotLongitudinalControl:

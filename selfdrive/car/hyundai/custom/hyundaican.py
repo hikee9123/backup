@@ -65,7 +65,7 @@ def create_hda_mfc( packer, CS, CC ):
   values["HDA_Icon_Wheel"] = 1 if enabled else 0
   return packer.make_can_msg("LFAHDA_MFC", 0, values)
 
-# 50 Hz
+# 100 Hz
 def create_mdps12(packer, frame, mdps12):
   values = mdps12
   values["CF_Mdps_ToiActive"] = 0      # 1:enable  0:normal
