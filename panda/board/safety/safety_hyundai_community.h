@@ -337,7 +337,7 @@ static bool hyundai_community_tx_hook( const CANPacket_t *to_send) {
     }
   }
   if( !main_button )
-    tx =false;
+    tx = false;
   
   return tx;
 }
@@ -345,9 +345,6 @@ static bool hyundai_community_tx_hook( const CANPacket_t *to_send) {
 static int hyundai_community_fwd_hook(int bus_num, int addr) {
 
   int bus_fwd = -1;
-
-  if( !main_button )
-    return bus_fwd;
   
   // forward cam to ccan and viceversa, except lkas cmd
   if (bus_num == 0) {
