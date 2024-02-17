@@ -215,7 +215,7 @@ class SubMaster:
           min_freq = min(freq, freq / 2.)
       self.max_freq[s] = max_freq*1.2
       self.min_freq[s] = min_freq*0.8
-      self.recv_dts[s] = deque(maxlen=int(10*freq))
+      self.recv_dts[s] = deque(maxlen=int(5*freq))
 
   def __getitem__(self, s: str) -> capnp.lib.capnp._DynamicStructReader:
     return self.data[s]
@@ -257,20 +257,13 @@ class SubMaster:
         # alive if delay is within 10x the expected frequency
         self.alive[s] = (cur_time - self.recv_time[s]) < (10. / SERVICE_LIST[s].frequency)
 
-        # check average frequency; slow to fall, quick to recover
-        dts = self.recv_dts[s]
-        assert dts.maxlen is not None
-        recent_dts = list(dts)[-int(dts.maxlen / 10):]
+        # check average frequency
         try:
-          avg_freq = 1 / (sum(dts) / len(dts))
-          avg_freq_recent = 1 / (sum(recent_dts) / len(recent_dts))
+          avg_freq = 1 / (sum(self.recv_dts[s]) / len(self.recv_dts[s]))
         except ZeroDivisionError:
           avg_freq = 0
-          avg_freq_recent = 0
-
-        avg_freq_ok = self.min_freq[s] <= avg_freq <= self.max_freq[s]
-        recent_freq_ok = self.min_freq[s] <= avg_freq_recent <= self.max_freq[s]
-        self.freq_ok[s] = avg_freq_ok or recent_freq_ok
+        expected_freq = min(SERVICE_LIST[s].frequency, self.update_freq)
+        self.freq_ok[s] = (len(self.recv_dts[s]) >= 2*expected_freq) and (avg_freq > self.min_freq[s]) and (avg_freq < self.max_freq[s])
       else:
         self.freq_ok[s] = True
         self.alive[s] = True

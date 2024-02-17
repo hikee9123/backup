@@ -1877,12 +1877,11 @@ struct QcomGnss @0xde94674b07ae51c1 {
 }
 
 struct Clocks {
-  wallTimeNanos @3 :UInt64;  # unix epoch time
-
-  bootTimeNanosDEPRECATED @0 :UInt64;
-  monotonicNanosDEPRECATED @1 :UInt64;
-  monotonicRawNanosDEPRECATD @2 :UInt64;
-  modemUptimeMillisDEPRECATED @4 :UInt64;
+  bootTimeNanos @0 :UInt64;
+  monotonicNanos @1 :UInt64;
+  monotonicRawNanos @2 :UInt64;
+  wallTimeNanos @3 :UInt64;
+  modemUptimeMillis @4 :UInt64;
 }
 
 struct LiveMpcData {

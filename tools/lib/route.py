@@ -4,7 +4,7 @@ from functools import cache
 from urllib.parse import urlparse
 from collections import defaultdict
 from itertools import chain
-from typing import Optional, cast
+from typing import Optional
 
 from openpilot.tools.lib.auth_config import get_token
 from openpilot.tools.lib.api import CommaApi
@@ -16,7 +16,6 @@ LOG_FILENAMES = ['rlog', 'rlog.bz2', 'raw_log.bz2']
 CAMERA_FILENAMES = ['fcamera.hevc', 'video.hevc']
 DCAMERA_FILENAMES = ['dcamera.hevc']
 ECAMERA_FILENAMES = ['ecamera.hevc']
-
 
 class Route:
   def __init__(self, name, data_dir=None):
@@ -38,27 +37,27 @@ class Route:
 
   def log_paths(self):
     log_path_by_seg_num = {s.name.segment_num: s.log_path for s in self._segments}
-    return [log_path_by_seg_num.get(i, None) for i in range(self.max_seg_number + 1)]
+    return [log_path_by_seg_num.get(i, None) for i in range(self.max_seg_number+1)]
 
   def qlog_paths(self):
     qlog_path_by_seg_num = {s.name.segment_num: s.qlog_path for s in self._segments}
-    return [qlog_path_by_seg_num.get(i, None) for i in range(self.max_seg_number + 1)]
+    return [qlog_path_by_seg_num.get(i, None) for i in range(self.max_seg_number+1)]
 
   def camera_paths(self):
     camera_path_by_seg_num = {s.name.segment_num: s.camera_path for s in self._segments}
-    return [camera_path_by_seg_num.get(i, None) for i in range(self.max_seg_number + 1)]
+    return [camera_path_by_seg_num.get(i, None) for i in range(self.max_seg_number+1)]
 
   def dcamera_paths(self):
     dcamera_path_by_seg_num = {s.name.segment_num: s.dcamera_path for s in self._segments}
-    return [dcamera_path_by_seg_num.get(i, None) for i in range(self.max_seg_number + 1)]
+    return [dcamera_path_by_seg_num.get(i, None) for i in range(self.max_seg_number+1)]
 
   def ecamera_paths(self):
     ecamera_path_by_seg_num = {s.name.segment_num: s.ecamera_path for s in self._segments}
-    return [ecamera_path_by_seg_num.get(i, None) for i in range(self.max_seg_number + 1)]
+    return [ecamera_path_by_seg_num.get(i, None) for i in range(self.max_seg_number+1)]
 
   def qcamera_paths(self):
     qcamera_path_by_seg_num = {s.name.segment_num: s.qcamera_path for s in self._segments}
-    return [qcamera_path_by_seg_num.get(i, None) for i in range(self.max_seg_number + 1)]
+    return [qcamera_path_by_seg_num.get(i, None) for i in range(self.max_seg_number+1)]
 
   # TODO: refactor this, it's super repetitive
   def _get_segments_remote(self):
@@ -160,7 +159,6 @@ class Route:
       raise ValueError(f'Could not find segments for route {self.name.canonical_name} in data directory {data_dir}')
     return sorted(segments, key=lambda seg: seg.name.segment_num)
 
-
 class Segment:
   def __init__(self, name, log_path, qlog_path, camera_path, dcamera_path, ecamera_path, qcamera_path):
     self._name = SegmentName(name)
@@ -174,7 +172,6 @@ class Segment:
   @property
   def name(self):
     return self._name
-
 
 class RouteName:
   def __init__(self, name_str: str):
@@ -197,7 +194,6 @@ class RouteName:
 
   def __str__(self) -> str: return self._canonical_name
 
-
 class SegmentName:
   # TODO: add constructor that takes dongle_id, time_str, segment_num and then create instances
   # of this class instead of manually constructing a segment name (use canonical_name prop instead)
@@ -210,7 +206,7 @@ class SegmentName:
     seg_num_delim = "--" if self._name_str.count("--") == 2 else "/"
     name_parts = self._name_str.rsplit(seg_num_delim, 1)
     if allow_route_name and len(name_parts) == 1:
-      name_parts.append("-1")  # no segment number
+      name_parts.append("-1") # no segment number
     self._route_name = RouteName(name_parts[0])
     self._num = int(name_parts[1])
     self._canonical_name = f"{self._route_name._dongle_id}|{self._route_name._time_str}--{self._num}"
@@ -237,61 +233,41 @@ class SegmentName:
 
 
 @cache
-def get_max_seg_number_cached(sr: 'SegmentRange') -> int:
+def get_max_seg_number_cached(sr: 'SegmentRange'):
   try:
     api = CommaApi(get_token())
-    return cast(int, api.get("/v1/route/" + sr.route_name.replace("/", "|"))["segment_numbers"][-1])
+    return api.get("/v1/route/" + sr.route_name.replace("/", "|"))["segment_numbers"][-1]
   except Exception as e:
     raise Exception("unable to get max_segment_number. ensure you have access to this route or the route is public.") from e
 
 
 class SegmentRange:
   def __init__(self, segment_range: str):
-    m = re.fullmatch(RE.SEGMENT_RANGE, segment_range)
-    assert m is not None, f"Segment range is not valid {segment_range}"
-    self.m = m
+    self.m = re.fullmatch(RE.SEGMENT_RANGE, segment_range)
+    assert self.m, f"Segment range is not valid {segment_range}"
+
+  def get_max_seg_number(self):
+    return get_max_seg_number_cached(self)
 
   @property
-  def route_name(self) -> str:
+  def route_name(self):
     return self.m.group("route_name")
 
   @property
-  def dongle_id(self) -> str:
+  def dongle_id(self):
     return self.m.group("dongle_id")
 
   @property
-  def timestamp(self) -> str:
+  def timestamp(self):
     return self.m.group("timestamp")
 
   @property
-  def _slice(self) -> str:
-    return self.m.group("slice") or ""
+  def _slice(self):
+    return self.m.group("slice")
 
   @property
-  def selector(self) -> str | None:
+  def selector(self):
     return self.m.group("selector")
 
-  @property
-  def seg_idxs(self) -> list[int]:
-    m = re.fullmatch(RE.SLICE, self._slice)
-    assert m is not None, f"Invalid slice: {self._slice}"
-    start, end, step = (None if s is None else int(s) for s in m.groups())
-
-    # one segment specified
-    if start is not None and end is None and ':' not in self._slice:
-      if start < 0:
-        start += get_max_seg_number_cached(self) + 1
-      return [start]
-
-    s = slice(start, end, step)
-    # no specified end or using relative indexing, need number of segments
-    if end is None or end < 0 or (start is not None and start < 0):
-      return list(range(get_max_seg_number_cached(self) + 1))[s]
-    else:
-      return list(range(end + 1))[s]
-
-  def __str__(self) -> str:
+  def __str__(self):
     return f"{self.dongle_id}/{self.timestamp}" + (f"/{self._slice}" if self._slice else "") + (f"/{self.selector}" if self.selector else "")
-
-  def __repr__(self) -> str:
-    return self.__str__()
