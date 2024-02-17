@@ -80,7 +80,7 @@ class CarController:
     # Hold torque with induced temporary fault when cutting the actuation bit
     #torque_fault = CC.latActive and not apply_steer_req
 
-    self.apply_steer_last = apply_steer
+    #self.apply_steer_last = apply_steer
 
     # accel + longitudinal
     accel = clip(actuators.accel, CarControllerParams.ACCEL_MIN, CarControllerParams.ACCEL_MAX)
@@ -171,6 +171,7 @@ class CarController:
       if self.frame % 50 == 0 and self.CP.openpilotLongitudinalControl:
         can_sends.append(hyundaican.create_frt_radar_opt(self.packer))
 
+    self.apply_steer_last = apply_steer
     new_actuators = actuators.copy()
     new_actuators.steer = apply_steer / self.params.STEER_MAX
     new_actuators.steerOutputCan = apply_steer
