@@ -345,9 +345,9 @@ static int hyundai_community_fwd_hook(int bus_num, int addr) {
 
   // forward cam to ccan and viceversa, except lkas cmd
   if (bus_num == 0) {
-    if( addr != MDPS12 ) {
+    //if( addr != MDPS12 ) {
         bus_fwd = 2;
-    }
+   // }
   }
   if ((bus_num == 2) && (addr != LKAS11) && (addr != LFAHDA_MFC)) {
     bus_fwd = 0;
