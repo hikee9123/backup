@@ -210,6 +210,18 @@ static void hyundai_community_rx_hook( const CANPacket_t *to_push) {
     if ((addr == SCC11) && (((bus == 0) && !hyundai_camera_scc) || ((bus == 2) && hyundai_camera_scc))) {
       // 0 bits
       int cruise_engaged = GET_BYTES(to_push, 0, 4) & 0x1U; // ACC main_on signal
+ 
+      if( cruise_engaged )
+      {
+        if( !controls_allowed )
+        {
+          if( !heartbeat_engaged ) cruise_engaged = 0;
+          else if( cruise_engaged_prev )  cruise_engaged_prev = 0;
+          else  hyundai_last_button_interaction = 0U;
+        } 
+      } 
+
+
       hyundai_common_cruise_state_check(cruise_engaged);
     }
 
