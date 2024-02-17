@@ -92,7 +92,7 @@ RxCheck hyundai_community_long_rx_checks[] = {
   {.msg = {{CLU11, 0, 4, .check_checksum = false, .max_counter = 15U, .frequency = 50U}, { 0 }, { 0 }}},
 };
 
-int main_button =0;
+
 
 static uint8_t hyundai_community_get_counter(const CANPacket_t *to_push) {
   int addr = GET_ADDR(to_push);
@@ -236,7 +236,7 @@ static void hyundai_community_rx_hook( const CANPacket_t *to_push) {
     // ACC steering wheel buttons
     if (addr == CLU11) {
       int cruise_button = GET_BYTE(to_push, 0) & 0x7U;
-      main_button = GET_BIT(to_push, 3U);
+      int main_button = GET_BIT(to_push, 3U);
       hyundai_common_cruise_buttons_check(cruise_button, main_button);
     }
 
@@ -346,9 +346,7 @@ static int hyundai_community_fwd_hook(int bus_num, int addr) {
   
   // forward cam to ccan and viceversa, except lkas cmd
   if (bus_num == 0) {
-    //if( addr != MDPS12 ) {
         bus_fwd = 2;
-   // }
   }
   if ((bus_num == 2) && (addr != LKAS11) && (addr != LFAHDA_MFC)) {
     bus_fwd = 0;
