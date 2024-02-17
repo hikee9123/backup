@@ -335,7 +335,9 @@ static bool hyundai_community_tx_hook( const CANPacket_t *to_send) {
       tx = false;
     }
   }
-
+  if( !controls_allowed )
+    tx =false;
+  
   return tx;
 }
 
