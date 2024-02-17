@@ -84,7 +84,7 @@ class CarControllerCustom:
     else:
       if CS.customCS.slow_engage < 1:
         slow_engage = max(0, CS.customCS.slow_engage )
-        CS.customCS.slow_engage += 0.005
+        CS.customCS.slow_engage += 0.01
         if slow_engage < 1:
           apply_torque = apply_steer * slow_engage
           apply_steer = int(round(float(apply_torque)))
