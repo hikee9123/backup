@@ -217,7 +217,7 @@ static void hyundai_community_rx_hook( const CANPacket_t *to_push) {
         {
           if( !heartbeat_engaged ) cruise_engaged = 0;
          // else if( cruise_engaged_prev )  cruise_engaged_prev = 0;
-          else  hyundai_last_button_interaction = 0U;
+          //else  hyundai_last_button_interaction = 0U;
         } 
       } 
 
