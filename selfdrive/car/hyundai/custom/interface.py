@@ -1,7 +1,5 @@
 from cereal import car
-from panda import Panda
 from openpilot.common.params import Params
-from openpilot.selfdrive.car.hyundai.values import CANFD_CAR, CAMERA_SCC_CAR, LEGACY_SAFETY_MODE_CAR
 from openpilot.selfdrive.car import get_safety_config
 
 
