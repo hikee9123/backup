@@ -80,7 +80,7 @@ class CarControllerCustom:
                                       torque_fault, CS.lkas11, sys_warning, sys_state, enable,
                                       left_lane, right_lane,
                                       left_lane_depart, right_lane_depart) )
-      can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error
+      # can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error
     else:
       if CS.customCS.slow_engage < 1:
         slow_engage = max(0, CS.customCS.slow_engage )
@@ -99,7 +99,7 @@ class CarControllerCustom:
  
       if not self.CP.openpilotLongitudinalControl:
         #if self.car_fingerprint in (CAR.AZERA_HEV_6TH_GEN, CAR.GENESIS_G90):
-        #  can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # 100 Hz send mdps12 to LKAS to prevent LKAS error
+        can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # 100 Hz send mdps12 to LKAS to prevent LKAS error
 
         self.create_button_messages( packer, can_sends, CC, CS, frame )  #custom
 
