@@ -135,10 +135,10 @@ class CarStateCustom():
     mainMode_ACC = cp_cruise.vl["SCC11"]["MainMode_ACC"] == 1
 
     if not mainMode_ACC:
-      self.CP.passive = True
+      #self.CP.passive = True
       self.cruise_control_mode()
-    else:
-      self.CP.passive = False
+    #else:
+      #self.CP.passive = False
 
 
     # save the entire LFAHDA_MFC
