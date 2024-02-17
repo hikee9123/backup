@@ -23,7 +23,6 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
     "CF_Lkas_FusionState",
     "CF_Lkas_FcwOpt_USM",
     "CF_Lkas_LdwsOpt_USM",
-    #"CF_Lkas_ToiFlt",
   ]}
   values["CF_Lkas_LdwsSysState"] = sys_state
   values["CF_Lkas_SysWarning"] = 3 if sys_warning else 0
@@ -41,8 +40,7 @@ def create_lkas11(packer, frame, car_fingerprint, apply_steer, steer_req,
                          CAR.SANTA_FE_PHEV_2022, CAR.KIA_STINGER_2022, CAR.KIA_K5_HEV_2020, CAR.KIA_CEED,
                          CAR.AZERA_6TH_GEN, CAR.AZERA_HEV_6TH_GEN, CAR.CUSTIN_1ST_GEN):
     
-    if car_fingerprint != CAR.AZERA_HEV_6TH_GEN:
-       values["CF_Lkas_LdwsActivemode"] = int(left_lane) + (int(right_lane) << 1)
+    #values["CF_Lkas_LdwsActivemode"] = int(left_lane) + (int(right_lane) << 1)
 
     values["CF_Lkas_LdwsOpt_USM"] = 2
 

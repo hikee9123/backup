@@ -66,7 +66,6 @@ class CarControllerCustom:
     hud_control = CC.hudControl
     left_lane = hud_control.leftLaneVisible, 
     right_lane = hud_control.rightLaneVisible
-    control_mode = CS.customCS.control_mode
     enable = CC.enabled
 
     # Hold torque with induced temporary fault when cutting the actuation bit
@@ -75,33 +74,25 @@ class CarControllerCustom:
      # HUD messages
     sys_warning, sys_state, left_lane_depart, right_lane_depart = self.process_hud_alert( enable,  hud_control )
 
-    if control_mode == 4:
-      can_sends.append( hyundai_lkas11(packer, frame, self.car_fingerprint, apply_steer, steer_req,
-                                      torque_fault, CS.lkas11, sys_warning, sys_state, enable,
-                                      left_lane, right_lane,
-                                      left_lane_depart, right_lane_depart) )
-      can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # send mdps12 to LKAS to prevent LKAS error
-    else:
-      if CS.customCS.slow_engage < 1:
-        slow_engage = max(0, CS.customCS.slow_engage )
-        CS.customCS.slow_engage += 0.01
-        if slow_engage < 1:
-          apply_torque = apply_steer * slow_engage
-          apply_steer = int(round(float(apply_torque)))
+    if CS.customCS.slow_engage < 1:
+      slow_engage = max(0, CS.customCS.slow_engage )
+      CS.customCS.slow_engage += 0.01
+      if slow_engage < 1:
+        apply_torque = apply_steer * slow_engage
+        apply_steer = int(round(float(apply_torque)))
 
 
-        
-      can_sends.append( create_lkas11(packer, frame, self.car_fingerprint, apply_steer, steer_req,
-                                      torque_fault, CS.lkas11, sys_warning, sys_state, enable,
-                                      left_lane, right_lane,
-                                      left_lane_depart, right_lane_depart) )
+      
+    can_sends.append( create_lkas11(packer, frame, self.car_fingerprint, apply_steer, steer_req,
+                                    torque_fault, CS.lkas11, sys_warning, sys_state, enable,
+                                    left_lane, right_lane,
+                                    left_lane_depart, right_lane_depart) )
 
- 
-      if not self.CP.openpilotLongitudinalControl:
-        #if self.car_fingerprint in (CAR.AZERA_HEV_6TH_GEN, CAR.GENESIS_G90):
-        #can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # 100 Hz send mdps12 to LKAS to prevent LKAS error
 
-        self.create_button_messages( packer, can_sends, CC, CS, frame )  #custom
+    if not self.CP.openpilotLongitudinalControl:
+      #if self.car_fingerprint in (CAR.AZERA_HEV_6TH_GEN, CAR.GENESIS_G90):
+      can_sends.append( create_mdps12( packer, frame, CS.customCS.mdps12 ) )  # 100 Hz send mdps12 to LKAS to prevent LKAS error
+      self.create_button_messages( packer, can_sends, CC, CS, frame )  #custom
 
   
 
@@ -110,16 +101,11 @@ class CarControllerCustom:
 
   # 20 Hz LFA MFA message
   def custom_hda_mfc(self, can_sends, packer, CS,  CC ):
-    if CS.customCS.control_mode == 4:
-      return
     can_sends.append( create_hda_mfc( packer, CS, CC ) )
 
 
 
   def create_button_messages(self, packer, can_sends, CC: car.CarControl, CS: car.CarState, frame: int):
-    if CS.customCS.control_mode == 4:
-      return
-
     if CC.cruiseControl.cancel:
       can_sends.append(create_clu11( packer, frame, CS.clu11, Buttons.CANCEL, self.CP.carFingerprint))
     elif CS.customCS.acc_active:

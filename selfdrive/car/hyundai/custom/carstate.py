@@ -135,7 +135,11 @@ class CarStateCustom():
     mainMode_ACC = cp_cruise.vl["SCC11"]["MainMode_ACC"] == 1
 
     if not mainMode_ACC:
+      self.CP.passive = True
       self.cruise_control_mode()
+    else:
+      self.CP.passive = False
+
 
     # save the entire LFAHDA_MFC
     self.lfahda = copy.copy(cp_cam.vl["LFAHDA_MFC"])
@@ -157,10 +161,7 @@ class CarStateCustom():
     self.VSetDis = cp_cruise.vl["SCC11"]["VSetDis"]   # kph   크루즈 설정 속도.    
     self.clu_Vanz = cp.vl["CLU11"]["CF_Clu_Vanz"]     # kph  현재 차량의 속도.
     
-    if CS.customCS.control_mode == 4:
-      ret.cruiseState.available = False
-      ret.cruiseState.enabled = False
-    elif not self.CP.openpilotLongitudinalControl:
+    if not self.CP.openpilotLongitudinalControl:
       if not (CS.CP.alternativeExperience & ALTERNATIVE_EXPERIENCE.DISABLE_DISENGAGE_ON_GAS):
         pass
       elif ret.parkingBrake:
@@ -222,6 +223,5 @@ class CarStateCustom():
 
       #log
       trace1.printf1( 'MD={:.0f}'.format( self.control_mode ) )
-
       trace1.printf2( 'LS={:.0f}'.format( CS.lkas11["CF_Lkas_LdwsSysState"] ) )   
 
