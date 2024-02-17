@@ -336,8 +336,6 @@ static bool hyundai_community_tx_hook( const CANPacket_t *to_send) {
       tx = false;
     }
   }
-  if( !main_button )
-    tx = false;
   
   return tx;
 }
